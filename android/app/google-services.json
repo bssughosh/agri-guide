@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "829357638715",
+    "firebase_url": "https://agriguide-efc14.firebaseio.com",
+    "project_id": "agriguide-efc14",
+    "storage_bucket": "agriguide-efc14.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:829357638715:android:a6eb4ad607114acb2c081e",
+        "android_client_info": {
+          "package_name": "com.agri_guide"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "829357638715-jvqgeq06on792rmfcj556reu6k49svla.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDekGHRmpDzGV1Fce24GkwZ63JkIdIsVIs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "829357638715-jvqgeq06on792rmfcj556reu6k49svla.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:829357638715:android:26ccc9644ebc93472c081e",
+        "android_client_info": {
+          "package_name": "com.example.agri_guide_web_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "829357638715-jvqgeq06on792rmfcj556reu6k49svla.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDekGHRmpDzGV1Fce24GkwZ63JkIdIsVIs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "829357638715-jvqgeq06on792rmfcj556reu6k49svla.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

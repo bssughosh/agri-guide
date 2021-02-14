@@ -1,0 +1,50 @@
+name: Continuous Deployment to Firebase App Distribution
+
+on: 
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    
+    - name: Set up JDK 12
+      uses: actions/setup-java@v1
+      with:
+        java-version: '12.x'
+    
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v1
+      with:
+        flutter-version: '1.22.5'
+    
+    - name: Get Flutter Dependencies
+      run: flutter pub get
+    
+    - name: Build the Staging APK for Distribution 
+      run: flutter build apk --target=lib/main.dart --release
+    
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Agri_Guide_APK
+        path: build/app/outputs/apk/release/app-release.apk
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download APK
+      uses: actions/download-artifact@v2
+      with:
+        name: Agri_Guide_APK
+
+    - name: Upload artifact to Firebase App Distribution
+      uses: wzieba/Firebase-Distribution-Github-Action@v1
+      with:
+        appId: ${{ secrets.FIREBASE_APP_ID }}
+        token: ${{ secrets.FIREBASE_TOKEN }}
+        groups: Testers
+        file: app-release.apk

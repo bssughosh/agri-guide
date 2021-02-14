@@ -1,0 +1,18 @@
+{
+    "name": "Agri Guide",
+    "short_name": "Agri Guide",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#2BB622",
+    "theme_color": "#2BB622",
+    "description": "A Smart Innovative Platform for Crop Prediction.",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "logo.png",
+            "sizes": "143X147",
+            "type": "image/png"
+        }
+    ]
+}

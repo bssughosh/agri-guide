@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Agri Guide",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart"
+        },
+        {
+            "name": "All Tests",
+            "type": "dart",
+            "request": "launch",
+            "program": "test/",
+        }
+    ]
+}
