@@ -17,10 +17,18 @@ class HomePage extends View {
   State<StatefulWidget> createState() => HomeViewState();
 }
 
-class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
+class HomeViewState extends ResponsiveViewState<HomePage, HomePageController>
+    with SingleTickerProviderStateMixin {
   HomeViewState() : super(new HomePageController());
   PageController pageController = new PageController();
+  TabController tabController;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = new TabController(initialIndex: 0, vsync: this, length: 4);
+  }
 
   @override
   Widget buildMobileView() {
@@ -207,6 +215,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
       ),
       bottomNavigationBar: ConvexAppBar(
         backgroundColor: AppTheme.navigationSelectedColor,
+        controller: tabController,
         style: TabStyle.reactCircle,
         items: [
           TabItem(icon: Icons.get_app, title: 'Downloads'),
@@ -214,22 +223,27 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
           TabItem(icon: Icons.schedule, title: 'Prediction'),
           TabItem(icon: Icons.account_circle, title: 'Account'),
         ],
-        initialActiveIndex: 0,
         onTap: (int i) {
-          controller.changePageNumber(i);
+          controller.oldPageNumber = controller.pageNumber;
+          controller.pageNumber = i;
+          print('New => ${controller.pageNumber}');
+          print('Old => ${controller.oldPageNumber}');
           pageController.jumpToPage(i);
         },
       ),
       body: SafeArea(
-        child: PageView(
-          controller: pageController,
-          physics: NeverScrollableScrollPhysics(),
-          children: <Widget>[
-            _downloadsPage(),
-            _statisticsPage(),
-            _predictionPage(),
-            _mobileProfilePage(),
-          ],
+        child: WillPopScope(
+          onWillPop: () => Future.sync(onWillPop),
+          child: PageView(
+            controller: pageController,
+            physics: NeverScrollableScrollPhysics(),
+            children: <Widget>[
+              _downloadsPage(),
+              _statisticsPage(),
+              _predictionPage(),
+              _mobileProfilePage(),
+            ],
+          ),
         ),
       ),
     );
@@ -334,5 +348,18 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
         ),
       ),
     );
+  }
+
+  bool onWillPop() {
+    print('Old => ${controller.oldPageNumber}');
+    pageController.jumpToPage(controller.oldPageNumber);
+    tabController.animateTo(controller.oldPageNumber);
+    setState(() {
+      int tempPage = controller.oldPageNumber;
+      controller.oldPageNumber = controller.pageNumber;
+      controller.pageNumber = tempPage;
+    });
+
+    return false;
   }
 }
