@@ -212,8 +212,13 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
   }
 
   @override
-  Future<void> getRequiredDownloadsMobile(List<String> stateIds,
-      List<String> districtIds, List<String> years, List<String> params) async {
+  Future<void> getRequiredDownloadsMobile(
+    List<String> stateIds,
+    List<String> districtIds,
+    List<String> years,
+    List<String> params,
+    String fileName,
+  ) async {
     List<String> _stateList = await fetchStateNames(stateIds);
     List<String> _districtList = [];
     if (_stateList.length == 1) {
@@ -226,7 +231,12 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
     String downloadParams = params.join(',');
 
     await _downloadFile(
-        states: states, dists: district, years: yrs, params: downloadParams);
+      states: states,
+      dists: district,
+      years: yrs,
+      params: downloadParams,
+      fileName: fileName,
+    );
   }
 
   Future<void> _downloadFile({
@@ -234,6 +244,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
     @required String dists,
     @required String years,
     @required String params,
+    @required String fileName,
   }) async {
     String url = "$base_url/weather/downloads?states=" +
         states +
@@ -247,7 +258,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
     var response = await request.close();
     var bytes = await consolidateHttpClientResponseBytes(response);
     String dir = (await getExternalStorageDirectory()).path;
-    File file = new File('$dir/required_downloads.zip');
+    File file = new File('$dir/$fileName.zip');
     await file.writeAsBytes(bytes);
   }
 }

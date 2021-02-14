@@ -1,16 +1,15 @@
-# agri_guide
+# Agri Guide
 
-A new Flutter project.
+A Smart Innovative Platform for Crop Prediction
 
-## Getting Started
+# Execution
 
-This project is a starting point for a Flutter application.
+* For normal execution: 
+  - `flutter run --target=lib\main.dart`
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* For execution on GCP:
+  - Start Compute instance
+  - Fetch the latest API branch and start the server
+  - Get the External IP Address as `host_ip`
+  - Port 4999 as `port`
+  - `flutter run --target=lib\main.dart --dart-define=base_url="http://host_ip:port"`

@@ -57,8 +57,9 @@ class DownloadsPagePresenter extends Presenter {
     List<String> dists,
     List<String> yrs,
     List<String> params,
+    String fileName,
   ) {
-    _getRequiredMobileDownloadsUsecase.execute(
-        observer, new GetDownloadMobileParams(states, dists, yrs, params));
+    _getRequiredMobileDownloadsUsecase.execute(observer,
+        new GetDownloadMobileParams(states, dists, yrs, params, fileName));
   }
 }
