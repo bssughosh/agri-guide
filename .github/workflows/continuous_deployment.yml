@@ -23,7 +23,7 @@ jobs:
     - name: Get Flutter Dependencies
       run: flutter pub get
     
-    - name: Build the Staging APK for Distribution 
+    - name: Build the APK
       run: flutter build apk --target=lib/main.dart --release
     
     - name: Upload artifact
