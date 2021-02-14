@@ -31,5 +31,6 @@ abstract class FetchInputRepository {
     List<String> districtIds,
     List<String> years,
     List<String> params,
+    String fileName,
   );
 }

@@ -200,36 +200,57 @@ class DownloadsPageController extends Controller {
 
   void downloadFiles() {
     _presenter.getRequiredDownload(
-        new UseCaseObserver(() {}, (error) {
-          _handleAPIErrors(error);
-          print(error);
-        }),
-        selectedStates,
-        selectedDistricts,
-        List<String>.from([fromText.text, toText.text]),
-        selectedParams);
+      new UseCaseObserver(() {}, (error) {
+        _handleAPIErrors(error);
+        print(error);
+      }),
+      selectedStates,
+      selectedDistricts,
+      List<String>.from([fromText.text, toText.text]),
+      selectedParams,
+    );
   }
 
   void downloadFilesMobile() {
     isDownloading = true;
     refreshUI();
+    String fileName = _createTimeStamp();
     _presenter.getRequiredDownloadMobile(
-        new UseCaseObserver(() {
-          isDownloading = false;
-          refreshUI();
-          Fluttertoast.showToast(
-            msg:
-                'The file is downloaded at location => Android/data/com.example.agri_guide_web_app/required_downloads.zip',
-            toastLength: Toast.LENGTH_LONG,
-          );
-        }, (error) {
-          _handleAPIErrors(error);
-          print(error);
-        }),
-        selectedStates,
-        selectedDistricts,
-        List<String>.from([fromText.text, toText.text]),
-        selectedParams);
+      new UseCaseObserver(() {
+        isDownloading = false;
+        refreshUI();
+        Fluttertoast.showToast(
+          msg:
+              'The file is downloaded at location => Android/data/com.agri_guide/$fileName.zip',
+          toastLength: Toast.LENGTH_LONG,
+        );
+      }, (error) {
+        _handleAPIErrors(error);
+        print(error);
+      }),
+      selectedStates,
+      selectedDistricts,
+      List<String>.from([fromText.text, toText.text]),
+      selectedParams,
+      fileName,
+    );
+  }
+
+  _createTimeStamp() {
+    DateTime currentDateTime = DateTime.now();
+    String _currentYear = currentDateTime.year.toString();
+    String _currentMonth = currentDateTime.month.toString();
+    String _currentDay = currentDateTime.day.toString();
+    String _currentHour = currentDateTime.hour.toString();
+    String _currentMinute = currentDateTime.minute.toString();
+
+    String _fileName = _currentYear +
+        _currentMonth +
+        _currentDay +
+        _currentHour +
+        _currentMinute;
+
+    return _fileName;
   }
 }
 

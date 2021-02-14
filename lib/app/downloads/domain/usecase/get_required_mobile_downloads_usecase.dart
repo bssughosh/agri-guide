@@ -16,7 +16,12 @@ class GetRequiredMobileDownloadsUsecase
     StreamController streamController = StreamController();
     try {
       await _repository.getRequiredDownloadsMobile(
-          params.states, params.dists, params.yrs, params.param);
+        params.states,
+        params.dists,
+        params.yrs,
+        params.param,
+        params.fileName,
+      );
       print('Download success');
       streamController.close();
     } catch (error) {
@@ -31,6 +36,8 @@ class GetDownloadMobileParams {
   final List<String> dists;
   final List<String> yrs;
   final List<String> param;
+  final String fileName;
 
-  GetDownloadMobileParams(this.states, this.dists, this.yrs, this.param);
+  GetDownloadMobileParams(
+      this.states, this.dists, this.yrs, this.param, this.fileName);
 }
