@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
@@ -62,7 +63,9 @@ class DownloadsViewState
   }
 
   Widget _buildLoadingState(bool isFirstLoad) {
+    if (isFirstLoad) controller.checkDownloadedFiles();
     if (isFirstLoad) controller.fetchStateList();
+
     return Container(
       child: Center(
         child: LinearProgressIndicator(),
@@ -117,7 +120,8 @@ class DownloadsViewState
                                     children: <Widget>[
                                       Text(
                                         'Range of Data',
-                                        style: AppTheme.bodyBoldText,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
                                       ),
                                       SizedBox(
                                         height: 10,
@@ -170,7 +174,47 @@ class DownloadsViewState
                                   onPressed: () {
                                     controller.downloadFilesMobile();
                                   },
-                                )
+                                ),
+                              SizedBox(height: 20),
+                              if (controller
+                                      .downloadedFilesToBeDisplayed.length !=
+                                  0)
+                                Text(
+                                  'Previously downloaded files',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              if (controller
+                                      .downloadedFilesToBeDisplayed.length !=
+                                  0)
+                                Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 10),
+                                  child: Column(
+                                    children: [
+                                      for (String item in controller
+                                          .downloadedFilesToBeDisplayed)
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Text(item),
+                                            ),
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors.black),
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(10),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                    ],
+                                  ),
+                                ),
+                              SizedBox(height: 15),
                             ],
                           ),
                         ),
