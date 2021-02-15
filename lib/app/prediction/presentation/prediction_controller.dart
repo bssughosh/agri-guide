@@ -393,6 +393,30 @@ class PredictionPageController extends Controller {
     refreshUI();
   }
 
+  bool onWillPopScopePage1() {
+    if (selectedCrop != null) {
+      selectedCrop = null;
+    } else if (selectedSeason != null) {
+      selectedSeason = null;
+    } else if (selectedDistrict != '') {
+      selectedDistrict = '';
+    } else if (selectedState != '') {
+      selectedState = '';
+      selectedDistrict = '';
+      districtList = [];
+    }
+    refreshUI();
+
+    return false;
+  }
+
+  bool onWillPopScopePage2() {
+    pageController.jumpToPage(0);
+    refreshUI();
+
+    return false;
+  }
+
   String getCropNameFromCropId(String cropId) {
     for (var crop in cropsList) {
       if (cropId == crop['crop_id']) {
