@@ -117,8 +117,14 @@ class PredictionViewState
             controller: controller.pageController,
             physics: NeverScrollableScrollPhysics(),
             children: [
-              predictionPage1(isWeb),
-              predictionPage2(isWeb),
+              WillPopScope(
+                onWillPop: () => Future.sync(controller.onWillPopScopePage1),
+                child: predictionPage1(isWeb),
+              ),
+              WillPopScope(
+                onWillPop: () => Future.sync(controller.onWillPopScopePage2),
+                child: predictionPage2(isWeb),
+              ),
             ],
           ),
         ),

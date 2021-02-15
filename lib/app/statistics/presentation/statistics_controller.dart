@@ -356,6 +356,26 @@ class StatisticsPageController extends Controller {
     refreshUI();
   }
 
+  bool onWillPopScopePage1() {
+    if (selectedDistrict != '') {
+      selectedDistrict = '';
+    } else if (selectedState != '') {
+      selectedState = '';
+      selectedDistrict = '';
+      districtList = [];
+    }
+    refreshUI();
+
+    return false;
+  }
+
+  bool onWillPopScopePage2() {
+    _stateMachine.onEvent(new StatisticsPageInputInitializedEvent());
+    refreshUI();
+
+    return false;
+  }
+
   String getAxisLabelName(StatisticsFilters filters) {
     if (filters == StatisticsFilters.Temperature) {
       return 'Temperature (\u2103)';

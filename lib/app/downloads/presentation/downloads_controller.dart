@@ -252,6 +252,19 @@ class DownloadsPageController extends Controller {
 
     return _fileName;
   }
+
+  bool onWillPopScope() {
+    if (selectedDistricts.length != 0) {
+      selectedDistricts = [];
+    } else if (selectedStates.length != 0) {
+      selectedStates = [];
+      selectedDistricts = [];
+      districtList = [];
+    }
+    refreshUI();
+
+    return false;
+  }
 }
 
 enum SelectionListType {

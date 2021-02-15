@@ -75,135 +75,131 @@ class LoginViewState
 
   _buildMobileLoginPage() {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.home),
-        onPressed: () {
-          controller.navigateToHomepage();
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: Center(
-        child: Container(
-          width: double.infinity,
-          margin: EdgeInsets.symmetric(horizontal: 15),
-          child: SingleChildScrollView(
-            child: AutofillGroup(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Image.asset(
-                    'assets/login_icon.png',
-                    height: 100,
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  ColorizeAnimatedTextKit(
-                    text: [
-                      "AGRI GUIDE",
-                    ],
-                    textStyle:
-                        AppTheme.loginAnimatedText.copyWith(fontSize: 30),
-                    colors: [
-                      Colors.purple,
-                      Colors.blue,
-                      Colors.yellow,
-                      Colors.red,
-                    ],
-                    textAlign: TextAlign.center,
-                  ),
-                  TypewriterAnimatedTextKit(
-                    text: [
-                      "A Smart Innovative Platform for Crop Prediction",
-                    ],
-                    speed: Duration(milliseconds: 100),
-                    pause: Duration(milliseconds: 1000),
-                    textStyle: AppTheme.loginAnimatedText,
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: controller.emailText,
-                    keyboardType: TextInputType.emailAddress,
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      prefixIcon: Icon(Icons.portrait),
-                      hintText: 'Email ID',
-                      labelText: 'Email',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
+      body: WillPopScope(
+        onWillPop: () => Future.sync(controller.onWillPopScope),
+        child: Center(
+          child: Container(
+            width: double.infinity,
+            margin: EdgeInsets.symmetric(horizontal: 15),
+            child: SingleChildScrollView(
+              child: AutofillGroup(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 20,
                     ),
-                    onChanged: (value) {
-                      controller.updateEmailField(value);
-                    },
-                    autofillHints: [AutofillHints.username],
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: controller.passwordText,
-                    obscureText: true,
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      prefixIcon: Icon(Icons.lock),
-                      hintText: 'Password',
-                      labelText: 'Password',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
+                    Image.asset(
+                      'assets/login_icon.png',
+                      height: 100,
                     ),
-                    onChanged: (value) {
-                      controller.updatePasswordField(value);
-                    },
-                    autofillHints: [AutofillHints.password],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Center(
-                    child: Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          FlatButton(
-                            child: Text(
-                              'Login',
-                              style: AppTheme.navigationTabSelectedTextStyle,
+                    SizedBox(
+                      height: 30,
+                    ),
+                    ColorizeAnimatedTextKit(
+                      text: [
+                        "AGRI GUIDE",
+                      ],
+                      textStyle:
+                          AppTheme.loginAnimatedText.copyWith(fontSize: 30),
+                      colors: [
+                        Colors.purple,
+                        Colors.blue,
+                        Colors.yellow,
+                        Colors.red,
+                      ],
+                      textAlign: TextAlign.center,
+                    ),
+                    TypewriterAnimatedTextKit(
+                      text: [
+                        "A Smart Innovative Platform for Crop Prediction",
+                      ],
+                      speed: Duration(milliseconds: 100),
+                      pause: Duration(milliseconds: 1000),
+                      textStyle: AppTheme.loginAnimatedText,
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextField(
+                      controller: controller.emailText,
+                      keyboardType: TextInputType.emailAddress,
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                        fillColor: Colors.white,
+                        prefixIcon: Icon(Icons.portrait),
+                        hintText: 'Email ID',
+                        labelText: 'Email',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      onChanged: (value) {
+                        controller.updateEmailField(value);
+                      },
+                      autofillHints: [AutofillHints.username],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextField(
+                      controller: controller.passwordText,
+                      obscureText: true,
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                        fillColor: Colors.white,
+                        prefixIcon: Icon(Icons.lock),
+                        hintText: 'Password',
+                        labelText: 'Password',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      onChanged: (value) {
+                        controller.updatePasswordField(value);
+                      },
+                      autofillHints: [AutofillHints.password],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Center(
+                      child: Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            FlatButton(
+                              child: Text(
+                                'Login',
+                                style: AppTheme.navigationTabSelectedTextStyle,
+                              ),
+                              color: controller.passwordText.text.length != 0 &&
+                                      controller.emailText.text.length != 0
+                                  ? AppTheme.buttonActiveColor
+                                  : AppTheme.buttonDeactiveColor,
+                              onPressed: () {
+                                if (controller.passwordText.text.length != 0 &&
+                                    controller.emailText.text.length != 0)
+                                  controller.loginUser();
+                              },
                             ),
-                            color: controller.passwordText.text.length != 0 &&
-                                    controller.emailText.text.length != 0
-                                ? AppTheme.buttonActiveColor
-                                : AppTheme.buttonDeactiveColor,
-                            onPressed: () {
-                              if (controller.passwordText.text.length != 0 &&
-                                  controller.emailText.text.length != 0)
-                                controller.loginUser();
-                            },
-                          ),
-                          SizedBox(width: 20),
-                          FlatButton(
-                            child: Text(
-                              'Register',
-                              style: AppTheme.navigationTabSelectedTextStyle,
+                            SizedBox(width: 20),
+                            FlatButton(
+                              child: Text(
+                                'Register',
+                                style: AppTheme.navigationTabSelectedTextStyle,
+                              ),
+                              color: AppTheme.navigationSelectedColor,
+                              onPressed: () {
+                                controller.navigateToRegistration();
+                              },
                             ),
-                            color: AppTheme.navigationSelectedColor,
-                            onPressed: () {
-                              controller.navigateToRegistration();
-                            },
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
