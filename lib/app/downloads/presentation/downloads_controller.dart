@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../../core/exceptions.dart';
 import '../../../core/observer.dart';
@@ -39,6 +42,8 @@ class DownloadsPageController extends Controller {
   ];
   bool isParamsFilterClicked = false;
   bool isDownloading = false;
+
+  List<String> downloadedFilesToBeDisplayed = [];
 
   @override
   void initListeners() {}
@@ -218,6 +223,7 @@ class DownloadsPageController extends Controller {
     _presenter.getRequiredDownloadMobile(
       new UseCaseObserver(() {
         isDownloading = false;
+        checkDownloadedFiles();
         refreshUI();
         Fluttertoast.showToast(
           msg:
@@ -264,6 +270,20 @@ class DownloadsPageController extends Controller {
     refreshUI();
 
     return false;
+  }
+
+  void checkDownloadedFiles() async {
+    Directory downloadsDirectory = await getExternalStorageDirectory();
+    List<FileSystemEntity> _downloads =
+        await downloadsDirectory.list(recursive: true).toList();
+    downloadedFilesToBeDisplayed = [];
+    for (FileSystemEntity _downloadFile in _downloads) {
+      String _path = _downloadFile.path.toString();
+      List<String> _pathElements = _path.split('/');
+      String _toBeAdded = 'Android/data/com.agri_guide/files/';
+      downloadedFilesToBeDisplayed
+          .add(_toBeAdded + _pathElements[_pathElements.length - 1]);
+    }
   }
 }
 
