@@ -217,8 +217,6 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
         onTap: (int i) {
           controller.oldPageNumber = controller.pageNumber;
           controller.pageNumber = i;
-          print('New => ${controller.pageNumber}');
-          print('Old => ${controller.oldPageNumber}');
           pageController.jumpToPage(i);
         },
       ),
@@ -337,17 +335,4 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
       ),
     );
   }
-
-  // bool onWillPop() {
-  //   print('Old => ${controller.oldPageNumber}');
-  //   pageController.jumpToPage(controller.oldPageNumber);
-  //   tabController.animateTo(controller.oldPageNumber);
-  //   setState(() {
-  //     int tempPage = controller.oldPageNumber;
-  //     controller.oldPageNumber = controller.pageNumber;
-  //     controller.pageNumber = tempPage;
-  //   });
-
-  //   return false;
-  // }
 }

@@ -174,6 +174,61 @@ class StatisticsPageController extends Controller {
     refreshUI();
   }
 
+  void findColorsAndToChartData({
+    @required StatisticsFilters filter,
+    @required List statisticsData,
+  }) {
+    double _max = 0;
+    double _min = double.infinity;
+    statisticsData.asMap().forEach((key, dataItem) {
+      if (dataItem.values.first > _max) {
+        _max = double.parse(dataItem.values.first.toString());
+      }
+      if (dataItem.values.first < _min) {
+        _min = double.parse(dataItem.values.first.toString());
+      }
+    });
+    List<double> _ranges = [
+      _min + ((_max - _min) / 3),
+      _min + 2 * ((_max - _min) / 3),
+    ];
+    statisticsData.asMap().forEach((key, dataItem) {
+      Color color;
+      if (dataItem.values.first < _ranges[0]) {
+        color = Colors.green;
+      } else if (dataItem.values.first < _ranges[1]) {
+        color = Colors.blue;
+      } else {
+        color = Colors.red;
+      }
+
+      if (filter == StatisticsFilters.Rainfall)
+        rainfallChartData.add(
+          new ChartData(
+            x: dataItem.keys.first,
+            y: dataItem.values.first,
+            color: color,
+          ),
+        );
+      else if (filter == StatisticsFilters.Temperature)
+        temperatureChartData.add(
+          new ChartData(
+            x: dataItem.keys.first,
+            y: dataItem.values.first,
+            color: color,
+          ),
+        );
+      else if (filter == StatisticsFilters.Humidity)
+        humidityChartData.add(
+          new ChartData(
+            x: dataItem.keys.first,
+            y: double.parse(dataItem.values.first.toString()),
+            color: color,
+          ),
+        );
+    });
+  }
+
   void proceedToStatisticsDisplay() {
     _stateMachine.onEvent(new StatisticsPageLoadingEvent());
     refreshUI();
@@ -185,81 +240,19 @@ class StatisticsPageController extends Controller {
         print(error);
       }, onNextFunction: (StatisticsEntity entity) {
         statisticsEntity = entity;
-        double rainMax = 0;
 
-        statisticsEntity.rainfallData.asMap().forEach((key, rain) {
-          if (rain.values.first > rainMax) {
-            rainMax = rain.values.first;
-          }
-        });
-        statisticsEntity.rainfallData.asMap().forEach((key, rain) {
-          Color color;
-          if (rain.values.first < ((rainMax) / 3)) {
-            color = Colors.green;
-          } else if (rain.values.first < (2 * (rainMax) / 3)) {
-            color = Colors.blue;
-          } else {
-            color = Colors.red;
-          }
-
-          rainfallChartData.add(
-            new ChartData(
-              x: rain.keys.first,
-              y: rain.values.first,
-              color: color,
-            ),
-          );
-        });
-
-        double tempMax = 0;
-        statisticsEntity.temperatureData.asMap().forEach((key, temp) {
-          if (temp.values.first > tempMax) {
-            tempMax = temp.values.first;
-          }
-        });
-        statisticsEntity.temperatureData.asMap().forEach((key, temp) {
-          Color color;
-          if (temp.values.first < ((tempMax) / 3)) {
-            color = Colors.green;
-          } else if (temp.values.first < (2 * (tempMax) / 3)) {
-            color = Colors.blue;
-          } else {
-            color = Colors.red;
-          }
-
-          temperatureChartData.add(
-            new ChartData(
-              x: temp.keys.first,
-              y: temp.values.first,
-              color: color,
-            ),
-          );
-        });
-
-        double humidityMax = 0;
-        statisticsEntity.humidityData.asMap().forEach((key, humidity) {
-          if (humidity.values.first > humidityMax) {
-            humidityMax = double.parse(humidity.values.first.toString());
-          }
-        });
-        statisticsEntity.humidityData.asMap().forEach((key, humidity) {
-          Color color;
-          if (humidity.values.first < ((humidityMax) / 3)) {
-            color = Colors.green;
-          } else if (humidity.values.first < (2 * (humidityMax) / 3)) {
-            color = Colors.blue;
-          } else {
-            color = Colors.red;
-          }
-
-          humidityChartData.add(
-            new ChartData(
-              x: humidity.keys.first,
-              y: double.parse(humidity.values.first.toString()),
-              color: color,
-            ),
-          );
-        });
+        findColorsAndToChartData(
+          filter: StatisticsFilters.Rainfall,
+          statisticsData: statisticsEntity.rainfallData,
+        );
+        findColorsAndToChartData(
+          filter: StatisticsFilters.Temperature,
+          statisticsData: statisticsEntity.temperatureData,
+        );
+        findColorsAndToChartData(
+          filter: StatisticsFilters.Humidity,
+          statisticsData: statisticsEntity.humidityData,
+        );
 
         if (rainfallChartData.length > 0) {
           rainfallChartData.sort((a, b) => a.x.compareTo(b.x));

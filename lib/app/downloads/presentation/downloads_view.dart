@@ -63,7 +63,7 @@ class DownloadsViewState
   }
 
   Widget _buildLoadingState(bool isFirstLoad) {
-    if (isFirstLoad) controller.checkDownloadedFiles();
+    // if (isFirstLoad) controller.checkDownloadedFiles();
     if (isFirstLoad) controller.fetchStateList();
 
     return Container(

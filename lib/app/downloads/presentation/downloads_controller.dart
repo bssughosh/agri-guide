@@ -61,8 +61,9 @@ class DownloadsPageController extends Controller {
   void fetchStateList() {
     _presenter.fetchStateList(
       new UseCaseObserver(
-        () {
+        () async {
           print('State list successfully fetched');
+          await checkDownloadedFiles();
         },
         (error) {
           _handleAPIErrors(error);
@@ -221,9 +222,9 @@ class DownloadsPageController extends Controller {
     refreshUI();
     String fileName = _createTimeStamp();
     _presenter.getRequiredDownloadMobile(
-      new UseCaseObserver(() {
+      new UseCaseObserver(() async {
         isDownloading = false;
-        checkDownloadedFiles();
+        await checkDownloadedFiles();
         refreshUI();
         Fluttertoast.showToast(
           msg:
@@ -272,7 +273,7 @@ class DownloadsPageController extends Controller {
     return false;
   }
 
-  void checkDownloadedFiles() async {
+  Future<void> checkDownloadedFiles() async {
     Directory downloadsDirectory = await getExternalStorageDirectory();
     List<FileSystemEntity> _downloads =
         await downloadsDirectory.list(recursive: true).toList();
