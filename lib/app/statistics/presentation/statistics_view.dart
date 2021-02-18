@@ -72,7 +72,6 @@ class StatisticsViewState
   Widget _buildMobileInputPage() {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
       child: WillPopScope(
         onWillPop: () => Future.sync(controller.onWillPopScopePage1),
         child: Center(
@@ -158,7 +157,6 @@ class StatisticsViewState
   Widget _buildInputPage() {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
       child: WillPopScope(
         onWillPop: () => Future.sync(controller.onWillPopScopePage1),
         child: Center(
