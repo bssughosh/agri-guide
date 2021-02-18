@@ -58,7 +58,7 @@ class DownloadsPageController extends Controller {
     return _stateMachine.getCurrentState();
   }
 
-  void fetchStateList() {
+  void fetchStateList(bool isWeb) {
     _presenter.fetchStateList(
       new UseCaseObserver(
         () {
@@ -70,7 +70,7 @@ class DownloadsPageController extends Controller {
         },
         onNextFunction: (List stateListRes) async {
           stateList = stateListRes;
-          await checkDownloadedFiles();
+          if (!isWeb) await checkDownloadedFiles();
           _stateMachine.onEvent(new DownloadsInitializedEvent());
           refreshUI();
         },

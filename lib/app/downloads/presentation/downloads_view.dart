@@ -35,7 +35,7 @@ class DownloadsViewState
     switch (currentStateType) {
       case DownloadsInitializationState:
         DownloadsInitializationState newState = currentState;
-        return _buildLoadingState(newState.isFirstLoad);
+        return _buildLoadingState(newState.isFirstLoad, false);
       case DownloadsInitializedState:
         return _buildMobileDownloadsPage();
     }
@@ -55,15 +55,15 @@ class DownloadsViewState
     switch (currentStateType) {
       case DownloadsInitializationState:
         DownloadsInitializationState newState = currentState;
-        return _buildLoadingState(newState.isFirstLoad);
+        return _buildLoadingState(newState.isFirstLoad, true);
       case DownloadsInitializedState:
         return _buildDownloadsPage();
     }
     throw Exception("Unrecognized state $currentStateType encountered");
   }
 
-  Widget _buildLoadingState(bool isFirstLoad) {
-    if (isFirstLoad) controller.fetchStateList();
+  Widget _buildLoadingState(bool isFirstLoad, bool isWeb) {
+    if (isFirstLoad) controller.fetchStateList(isWeb);
 
     return Container(
       child: Center(
