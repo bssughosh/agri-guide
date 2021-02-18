@@ -61,16 +61,16 @@ class DownloadsPageController extends Controller {
   void fetchStateList() {
     _presenter.fetchStateList(
       new UseCaseObserver(
-        () async {
+        () {
           print('State list successfully fetched');
-          await checkDownloadedFiles();
         },
         (error) {
           _handleAPIErrors(error);
           print(error);
         },
-        onNextFunction: (List stateListRes) {
+        onNextFunction: (List stateListRes) async {
           stateList = stateListRes;
+          await checkDownloadedFiles();
           _stateMachine.onEvent(new DownloadsInitializedEvent());
           refreshUI();
         },
