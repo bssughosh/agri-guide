@@ -33,6 +33,9 @@ class RegisterPageController extends Controller {
   TextEditingController emailText = new TextEditingController();
   TextEditingController phoneText = new TextEditingController();
   TextEditingController aadharText = new TextEditingController();
+  bool isEmailTextFine = true;
+  bool isPhoneTextFine = true;
+  bool isAadharTextFine = true;
 
   //Page 2
   String selectedState = '';
@@ -45,6 +48,7 @@ class RegisterPageController extends Controller {
   //Page 3
   TextEditingController pass1Text = new TextEditingController();
   TextEditingController pass2Text = new TextEditingController();
+  bool doBothPassMatch = true;
 
   @override
   void initListeners() {}
@@ -70,6 +74,46 @@ class RegisterPageController extends Controller {
   }
 
   void textFieldChanged() {
+    if (emailText.text.length != 0) {
+      if (!EmailValidator.validate(emailText.text.trim())) {
+        isEmailTextFine = false;
+      } else {
+        isEmailTextFine = true;
+      }
+    } else {
+      isEmailTextFine = true;
+    }
+    if (aadharText.text.length != 0) {
+      if (!verhoeff.validate(aadharText.text.trim())) {
+        isAadharTextFine = false;
+      } else {
+        isAadharTextFine = true;
+      }
+    } else {
+      isAadharTextFine = true;
+    }
+    if (phoneText.text != '') {
+      if (phoneText.text.length != 10) {
+        isPhoneTextFine = false;
+      } else {
+        isPhoneTextFine = true;
+      }
+    } else {
+      isPhoneTextFine = true;
+    }
+    if (pass1Text.text.length != 0) {
+      if (pass2Text.text.length != 0) {
+        if (pass1Text.text != pass2Text.text) {
+          doBothPassMatch = false;
+        } else {
+          doBothPassMatch = true;
+        }
+      } else {
+        doBothPassMatch = true;
+      }
+    } else {
+      doBothPassMatch = true;
+    }
     refreshUI();
   }
 
