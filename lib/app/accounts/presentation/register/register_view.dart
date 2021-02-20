@@ -183,6 +183,9 @@ class RegisterViewState
                   fillColor: Colors.white,
                   hintText: 'Email Address',
                   labelText: 'Email Address',
+                  errorText: controller.isEmailTextFine
+                      ? null
+                      : 'Please enter a valid email',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                   ),
@@ -200,6 +203,9 @@ class RegisterViewState
                   fillColor: Colors.white,
                   hintText: 'Aadhar Card Number',
                   labelText: 'Aadhar Card Number',
+                  errorText: controller.isAadharTextFine
+                      ? null
+                      : 'Please enter an Aadhar card number',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                   ),
@@ -216,6 +222,9 @@ class RegisterViewState
                   fillColor: Colors.white,
                   hintText: 'Mobile Number (optional)',
                   labelText: 'Mobile Number',
+                  errorText: controller.isPhoneTextFine
+                      ? null
+                      : 'Please enter a valid mobile number',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                   ),
@@ -335,6 +344,9 @@ class RegisterViewState
                   fillColor: Colors.white,
                   hintText: 'Enter Password',
                   labelText: 'Password',
+                  errorText: controller.doBothPassMatch
+                      ? null
+                      : 'Both the passwords should match',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                   ),
@@ -352,6 +364,9 @@ class RegisterViewState
                   fillColor: Colors.white,
                   hintText: 'Confirm Password',
                   labelText: 'Confirm Password',
+                  errorText: controller.doBothPassMatch
+                      ? null
+                      : 'Both the passwords should match',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                   ),

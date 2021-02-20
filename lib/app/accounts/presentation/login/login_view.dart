@@ -234,33 +234,33 @@ class LoginViewState
                   SizedBox(
                     height: 30,
                   ),
-                  ColorizeAnimatedTextKit(
-                    text: [
-                      "AGRI GUIDE",
-                    ],
-                    textStyle: AppTheme.loginAnimatedText.copyWith(
-                      fontSize: 20,
-                    ),
-                    colors: [
-                      Colors.purple,
-                      Colors.blue,
-                      Colors.yellow,
-                      Colors.red,
-                    ],
-                    textAlign: TextAlign.center,
-                  ),
-                  TypewriterAnimatedTextKit(
-                    text: [
-                      "A Smart Innovative Platform for Crop Prediction",
-                    ],
-                    speed: Duration(milliseconds: 100),
-                    pause: Duration(milliseconds: 1000),
-                    textStyle: AppTheme.loginAnimatedText,
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  // ColorizeAnimatedTextKit(
+                  //   text: [
+                  //     "AGRI GUIDE",
+                  //   ],
+                  //   textStyle: AppTheme.loginAnimatedText.copyWith(
+                  //     fontSize: 20,
+                  //   ),
+                  //   colors: [
+                  //     Colors.purple,
+                  //     Colors.blue,
+                  //     Colors.yellow,
+                  //     Colors.red,
+                  //   ],
+                  //   textAlign: TextAlign.center,
+                  // ),
+                  // TypewriterAnimatedTextKit(
+                  //   text: [
+                  //     "A Smart Innovative Platform for Crop Prediction",
+                  //   ],
+                  //   speed: Duration(milliseconds: 100),
+                  //   pause: Duration(milliseconds: 1000),
+                  //   textStyle: AppTheme.loginAnimatedText,
+                  //   textAlign: TextAlign.center,
+                  // ),
+                  // SizedBox(
+                  //   height: 10,
+                  // ),
                   TextField(
                     controller: controller.emailText,
                     keyboardType: TextInputType.emailAddress,

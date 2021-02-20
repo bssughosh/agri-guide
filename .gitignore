@@ -13,6 +13,7 @@
 *.iml
 *.ipr
 *.iws
+.idea/workspace.xml
 
 # Flutter/Dart/Pub related
 **/doc/api/
