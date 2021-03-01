@@ -15,15 +15,13 @@ class MyApp extends StatelessWidget {
     Get.put(delegate);
     return MaterialApp.router(
       title: 'Agri Guide',
-      // navigatorKey: di.serviceLocator<NavigationService>().navigatorKey,
-      // initialRoute: NavigationService.splashPage,
-      // onGenerateRoute: NavigationService.generateRoute,
       theme: ThemeData(
         fontFamily: 'Roboto',
         primaryColor: AppTheme.primaryColor,
         accentColor: AppTheme.accentColor,
       ),
-      routeInformationParser: parser, routerDelegate: delegate,
+      routeInformationParser: parser,
+      routerDelegate: delegate,
     );
   }
 }
