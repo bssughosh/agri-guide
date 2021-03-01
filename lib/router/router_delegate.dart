@@ -1,9 +1,9 @@
-import 'package:agri_guide/app/accounts/presentation/login/login_view.dart';
-import 'package:agri_guide/app/accounts/presentation/register/register_view.dart';
-import 'package:agri_guide/app/home/presentation/home_view.dart';
-import 'package:agri_guide/app/splash/presentation/splash_view.dart';
 import 'package:flutter/material.dart';
 
+import '../app/accounts/presentation/login/login_view.dart';
+import '../app/accounts/presentation/register/register_view.dart';
+import '../app/home/presentation/home_view.dart';
+import '../app/splash/presentation/splash_view.dart';
 import 'ui_pages.dart';
 
 class AgriGuideRouterDelegate extends RouterDelegate<PageConfiguration>
