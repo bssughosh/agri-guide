@@ -5,9 +5,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../../../core/exceptions.dart';
 import '../../../core/observer.dart';
 import '../../../injection_container.dart';
+import '../../../router/router_delegate.dart';
+import '../../../router/ui_pages.dart';
 import '../../accounts/domain/entities/user_entity.dart';
 import '../../accounts/domain/repositories/firebase_authentication_repository.dart';
-import '../../navigation_service.dart';
 import '../domain/entities/prediction_data_entity.dart';
 import 'prediction_presenter.dart';
 import 'prediction_state_machine.dart';
@@ -16,7 +17,6 @@ class PredictionPageController extends Controller {
   final PredictionPagePresenter _presenter;
   final PredictionPageStateMachine _stateMachine =
       new PredictionPageStateMachine();
-  final navigationService = serviceLocator<NavigationService>();
   PredictionPageController()
       : _presenter = serviceLocator<PredictionPagePresenter>(),
         super();
@@ -139,8 +139,8 @@ class PredictionPageController extends Controller {
   }
 
   void navigateToLogin() {
-    navigationService.navigateTo(NavigationService.loginPage,
-        shouldReplace: true);
+    final delegate = serviceLocator<AgriGuideRouterDelegate>();
+    delegate.addPage(loginPageConfig);
   }
 
   void proceedToPrediction(int page) {

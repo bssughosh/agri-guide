@@ -29,7 +29,6 @@ import 'app/statistics/data/repositories/statistics_repository_impl.dart';
 import 'app/statistics/domain/repositories/statistics_repository.dart';
 import 'app/statistics/domain/usecases/fetch_whole_data_usecase.dart';
 import 'app/statistics/presentation/statistics_presenter.dart';
-import 'router/agri_guide_parser.dart';
 import 'router/router_delegate.dart';
 
 final serviceLocator = GetIt.instance;
@@ -37,7 +36,6 @@ final serviceLocator = GetIt.instance;
 Future<void> init() async {
   serviceLocator.registerLazySingleton(() => NavigationService());
   serviceLocator.registerLazySingleton(() => AgriGuideRouterDelegate());
-  serviceLocator.registerLazySingleton(() => AgriGuideParser());
 
   //splash
   serviceLocator.registerFactory(() => SplashPagePresenter());

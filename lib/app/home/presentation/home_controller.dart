@@ -2,16 +2,16 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 import '../../../core/observer.dart';
 import '../../../injection_container.dart';
+import '../../../router/router_delegate.dart';
+import '../../../router/ui_pages.dart';
 import '../../accounts/domain/entities/user_entity.dart';
 import '../../accounts/domain/repositories/firebase_authentication_repository.dart';
-import '../../navigation_service.dart';
 import 'home_presenter.dart';
 import 'home_state_machine.dart';
 
 class HomePageController extends Controller {
   final HomePagePresenter _presenter;
   final HomePageStateMachine _stateMachine = new HomePageStateMachine();
-  final navigationService = serviceLocator<NavigationService>();
   HomePageController()
       : _presenter = serviceLocator<HomePagePresenter>(),
         super();
@@ -70,16 +70,16 @@ class HomePageController extends Controller {
   }
 
   void navigateToLogin() {
-    navigationService.navigateTo(NavigationService.loginPage,
-        shouldReplace: true);
+    final delegate = serviceLocator<AgriGuideRouterDelegate>();
+    delegate.addPage(loginPageConfig);
   }
 
   void logoutUser() {
     _presenter.logoutUser(
       new UseCaseObserver(
         () {
-          navigationService.navigateTo(NavigationService.homepage,
-              shouldReplace: true);
+          final delegate = serviceLocator<AgriGuideRouterDelegate>();
+          delegate.replace(homePageConfig);
         },
         (error) {
           print(error);

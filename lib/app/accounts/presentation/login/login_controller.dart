@@ -5,14 +5,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../../../../core/exceptions.dart';
 import '../../../../core/observer.dart';
 import '../../../../injection_container.dart';
-import '../../../navigation_service.dart';
+import '../../../../router/router_delegate.dart';
+import '../../../../router/ui_pages.dart';
 import 'login_presenter.dart';
 import 'login_state_machine.dart';
 
 class LoginPageController extends Controller {
   final LoginPagePresenter _presenter;
   final LoginStateMachine _stateMachine = new LoginStateMachine();
-  final navigationService = serviceLocator<NavigationService>();
   LoginPageController()
       : _presenter = serviceLocator<LoginPagePresenter>(),
         super();
@@ -52,8 +52,8 @@ class LoginPageController extends Controller {
   }
 
   _handleLoginSuccess() {
-    navigationService.navigateTo(NavigationService.homepage,
-        shouldReplace: true);
+    final delegate = serviceLocator<AgriGuideRouterDelegate>();
+    delegate.replace(homePageConfig);
   }
 
   _handleLoginError(Exception error) {
@@ -73,13 +73,13 @@ class LoginPageController extends Controller {
   }
 
   void navigateToRegistration() {
-    navigationService.navigateTo(NavigationService.registerPage,
-        shouldReplace: true);
+    final delegate = serviceLocator<AgriGuideRouterDelegate>();
+    delegate.addPage(registerPageConfig);
   }
 
   void navigateToHomepage() {
-    navigationService.navigateTo(NavigationService.homepage,
-        shouldReplace: true);
+    final delegate = serviceLocator<AgriGuideRouterDelegate>();
+    delegate.replace(homePageConfig);
   }
 
   bool onWillPopScope() {

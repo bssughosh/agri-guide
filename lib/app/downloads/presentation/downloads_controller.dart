@@ -9,14 +9,12 @@ import 'package:path_provider/path_provider.dart';
 import '../../../core/exceptions.dart';
 import '../../../core/observer.dart';
 import '../../../injection_container.dart';
-import '../../navigation_service.dart';
 import 'downloads_presenter.dart';
 import 'downloads_state_machine.dart';
 
 class DownloadsPageController extends Controller {
   final DownloadsPagePresenter _presenter;
   final DownloadsStateMachine _stateMachine = new DownloadsStateMachine();
-  final navigationService = serviceLocator<NavigationService>();
 
   DownloadsPageController()
       : _presenter = serviceLocator<DownloadsPagePresenter>(),

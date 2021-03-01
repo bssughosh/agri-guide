@@ -5,7 +5,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../../../core/exceptions.dart';
 import '../../../core/observer.dart';
 import '../../../injection_container.dart';
-import '../../navigation_service.dart';
 import '../domain/entities/statistics_entity.dart';
 import 'statistics_presenter.dart';
 import 'statistics_state_machine.dart';
@@ -15,7 +14,6 @@ class StatisticsPageController extends Controller {
   final StatisticsPagePresenter _presenter;
   final StatisticsPageStateMachine _stateMachine =
       new StatisticsPageStateMachine();
-  final navigationService = serviceLocator<NavigationService>();
 
   StatisticsPageController()
       : _presenter = serviceLocator<StatisticsPagePresenter>(),

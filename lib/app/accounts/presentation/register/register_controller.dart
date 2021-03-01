@@ -7,7 +7,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../../../../core/exceptions.dart';
 import '../../../../core/observer.dart';
 import '../../../../injection_container.dart';
-import '../../../navigation_service.dart';
+import '../../../../router/router_delegate.dart';
+import '../../../../router/ui_pages.dart';
 import '../../domain/entities/user_entity.dart';
 import 'register_presenter.dart';
 import 'register_state_machine.dart';
@@ -15,7 +16,7 @@ import 'register_state_machine.dart';
 class RegisterPageController extends Controller {
   final RegisterPagePresenter _presenter;
   final RegisterStateMachine _stateMachine = new RegisterStateMachine();
-  final navigationService = serviceLocator<NavigationService>();
+
   RegisterPageController()
       : _presenter = serviceLocator<RegisterPagePresenter>(),
         super();
@@ -196,8 +197,8 @@ class RegisterPageController extends Controller {
   }
 
   _handleRegisterSuccess() {
-    navigationService.navigateTo(NavigationService.homepage,
-        shouldReplace: true);
+    final delegate = serviceLocator<AgriGuideRouterDelegate>();
+    delegate.replace(homePageConfig);
   }
 
   _handleRegisterError(Exception error) {
@@ -286,7 +287,7 @@ class RegisterPageController extends Controller {
   }
 
   void navigateToHomepage() {
-    navigationService.navigateTo(NavigationService.homepage,
-        shouldReplace: true);
+    final delegate = serviceLocator<AgriGuideRouterDelegate>();
+    delegate.replace(homePageConfig);
   }
 }
