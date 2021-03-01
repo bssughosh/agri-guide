@@ -1,22 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import 'app/navigation_service.dart';
 import 'core/app_theme.dart';
-import 'injection_container.dart' as di;
+import 'router/agri_guide_parser.dart';
+import 'router/router_delegate.dart';
+import 'router/ui_pages.dart';
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    final delegate = AgriGuideRouterDelegate();
+    final parser = AgriGuideParser();
+    delegate.setNewRoutePath(splashPageConfig);
+    Get.put(delegate);
+    return MaterialApp.router(
       title: 'Agri Guide',
-      navigatorKey: di.serviceLocator<NavigationService>().navigatorKey,
-      initialRoute: NavigationService.splashPage,
-      onGenerateRoute: NavigationService.generateRoute,
+      // navigatorKey: di.serviceLocator<NavigationService>().navigatorKey,
+      // initialRoute: NavigationService.splashPage,
+      // onGenerateRoute: NavigationService.generateRoute,
       theme: ThemeData(
         fontFamily: 'Roboto',
         primaryColor: AppTheme.primaryColor,
         accentColor: AppTheme.accentColor,
       ),
+      routeInformationParser: parser, routerDelegate: delegate,
     );
   }
 }

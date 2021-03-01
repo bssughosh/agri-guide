@@ -8,5 +8,6 @@ void main() async {
   di.init();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
   runApp(MyApp());
 }
