@@ -202,8 +202,10 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
   _buildBottomBar() {
     return Scaffold(
       bottomNavigationBar: ConvexAppBar(
-        backgroundColor: AppTheme.navigationSelectedColor,
-        style: TabStyle.reactCircle,
+        backgroundColor: Colors.white,
+        activeColor: AppTheme.primaryColor,
+        color: Colors.black,
+        style: TabStyle.react,
         items: [
           TabItem(icon: Icons.get_app, title: 'Downloads'),
           TabItem(icon: Icons.insights, title: 'Statistics'),
