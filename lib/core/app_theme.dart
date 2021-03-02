@@ -24,7 +24,7 @@ class AppTheme {
 
   static TextStyle bodyBoldText = TextStyle(
     fontFamily: 'Roboto',
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.bold,
   );
 
   static TextStyle bodyItalicText = TextStyle(
@@ -35,14 +35,15 @@ class AppTheme {
   static TextStyle headingRegularText = TextStyle(fontFamily: 'Oxygen');
 
   static TextStyle loginAnimatedText = TextStyle(
-      fontFamily: 'Oxygen',
-      color: Colors.black87,
-      fontSize: 13,
-      letterSpacing: 2);
+    fontFamily: 'Oxygen',
+    color: Colors.black87,
+    fontSize: 13,
+    letterSpacing: 2,
+  );
 
   static TextStyle headingBoldText = TextStyle(
     fontFamily: 'Oxygen',
-    fontWeight: FontWeight.w700,
+    fontWeight: FontWeight.bold,
   );
 
   static TextStyle navigationTabSelectedTextStyle =

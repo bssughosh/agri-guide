@@ -201,10 +201,6 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
 
   _buildBottomBar() {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Agri Guide'),
-        backgroundColor: AppTheme.primaryColor,
-      ),
       bottomNavigationBar: ConvexAppBar(
         backgroundColor: AppTheme.navigationSelectedColor,
         style: TabStyle.reactCircle,
@@ -220,16 +216,42 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
           pageController.jumpToPage(i);
         },
       ),
-      body: SafeArea(
-        child: PageView(
-          controller: pageController,
-          physics: NeverScrollableScrollPhysics(),
-          children: <Widget>[
-            _downloadsPage(),
-            _statisticsPage(),
-            _predictionPage(),
-            _mobileProfilePage(),
-          ],
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              expandedHeight: 250.0,
+              floating: false,
+              pinned: true,
+              leadingWidth: 0,
+              forceElevated: true,
+              flexibleSpace: FlexibleSpaceBar(
+                title: Text(
+                  "Agri Guide",
+                  style: AppTheme.headingBoldText.copyWith(
+                    color: Colors.white,
+                    fontSize: 30,
+                  ),
+                ),
+                background: Image.asset(
+                  'assets/app_bar_bg.png',
+                  fit: BoxFit.fill,
+                ),
+              ),
+            ),
+          ];
+        },
+        body: SafeArea(
+          child: PageView(
+            controller: pageController,
+            physics: NeverScrollableScrollPhysics(),
+            children: <Widget>[
+              _downloadsPage(),
+              _statisticsPage(),
+              _predictionPage(),
+              _mobileProfilePage(),
+            ],
+          ),
         ),
       ),
     );
