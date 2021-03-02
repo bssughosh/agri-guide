@@ -3,7 +3,7 @@ description: Agri Guide - A Smart Innovative Platform for Crop Prediction
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 2.0.7+22
+version: 2.0.8+23
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -52,3 +52,4 @@ flutter:
     - assets/icon.png
     - assets/login_icon.png
     - assets/splash_logo.gif
+    - assets/splash_v1.png

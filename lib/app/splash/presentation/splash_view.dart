@@ -44,30 +44,17 @@ class SplashViewState
   }
 
   Widget _buildMobileSplashState() {
-    Timer(Duration(seconds: 3), () => controller.navigateToHomepage());
+    Timer(Duration(seconds: 2), () => controller.navigateToHomepage());
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white70,
-        body: Center(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/splash_logo.gif',
-                  height: 200,
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Text(
-                  'AGRI GUIDE',
-                  textAlign: TextAlign.center,
-                  style: AppTheme.headingBoldText.copyWith(fontSize: 40),
-                ),
-              ],
+        backgroundColor: Colors.transparent,
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(
+                'assets/splash_v1.png',
+              ),
+              fit: BoxFit.cover,
             ),
           ),
         ),
