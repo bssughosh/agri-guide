@@ -33,6 +33,7 @@ class FirebaseAuthenticationRepositoryImpl
 
   @override
   Future<void> createNewUser(UserEntity user, String password) async {
+    //TODO: Add pincode while creating user
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: user.email,
