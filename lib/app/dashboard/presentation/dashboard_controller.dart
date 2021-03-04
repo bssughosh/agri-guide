@@ -18,6 +18,7 @@ class DashboardPageController extends Controller {
         super();
 
   LiveWeatherEntity liveWeatherEntity;
+  bool isFetchingLiveWeather = false;
 
   @override
   void initListeners() {}
@@ -40,6 +41,7 @@ class DashboardPageController extends Controller {
         _stateMachine.onEvent(
           new DashboardPageInitializedEvent(loginStatus: status),
         );
+        fetchLiveWeather();
         refreshUI();
       }),
     );
@@ -51,6 +53,7 @@ class DashboardPageController extends Controller {
   }
 
   void fetchLiveWeather() {
+    isFetchingLiveWeather = true;
     _presenter.fetchLocationDetails(
       new UseCaseObserver(
         () {
@@ -59,9 +62,7 @@ class DashboardPageController extends Controller {
               print(error);
             }, onNextFunction: (LiveWeatherEntity _liveWeatherEntity) {
               liveWeatherEntity = _liveWeatherEntity;
-              print(liveWeatherEntity.temp);
-              print(liveWeatherEntity.rain);
-              print(liveWeatherEntity.humidity);
+              isFetchingLiveWeather = false;
               refreshUI();
             }),
           );

@@ -52,8 +52,8 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
       locationDetails[currentUser.uid] = new LocationEntity(
         lat: userDetails.data()[_keyNameLat],
         lon: userDetails.data()[_keyNameLon],
-        state: userDetails.data()[_keyNameState],
-        district: userDetails.data()[_keyNameDistrict],
+        state: capitalize(userDetails.data()[_keyNameState].toString()),
+        district: capitalize(userDetails.data()[_keyNameDistrict].toString()),
       );
     } else {
       String _baseUrl = 'https://eu1.locationiq.com';
@@ -95,8 +95,8 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
         locationDetails[currentUser.uid] = new LocationEntity(
           lat: lat,
           lon: lon,
-          state: userDetails.data()[_keyNameState],
-          district: userDetails.data()[_keyNameDistrict],
+          state: capitalize(userDetails.data()[_keyNameState].toString()),
+          district: capitalize(userDetails.data()[_keyNameDistrict].toString()),
         );
       }
     }
@@ -169,4 +169,6 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
     }
     return liveWeatherDetails[currentUser.uid];
   }
+
+  String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 }

@@ -1,3 +1,4 @@
+import 'package:agri_guide/app/dashboard/presentation/widgets/location_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
@@ -98,12 +99,16 @@ class DashboardViewState
   }
 
   Widget _mobileContentBody() {
-    controller.fetchLiveWeather();
     return Container(
       width: MediaQuery.of(context).size.width,
       child: SingleChildScrollView(
         child: Column(
-          children: [],
+          children: [
+            LocationCard(
+              district: controller.liveWeatherEntity.location.district,
+              state: controller.liveWeatherEntity.location.state,
+            ),
+          ],
         ),
       ),
     );

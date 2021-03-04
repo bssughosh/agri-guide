@@ -271,7 +271,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
           ];
         },
         body: SafeArea(
-          minimum: EdgeInsets.only(top: 100),
+          minimum: EdgeInsets.only(top: 75),
           child: PageView(
             controller: pageController,
             physics: NeverScrollableScrollPhysics(),
