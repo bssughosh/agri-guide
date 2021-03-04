@@ -41,6 +41,8 @@ class RegisterPageController extends Controller {
   String selectedState = '';
   String selectedDistrict = '';
   TextEditingController areaText = new TextEditingController();
+  TextEditingController pincodeText = new TextEditingController();
+  bool isPincodeTextFine = true;
   bool stateListLoading = false;
   bool districtListLoading = false;
   bool stateListInitialized = false;
@@ -91,6 +93,15 @@ class RegisterPageController extends Controller {
       }
     } else {
       isAadharTextFine = true;
+    }
+    if (pincodeText.text.length != 0) {
+      if (pincodeText.text.length == 6) {
+        isPincodeTextFine = true;
+      } else {
+        isPincodeTextFine = false;
+      }
+    } else {
+      isPincodeTextFine = true;
     }
     if (phoneText.text != '') {
       if (phoneText.text.length != 10) {
@@ -143,7 +154,13 @@ class RegisterPageController extends Controller {
   }
 
   bool validatePage2() {
-    if (areaText.text.length == 0) {
+    if (pincodeText.text.length == 0) {
+      Fluttertoast.showToast(msg: 'Pincode cannot be empty');
+      return false;
+    } else if (pincodeText.text.length != 6) {
+      Fluttertoast.showToast(msg: 'Pincode entered appears to be wrong');
+      return false;
+    } else if (areaText.text.length == 0) {
       Fluttertoast.showToast(msg: 'Area cannot be empty');
       return false;
     }
@@ -184,6 +201,7 @@ class RegisterPageController extends Controller {
       email: emailText.text,
       area: areaText.text,
       mobile: phoneText.text,
+      pincode: pincodeText.text,
     );
     _stateMachine.onEvent(new RegisterLoadingEvent());
     refreshUI();

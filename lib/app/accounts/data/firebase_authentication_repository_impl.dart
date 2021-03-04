@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../core/enums.dart';
 import '../../../core/exceptions.dart';
 import '../domain/entities/user_entity.dart';
 import '../domain/repositories/firebase_authentication_repository.dart';
@@ -25,6 +26,7 @@ class FirebaseAuthenticationRepositoryImpl
   final String _keyNameDistrict = 'district';
   final String _keyNameMobile = 'mobile';
   final String _keyNameArea = 'area';
+  final String _keyNamePincode = 'pincode';
 
   static const base_url = String.fromEnvironment(
     'base_url',
@@ -52,6 +54,7 @@ class FirebaseAuthenticationRepositoryImpl
         _keyNameArea: user.area,
         _keyNameState: _state[0],
         _keyNameDistrict: _district[0],
+        _keyNamePincode: user.pincode,
       });
     } on FirebaseAuthException catch (error) {
       if (error.code == errorCodeWrongPassword) {

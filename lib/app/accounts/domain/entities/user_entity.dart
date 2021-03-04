@@ -23,6 +23,9 @@ class UserEntity {
   /// Total Area of the farm of the User
   final String area;
 
+  /// Pincode of the Residing location of the User
+  final String pincode;
+
   UserEntity({
     @required this.name,
     @required this.email,
@@ -30,6 +33,7 @@ class UserEntity {
     @required this.state,
     @required this.district,
     @required this.area,
+    @required this.pincode,
     this.mobile = '',
   });
 }

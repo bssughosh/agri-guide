@@ -4,7 +4,7 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../core/app_theme.dart';
-import '../../downloads/presentation/downloads_controller.dart';
+import '../../../core/enums.dart';
 import 'statistics_controller.dart';
 import 'statistics_state_machine.dart';
 import 'widgets/location_selection_bar.dart';
@@ -112,14 +112,20 @@ class StatisticsViewState
                           if (controller.selectedState != '' &&
                               controller.selectedDistrict != '')
                             Center(
-                              child: FlatButton(
+                              child: TextButton(
                                 child: Text(
                                   'Submit',
                                   style:
                                       AppTheme.navigationTabSelectedTextStyle,
                                 ),
-                                color: AppTheme.navigationSelectedColor,
-                                hoverColor: AppTheme.secondaryColor,
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          AppTheme.navigationSelectedColor),
+                                  overlayColor:
+                                      MaterialStateProperty.all<Color>(
+                                          AppTheme.secondaryColor),
+                                ),
                                 onPressed: () {
                                   controller.proceedToStatisticsDisplay();
                                 },
@@ -197,14 +203,20 @@ class StatisticsViewState
                           if (controller.selectedState != '' &&
                               controller.selectedDistrict != '')
                             Center(
-                              child: FlatButton(
+                              child: TextButton(
                                 child: Text(
                                   'Submit',
                                   style:
                                       AppTheme.navigationTabSelectedTextStyle,
                                 ),
-                                color: AppTheme.navigationSelectedColor,
-                                hoverColor: AppTheme.secondaryColor,
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          AppTheme.navigationSelectedColor),
+                                  overlayColor:
+                                      MaterialStateProperty.all<Color>(
+                                          AppTheme.secondaryColor),
+                                ),
                                 onPressed: () {
                                   controller.proceedToStatisticsDisplay();
                                 },

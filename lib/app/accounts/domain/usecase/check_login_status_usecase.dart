@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
+import '../../../../core/enums.dart';
 import '../repositories/firebase_authentication_repository.dart';
 
 class CheckLoginStatusUsecase extends CompletableUseCase<void> {

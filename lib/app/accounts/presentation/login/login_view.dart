@@ -168,15 +168,21 @@ class LoginViewState
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            FlatButton(
+                            TextButton(
                               child: Text(
                                 'Login',
                                 style: AppTheme.navigationTabSelectedTextStyle,
                               ),
-                              color: controller.passwordText.text.length != 0 &&
-                                      controller.emailText.text.length != 0
-                                  ? AppTheme.buttonActiveColor
-                                  : AppTheme.buttonDeactiveColor,
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    controller.passwordText.text.length != 0 &&
+                                            controller.emailText.text.length !=
+                                                0
+                                        ? MaterialStateProperty.all<Color>(
+                                            AppTheme.buttonActiveColor)
+                                        : MaterialStateProperty.all<Color>(
+                                            AppTheme.buttonDeactiveColor),
+                              ),
                               onPressed: () {
                                 if (controller.passwordText.text.length != 0 &&
                                     controller.emailText.text.length != 0)
@@ -184,12 +190,16 @@ class LoginViewState
                               },
                             ),
                             SizedBox(width: 20),
-                            FlatButton(
+                            TextButton(
                               child: Text(
                                 'Register',
                                 style: AppTheme.navigationTabSelectedTextStyle,
                               ),
-                              color: AppTheme.navigationSelectedColor,
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        AppTheme.navigationSelectedColor),
+                              ),
                               onPressed: () {
                                 controller.navigateToRegistration();
                               },
@@ -234,33 +244,6 @@ class LoginViewState
                   SizedBox(
                     height: 30,
                   ),
-                  // ColorizeAnimatedTextKit(
-                  //   text: [
-                  //     "AGRI GUIDE",
-                  //   ],
-                  //   textStyle: AppTheme.loginAnimatedText.copyWith(
-                  //     fontSize: 20,
-                  //   ),
-                  //   colors: [
-                  //     Colors.purple,
-                  //     Colors.blue,
-                  //     Colors.yellow,
-                  //     Colors.red,
-                  //   ],
-                  //   textAlign: TextAlign.center,
-                  // ),
-                  // TypewriterAnimatedTextKit(
-                  //   text: [
-                  //     "A Smart Innovative Platform for Crop Prediction",
-                  //   ],
-                  //   speed: Duration(milliseconds: 100),
-                  //   pause: Duration(milliseconds: 1000),
-                  //   textStyle: AppTheme.loginAnimatedText,
-                  //   textAlign: TextAlign.center,
-                  // ),
-                  // SizedBox(
-                  //   height: 10,
-                  // ),
                   TextField(
                     controller: controller.emailText,
                     keyboardType: TextInputType.emailAddress,
@@ -306,15 +289,20 @@ class LoginViewState
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          FlatButton(
+                          TextButton(
                             child: Text(
                               'Login',
                               style: AppTheme.navigationTabSelectedTextStyle,
                             ),
-                            color: controller.passwordText.text.length != 0 &&
-                                    controller.emailText.text.length != 0
-                                ? AppTheme.buttonActiveColor
-                                : AppTheme.buttonDeactiveColor,
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  controller.passwordText.text.length != 0 &&
+                                          controller.emailText.text.length != 0
+                                      ? MaterialStateProperty.all<Color>(
+                                          AppTheme.buttonActiveColor)
+                                      : MaterialStateProperty.all<Color>(
+                                          AppTheme.buttonDeactiveColor),
+                            ),
                             onPressed: () {
                               if (controller.passwordText.text.length != 0 &&
                                   controller.emailText.text.length != 0)
@@ -322,12 +310,15 @@ class LoginViewState
                             },
                           ),
                           SizedBox(width: 20),
-                          FlatButton(
+                          TextButton(
                             child: Text(
                               'Register',
                               style: AppTheme.navigationTabSelectedTextStyle,
                             ),
-                            color: AppTheme.navigationSelectedColor,
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  AppTheme.navigationSelectedColor),
+                            ),
                             onPressed: () {
                               controller.navigateToRegistration();
                             },

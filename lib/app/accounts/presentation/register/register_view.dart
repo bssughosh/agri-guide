@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 import '../../../../core/app_theme.dart';
-import '../../../downloads/presentation/downloads_controller.dart';
+import '../../../../core/enums.dart';
 import 'register_controller.dart';
 import 'register_state_machine.dart';
 import 'widgets/location_selection_bar.dart';
@@ -99,7 +99,7 @@ class RegisterViewState
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         if (controller.currentPageNumber != 0)
-                          FlatButton.icon(
+                          TextButton.icon(
                             icon: Icon(Icons.arrow_back),
                             onPressed: () {
                               controller.backButtonPressed();
@@ -107,7 +107,7 @@ class RegisterViewState
                             label: Text('Back'),
                           ),
                         if (controller.currentPageNumber == 0) Container(),
-                        FlatButton.icon(
+                        TextButton.icon(
                           icon: controller.currentPageNumber ==
                                   controller.lastPageNumber
                               ? Icon(Icons.done)
@@ -280,6 +280,26 @@ class RegisterViewState
                           selectionListType: SelectionListType.DISTRICT,
                           isWeb: isWeb,
                         ),
+                    if (controller.selectedState != '' &&
+                        controller.selectedDistrict != '')
+                      TextField(
+                        controller: controller.pincodeText,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          hintText: 'Pincode',
+                          labelText: 'Pincode',
+                          errorText: controller.isPincodeTextFine
+                              ? null
+                              : 'Please enter a pincode',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                        onChanged: (value) {
+                          controller.textFieldChanged();
+                        },
+                      ),
                     if (controller.selectedState != '' &&
                         controller.selectedDistrict != '')
                       TextField(

@@ -8,6 +8,11 @@ import 'app/accounts/domain/usecase/login_with_email_and_password_usecase.dart';
 import 'app/accounts/domain/usecase/logout_user_usecase.dart';
 import 'app/accounts/presentation/login/login_presenter.dart';
 import 'app/accounts/presentation/register/register_presenter.dart';
+import 'app/dashboard/data/repository/dashboard_services_repository_impl.dart';
+import 'app/dashboard/domain/repository/dashboard_services_repository.dart';
+import 'app/dashboard/domain/usecase/fetch_live_weather_usecase.dart';
+import 'app/dashboard/domain/usecase/fetch_location_details_usecase.dart';
+import 'app/dashboard/presentation/dashboard_presenter.dart';
 import 'app/downloads/data/repositories/fetch_input_repository_impl.dart';
 import 'app/downloads/domain/repositories/fetch_input_repository.dart';
 import 'app/downloads/domain/usecase/fetch_crop_list_usecase.dart';
@@ -44,6 +49,22 @@ Future<void> init() async {
         serviceLocator(),
         serviceLocator(),
       ));
+
+  // dashboard
+  serviceLocator.registerLazySingleton<DashboardServicesRepository>(
+      () => (DashboardServicesRepositoryImpl()));
+  serviceLocator.registerFactory(
+    () => DashboardPagePresenter(
+      serviceLocator(),
+      serviceLocator(),
+      serviceLocator(),
+    ),
+  );
+
+  serviceLocator
+      .registerFactory(() => FetchLiveWeatherUsecase(serviceLocator()));
+  serviceLocator
+      .registerFactory(() => FetchLocationDetailsUsecase(serviceLocator()));
 
   // downloads page
   serviceLocator.registerLazySingleton<FetchInputRepository>(

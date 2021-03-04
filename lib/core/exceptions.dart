@@ -57,3 +57,11 @@ class APIServiceUnavailabeError implements Exception {}
 /// An exception which is thrown when the API returns a status apart from the
 /// known ones
 class APIGenericError implements Exception {}
+
+/// An exception which is thrown when the API returns a response which is
+/// not expected
+class APIResponseFormatError implements Exception {}
+
+/// An exception which is thrown when the user data cannot be updated
+/// in firestore
+class UserDataUpdationError implements Exception {}

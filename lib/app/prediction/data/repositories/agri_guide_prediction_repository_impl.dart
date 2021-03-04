@@ -18,6 +18,7 @@ class AgriGuidePredictionRepositoryImpl
   final String _keyNameDistrict = 'district';
   final String _keyNameMobile = 'mobile';
   final String _keyNameArea = 'area';
+  final String _keyNamePincode = 'pincode';
   final String _keyNameTemperature = 'temperature';
   final String _keyNameHumidity = 'humidity';
   final String _keyNameRainfall = 'rainfall';
@@ -48,6 +49,7 @@ class AgriGuidePredictionRepositoryImpl
       state: userDetails[_keyNameState],
       district: userDetails[_keyNameDistrict],
       mobile: userDetails[_keyNameMobile],
+      pincode: userDetails[_keyNamePincode],
     );
     return user;
   }

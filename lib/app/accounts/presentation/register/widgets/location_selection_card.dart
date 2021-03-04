@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import '../../../../../core/app_theme.dart';
-import '../../../../downloads/presentation/downloads_controller.dart';
+import '../../../../../core/enums.dart';
 import '../register_controller.dart';
 
 class LocationSelectionCard extends StatefulWidget {

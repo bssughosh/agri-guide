@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 import '../../../core/app_theme.dart';
-import '../../accounts/domain/repositories/firebase_authentication_repository.dart';
-import '../../downloads/presentation/downloads_controller.dart';
+import '../../../core/enums.dart';
 import 'prediction_controller.dart';
 import 'prediction_state_machine.dart';
 import 'widgets/custom_table.dart';
@@ -88,12 +87,15 @@ class PredictionViewState
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 30),
-                FlatButton(
+                TextButton(
                   child: Text(
                     'Login / Register',
                     style: AppTheme.navigationTabSelectedTextStyle,
                   ),
-                  color: AppTheme.navigationSelectedColor,
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        AppTheme.navigationSelectedColor),
+                  ),
                   onPressed: () {
                     controller.navigateToLogin();
                   },
@@ -207,13 +209,17 @@ class PredictionViewState
                                 controller.selectedSeason != null)
                             : true))
                       Center(
-                        child: FlatButton(
+                        child: TextButton(
                           child: Text(
                             'Submit',
                             style: AppTheme.navigationTabSelectedTextStyle,
                           ),
-                          color: AppTheme.navigationSelectedColor,
-                          hoverColor: AppTheme.secondaryColor,
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                AppTheme.navigationSelectedColor),
+                            overlayColor: MaterialStateProperty.all<Color>(
+                                AppTheme.secondaryColor),
+                          ),
                           onPressed: () {
                             controller.proceedToPrediction(1);
                           },
