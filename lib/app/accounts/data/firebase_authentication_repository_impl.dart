@@ -25,6 +25,7 @@ class FirebaseAuthenticationRepositoryImpl
   final String _keyNameDistrict = 'district';
   final String _keyNameMobile = 'mobile';
   final String _keyNameArea = 'area';
+  final String _keyNamePincode = 'pincode';
 
   static const base_url = String.fromEnvironment(
     'base_url',
@@ -33,7 +34,6 @@ class FirebaseAuthenticationRepositoryImpl
 
   @override
   Future<void> createNewUser(UserEntity user, String password) async {
-    //TODO: Add pincode while creating user
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: user.email,
@@ -53,6 +53,7 @@ class FirebaseAuthenticationRepositoryImpl
         _keyNameArea: user.area,
         _keyNameState: _state[0],
         _keyNameDistrict: _district[0],
+        _keyNamePincode: user.pincode,
       });
     } on FirebaseAuthException catch (error) {
       if (error.code == errorCodeWrongPassword) {

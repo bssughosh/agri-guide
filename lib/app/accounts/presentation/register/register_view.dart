@@ -283,6 +283,26 @@ class RegisterViewState
                     if (controller.selectedState != '' &&
                         controller.selectedDistrict != '')
                       TextField(
+                        controller: controller.pincodeText,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          hintText: 'Pincode',
+                          labelText: 'Pincode',
+                          errorText: controller.isPincodeTextFine
+                              ? null
+                              : 'Please enter a pincode',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                        onChanged: (value) {
+                          controller.textFieldChanged();
+                        },
+                      ),
+                    if (controller.selectedState != '' &&
+                        controller.selectedDistrict != '')
+                      TextField(
                         controller: controller.areaText,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
