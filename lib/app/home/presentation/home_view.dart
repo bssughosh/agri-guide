@@ -222,7 +222,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverAppBar(
-              expandedHeight: 250.0,
+              expandedHeight: 200.0,
               floating: false,
               pinned: true,
               leadingWidth: 0,
