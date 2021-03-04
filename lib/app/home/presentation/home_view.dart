@@ -1,3 +1,4 @@
+import 'package:agri_guide/app/dashboard/presentation/dashboard_view.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -145,7 +146,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
                     pageController.jumpToPage(0);
                   },
                   child: NavigationTabs(
-                    title: 'Downloads',
+                    title: 'Dashboard',
                     condition: controller.pageNumber == 0,
                   ),
                 ),
@@ -163,7 +164,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
                     pageController.jumpToPage(1);
                   },
                   child: NavigationTabs(
-                    title: 'Statistics',
+                    title: 'Downloads',
                     condition: controller.pageNumber == 1,
                   ),
                 ),
@@ -181,8 +182,26 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
                     pageController.jumpToPage(2);
                   },
                   child: NavigationTabs(
-                    title: 'Prediction',
+                    title: 'Statistics',
                     condition: controller.pageNumber == 2,
+                  ),
+                ),
+              ),
+              padding: EdgeInsets.only(right: 20.0),
+            ),
+          ),
+          Center(
+            child: Padding(
+              child: MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: GestureDetector(
+                  onTap: () {
+                    controller.changePageNumber(3);
+                    pageController.jumpToPage(3);
+                  },
+                  child: NavigationTabs(
+                    title: 'Prediction',
+                    condition: controller.pageNumber == 3,
                   ),
                 ),
               ),
@@ -196,6 +215,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
           controller: pageController,
           physics: NeverScrollableScrollPhysics(),
           children: <Widget>[
+            _dashboardPage(),
             _downloadsPage(),
             _statisticsPage(),
             _predictionPage(),
@@ -213,6 +233,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
         color: Colors.black,
         style: TabStyle.react,
         items: [
+          TabItem(icon: Icons.dashboard, title: 'Dashboard'),
           TabItem(icon: Icons.get_app, title: 'Downloads'),
           TabItem(icon: Icons.insights, title: 'Statistics'),
           TabItem(icon: Icons.schedule, title: 'Prediction'),
@@ -255,10 +276,27 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
             controller: pageController,
             physics: NeverScrollableScrollPhysics(),
             children: <Widget>[
+              _dashboardPage(),
               _downloadsPage(),
               _statisticsPage(),
               _predictionPage(),
               _mobileProfilePage(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _dashboardPage() {
+    return Scaffold(
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              DashboardPage(),
             ],
           ),
         ),
