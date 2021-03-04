@@ -1,4 +1,4 @@
-import 'package:agri_guide/app/dashboard/presentation/widgets/location_card.dart';
+import 'package:agri_guide/app/dashboard/presentation/widgets/live_weather_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
@@ -6,6 +6,7 @@ import '../../../core/app_theme.dart';
 import '../../../core/enums.dart';
 import 'dashboard_controller.dart';
 import 'dashboard_state_machine.dart';
+import 'widgets/location_card.dart';
 
 class DashboardPage extends View {
   @override
@@ -104,10 +105,56 @@ class DashboardViewState
       child: SingleChildScrollView(
         child: Column(
           children: [
-            LocationCard(
-              district: controller.liveWeatherEntity.location.district,
-              state: controller.liveWeatherEntity.location.state,
-            ),
+            if (controller.liveWeatherEntity == null ||
+                controller.isFetchingLiveWeather)
+              CircularProgressIndicator(),
+            if (controller.liveWeatherEntity != null &&
+                !controller.isFetchingLiveWeather)
+              LocationCard(
+                district: controller.liveWeatherEntity.location.district,
+                state: controller.liveWeatherEntity.location.state,
+              ),
+            if (controller.liveWeatherEntity != null &&
+                !controller.isFetchingLiveWeather)
+              SizedBox(height: 30),
+            if (controller.liveWeatherEntity != null &&
+                !controller.isFetchingLiveWeather)
+              LiveWeatherCard(
+                icon: Icons.thermostat_rounded,
+                title: 'Temperature',
+                value: controller.liveWeatherEntity.temp + ' \u2103',
+              ),
+            if (controller.liveWeatherEntity != null &&
+                !controller.isFetchingLiveWeather)
+              LiveWeatherCard(
+                icon: Icons.opacity,
+                title: 'Humidity',
+                value: controller.liveWeatherEntity.humidity + ' %',
+              ),
+            if (controller.liveWeatherEntity != null &&
+                !controller.isFetchingLiveWeather)
+              LiveWeatherCard(
+                icon: Icons.wb_cloudy,
+                title: 'Rainfall',
+                value: controller.liveWeatherEntity.rain + ' mm',
+              ),
+            if (controller.liveWeatherEntity != null &&
+                !controller.isFetchingLiveWeather)
+              SizedBox(height: 30),
+            if (controller.liveWeatherEntity != null &&
+                !controller.isFetchingLiveWeather)
+              Center(
+                child: InkWell(
+                  onTap: () {
+                    controller.fetchLiveWeather();
+                  },
+                  child: Icon(
+                    Icons.cached,
+                    size: 40,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
           ],
         ),
       ),
@@ -115,6 +162,64 @@ class DashboardViewState
   }
 
   Widget _buildWebDashboard({@required LoginStatus loginStatus}) {
-    return Container();
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            if (controller.liveWeatherEntity == null ||
+                controller.isFetchingLiveWeather)
+              CircularProgressIndicator(),
+            if (controller.liveWeatherEntity != null &&
+                !controller.isFetchingLiveWeather)
+              LocationCard(
+                district: controller.liveWeatherEntity.location.district,
+                state: controller.liveWeatherEntity.location.state,
+              ),
+            if (controller.liveWeatherEntity != null &&
+                !controller.isFetchingLiveWeather)
+              SizedBox(height: 30),
+            if (controller.liveWeatherEntity != null &&
+                !controller.isFetchingLiveWeather)
+              LiveWeatherCard(
+                icon: Icons.thermostat_rounded,
+                title: 'Temperature',
+                value: controller.liveWeatherEntity.temp + ' \u2103',
+              ),
+            if (controller.liveWeatherEntity != null &&
+                !controller.isFetchingLiveWeather)
+              LiveWeatherCard(
+                icon: Icons.opacity,
+                title: 'Humidity',
+                value: controller.liveWeatherEntity.humidity + ' %',
+              ),
+            if (controller.liveWeatherEntity != null &&
+                !controller.isFetchingLiveWeather)
+              LiveWeatherCard(
+                icon: Icons.wb_cloudy,
+                title: 'Rainfall',
+                value: controller.liveWeatherEntity.rain + ' mm',
+              ),
+            if (controller.liveWeatherEntity != null &&
+                !controller.isFetchingLiveWeather)
+              SizedBox(height: 30),
+            if (controller.liveWeatherEntity != null &&
+                !controller.isFetchingLiveWeather)
+              Center(
+                child: InkWell(
+                  onTap: () {
+                    controller.fetchLiveWeather();
+                  },
+                  child: Icon(
+                    Icons.cached,
+                    size: 40,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
   }
 }

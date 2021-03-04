@@ -160,9 +160,9 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
 
       liveWeatherDetails[currentUser.uid] = new LiveWeatherEntity(
         location: locationDetails[currentUser.uid],
-        temp: _temperature.toString() ?? "0",
-        humidity: _humidity.toString() ?? "0",
-        rain: _rain.toString() ?? "0",
+        temp: _temperature != null ? _temperature.toString() : "0",
+        humidity: _humidity != null ? _humidity.toString() : "0",
+        rain: _rain != null ? _rain.toString() : "0",
       );
     } else {
       throw APIResponseFormatError();
