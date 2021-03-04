@@ -81,12 +81,15 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
             ),
             SizedBox(height: 30),
             if (controller.loginStatus == LoginStatus.LOGGED_OUT)
-              FlatButton(
+              TextButton(
                 child: Text(
                   'Login / Register',
                   style: AppTheme.navigationTabSelectedTextStyle,
                 ),
-                color: AppTheme.navigationSelectedColor,
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      AppTheme.navigationSelectedColor),
+                ),
                 onPressed: () {
                   controller.navigateToLogin();
                 },
@@ -98,12 +101,15 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
               ),
             SizedBox(height: 30),
             if (controller.loginStatus == LoginStatus.LOGGED_IN)
-              FlatButton(
+              TextButton(
                 child: Text(
                   'Logout',
                   style: AppTheme.navigationTabSelectedTextStyle,
                 ),
-                color: AppTheme.navigationSelectedColor,
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      AppTheme.navigationSelectedColor),
+                ),
                 onPressed: () {
                   controller.logoutUser();
                 },
@@ -327,12 +333,15 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
               ),
               SizedBox(height: 30),
               if (controller.loginStatus == LoginStatus.LOGGED_OUT)
-                FlatButton(
+                TextButton(
                   child: Text(
                     'Login / Register',
                     style: AppTheme.navigationTabSelectedTextStyle,
                   ),
-                  color: AppTheme.navigationSelectedColor,
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        AppTheme.navigationSelectedColor),
+                  ),
                   onPressed: () {
                     controller.navigateToLogin();
                   },
@@ -344,12 +353,15 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
                 ),
               SizedBox(height: 30),
               if (controller.loginStatus == LoginStatus.LOGGED_IN)
-                FlatButton(
+                TextButton(
                   child: Text(
                     'Logout',
                     style: AppTheme.navigationTabSelectedTextStyle,
                   ),
-                  color: AppTheme.navigationSelectedColor,
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        AppTheme.navigationSelectedColor),
+                  ),
                   onPressed: () {
                     controller.logoutUser();
                   },

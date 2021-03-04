@@ -88,12 +88,15 @@ class PredictionViewState
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 30),
-                FlatButton(
+                TextButton(
                   child: Text(
                     'Login / Register',
                     style: AppTheme.navigationTabSelectedTextStyle,
                   ),
-                  color: AppTheme.navigationSelectedColor,
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        AppTheme.navigationSelectedColor),
+                  ),
                   onPressed: () {
                     controller.navigateToLogin();
                   },
@@ -207,13 +210,16 @@ class PredictionViewState
                                 controller.selectedSeason != null)
                             : true))
                       Center(
-                        child: FlatButton(
+                        child: TextButton(
                           child: Text(
                             'Submit',
                             style: AppTheme.navigationTabSelectedTextStyle,
                           ),
-                          color: AppTheme.navigationSelectedColor,
-                          hoverColor: AppTheme.secondaryColor,
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                AppTheme.navigationSelectedColor),
+                          ),
+                          // hoverColor: AppTheme.secondaryColor,
                           onPressed: () {
                             controller.proceedToPrediction(1);
                           },

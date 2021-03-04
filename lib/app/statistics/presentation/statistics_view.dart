@@ -112,14 +112,18 @@ class StatisticsViewState
                           if (controller.selectedState != '' &&
                               controller.selectedDistrict != '')
                             Center(
-                              child: FlatButton(
+                              child: TextButton(
                                 child: Text(
                                   'Submit',
                                   style:
                                       AppTheme.navigationTabSelectedTextStyle,
                                 ),
-                                color: AppTheme.navigationSelectedColor,
-                                hoverColor: AppTheme.secondaryColor,
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          AppTheme.navigationSelectedColor),
+                                ),
+                                // hoverColor: AppTheme.secondaryColor,
                                 onPressed: () {
                                   controller.proceedToStatisticsDisplay();
                                 },
@@ -197,14 +201,18 @@ class StatisticsViewState
                           if (controller.selectedState != '' &&
                               controller.selectedDistrict != '')
                             Center(
-                              child: FlatButton(
+                              child: TextButton(
                                 child: Text(
                                   'Submit',
                                   style:
                                       AppTheme.navigationTabSelectedTextStyle,
                                 ),
-                                color: AppTheme.navigationSelectedColor,
-                                hoverColor: AppTheme.secondaryColor,
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          AppTheme.navigationSelectedColor),
+                                ),
+                                // hoverColor: AppTheme.secondaryColor,
                                 onPressed: () {
                                   controller.proceedToStatisticsDisplay();
                                 },

@@ -99,7 +99,7 @@ class RegisterViewState
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         if (controller.currentPageNumber != 0)
-                          FlatButton.icon(
+                          TextButton.icon(
                             icon: Icon(Icons.arrow_back),
                             onPressed: () {
                               controller.backButtonPressed();
@@ -107,7 +107,7 @@ class RegisterViewState
                             label: Text('Back'),
                           ),
                         if (controller.currentPageNumber == 0) Container(),
-                        FlatButton.icon(
+                        TextButton.icon(
                           icon: controller.currentPageNumber ==
                                   controller.lastPageNumber
                               ? Icon(Icons.done)

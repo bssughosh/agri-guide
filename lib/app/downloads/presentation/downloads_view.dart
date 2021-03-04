@@ -162,14 +162,18 @@ class DownloadsViewState
                                               0) ||
                                       (controller.selectedStates.length > 1)) &&
                                   controller.selectedParams.length > 0)
-                                FlatButton(
+                                TextButton(
                                   child: Text(
                                     'Submit',
                                     style:
                                         AppTheme.navigationTabSelectedTextStyle,
                                   ),
-                                  color: AppTheme.navigationSelectedColor,
-                                  hoverColor: AppTheme.secondaryColor,
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            AppTheme.navigationSelectedColor),
+                                  ),
+                                  // hoverColor: AppTheme.secondaryColor,
                                   onPressed: () {
                                     controller.downloadFilesMobile();
                                   },
@@ -328,13 +332,15 @@ class DownloadsViewState
                                     controller.selectedDistricts.length > 0) ||
                                 (controller.selectedStates.length > 1)) &&
                             controller.selectedParams.length > 0)
-                          FlatButton(
+                          TextButton(
                             child: Text(
                               'Submit',
                               style: AppTheme.navigationTabSelectedTextStyle,
                             ),
-                            color: AppTheme.navigationSelectedColor,
-                            hoverColor: AppTheme.secondaryColor,
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  AppTheme.navigationSelectedColor),
+                            ),
                             onPressed: () {
                               controller.downloadFiles();
                             },

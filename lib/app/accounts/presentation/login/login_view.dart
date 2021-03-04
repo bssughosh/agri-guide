@@ -168,15 +168,21 @@ class LoginViewState
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            FlatButton(
+                            TextButton(
                               child: Text(
                                 'Login',
                                 style: AppTheme.navigationTabSelectedTextStyle,
                               ),
-                              color: controller.passwordText.text.length != 0 &&
-                                      controller.emailText.text.length != 0
-                                  ? AppTheme.buttonActiveColor
-                                  : AppTheme.buttonDeactiveColor,
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    controller.passwordText.text.length != 0 &&
+                                            controller.emailText.text.length !=
+                                                0
+                                        ? MaterialStateProperty.all<Color>(
+                                            AppTheme.buttonActiveColor)
+                                        : MaterialStateProperty.all<Color>(
+                                            AppTheme.buttonDeactiveColor),
+                              ),
                               onPressed: () {
                                 if (controller.passwordText.text.length != 0 &&
                                     controller.emailText.text.length != 0)
@@ -184,12 +190,16 @@ class LoginViewState
                               },
                             ),
                             SizedBox(width: 20),
-                            FlatButton(
+                            TextButton(
                               child: Text(
                                 'Register',
                                 style: AppTheme.navigationTabSelectedTextStyle,
                               ),
-                              color: AppTheme.navigationSelectedColor,
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        AppTheme.navigationSelectedColor),
+                              ),
                               onPressed: () {
                                 controller.navigateToRegistration();
                               },
@@ -306,15 +316,20 @@ class LoginViewState
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          FlatButton(
+                          TextButton(
                             child: Text(
                               'Login',
                               style: AppTheme.navigationTabSelectedTextStyle,
                             ),
-                            color: controller.passwordText.text.length != 0 &&
-                                    controller.emailText.text.length != 0
-                                ? AppTheme.buttonActiveColor
-                                : AppTheme.buttonDeactiveColor,
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  controller.passwordText.text.length != 0 &&
+                                          controller.emailText.text.length != 0
+                                      ? MaterialStateProperty.all<Color>(
+                                          AppTheme.buttonActiveColor)
+                                      : MaterialStateProperty.all<Color>(
+                                          AppTheme.buttonDeactiveColor),
+                            ),
                             onPressed: () {
                               if (controller.passwordText.text.length != 0 &&
                                   controller.emailText.text.length != 0)
@@ -322,12 +337,15 @@ class LoginViewState
                             },
                           ),
                           SizedBox(width: 20),
-                          FlatButton(
+                          TextButton(
                             child: Text(
                               'Register',
                               style: AppTheme.navigationTabSelectedTextStyle,
                             ),
-                            color: AppTheme.navigationSelectedColor,
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  AppTheme.navigationSelectedColor),
+                            ),
                             onPressed: () {
                               controller.navigateToRegistration();
                             },
