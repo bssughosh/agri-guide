@@ -27,6 +27,12 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
   final String _keyNameState = 'state';
   final String _keyNameDistrict = 'district';
   final String _keyNamePincode = 'pincode';
+  final String _keyNameTempMax = 'temp_max';
+  final String _keyNameHumidity = 'humidity';
+  final String _keyNameRain = 'rain';
+  final String _keyNameList = 'list';
+
+  final int weatherDataReloadThresholdInMinutes = 5;
 
   @override
   Future<LocationEntity> fetchLatitudeAndLongitude() async {
@@ -76,11 +82,14 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
         Map<String, dynamic> _jsonResponse = data[0];
         String lat = _jsonResponse[_keyNameLat].toString();
         String lon = _jsonResponse[_keyNameLon].toString();
-
-        userData.doc(currentUser.uid).update({
-          _keyNameLat: lat,
-          _keyNameLon: lon,
-        });
+        try {
+          userData.doc(currentUser.uid).update({
+            _keyNameLat: lat,
+            _keyNameLon: lon,
+          });
+        } catch (error) {
+          throw UserDataUpdationError();
+        }
 
         locationDetails[currentUser.uid] = new LocationEntity(
           lat: lat,
@@ -95,8 +104,65 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
   }
 
   @override
-  Future<LiveWeatherEntity> fetchLiveWeather() {
-    // TODO: implement fetchLiveWeather
-    throw UnimplementedError();
+  Future<LiveWeatherEntity> fetchLiveWeather() async {
+    if (FirebaseAuth.instance.currentUser == null) {
+      throw UserNotSignedInError();
+    }
+
+    User currentUser = FirebaseAuth.instance.currentUser;
+    if (liveWeatherDetails.containsKey(currentUser.uid) &&
+        (DateTime.now()
+                .difference(lastFetchedTime[currentUser.uid])
+                .inMinutes <=
+            weatherDataReloadThresholdInMinutes)) {
+      return liveWeatherDetails[currentUser.uid];
+    }
+
+    if (!locationDetails.containsKey(currentUser.uid)) {
+      await fetchLatitudeAndLongitude();
+    }
+
+    String _baseUrl = 'http://api.openweathermap.org';
+    String _apiKey = '34e2c047fb1889b5dce88632144fc893';
+    String _lat = locationDetails[currentUser.uid].lat;
+    String _lon = locationDetails[currentUser.uid].lon;
+
+    String url = '$_baseUrl/data/2.5/find?' +
+        'lat=$_lat' +
+        '&lon=$_lon' +
+        '&appid=$_apiKey' +
+        '&units=metric';
+
+    http.Response value = await http.get(url);
+    if (value.statusCode == 400) {
+      throw APIBadRequestError();
+    } else if (value.statusCode == 403) {
+      throw APIForbiddenError();
+    } else if (value.statusCode == 404) {
+      throw APINotFoundError();
+    } else if (value.statusCode == 429) {
+      throw APITooManyRequestsError();
+    } else if (value.statusCode == 500) {
+      throw APIInternalServerError();
+    } else if (value.statusCode == 503) {
+      throw APIServiceUnavailabeError();
+    }
+    var data = json.decode(value.body);
+
+    if (data.containsKey(_keyNameList)) {
+      String _temperature = data[_keyNameList][_keyNameTempMax].toString();
+      String _humidity = data[_keyNameList][_keyNameHumidity].toString();
+      String _rain = data[_keyNameList][_keyNameRain].toString();
+
+      liveWeatherDetails[currentUser.uid] = new LiveWeatherEntity(
+        location: locationDetails[currentUser.uid],
+        temp: _temperature ?? "0",
+        humidity: _humidity ?? "0",
+        rain: _rain ?? "0",
+      );
+    } else {
+      throw APIResponseFormatError();
+    }
+    return liveWeatherDetails[currentUser.uid];
   }
 }
