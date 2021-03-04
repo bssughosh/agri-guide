@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
+import '../../../core/enums.dart';
 import '../../../core/state_machine.dart';
-import '../../accounts/domain/repositories/firebase_authentication_repository.dart';
 
 class DashboardPageStateMachine
     extends StateMachine<DashboardState, DashboardEvent> {

@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 import '../../../core/app_theme.dart';
-import '../../accounts/domain/repositories/firebase_authentication_repository.dart';
-import '../../downloads/presentation/downloads_controller.dart';
+import '../../../core/enums.dart';
 import 'prediction_controller.dart';
 import 'prediction_state_machine.dart';
 import 'widgets/custom_table.dart';

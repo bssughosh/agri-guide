@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 import '../../../core/app_theme.dart';
+import '../../../core/enums.dart';
 import 'downloads_controller.dart';
 import 'downloads_state_machine.dart';
 import 'widgets/download_params_selection_bar.dart';

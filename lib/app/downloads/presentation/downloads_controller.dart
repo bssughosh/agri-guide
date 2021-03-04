@@ -6,6 +6,7 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../../core/enums.dart';
 import '../../../core/exceptions.dart';
 import '../../../core/observer.dart';
 import '../../../injection_container.dart';
@@ -286,15 +287,4 @@ class DownloadsPageController extends Controller {
           .add(_toBeAdded + _pathElements[_pathElements.length - 1]);
     }
   }
-}
-
-enum SelectionListType {
-  STATE,
-  DISTRICT,
-}
-
-enum DownloadParams {
-  temp,
-  humidity,
-  rainfall,
 }

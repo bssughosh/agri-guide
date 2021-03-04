@@ -4,7 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 import '../../../core/app_theme.dart';
-import '../../accounts/domain/repositories/firebase_authentication_repository.dart';
+import '../../../core/enums.dart';
 import '../../downloads/presentation/downloads_view.dart';
 import '../../prediction/presentation/prediction_view.dart';
 import '../../statistics/presentation/statistics_view.dart';

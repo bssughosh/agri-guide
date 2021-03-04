@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../../core/enums.dart';
 import '../../../core/exceptions.dart';
 import '../../../core/observer.dart';
 import '../../../injection_container.dart';
@@ -379,10 +380,4 @@ class StatisticsPageController extends Controller {
     }
     return '';
   }
-}
-
-enum StatisticsFilters {
-  Temperature,
-  Humidity,
-  Rainfall,
 }

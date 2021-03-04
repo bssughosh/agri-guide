@@ -1,9 +1,9 @@
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
+import '../../../core/enums.dart';
 import '../../../core/observer.dart';
 import '../../../injection_container.dart';
 import '../../accounts/domain/entities/user_entity.dart';
-import '../../accounts/domain/repositories/firebase_authentication_repository.dart';
 import '../../navigation_service.dart';
 import 'home_presenter.dart';
 import 'home_state_machine.dart';

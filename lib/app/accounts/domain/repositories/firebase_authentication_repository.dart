@@ -1,3 +1,4 @@
+import '../../../../core/enums.dart';
 import '../entities/user_entity.dart';
 
 abstract class FirebaseAuthenticationRepository {
@@ -14,9 +15,4 @@ abstract class FirebaseAuthenticationRepository {
 
   /// A function which logs out the logged in user
   Future<void> logoutUser();
-}
-
-enum LoginStatus {
-  LOGGED_IN,
-  LOGGED_OUT,
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/app_theme.dart';
+import '../../../../core/enums.dart';
 import '../downloads_controller.dart';
 
 class LocationSelectionBar extends StatefulWidget {

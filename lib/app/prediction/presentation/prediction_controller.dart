@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../../core/enums.dart';
 import '../../../core/exceptions.dart';
 import '../../../core/observer.dart';
 import '../../../injection_container.dart';
 import '../../accounts/domain/entities/user_entity.dart';
-import '../../accounts/domain/repositories/firebase_authentication_repository.dart';
 import '../../navigation_service.dart';
 import '../domain/entities/prediction_data_entity.dart';
 import 'prediction_presenter.dart';
@@ -439,10 +439,4 @@ class PredictionPageController extends Controller {
   }
 
   String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
-}
-
-enum TableType {
-  TEMPERATURE,
-  HUMIDITY,
-  RAINFALL,
 }

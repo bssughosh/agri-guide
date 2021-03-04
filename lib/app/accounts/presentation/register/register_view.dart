@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 import '../../../../core/app_theme.dart';
-import '../../../downloads/presentation/downloads_controller.dart';
+import '../../../../core/enums.dart';
 import 'register_controller.dart';
 import 'register_state_machine.dart';
 import 'widgets/location_selection_bar.dart';
