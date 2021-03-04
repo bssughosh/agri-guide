@@ -122,8 +122,10 @@ class StatisticsViewState
                                   backgroundColor:
                                       MaterialStateProperty.all<Color>(
                                           AppTheme.navigationSelectedColor),
+                                  overlayColor:
+                                      MaterialStateProperty.all<Color>(
+                                          AppTheme.secondaryColor),
                                 ),
-                                // hoverColor: AppTheme.secondaryColor,
                                 onPressed: () {
                                   controller.proceedToStatisticsDisplay();
                                 },
@@ -211,8 +213,10 @@ class StatisticsViewState
                                   backgroundColor:
                                       MaterialStateProperty.all<Color>(
                                           AppTheme.navigationSelectedColor),
+                                  overlayColor:
+                                      MaterialStateProperty.all<Color>(
+                                          AppTheme.secondaryColor),
                                 ),
-                                // hoverColor: AppTheme.secondaryColor,
                                 onPressed: () {
                                   controller.proceedToStatisticsDisplay();
                                 },

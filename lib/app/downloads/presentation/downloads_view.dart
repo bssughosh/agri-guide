@@ -172,8 +172,10 @@ class DownloadsViewState
                                     backgroundColor:
                                         MaterialStateProperty.all<Color>(
                                             AppTheme.navigationSelectedColor),
+                                    overlayColor:
+                                        MaterialStateProperty.all<Color>(
+                                            AppTheme.secondaryColor),
                                   ),
-                                  // hoverColor: AppTheme.secondaryColor,
                                   onPressed: () {
                                     controller.downloadFilesMobile();
                                   },
@@ -340,6 +342,8 @@ class DownloadsViewState
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   AppTheme.navigationSelectedColor),
+                              overlayColor: MaterialStateProperty.all<Color>(
+                                  AppTheme.secondaryColor),
                             ),
                             onPressed: () {
                               controller.downloadFiles();
