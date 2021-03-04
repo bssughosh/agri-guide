@@ -31,18 +31,19 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
   final String _keyNameHumidity = 'humidity';
   final String _keyNameRain = 'rain';
   final String _keyNameList = 'list';
+  final String _keyNameMain = 'main';
 
   final int weatherDataReloadThresholdInMinutes = 5;
 
   @override
-  Future<LocationEntity> fetchLatitudeAndLongitude() async {
+  Future<void> fetchLatitudeAndLongitude() async {
     if (FirebaseAuth.instance.currentUser == null) {
       throw UserNotSignedInError();
     }
 
     User currentUser = FirebaseAuth.instance.currentUser;
     if (locationDetails.containsKey(currentUser.uid)) {
-      return locationDetails[currentUser.uid];
+      return;
     }
 
     DocumentSnapshot userDetails = await userData.doc(currentUser.uid).get();
@@ -100,7 +101,7 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
       }
     }
 
-    return locationDetails[currentUser.uid];
+    return;
   }
 
   @override
@@ -110,12 +111,13 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
     }
 
     User currentUser = FirebaseAuth.instance.currentUser;
-    if (liveWeatherDetails.containsKey(currentUser.uid) &&
-        (DateTime.now()
-                .difference(lastFetchedTime[currentUser.uid])
-                .inMinutes <=
-            weatherDataReloadThresholdInMinutes)) {
-      return liveWeatherDetails[currentUser.uid];
+    if (liveWeatherDetails.containsKey(currentUser.uid)) {
+      if (DateTime.now()
+              .difference(lastFetchedTime[currentUser.uid])
+              .inMinutes <=
+          weatherDataReloadThresholdInMinutes) {
+        return liveWeatherDetails[currentUser.uid];
+      }
     }
 
     if (!locationDetails.containsKey(currentUser.uid)) {
@@ -150,15 +152,17 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
     var data = json.decode(value.body);
 
     if (data.containsKey(_keyNameList)) {
-      String _temperature = data[_keyNameList][_keyNameTempMax].toString();
-      String _humidity = data[_keyNameList][_keyNameHumidity].toString();
-      String _rain = data[_keyNameList][_keyNameRain].toString();
+      num _temperature = data[_keyNameList][0][_keyNameMain][_keyNameTempMax];
+      num _humidity = data[_keyNameList][0][_keyNameMain][_keyNameHumidity];
+      num _rain = data[_keyNameList][0][_keyNameRain];
+
+      lastFetchedTime[currentUser.uid] = DateTime.now();
 
       liveWeatherDetails[currentUser.uid] = new LiveWeatherEntity(
         location: locationDetails[currentUser.uid],
-        temp: _temperature ?? "0",
-        humidity: _humidity ?? "0",
-        rain: _rain ?? "0",
+        temp: _temperature.toString() ?? "0",
+        humidity: _humidity.toString() ?? "0",
+        rain: _rain.toString() ?? "0",
       );
     } else {
       throw APIResponseFormatError();

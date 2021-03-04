@@ -15,10 +15,8 @@ class FetchLocationDetailsUsecase extends CompletableUseCase<void> {
     StreamController<LocationEntity> streamController = StreamController();
 
     try {
-      LocationEntity locationEntity =
-          await _repository.fetchLatitudeAndLongitude();
+      await _repository.fetchLatitudeAndLongitude();
       print('Location details fetched');
-      streamController.add(locationEntity);
       streamController.close();
     } catch (error) {
       print('Location details not fetched');
