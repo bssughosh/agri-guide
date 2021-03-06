@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
-import '../../../../core/app_theme.dart';
-import '../../../../core/enums.dart';
 import 'mobile/initialized_view.dart';
 import 'mobile/loading_view.dart';
 import 'register_controller.dart';
 import 'register_state_machine.dart';
-import 'widgets/location_selection_bar.dart';
-import 'widgets/location_selection_card.dart';
 
 class RegisterPage extends View {
   @override
