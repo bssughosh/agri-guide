@@ -31,8 +31,10 @@ class LoginViewState
     switch (currentStateType) {
       case LoginInitializationState:
         return buildLoginInitilizationView();
+
       case LoginInitializedState:
         return buildLoginInitializedViewMobile(controller: controller);
+
       case LoginLoadingState:
         return buildLoginLoadingView();
     }
@@ -51,8 +53,10 @@ class LoginViewState
     switch (currentStateType) {
       case LoginInitializationState:
         return buildLoginInitilizationView();
+
       case LoginInitializedState:
         return buildLoginInitializedViewWeb(controller: controller);
+
       case LoginLoadingState:
         return buildLoginLoadingView();
     }

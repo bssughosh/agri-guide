@@ -26,10 +26,13 @@ class StatisticsViewState
     switch (currentStateType) {
       case StatisticsPageInitializationState:
         return _buildStatisticsInitializationView();
+
       case StatisticsPageInputInitializedState:
         return _buildStatisticsInputInitializedViewMobile();
+
       case StatisticsPageDisplayInitializedState:
         return _buildStatisticsDisplayInitializedViewMobile();
+
       case StatisticsPageLoadingState:
         return _buildStatisticsLoadingView();
     }
@@ -48,10 +51,13 @@ class StatisticsViewState
     switch (currentStateType) {
       case StatisticsPageInitializationState:
         return _buildStatisticsInitializationView();
+
       case StatisticsPageInputInitializedState:
         return _buildStatisticsInputInitializedViewWeb();
+
       case StatisticsPageDisplayInitializedState:
         return _buildStatisticsDisplayInitializedViewWeb();
+
       case StatisticsPageLoadingState:
         return _buildStatisticsLoadingView();
     }
