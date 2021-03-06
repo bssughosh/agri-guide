@@ -35,9 +35,9 @@ class RegisterViewState
 
     switch (currentStateType) {
       case RegisterInitializedState:
-        return _buildRegistrationPages(false);
+        return _buildRegistrationInitializedView(isWeb: false);
       case RegisterLoadingState:
-        return _buildLoadingRegisterPage();
+        return _buildRegistrationLoadingView();
     }
     throw Exception("Unrecognized state $currentStateType encountered");
   }
@@ -53,14 +53,14 @@ class RegisterViewState
 
     switch (currentStateType) {
       case RegisterInitializedState:
-        return _buildRegistrationPages(true);
+        return _buildRegistrationInitializedView(isWeb: true);
       case RegisterLoadingState:
-        return _buildLoadingRegisterPage();
+        return _buildRegistrationLoadingView();
     }
     throw Exception("Unrecognized state $currentStateType encountered");
   }
 
-  _buildRegistrationPages(bool isWeb) {
+  _buildRegistrationInitializedView({@required bool isWeb}) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.home),
@@ -138,7 +138,7 @@ class RegisterViewState
     );
   }
 
-  _buildLoadingRegisterPage() {
+  _buildRegistrationLoadingView() {
     return Scaffold(
       body: Center(
         child: CircularProgressIndicator(),

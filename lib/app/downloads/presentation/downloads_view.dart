@@ -36,9 +36,12 @@ class DownloadsViewState
     switch (currentStateType) {
       case DownloadsInitializationState:
         DownloadsInitializationState newState = currentState;
-        return _buildLoadingState(newState.isFirstLoad, false);
+        return _buildDownloadsInitializationView(
+          isFirstLoad: newState.isFirstLoad,
+          isWeb: false,
+        );
       case DownloadsInitializedState:
-        return _buildMobileDownloadsPage();
+        return _buildDownloadsInitializedViewMobile();
     }
     throw Exception("Unrecognized state $currentStateType encountered");
   }
@@ -56,14 +59,20 @@ class DownloadsViewState
     switch (currentStateType) {
       case DownloadsInitializationState:
         DownloadsInitializationState newState = currentState;
-        return _buildLoadingState(newState.isFirstLoad, true);
+        return _buildDownloadsInitializationView(
+          isFirstLoad: newState.isFirstLoad,
+          isWeb: true,
+        );
       case DownloadsInitializedState:
-        return _buildDownloadsPage();
+        return _buildDownloadsInitializedViewWeb();
     }
     throw Exception("Unrecognized state $currentStateType encountered");
   }
 
-  Widget _buildLoadingState(bool isFirstLoad, bool isWeb) {
+  Widget _buildDownloadsInitializationView({
+    @required bool isFirstLoad,
+    @required bool isWeb,
+  }) {
     if (isFirstLoad) controller.fetchStateList(isWeb);
 
     return Container(
@@ -73,7 +82,7 @@ class DownloadsViewState
     );
   }
 
-  Widget _buildMobileDownloadsPage() {
+  Widget _buildDownloadsInitializedViewMobile() {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: controller.isDownloading
@@ -256,7 +265,7 @@ class DownloadsViewState
     );
   }
 
-  Widget _buildDownloadsPage() {
+  Widget _buildDownloadsInitializedViewWeb() {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: WillPopScope(

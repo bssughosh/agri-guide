@@ -25,13 +25,13 @@ class StatisticsViewState
 
     switch (currentStateType) {
       case StatisticsPageInitializationState:
-        return _buildInitState();
+        return _buildStatisticsInitializationView();
       case StatisticsPageInputInitializedState:
-        return _buildMobileInputPage();
+        return _buildStatisticsInputInitializedViewMobile();
+      case StatisticsPageDisplayInitializedState:
+        return _buildStatisticsDisplayInitializedViewMobile();
       case StatisticsPageLoadingState:
-        return _buildLoadingState();
-      case StatisticsPageInitializedState:
-        return _buildMobileDisplayPage();
+        return _buildStatisticsLoadingView();
     }
     throw Exception("Unrecognized state $currentStateType encountered");
   }
@@ -47,29 +47,29 @@ class StatisticsViewState
 
     switch (currentStateType) {
       case StatisticsPageInitializationState:
-        return _buildInitState();
+        return _buildStatisticsInitializationView();
       case StatisticsPageInputInitializedState:
-        return _buildInputPage();
+        return _buildStatisticsInputInitializedViewWeb();
+      case StatisticsPageDisplayInitializedState:
+        return _buildStatisticsDisplayInitializedViewWeb();
       case StatisticsPageLoadingState:
-        return _buildLoadingState();
-      case StatisticsPageInitializedState:
-        return _buildDisplayPage();
+        return _buildStatisticsLoadingView();
     }
     throw Exception("Unrecognized state $currentStateType encountered");
   }
 
-  Widget _buildInitState() {
+  Widget _buildStatisticsInitializationView() {
     controller.fetchStateList();
     return LinearProgressIndicator();
   }
 
-  Widget _buildLoadingState() {
+  Widget _buildStatisticsLoadingView() {
     return Center(
       child: CircularProgressIndicator(),
     );
   }
 
-  Widget _buildMobileInputPage() {
+  Widget _buildStatisticsInputInitializedViewMobile() {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: WillPopScope(
@@ -160,7 +160,7 @@ class StatisticsViewState
     );
   }
 
-  Widget _buildInputPage() {
+  Widget _buildStatisticsInputInitializedViewWeb() {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: WillPopScope(
@@ -251,7 +251,7 @@ class StatisticsViewState
     );
   }
 
-  Widget _buildMobileDisplayPage() {
+  Widget _buildStatisticsDisplayInitializedViewMobile() {
     return Container(
       child: WillPopScope(
         onWillPop: () => Future.sync(controller.onWillPopScopePage2),
@@ -452,7 +452,7 @@ class StatisticsViewState
     );
   }
 
-  Widget _buildDisplayPage() {
+  Widget _buildStatisticsDisplayInitializedViewWeb() {
     return Container(
       child: WillPopScope(
         onWillPop: () => Future.sync(controller.onWillPopScopePage2),

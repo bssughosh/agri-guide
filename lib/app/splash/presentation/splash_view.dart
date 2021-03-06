@@ -22,7 +22,7 @@ class SplashViewState
 
     switch (currentStateType) {
       case SplashInitState:
-        return _buildMobileSplashState();
+        return _buildSplashInitViewMobile();
     }
     throw Exception("Unrecognized state $currentStateType encountered");
   }
@@ -38,12 +38,12 @@ class SplashViewState
 
     switch (currentStateType) {
       case SplashInitState:
-        return _buildWebSplashState();
+        return _buildSplashInitViewWeb();
     }
     throw Exception("Unrecognized state $currentStateType encountered");
   }
 
-  Widget _buildMobileSplashState() {
+  Widget _buildSplashInitViewMobile() {
     Timer(Duration(seconds: 2), () => controller.navigateToHomepage());
     return SafeArea(
       child: Scaffold(
@@ -62,7 +62,7 @@ class SplashViewState
     );
   }
 
-  Widget _buildWebSplashState() {
+  Widget _buildSplashInitViewWeb() {
     Timer(Duration(seconds: 4), () => controller.navigateToHomepage());
     return SafeArea(
       child: Scaffold(

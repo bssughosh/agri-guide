@@ -17,8 +17,8 @@ class StatisticsPageStateMachine
         newState = StatisticsPageLoadingState();
         break;
 
-      case StatisticsPageInitializedEvent:
-        newState = StatisticsPageInitializedState();
+      case StatisticsPageDisplayInitializedEvent:
+        newState = StatisticsPageDisplayInitializedState();
         break;
     }
     return newState;
@@ -33,12 +33,12 @@ class StatisticsPageLoadingState extends StatisticsState {}
 
 class StatisticsPageInputInitializedState extends StatisticsState {}
 
-class StatisticsPageInitializedState extends StatisticsState {}
+class StatisticsPageDisplayInitializedState extends StatisticsState {}
 
 class StatisticsEvent {}
 
 class StatisticsPageInputInitializedEvent extends StatisticsEvent {}
 
-class StatisticsPageLoadingEvent extends StatisticsEvent {}
+class StatisticsPageDisplayInitializedEvent extends StatisticsEvent {}
 
-class StatisticsPageInitializedEvent extends StatisticsEvent {}
+class StatisticsPageLoadingEvent extends StatisticsEvent {}

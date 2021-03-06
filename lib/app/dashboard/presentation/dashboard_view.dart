@@ -1,4 +1,3 @@
-import 'package:agri_guide/app/dashboard/presentation/widgets/live_weather_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
@@ -6,6 +5,7 @@ import '../../../core/app_theme.dart';
 import '../../../core/enums.dart';
 import 'dashboard_controller.dart';
 import 'dashboard_state_machine.dart';
+import 'widgets/live_weather_card.dart';
 import 'widgets/location_card.dart';
 
 class DashboardPage extends View {
@@ -24,11 +24,11 @@ class DashboardViewState
 
     switch (currentStateType) {
       case DashboardPageInitializationState:
-        return _buildLoadingScreen();
+        return _buildDashboardInitializationView();
 
       case DashboardPageInitializedState:
         DashboardPageInitializedState initializedState = currentState;
-        return _buildMobileDashboard(
+        return _buildDashboardInitializedViewMobile(
           loginStatus: initializedState.loginStatus,
         );
     }
@@ -47,23 +47,24 @@ class DashboardViewState
 
     switch (currentStateType) {
       case DashboardPageInitializationState:
-        return _buildLoadingScreen();
+        return _buildDashboardInitializationView();
 
       case DashboardPageInitializedState:
         DashboardPageInitializedState initializedState = currentState;
-        return _buildWebDashboard(
+        return _buildDashboardInitializedViewWeb(
           loginStatus: initializedState.loginStatus,
         );
     }
     throw Exception("Unknown state $currentState encountered");
   }
 
-  Widget _buildLoadingScreen() {
+  Widget _buildDashboardInitializationView() {
     controller.checkForLoginStatus();
     return CircularProgressIndicator();
   }
 
-  Widget _buildMobileDashboard({@required LoginStatus loginStatus}) {
+  Widget _buildDashboardInitializedViewMobile(
+      {@required LoginStatus loginStatus}) {
     if (loginStatus == LoginStatus.LOGGED_OUT) {
       return Center(
         child: Container(
@@ -161,7 +162,8 @@ class DashboardViewState
     );
   }
 
-  Widget _buildWebDashboard({@required LoginStatus loginStatus}) {
+  Widget _buildDashboardInitializedViewWeb(
+      {@required LoginStatus loginStatus}) {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: SingleChildScrollView(

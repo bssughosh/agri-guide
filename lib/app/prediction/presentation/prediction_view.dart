@@ -35,11 +35,11 @@ class PredictionViewState
 
     switch (currentStateType) {
       case PredictionPageInitializationState:
-        return _buildInitState();
+        return _buildPredictionInitializationView();
       case PredictionPageInitializedState:
-        return _buildPredictionPage(false);
+        return _buildPredictionInitializedView(isWeb: false);
       case PredictionPageLoadingState:
-        return _buildLoadingPage();
+        return _buildPredictionLoadingView();
     }
     throw Exception("Unrecognized state $currentStateType encountered");
   }
@@ -55,16 +55,16 @@ class PredictionViewState
 
     switch (currentStateType) {
       case PredictionPageInitializationState:
-        return _buildInitState();
+        return _buildPredictionInitializationView();
       case PredictionPageInitializedState:
-        return _buildPredictionPage(true);
+        return _buildPredictionInitializedView(isWeb: true);
       case PredictionPageLoadingState:
-        return _buildLoadingPage();
+        return _buildPredictionLoadingView();
     }
     throw Exception("Unrecognized state $currentStateType encountered");
   }
 
-  Widget _buildInitState() {
+  Widget _buildPredictionInitializationView() {
     controller.checkForLoginStatus();
     return Container(
       child: Center(
@@ -73,7 +73,7 @@ class PredictionViewState
     );
   }
 
-  Widget _buildPredictionPage(bool isWeb) {
+  Widget _buildPredictionInitializedView({@required bool isWeb}) {
     if (controller.loginStatus == LoginStatus.LOGGED_OUT) {
       return Center(
         child: Container(
@@ -332,7 +332,7 @@ class PredictionViewState
     );
   }
 
-  Widget _buildLoadingPage() {
+  Widget _buildPredictionLoadingView() {
     return Container(
       child: Center(
         child: LinearProgressIndicator(),

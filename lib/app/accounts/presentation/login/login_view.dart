@@ -28,11 +28,11 @@ class LoginViewState
 
     switch (currentStateType) {
       case LoginInitializationState:
-        return _buildInitilizationPage();
+        return _buildLoginInitilizationView();
       case LoginInitializedState:
-        return _buildMobileLoginPage();
+        return _buildLoginInitializedViewMobile();
       case LoginLoadingState:
-        return _buildLoadingLoginPage();
+        return _buildLoginLoadingView();
     }
     throw Exception("Unrecognized state $currentStateType encountered");
   }
@@ -48,16 +48,16 @@ class LoginViewState
 
     switch (currentStateType) {
       case LoginInitializationState:
-        return _buildInitilizationPage();
+        return _buildLoginInitilizationView();
       case LoginInitializedState:
-        return _buildLoginPage();
+        return _buildLoginInitializedViewWeb();
       case LoginLoadingState:
-        return _buildLoadingLoginPage();
+        return _buildLoginLoadingView();
     }
     throw Exception("Unrecognized state $currentStateType encountered");
   }
 
-  _buildInitilizationPage() {
+  _buildLoginInitilizationView() {
     return Scaffold(
       body: Center(
         child: CircularProgressIndicator(),
@@ -65,7 +65,7 @@ class LoginViewState
     );
   }
 
-  _buildLoadingLoginPage() {
+  _buildLoginLoadingView() {
     return Scaffold(
       body: Center(
         child: CircularProgressIndicator(),
@@ -73,7 +73,7 @@ class LoginViewState
     );
   }
 
-  _buildMobileLoginPage() {
+  _buildLoginInitializedViewMobile() {
     return Scaffold(
       body: WillPopScope(
         onWillPop: () => Future.sync(controller.onWillPopScope),
@@ -218,7 +218,7 @@ class LoginViewState
     );
   }
 
-  _buildLoginPage() {
+  _buildLoginInitializedViewWeb() {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.home),
