@@ -57,7 +57,6 @@ Future<void> init() async {
     () => DashboardPagePresenter(
       serviceLocator(),
       serviceLocator(),
-      serviceLocator(),
     ),
   );
 
@@ -110,7 +109,6 @@ Future<void> init() async {
   serviceLocator.registerLazySingleton<AgriGuidePredictionRepository>(
       () => (AgriGuidePredictionRepositoryImpl()));
   serviceLocator.registerFactory(() => PredictionPagePresenter(
-        serviceLocator(),
         serviceLocator(),
         serviceLocator(),
         serviceLocator(),
