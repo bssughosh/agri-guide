@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 import '../../../core/enums.dart';
@@ -33,18 +34,12 @@ class DashboardPageController extends Controller {
     super.dispose();
   }
 
-  void checkForLoginStatus() {
-    _presenter.checkLoginStatus(
-      new UseCaseObserver(() {}, (error) {
-        print(error);
-      }, onNextFunction: (LoginStatus status) {
-        _stateMachine.onEvent(
-          new DashboardPageInitializedEvent(loginStatus: status),
-        );
-        fetchLiveWeather();
-        refreshUI();
-      }),
+  void checkForLoginStatus({@required LoginStatus status}) {
+    _stateMachine.onEvent(
+      new DashboardPageInitializedEvent(loginStatus: status),
     );
+    if (status == LoginStatus.LOGGED_IN) fetchLiveWeather();
+    refreshUI();
   }
 
   void navigateToLogin() {
