@@ -274,7 +274,7 @@ class StatisticsPageController extends Controller {
           areElementsToBeSwapped = true;
         }
 
-        _stateMachine.onEvent(new StatisticsPageInitializedEvent());
+        _stateMachine.onEvent(new StatisticsPageDisplayInitializedEvent());
         refreshUI();
       }),
       selectedState,

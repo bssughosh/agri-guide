@@ -1,4 +1,3 @@
-import 'package:agri_guide/app/dashboard/presentation/dashboard_view.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -6,6 +5,7 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 import '../../../core/app_theme.dart';
 import '../../../core/enums.dart';
+import '../../dashboard/presentation/dashboard_view.dart';
 import '../../downloads/presentation/downloads_view.dart';
 import '../../prediction/presentation/prediction_view.dart';
 import '../../statistics/presentation/statistics_view.dart';
@@ -29,10 +29,10 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
 
     switch (currentStateType) {
       case HomePageInitializationState:
-        return _buildLoadingPage();
+        return _buildHomeInitializationView();
 
       case HomePageInitializedState:
-        return _buildBottomBar();
+        return _buildHomeInitializedViewMobile();
     }
     throw Exception("Unrecognized state $currentStateType encountered");
   }
@@ -48,15 +48,15 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
 
     switch (currentStateType) {
       case HomePageInitializationState:
-        return _buildLoadingPage();
+        return _buildHomeInitializationView();
 
       case HomePageInitializedState:
-        return _buildAppBar();
+        return _buildHomeInitializedViewWeb();
     }
     throw Exception("Unrecognized state $currentStateType encountered");
   }
 
-  _buildLoadingPage() {
+  _buildHomeInitializationView() {
     controller.checkForLoginStatus();
     return Scaffold(
       body: Center(
@@ -65,7 +65,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
     );
   }
 
-  _buildAppBar() {
+  _buildHomeInitializedViewWeb() {
     return Scaffold(
       key: _scaffoldKey,
       drawer: Drawer(
@@ -225,7 +225,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
     );
   }
 
-  _buildBottomBar() {
+  _buildHomeInitializedViewMobile() {
     return Scaffold(
       bottomNavigationBar: ConvexAppBar(
         backgroundColor: Colors.white,
@@ -293,13 +293,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              DashboardPage(),
-            ],
-          ),
-        ),
+        child: DashboardPage(),
       ),
     );
   }
