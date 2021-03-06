@@ -293,13 +293,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              DashboardPage(),
-            ],
-          ),
-        ),
+        child: DashboardPage(),
       ),
     );
   }
