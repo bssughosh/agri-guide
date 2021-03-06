@@ -10,61 +10,59 @@ Widget contentBody({
 }) {
   return Container(
     width: MediaQuery.of(context).size.width,
-    child: SingleChildScrollView(
-      child: Column(
-        children: [
-          if (controller.liveWeatherEntity == null ||
-              controller.isFetchingLiveWeather)
-            CircularProgressIndicator(),
-          if (controller.liveWeatherEntity != null &&
-              !controller.isFetchingLiveWeather)
-            LocationCard(
-              district: controller.liveWeatherEntity.location.district,
-              state: controller.liveWeatherEntity.location.state,
-            ),
-          if (controller.liveWeatherEntity != null &&
-              !controller.isFetchingLiveWeather)
-            SizedBox(height: 30),
-          if (controller.liveWeatherEntity != null &&
-              !controller.isFetchingLiveWeather)
-            LiveWeatherCard(
-              icon: Icons.thermostat_rounded,
-              title: 'Temperature',
-              value: controller.liveWeatherEntity.temp + ' \u2103',
-            ),
-          if (controller.liveWeatherEntity != null &&
-              !controller.isFetchingLiveWeather)
-            LiveWeatherCard(
-              icon: Icons.opacity,
-              title: 'Humidity',
-              value: controller.liveWeatherEntity.humidity + ' %',
-            ),
-          if (controller.liveWeatherEntity != null &&
-              !controller.isFetchingLiveWeather)
-            LiveWeatherCard(
-              icon: Icons.wb_cloudy,
-              title: 'Rainfall',
-              value: controller.liveWeatherEntity.rain + ' mm',
-            ),
-          if (controller.liveWeatherEntity != null &&
-              !controller.isFetchingLiveWeather)
-            SizedBox(height: 30),
-          if (controller.liveWeatherEntity != null &&
-              !controller.isFetchingLiveWeather)
-            Center(
-              child: InkWell(
-                onTap: () {
-                  controller.fetchLiveWeather();
-                },
-                child: Icon(
-                  Icons.cached,
-                  size: 40,
-                  color: Colors.black,
-                ),
+    child: Column(
+      children: [
+        if (controller.liveWeatherEntity == null ||
+            controller.isFetchingLiveWeather)
+          CircularProgressIndicator(),
+        if (controller.liveWeatherEntity != null &&
+            !controller.isFetchingLiveWeather)
+          LocationCard(
+            district: controller.liveWeatherEntity.location.district,
+            state: controller.liveWeatherEntity.location.state,
+          ),
+        if (controller.liveWeatherEntity != null &&
+            !controller.isFetchingLiveWeather)
+          SizedBox(height: 30),
+        if (controller.liveWeatherEntity != null &&
+            !controller.isFetchingLiveWeather)
+          LiveWeatherCard(
+            icon: Icons.thermostat_rounded,
+            title: 'Temperature',
+            value: controller.liveWeatherEntity.temp + ' \u2103',
+          ),
+        if (controller.liveWeatherEntity != null &&
+            !controller.isFetchingLiveWeather)
+          LiveWeatherCard(
+            icon: Icons.opacity,
+            title: 'Humidity',
+            value: controller.liveWeatherEntity.humidity + ' %',
+          ),
+        if (controller.liveWeatherEntity != null &&
+            !controller.isFetchingLiveWeather)
+          LiveWeatherCard(
+            icon: Icons.wb_cloudy,
+            title: 'Rainfall',
+            value: controller.liveWeatherEntity.rain + ' mm',
+          ),
+        if (controller.liveWeatherEntity != null &&
+            !controller.isFetchingLiveWeather)
+          SizedBox(height: 30),
+        if (controller.liveWeatherEntity != null &&
+            !controller.isFetchingLiveWeather)
+          Center(
+            child: InkWell(
+              onTap: () {
+                controller.fetchLiveWeather();
+              },
+              child: Icon(
+                Icons.cached,
+                size: 40,
+                color: Colors.black,
               ),
             ),
-        ],
-      ),
+          ),
+      ],
     ),
   );
 }
