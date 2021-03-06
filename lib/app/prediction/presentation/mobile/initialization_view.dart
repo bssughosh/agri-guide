@@ -1,5 +1,6 @@
-import 'package:agri_guide/app/prediction/presentation/prediction_controller.dart';
 import 'package:flutter/material.dart';
+
+import '../prediction_controller.dart';
 
 Widget buildPredictionInitializationView({
   @required PredictionPageController controller,
