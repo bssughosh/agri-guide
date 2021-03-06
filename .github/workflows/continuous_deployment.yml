@@ -46,4 +46,3 @@ jobs:
         token: ${{ secrets.FIREBASE_TOKEN }}
         groups: Testers
         file: app-release.apk
-        releaseNotesFile: RELEASE_NOTES.md
