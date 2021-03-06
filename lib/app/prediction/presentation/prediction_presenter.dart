@@ -1,7 +1,6 @@
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 import '../../../core/observer.dart';
-import '../../accounts/domain/usecase/check_login_status_usecase.dart';
 import '../../downloads/domain/usecase/fetch_crop_list_usecase.dart';
 import '../../downloads/domain/usecase/fetch_district_list_usecase.dart';
 import '../../downloads/domain/usecase/fetch_seasons_list_usecase.dart';
@@ -10,7 +9,6 @@ import '../domain/usecase/fetch_user_details_usecase.dart';
 import '../domain/usecase/make_prediction_usecase.dart';
 
 class PredictionPagePresenter extends Presenter {
-  CheckLoginStatusUsecase _checkLoginStatusUsecase;
   FetchUserDetailsUsecase _fetchUserDetailsUsecase;
   MakePredictionUsecase _makePredictionUsecase;
   FetchStateListUsecase _fetchStateListUsecase;
@@ -19,7 +17,6 @@ class PredictionPagePresenter extends Presenter {
   FetchCropListUsecase _fetchCropListUsecase;
 
   PredictionPagePresenter(
-    this._checkLoginStatusUsecase,
     this._fetchUserDetailsUsecase,
     this._makePredictionUsecase,
     this._fetchStateListUsecase,
@@ -30,17 +27,12 @@ class PredictionPagePresenter extends Presenter {
 
   @override
   dispose() {
-    _checkLoginStatusUsecase.dispose();
     _fetchUserDetailsUsecase.dispose();
     _makePredictionUsecase.dispose();
     _fetchStateListUsecase.dispose();
     _fetchDistrictListUsecase.dispose();
     _fetchSeasonsListUsecase.dispose();
     _fetchCropListUsecase.dispose();
-  }
-
-  void checkLoginStatus(UseCaseObserver observer) {
-    _checkLoginStatusUsecase.execute(observer);
   }
 
   void fetchUserDetails(UseCaseObserver observer) {
