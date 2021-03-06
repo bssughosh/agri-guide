@@ -1,10 +1,12 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
-import '../../../../core/app_theme.dart';
 import 'login_controller.dart';
 import 'login_state_machine.dart';
+import 'mobile/initialization_view.dart';
+import 'mobile/initialized_view.dart';
+import 'mobile/loading_view.dart';
+import 'web/initialized_view.dart';
 
 class LoginPage extends View {
   @override
@@ -28,11 +30,11 @@ class LoginViewState
 
     switch (currentStateType) {
       case LoginInitializationState:
-        return _buildLoginInitilizationView();
+        return buildLoginInitilizationView();
       case LoginInitializedState:
-        return _buildLoginInitializedViewMobile();
+        return buildLoginInitializedViewMobile(controller: controller);
       case LoginLoadingState:
-        return _buildLoginLoadingView();
+        return buildLoginLoadingView();
     }
     throw Exception("Unrecognized state $currentStateType encountered");
   }
@@ -48,291 +50,12 @@ class LoginViewState
 
     switch (currentStateType) {
       case LoginInitializationState:
-        return _buildLoginInitilizationView();
+        return buildLoginInitilizationView();
       case LoginInitializedState:
-        return _buildLoginInitializedViewWeb();
+        return buildLoginInitializedViewWeb(controller: controller);
       case LoginLoadingState:
-        return _buildLoginLoadingView();
+        return buildLoginLoadingView();
     }
     throw Exception("Unrecognized state $currentStateType encountered");
-  }
-
-  _buildLoginInitilizationView() {
-    return Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
-  }
-
-  _buildLoginLoadingView() {
-    return Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
-  }
-
-  _buildLoginInitializedViewMobile() {
-    return Scaffold(
-      body: WillPopScope(
-        onWillPop: () => Future.sync(controller.onWillPopScope),
-        child: Center(
-          child: Container(
-            width: double.infinity,
-            margin: EdgeInsets.symmetric(horizontal: 15),
-            child: SingleChildScrollView(
-              child: AutofillGroup(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Image.asset(
-                      'assets/login_icon.png',
-                      height: 100,
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    ColorizeAnimatedTextKit(
-                      text: [
-                        "AGRI GUIDE",
-                      ],
-                      textStyle:
-                          AppTheme.loginAnimatedText.copyWith(fontSize: 30),
-                      colors: [
-                        Colors.purple,
-                        Colors.blue,
-                        Colors.yellow,
-                        Colors.red,
-                      ],
-                      textAlign: TextAlign.center,
-                    ),
-                    TypewriterAnimatedTextKit(
-                      text: [
-                        "A Smart Innovative Platform for Crop Prediction",
-                      ],
-                      speed: Duration(milliseconds: 100),
-                      pause: Duration(milliseconds: 1000),
-                      textStyle: AppTheme.loginAnimatedText,
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextField(
-                      controller: controller.emailText,
-                      keyboardType: TextInputType.emailAddress,
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        prefixIcon: Icon(Icons.portrait),
-                        hintText: 'Email ID',
-                        labelText: 'Email',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
-                      onChanged: (value) {
-                        controller.updateEmailField(value);
-                      },
-                      autofillHints: [AutofillHints.username],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextField(
-                      controller: controller.passwordText,
-                      obscureText: true,
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        prefixIcon: Icon(Icons.lock),
-                        hintText: 'Password',
-                        labelText: 'Password',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
-                      onChanged: (value) {
-                        controller.updatePasswordField(value);
-                      },
-                      autofillHints: [AutofillHints.password],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Center(
-                      child: Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            TextButton(
-                              child: Text(
-                                'Login',
-                                style: AppTheme.navigationTabSelectedTextStyle,
-                              ),
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    controller.passwordText.text.length != 0 &&
-                                            controller.emailText.text.length !=
-                                                0
-                                        ? MaterialStateProperty.all<Color>(
-                                            AppTheme.buttonActiveColor)
-                                        : MaterialStateProperty.all<Color>(
-                                            AppTheme.buttonDeactiveColor),
-                              ),
-                              onPressed: () {
-                                if (controller.passwordText.text.length != 0 &&
-                                    controller.emailText.text.length != 0)
-                                  controller.loginUser();
-                              },
-                            ),
-                            SizedBox(width: 20),
-                            TextButton(
-                              child: Text(
-                                'Register',
-                                style: AppTheme.navigationTabSelectedTextStyle,
-                              ),
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        AppTheme.navigationSelectedColor),
-                              ),
-                              onPressed: () {
-                                controller.navigateToRegistration();
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  _buildLoginInitializedViewWeb() {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.home),
-        onPressed: () {
-          controller.navigateToHomepage();
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: Center(
-        child: Container(
-          width: 500,
-          child: SingleChildScrollView(
-            child: AutofillGroup(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Image.asset(
-                    "assets/login_icon.png",
-                    height: 100,
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  TextField(
-                    controller: controller.emailText,
-                    keyboardType: TextInputType.emailAddress,
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      prefixIcon: Icon(Icons.portrait),
-                      hintText: 'Email ID',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    onChanged: (value) {
-                      controller.updateEmailField(value);
-                    },
-                    autofillHints: [AutofillHints.username],
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: controller.passwordText,
-                    obscureText: true,
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      prefixIcon: Icon(Icons.lock),
-                      hintText: 'Password',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    onChanged: (value) {
-                      controller.updatePasswordField(value);
-                    },
-                    autofillHints: [AutofillHints.password],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Center(
-                    child: Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          TextButton(
-                            child: Text(
-                              'Login',
-                              style: AppTheme.navigationTabSelectedTextStyle,
-                            ),
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  controller.passwordText.text.length != 0 &&
-                                          controller.emailText.text.length != 0
-                                      ? MaterialStateProperty.all<Color>(
-                                          AppTheme.buttonActiveColor)
-                                      : MaterialStateProperty.all<Color>(
-                                          AppTheme.buttonDeactiveColor),
-                            ),
-                            onPressed: () {
-                              if (controller.passwordText.text.length != 0 &&
-                                  controller.emailText.text.length != 0)
-                                controller.loginUser();
-                            },
-                          ),
-                          SizedBox(width: 20),
-                          TextButton(
-                            child: Text(
-                              'Register',
-                              style: AppTheme.navigationTabSelectedTextStyle,
-                            ),
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  AppTheme.navigationSelectedColor),
-                            ),
-                            onPressed: () {
-                              controller.navigateToRegistration();
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }
