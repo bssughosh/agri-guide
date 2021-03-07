@@ -38,8 +38,8 @@ class DashboardPageController extends Controller {
     _stateMachine.onEvent(
       new DashboardPageInitializedEvent(loginStatus: status),
     );
-    if (status == LoginStatus.LOGGED_IN) fetchLiveWeather();
     refreshUI();
+    if (status == LoginStatus.LOGGED_IN) fetchLiveWeather();
   }
 
   void navigateToLogin() {

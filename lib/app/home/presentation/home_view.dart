@@ -231,12 +231,12 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
         backgroundColor: Colors.white,
         activeColor: AppTheme.primaryColor,
         color: Colors.black,
-        style: TabStyle.react,
+        style: TabStyle.fixed,
         items: [
           TabItem(icon: Icons.dashboard, title: 'Dashboard'),
           TabItem(icon: Icons.get_app, title: 'Downloads'),
-          TabItem(icon: Icons.insights, title: 'Statistics'),
           TabItem(icon: Icons.schedule, title: 'Prediction'),
+          TabItem(icon: Icons.insights, title: 'Statistics'),
           TabItem(icon: Icons.account_circle, title: 'Account'),
         ],
         onTap: (int i) {
@@ -278,8 +278,8 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
             children: <Widget>[
               _dashboardPage(),
               _downloadsPage(),
-              _statisticsPage(),
               _predictionPage(),
+              _statisticsPage(),
               _mobileProfilePage(),
             ],
           ),
@@ -293,8 +293,14 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        child: DashboardPage(
-          DashboardPageParams(controller.loginStatus),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              DashboardPage(
+                DashboardPageParams(controller.loginStatus),
+              ),
+            ],
+          ),
         ),
       ),
     );
