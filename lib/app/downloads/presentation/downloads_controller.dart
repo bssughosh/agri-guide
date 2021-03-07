@@ -292,4 +292,9 @@ class DownloadsPageController extends Controller {
     selectedStates = newStateList;
     refreshUI();
   }
+
+  void updateDistrictList(List<String> newDistrictList) {
+    selectedDistricts = newDistrictList;
+    refreshUI();
+  }
 }

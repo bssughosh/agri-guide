@@ -1,3 +1,4 @@
+import 'package:agri_guide/core/app_theme.dart';
 import 'package:agri_guide/core/widgets/custom_multi_select_form.dart';
 import 'package:flutter/material.dart';
 
@@ -26,6 +27,11 @@ Widget buildDownloadsInitializedViewMobile({
                         SizedBox(
                           height: 30,
                         ),
+                        Text(
+                          'States: ',
+                          style:
+                              AppTheme.headingBoldText.copyWith(fontSize: 17),
+                        ),
                         Container(
                           width: MediaQuery.of(context).size.width * 0.9,
                           child: CustomMultiselectForm(
@@ -37,6 +43,29 @@ Widget buildDownloadsInitializedViewMobile({
                             onSavedFunction: controller.updateStateList,
                           ),
                         ),
+                        if (controller.selectedStates.length == 1 &&
+                            controller.districtList.length > 0)
+                          SizedBox(height: 20),
+                        if (controller.selectedStates.length == 1 &&
+                            controller.districtList.length > 0)
+                          Text(
+                            'Districts: ',
+                            style:
+                                AppTheme.headingBoldText.copyWith(fontSize: 17),
+                          ),
+                        if (controller.selectedStates.length == 1 &&
+                            controller.districtList.length > 0)
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            child: CustomMultiselectForm(
+                              selectedItemList: controller.selectedDistricts,
+                              title: 'Select Districts',
+                              dataSource: controller.districtList,
+                              displayKey: 'name',
+                              valueKey: 'id',
+                              onSavedFunction: controller.updateStateList,
+                            ),
+                          ),
                         SizedBox(height: 20),
                         if (controller.downloadedFilesToBeDisplayed.length != 0)
                           Text(
