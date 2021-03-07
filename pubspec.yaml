@@ -3,7 +3,7 @@ description: Agri Guide - A Smart Innovative Platform for Crop Prediction
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 2.1.2+26
+version: 2.1.3+27
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
