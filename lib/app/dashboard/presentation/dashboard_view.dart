@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
-import '../../../core/enums.dart';
 import 'dashboard_controller.dart';
 import 'dashboard_state_machine.dart';
 import 'mobile/initialization_view.dart';
