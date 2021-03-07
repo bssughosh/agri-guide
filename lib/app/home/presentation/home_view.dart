@@ -296,9 +296,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              DashboardPage(
-                DashboardPageParams(controller.loginStatus),
-              ),
+              DashboardPage(),
             ],
           ),
         ),
@@ -346,9 +344,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              PredictionPage(
-                PredictionPageParams(controller.loginStatus),
-              ),
+              PredictionPage(),
             ],
           ),
         ),

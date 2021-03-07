@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
-import '../../../core/enums.dart';
 import 'mobile/initialization_view.dart';
 import 'mobile/initialized_view.dart';
 import 'mobile/loading_view.dart';
@@ -9,10 +8,6 @@ import 'prediction_controller.dart';
 import 'prediction_state_machine.dart';
 
 class PredictionPage extends View {
-  final PredictionPageParams params;
-
-  PredictionPage(this.params);
-
   @override
   State<StatefulWidget> createState() => PredictionViewState();
 }
@@ -36,7 +31,6 @@ class PredictionViewState
       case PredictionPageInitializationState:
         return buildPredictionInitializationView(
           controller: controller,
-          loginStatus: widget.params.loginStatus,
         );
 
       case PredictionPageInitializedState:
@@ -65,7 +59,6 @@ class PredictionViewState
       case PredictionPageInitializationState:
         return buildPredictionInitializationView(
           controller: controller,
-          loginStatus: widget.params.loginStatus,
         );
 
       case PredictionPageInitializedState:
@@ -80,10 +73,4 @@ class PredictionViewState
     }
     throw Exception("Unrecognized state $currentStateType encountered");
   }
-}
-
-class PredictionPageParams {
-  final LoginStatus loginStatus;
-
-  PredictionPageParams(this.loginStatus);
 }

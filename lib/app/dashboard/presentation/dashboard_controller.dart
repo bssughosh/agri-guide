@@ -34,12 +34,18 @@ class DashboardPageController extends Controller {
     super.dispose();
   }
 
-  void checkForLoginStatus({@required LoginStatus status}) {
-    _stateMachine.onEvent(
-      new DashboardPageInitializedEvent(loginStatus: status),
+  void checkForLoginStatus() {
+    _presenter.checkLoginStatus(
+      new UseCaseObserver(() {}, (error) {
+        print(error);
+      }, onNextFunction: (LoginStatus status) {
+        _stateMachine.onEvent(
+          new DashboardPageInitializedEvent(loginStatus: status),
+        );
+        if (status == LoginStatus.LOGGED_IN) fetchLiveWeather();
+        refreshUI();
+      }),
     );
-    refreshUI();
-    if (status == LoginStatus.LOGGED_IN) fetchLiveWeather();
   }
 
   void navigateToLogin() {

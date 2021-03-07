@@ -80,26 +80,32 @@ class PredictionPageController extends Controller {
     super.dispose();
   }
 
-  void checkForLoginStatus({@required LoginStatus status}) {
-    loginStatus = status;
-    if (status == LoginStatus.LOGGED_OUT) {
-      _stateMachine.onEvent(new PredictionPageInitializedEvent());
-      refreshUI();
-    } else {
-      _presenter.fetchUserDetails(
-        new UseCaseObserver(
-          () {},
-          (error) {
-            print(error);
-          },
-          onNextFunction: (UserEntity user) {
-            userEntity = user;
-            _stateMachine.onEvent(new PredictionPageInitializedEvent());
-            refreshUI();
-          },
-        ),
-      );
-    }
+  void checkForLoginStatus() {
+    _presenter.checkLoginStatus(
+      new UseCaseObserver(() {}, (error) {
+        print(error);
+      }, onNextFunction: (LoginStatus status) {
+        loginStatus = status;
+        if (status == LoginStatus.LOGGED_OUT) {
+          _stateMachine.onEvent(new PredictionPageInitializedEvent());
+          refreshUI();
+        } else {
+          _presenter.fetchUserDetails(
+            new UseCaseObserver(
+              () {},
+              (error) {
+                print(error);
+              },
+              onNextFunction: (UserEntity user) {
+                userEntity = user;
+                _stateMachine.onEvent(new PredictionPageInitializedEvent());
+                refreshUI();
+              },
+            ),
+          );
+        }
+      }),
+    );
   }
 
   _handleAPIErrors(Exception error) {
