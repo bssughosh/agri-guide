@@ -35,7 +35,10 @@ class CustomMultiselectForm extends StatelessWidget {
             items: _items,
             selectedColor: AppTheme.secondaryColor,
             initialValue: selectedItemList,
-            title: Text(title),
+            title: Text(
+              title,
+              style: AppTheme.headingBoldText.copyWith(fontSize: 16),
+            ),
             onConfirm: (values) {
               onSavedFunction(List<String>.from(values));
             },
@@ -51,7 +54,9 @@ class CustomMultiselectForm extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(20, 5, 5, 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppTheme.selectionBarColor,
+        border: Border.all(
+          color: Colors.black,
+        ),
       ),
       child: Row(
         children: [
@@ -59,7 +64,8 @@ class CustomMultiselectForm extends StatelessWidget {
             Expanded(
               child: Text(
                 '$title',
-                style: AppTheme.headingBoldText,
+                style:
+                    AppTheme.headingBoldText.copyWith(color: Colors.grey[500]),
               ),
             ),
           if (selectedItemList.length != 0)
@@ -69,18 +75,15 @@ class CustomMultiselectForm extends StatelessWidget {
                 children: _findListOfSelectedItems(),
               ),
             ),
-          Container(
-            decoration: BoxDecoration(border: Border(left: BorderSide())),
-            child: IconButton(
-              icon: Icon(
-                Icons.arrow_drop_down,
-                color: Colors.black,
-                size: 40,
-              ),
-              onPressed: () {
-                _showMultiSelect();
-              },
+          IconButton(
+            icon: Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+              size: 40,
             ),
+            onPressed: () {
+              _showMultiSelect();
+            },
           ),
         ],
       ),
@@ -97,6 +100,7 @@ class CustomMultiselectForm extends StatelessWidget {
               label: dataSource[j][displayKey],
               color: AppTheme.chipBackground,
               textColor: AppTheme.secondaryColor,
+              elevation: 0,
             ),
           );
       }
