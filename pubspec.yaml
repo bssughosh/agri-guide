@@ -26,6 +26,8 @@ dependencies:
   animated_text_kit: ^3.1.0
   syncfusion_flutter_charts: ^18.4.39
   path_provider: ^1.6.27
+  multiselect_formfield: ^0.1.5
+  multi_select_flutter: ^3.1.8
 
 dev_dependencies:
   flutter_test:

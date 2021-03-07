@@ -5,6 +5,8 @@ class AppTheme {
   // Colors
   static Color primaryColor = Color(0xFFB4FF7B);
 
+  static Color chipBackground = Color(0xFF8CC63E).withOpacity(0.25);
+
   static Color secondaryColor = Color(0xFF2BB622);
 
   static Color accentColor = Color(0xFF2BB622);

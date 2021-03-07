@@ -287,4 +287,9 @@ class DownloadsPageController extends Controller {
           .add(_toBeAdded + _pathElements[_pathElements.length - 1]);
     }
   }
+
+  void updateStateList(List<String> newStateList) {
+    selectedStates = newStateList;
+    refreshUI();
+  }
 }
