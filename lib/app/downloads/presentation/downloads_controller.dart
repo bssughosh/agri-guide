@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
@@ -67,6 +68,19 @@ class DownloadsPageController extends Controller {
     }
 
     return _years;
+  }
+
+  List<DropdownMenuItem> yearItems() {
+    List<DropdownMenuItem> _list = [];
+    for (var year in years) {
+      _list.add(
+        new DropdownMenuItem(
+          value: year,
+          child: Text(year),
+        ),
+      );
+    }
+    return _list;
   }
 
   void fetchStateList(bool isWeb) {
@@ -173,11 +187,35 @@ class DownloadsPageController extends Controller {
     }
   }
 
-  void selectedDistrictChanged() {
+  void selectedParamsChanged() {
     refreshUI();
   }
 
-  void selectedParamsChanged() {
+  void fromYearUpdated(String newYear) {
+    fromText = newYear;
+    if (fromText == '2019') {
+      fromText = '2018';
+    }
+    if (toText != null && fromText != null) {
+      if (int.parse(fromText) >= int.parse(toText)) {
+        toText = (int.parse(fromText) + 1).toString();
+      }
+    }
+
+    refreshUI();
+  }
+
+  void toYearUpdated(String newYear) {
+    toText = newYear;
+    if (toText == '1901') {
+      toText = '1902';
+    }
+    if (toText != null && fromText != null) {
+      if (int.parse(fromText) >= int.parse(toText)) {
+        fromText = (int.parse(toText) - 1).toString();
+      }
+    }
+
     refreshUI();
   }
 
@@ -266,6 +304,11 @@ class DownloadsPageController extends Controller {
 
   void updateStateList(List<String> newStateList) {
     selectedStates = newStateList;
+    districtList = [];
+    selectedDistricts = [];
+    fromText = null;
+    toText = null;
+    selectedStateChange();
     refreshUI();
   }
 
