@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
@@ -27,10 +26,12 @@ class DownloadsPageController extends Controller {
   List<String> selectedStates = [];
   List districtList = [];
   List<String> selectedDistricts = [];
-  bool isStateFilterClicked = false;
-  bool isDistrictFilterClicked = false;
-  TextEditingController fromText = new TextEditingController();
-  TextEditingController toText = new TextEditingController();
+
+  String fromText;
+  String toText;
+
+  List<String> years = [];
+
   List paramsList = [
     {'id': describeEnum(DownloadParams.temp), 'name': 'Temperature'},
     {'id': describeEnum(DownloadParams.humidity), 'name': 'Humidity'},
@@ -57,6 +58,15 @@ class DownloadsPageController extends Controller {
 
   DownloadsState getCurrentState() {
     return _stateMachine.getCurrentState();
+  }
+
+  List<String> createYearsList() {
+    List<String> _years = [];
+    for (int i = 1901; i < 2019; i++) {
+      _years.add(i.toString());
+    }
+
+    return _years;
   }
 
   void fetchStateList(bool isWeb) {
@@ -107,30 +117,6 @@ class DownloadsPageController extends Controller {
           msg:
               'The request was incorrect. Please check the request and try again');
     }
-  }
-
-  void handleStateFilterClicked() {
-    if (isDistrictFilterClicked || isParamsFilterClicked) {
-    } else {
-      isStateFilterClicked = !isStateFilterClicked;
-    }
-    refreshUI();
-  }
-
-  void handleDistrictFilterClicked() {
-    if (isStateFilterClicked || isParamsFilterClicked) {
-    } else {
-      isDistrictFilterClicked = !isDistrictFilterClicked;
-    }
-    refreshUI();
-  }
-
-  void handleParamsFilterClicked() {
-    if (isStateFilterClicked || isDistrictFilterClicked) {
-    } else {
-      isParamsFilterClicked = !isParamsFilterClicked;
-    }
-    refreshUI();
   }
 
   void handleCheckBoxChangeOfState(bool value, String id) {
@@ -195,16 +181,6 @@ class DownloadsPageController extends Controller {
     refreshUI();
   }
 
-  void updateRangeYear(String newValue, bool isFrom) {
-    if (newValue != '') {
-      if (isFrom)
-        fromText.text = newValue;
-      else
-        toText.text = newValue;
-    }
-    refreshUI();
-  }
-
   void downloadFiles() {
     _presenter.getRequiredDownload(
       new UseCaseObserver(() {}, (error) {
@@ -213,7 +189,7 @@ class DownloadsPageController extends Controller {
       }),
       selectedStates,
       selectedDistricts,
-      List<String>.from([fromText.text, toText.text]),
+      List<String>.from([fromText, toText]),
       selectedParams,
     );
   }
@@ -238,7 +214,7 @@ class DownloadsPageController extends Controller {
       }),
       selectedStates,
       selectedDistricts,
-      List<String>.from([fromText.text, toText.text]),
+      List<String>.from([fromText, toText]),
       selectedParams,
       fileName,
     );
