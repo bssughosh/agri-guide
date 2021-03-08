@@ -89,7 +89,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
     @required String years,
     @required String params,
   }) async {
-    String url = "$base_url/weather/downloads?states=" +
+    String url = "$base_url/agri_guide/downloads?states=" +
         states +
         "&dists=" +
         dists +
