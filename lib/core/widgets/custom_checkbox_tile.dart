@@ -22,11 +22,14 @@ class CustomCheckboxTile extends StatelessWidget {
             activeColor: AppTheme.secondaryColor,
             value: isSelected,
             onChanged: (value) {
-              onChanged(value);
+              onChanged();
             },
           ),
           Expanded(
-            child: Text(title, style: AppTheme.bodyRegularText),
+            child: GestureDetector(
+              onTap: onChanged,
+              child: Text(title, style: AppTheme.bodyRegularText),
+            ),
           )
         ],
       ),

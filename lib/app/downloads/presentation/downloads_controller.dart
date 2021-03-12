@@ -36,14 +36,14 @@ class DownloadsPageController extends Controller {
   List paramsList = [
     {'id': describeEnum(DownloadParams.temp), 'name': 'Temperature'},
     {'id': describeEnum(DownloadParams.humidity), 'name': 'Humidity'},
-    {'id': describeEnum(DownloadParams.rainfall), 'name': 'Rainfall'}
+    {'id': describeEnum(DownloadParams.rainfall), 'name': 'Rainfall'},
+    {'id': describeEnum(DownloadParams.yield), 'name': 'Yield'},
   ];
   List<String> selectedParams = [
     describeEnum(DownloadParams.temp),
     describeEnum(DownloadParams.humidity),
     describeEnum(DownloadParams.rainfall),
   ];
-  bool isParamsFilterClicked = false;
   bool isDownloading = false;
 
   List<String> downloadedFilesToBeDisplayed = [];
@@ -131,33 +131,6 @@ class DownloadsPageController extends Controller {
           msg:
               'The request was incorrect. Please check the request and try again');
     }
-  }
-
-  void handleCheckBoxChangeOfState(bool value, String id) {
-    if (value) {
-      selectedStates.add(id);
-    } else {
-      selectedStates.remove(id);
-    }
-    refreshUI();
-  }
-
-  void handleCheckBoxChangeOfDistrict(bool value, String id) {
-    if (value) {
-      selectedDistricts.add(id);
-    } else {
-      selectedDistricts.remove(id);
-    }
-    refreshUI();
-  }
-
-  void handleCheckBoxChangeOfParams(bool value, String id) {
-    if (value) {
-      selectedParams.add(id);
-    } else {
-      selectedParams.remove(id);
-    }
-    refreshUI();
   }
 
   void selectedStateChange() {
