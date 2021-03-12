@@ -21,8 +21,6 @@ class AppTheme {
 
   static Color customTableBorderColor = Colors.black26;
 
-  static Color buttonInactiveTextColor = Color(0xFF9E9E9E);
-
   static Color buttonInactiveBackgroundColor = Color(0xFFCCCCCC);
 
   // Text styles
@@ -65,7 +63,7 @@ class AppTheme {
       bodyBoldText.copyWith(color: Colors.white);
 
   static TextStyle buttonInactiveTextStyle =
-      bodyBoldText.copyWith(color: buttonInactiveTextColor);
+      bodyBoldText.copyWith(color: Color(0xFF9E9E9E));
 
   // Box decorations
   static BoxDecoration navigationTabSelectedDecoration = BoxDecoration(

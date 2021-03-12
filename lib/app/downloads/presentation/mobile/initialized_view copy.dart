@@ -84,7 +84,6 @@ Widget buildDownloadsInitializedViewMobile({
                           ),
                         if (_showDistrictList)
                           Container(
-                            // width: MediaQuery.of(context).size.width * 0.9,
                             child: CustomMultiselectForm(
                               selectedItemList: controller.selectedDistricts,
                               title: 'Select Districts',
@@ -110,7 +109,6 @@ Widget buildDownloadsInitializedViewMobile({
                           ),
                         if (_showRange)
                           Container(
-                            // width: MediaQuery.of(context).size.width * 0.9,
                             decoration: AppTheme.normalGreenBorderDecoration,
                             padding: EdgeInsets.all(10),
                             child: Row(
@@ -149,7 +147,6 @@ Widget buildDownloadsInitializedViewMobile({
                           ),
                         if (_showParams)
                           Container(
-                            // width: MediaQuery.of(context).size.width * 0.9,
                             child: Column(
                               children: [
                                 for (Map<String, String> item
@@ -157,7 +154,8 @@ Widget buildDownloadsInitializedViewMobile({
                                   Container(
                                     decoration:
                                         AppTheme.normalGreenBorderDecoration,
-                                    padding: EdgeInsets.all(10),
+                                    margin: EdgeInsets.symmetric(vertical: 10),
+                                    padding: EdgeInsets.symmetric(vertical: 0),
                                     child: CustomCheckboxTile(
                                       isSelected: controller.selectedParams
                                           .contains(item['id']),

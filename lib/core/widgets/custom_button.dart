@@ -22,7 +22,7 @@ class CustomButton extends StatelessWidget {
         title,
         style: isActive
             ? AppTheme.buttonActiveTextStyle
-            : AppTheme.buttonInactiveTextColor,
+            : AppTheme.buttonInactiveTextStyle,
       ),
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all<Color>(
