@@ -7,7 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../../core/enums.dart';
-import '../../../core/exceptions.dart';
+import '../../../core/handle_api_errors.dart';
 import '../../../core/observer.dart';
 import '../../../injection_container.dart';
 import '../../navigation_service.dart';
@@ -39,11 +39,13 @@ class DownloadsPageController extends Controller {
     {'id': describeEnum(DownloadParams.rainfall), 'name': 'Rainfall'},
     {'id': describeEnum(DownloadParams.yield), 'name': 'Yield'},
   ];
+
   List<String> selectedParams = [
     describeEnum(DownloadParams.temp),
     describeEnum(DownloadParams.humidity),
     describeEnum(DownloadParams.rainfall),
   ];
+
   bool isDownloading = false;
 
   List<String> downloadedFilesToBeDisplayed = [];
@@ -90,7 +92,7 @@ class DownloadsPageController extends Controller {
           print('State list successfully fetched');
         },
         (error) {
-          _handleAPIErrors(error);
+          handleAPIErrors(error);
           print(error);
         },
         onNextFunction: (List stateListRes) async {
@@ -101,36 +103,6 @@ class DownloadsPageController extends Controller {
         },
       ),
     );
-  }
-
-  _handleAPIErrors(Exception error) {
-    if (error.runtimeType == APIBadRequestError) {
-      Fluttertoast.showToast(
-          msg: 'A bad request was encountered. Please try again');
-    } else if (error.runtimeType == APIForbiddenError) {
-      Fluttertoast.showToast(
-          msg: 'The request was forbidden. Please try again');
-    } else if (error.runtimeType == APINotFoundError) {
-      Fluttertoast.showToast(
-          msg:
-              'The request was incorrect. Please check the request and try again');
-    } else if (error.runtimeType == APITooManyRequestsError) {
-      Fluttertoast.showToast(
-          msg:
-              'There are too many requests serviced right now. Please try again after sometime');
-    } else if (error.runtimeType == APIInternalServerError) {
-      Fluttertoast.showToast(
-          msg:
-              'There was an internal server error. Please try again after sometime');
-    } else if (error.runtimeType == APIServiceUnavailabeError) {
-      Fluttertoast.showToast(
-          msg:
-              'The server is under maintenance right now. Please try again after sometime');
-    } else {
-      Fluttertoast.showToast(
-          msg:
-              'The request was incorrect. Please check the request and try again');
-    }
   }
 
   void selectedStateChange() {
@@ -144,7 +116,7 @@ class DownloadsPageController extends Controller {
               print('District list successfully fetched');
             },
             (error) {
-              _handleAPIErrors(error);
+              handleAPIErrors(error);
               print(error);
             },
             onNextFunction: (List districtListRes) {
@@ -195,7 +167,7 @@ class DownloadsPageController extends Controller {
   void downloadFiles() {
     _presenter.getRequiredDownload(
       new UseCaseObserver(() {}, (error) {
-        _handleAPIErrors(error);
+        handleAPIErrors(error);
         print(error);
       }),
       selectedStates,
@@ -220,7 +192,7 @@ class DownloadsPageController extends Controller {
           toastLength: Toast.LENGTH_LONG,
         );
       }, (error) {
-        _handleAPIErrors(error);
+        handleAPIErrors(error);
         print(error);
       }),
       selectedStates,

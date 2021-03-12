@@ -23,6 +23,7 @@ class CustomMultiselectForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// Use this function in case bottom modal needs to be used
     // ignore: unused_element
     void _showBottomModalMultiSelect() async {
       final _items = dataSource
@@ -78,7 +79,7 @@ class CustomMultiselectForm extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.fromLTRB(20, 5, 5, 5),
-      decoration: AppTheme.normalBlackBorderDecoration,
+      decoration: AppTheme.normalGreenBorderDecoration,
       child: Row(
         children: [
           if (selectedItemList.length == 0)

@@ -181,7 +181,7 @@ Widget buildDownloadsInitializedViewWeb({
                             title: 'Download',
                             isActive: controller.selectedParams.length > 0,
                             onPressed: () {
-                              controller.downloadFilesMobile();
+                              controller.downloadFiles();
                             },
                             isOverlayRequired: false,
                           ),

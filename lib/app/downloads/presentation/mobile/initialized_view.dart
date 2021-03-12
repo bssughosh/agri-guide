@@ -1,3 +1,4 @@
+import 'package:agri_guide/core/widgets/chip.dart';
 import 'package:agri_guide/core/widgets/custom_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ Widget buildDownloadsInitializedViewMobile({
               controller.selectedDistricts.length > 0) ||
           (controller.selectedStates.length > 1)) &&
       (controller.toText != null && controller.fromText != null);
+  bool _showDownloads = controller.downloadedFilesToBeDisplayed.length != 0;
 
   return Container(
     width: MediaQuery.of(context).size.width,
@@ -110,7 +112,7 @@ Widget buildDownloadsInitializedViewMobile({
                         if (_showRange)
                           Container(
                             decoration: AppTheme.normalGreenBorderDecoration,
-                            padding: EdgeInsets.all(10),
+                            padding: EdgeInsets.all(8),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -186,39 +188,41 @@ Widget buildDownloadsInitializedViewMobile({
                             },
                             isOverlayRequired: false,
                           ),
-                        if (controller.downloadedFilesToBeDisplayed.length != 0)
-                          Text(
-                            'Previously downloaded files',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                        if (_showDownloads)
+                          SizedBox(height: 50)
+                        else
+                          SizedBox(height: 100),
+                        if (_showDownloads)
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 25, bottom: 10),
+                              child: Text(
+                                'Previously Downloaded Files: ',
+                                style: AppTheme.headingBoldText
+                                    .copyWith(fontSize: 17),
+                              ),
+                            ),
                           ),
-                        if (controller.downloadedFilesToBeDisplayed.length != 0)
+                        if (_showDownloads)
                           Container(
-                            width: MediaQuery.of(context).size.width,
-                            margin: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 10),
+                            decoration: AppTheme.normalGreenBorderDecoration,
+                            padding: EdgeInsets.symmetric(horizontal: 5),
                             child: Column(
                               children: [
                                 for (String item
                                     in controller.downloadedFilesToBeDisplayed)
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(item),
-                                      ),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.black),
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(10),
-                                        ),
-                                      ),
-                                    ),
-                                  )
+                                  chip(
+                                    label: item,
+                                    color: AppTheme.chipBackground,
+                                    textColor: AppTheme.secondaryColor,
+                                    elevation: 1,
+                                  ),
                               ],
                             ),
                           ),
-                        SizedBox(height: 15),
+                        if (_showDownloads) SizedBox(height: 50),
                       ],
                     ),
                   ),
