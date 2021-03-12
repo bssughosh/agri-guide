@@ -41,7 +41,7 @@ class CustomButton extends StatelessWidget {
           EdgeInsets.all(5.0),
         ),
       ),
-      onPressed: onPressed,
+      onPressed: isActive ? onPressed : () {},
     );
   }
 }

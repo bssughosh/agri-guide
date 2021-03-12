@@ -1,3 +1,4 @@
+import 'package:agri_guide/core/widgets/custom_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,10 @@ Widget buildDownloadsInitializedViewMobile({
           controller.selectedDistricts.length > 0) ||
       (controller.selectedStates.length > 1);
   bool _showParams = ((controller.selectedStates.length == 1 &&
+              controller.selectedDistricts.length > 0) ||
+          (controller.selectedStates.length > 1)) &&
+      (controller.toText != null && controller.fromText != null);
+  bool _showSubmitButton = ((controller.selectedStates.length == 1 &&
               controller.selectedDistricts.length > 0) ||
           (controller.selectedStates.length > 1)) &&
       (controller.toText != null && controller.fromText != null);
@@ -172,6 +177,16 @@ Widget buildDownloadsInitializedViewMobile({
                                   ),
                               ],
                             ),
+                          ),
+                        if (_showSubmitButton) SizedBox(height: 30),
+                        if (_showSubmitButton)
+                          CustomButton(
+                            title: 'Download',
+                            isActive: controller.selectedParams.length > 0,
+                            onPressed: () {
+                              controller.downloadFilesMobile();
+                            },
+                            isOverlayRequired: false,
                           ),
                         if (controller.downloadedFilesToBeDisplayed.length != 0)
                           Text(
