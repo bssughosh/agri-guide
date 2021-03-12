@@ -23,7 +23,8 @@ class CustomMultiselectForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void _showMultiSelect() async {
+    // ignore: unused_element
+    void _showBottomModalMultiSelect() async {
       final _items = dataSource
           .map((e) => MultiSelectItem(e[valueKey], e[displayKey]))
           .toList();
@@ -50,14 +51,34 @@ class CustomMultiselectForm extends StatelessWidget {
       );
     }
 
+    void _showMultiSelect() async {
+      final _items = dataSource
+          .map((e) => MultiSelectItem(e[valueKey], e[displayKey]))
+          .toList();
+      await showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (ctx) {
+          return MultiSelectDialog(
+            items: _items,
+            selectedColor: AppTheme.secondaryColor,
+            initialValue: selectedItemList,
+            searchable: false,
+            title: Text(
+              title,
+              style: AppTheme.headingBoldText.copyWith(fontSize: 16),
+            ),
+            onConfirm: (values) {
+              onSavedFunction(List<String>.from(values));
+            },
+          );
+        },
+      );
+    }
+
     return Container(
       padding: EdgeInsets.fromLTRB(20, 5, 5, 5),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(
-          color: Colors.black,
-        ),
-      ),
+      decoration: AppTheme.normalBlackBorderDecoration,
       child: Row(
         children: [
           if (selectedItemList.length == 0)

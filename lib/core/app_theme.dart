@@ -105,4 +105,18 @@ class AppTheme {
     border: Border.all(color: Colors.black26),
     borderRadius: BorderRadius.circular(18),
   );
+
+  static BoxDecoration normalGreenBorderDecoration = BoxDecoration(
+    borderRadius: BorderRadius.circular(10),
+    border: Border.all(
+      color: AppTheme.secondaryColor,
+    ),
+  );
+
+  static BoxDecoration normalBlackBorderDecoration = BoxDecoration(
+    borderRadius: BorderRadius.circular(10),
+    border: Border.all(
+      color: Colors.black12,
+    ),
+  );
 }
