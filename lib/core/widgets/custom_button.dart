@@ -38,7 +38,7 @@ class CustomButton extends StatelessWidget {
               : AppTheme.buttonInactiveBackgroundColor,
         ),
         padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-          EdgeInsets.all(5.0),
+          EdgeInsets.symmetric(horizontal: 15),
         ),
       ),
       onPressed: isActive ? onPressed : () {},

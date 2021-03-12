@@ -4,8 +4,7 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'downloads_controller.dart';
 import 'downloads_state_machine.dart';
 import 'mobile/initialization_view.dart';
-// import 'mobile/initialized_view.dart';
-import 'mobile/initialized_view copy.dart';
+import 'mobile/initialized_view.dart';
 import 'web/initialized_view.dart';
 
 class DownloadsPage extends View {
