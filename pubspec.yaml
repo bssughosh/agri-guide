@@ -22,7 +22,6 @@ dependencies:
   url_launcher: ^5.7.10
   email_validator: ^1.0.6
   checkdigit: ^0.2.0
-  convex_bottom_bar: ^2.6.0
   animated_text_kit: ^3.1.0
   syncfusion_flutter_charts: ^18.4.39
   path_provider: ^1.6.27

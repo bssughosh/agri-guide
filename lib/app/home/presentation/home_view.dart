@@ -1,5 +1,3 @@
-import 'package:agri_guide/app/home/presentation/widgets/bottom_nav_bar.dart';
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
@@ -12,6 +10,7 @@ import '../../prediction/presentation/prediction_view.dart';
 import '../../statistics/presentation/statistics_view.dart';
 import 'home_controller.dart';
 import 'home_state_machine.dart';
+import 'widgets/bottom_nav_bar.dart';
 import 'widgets/navigation-tabs.dart';
 
 class HomePage extends View {
