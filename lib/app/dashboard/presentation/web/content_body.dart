@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/custom_icons_icons.dart';
 import '../dashboard_controller.dart';
 import '../widgets/live_weather_card.dart';
 import '../widgets/location_card.dart';
@@ -28,21 +29,21 @@ Widget contentBody({
           if (controller.liveWeatherEntity != null &&
               !controller.isFetchingLiveWeather)
             LiveWeatherCard(
-              icon: Icons.thermostat_rounded,
+              icon: CustomIcons.temp_logo_live_weather,
               title: 'Temperature',
               value: controller.liveWeatherEntity.temp + ' \u2103',
             ),
           if (controller.liveWeatherEntity != null &&
               !controller.isFetchingLiveWeather)
             LiveWeatherCard(
-              icon: Icons.opacity,
+              icon: CustomIcons.humidity_logo_live_weather,
               title: 'Humidity',
               value: controller.liveWeatherEntity.humidity + ' %',
             ),
           if (controller.liveWeatherEntity != null &&
               !controller.isFetchingLiveWeather)
             LiveWeatherCard(
-              icon: Icons.wb_cloudy,
+              icon: CustomIcons.rainfall_logo_live_weather,
               title: 'Rainfall',
               value: controller.liveWeatherEntity.rain + ' mm',
             ),

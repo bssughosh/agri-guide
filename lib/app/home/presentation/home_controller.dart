@@ -17,7 +17,6 @@ class HomePageController extends Controller {
         super();
 
   int pageNumber = 0;
-  int oldPageNumber = 0;
 
   LoginStatus loginStatus = LoginStatus.LOGGED_OUT;
   UserEntity userEntity;
@@ -36,7 +35,6 @@ class HomePageController extends Controller {
   }
 
   void changePageNumber(int newPageNo) {
-    oldPageNumber = pageNumber;
     pageNumber = newPageNo;
     refreshUI();
   }
