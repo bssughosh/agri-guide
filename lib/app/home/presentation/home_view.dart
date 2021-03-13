@@ -1,3 +1,4 @@
+import 'package:agri_guide/app/home/presentation/widgets/bottom_nav_bar.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -227,23 +228,9 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
 
   _buildHomeInitializedViewMobile() {
     return Scaffold(
-      bottomNavigationBar: ConvexAppBar(
-        backgroundColor: Colors.white,
-        activeColor: AppTheme.primaryColor,
-        color: Colors.black,
-        style: TabStyle.fixed,
-        items: [
-          TabItem(icon: Icons.dashboard, title: 'Dashboard'),
-          TabItem(icon: Icons.get_app, title: 'Downloads'),
-          TabItem(icon: Icons.schedule, title: 'Prediction'),
-          TabItem(icon: Icons.insights, title: 'Statistics'),
-          TabItem(icon: Icons.account_circle, title: 'Account'),
-        ],
-        onTap: (int i) {
-          controller.oldPageNumber = controller.pageNumber;
-          controller.pageNumber = i;
-          pageController.jumpToPage(i);
-        },
+      bottomNavigationBar: BottomNavBar(
+        controller: controller,
+        pageController: pageController,
       ),
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
