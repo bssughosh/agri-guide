@@ -12,6 +12,7 @@ enum DownloadParams {
   temp,
   humidity,
   rainfall,
+  yield,
 }
 
 enum TableType {

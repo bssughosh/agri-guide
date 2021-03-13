@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
-import '../../../core/enums.dart';
 import 'dashboard_controller.dart';
 import 'dashboard_state_machine.dart';
 import 'mobile/initialization_view.dart';
@@ -9,10 +8,6 @@ import 'mobile/initialized_view.dart';
 import 'web/initialized_view.dart';
 
 class DashboardPage extends View {
-  final DashboardPageParams params;
-
-  DashboardPage(this.params);
-
   @override
   State<StatefulWidget> createState() => DashboardViewState();
 }
@@ -30,7 +25,6 @@ class DashboardViewState
       case DashboardPageInitializationState:
         return buildDashboardInitializationView(
           controller: controller,
-          loginStatus: widget.params.loginStatus,
         );
 
       case DashboardPageInitializedState:
@@ -58,7 +52,6 @@ class DashboardViewState
       case DashboardPageInitializationState:
         return buildDashboardInitializationView(
           controller: controller,
-          loginStatus: widget.params.loginStatus,
         );
 
       case DashboardPageInitializedState:
@@ -71,10 +64,4 @@ class DashboardViewState
     }
     throw Exception("Unknown state $currentState encountered");
   }
-}
-
-class DashboardPageParams {
-  final LoginStatus loginStatus;
-
-  DashboardPageParams(this.loginStatus);
 }

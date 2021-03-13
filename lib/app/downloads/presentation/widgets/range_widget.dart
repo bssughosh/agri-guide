@@ -1,46 +1,42 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/app_theme.dart';
-import '../downloads_controller.dart';
+import '../../../../core/widgets/custom_dropdown.dart';
 
 class RangeWidget extends StatelessWidget {
-  final DownloadsPageController controller;
-  final bool isFrom;
+  final String title;
+  final String hintText;
+  final List<DropdownMenuItem> itemsList;
+  final String selectedItem;
+  final Function onChanged;
 
-  const RangeWidget({this.controller, this.isFrom});
+  const RangeWidget({
+    @required this.title,
+    @required this.hintText,
+    @required this.itemsList,
+    @required this.selectedItem,
+    @required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          isFrom ? 'From' : 'To',
-          style: AppTheme.headingBoldText,
-        ),
-        SizedBox(
-          height: 5,
-        ),
-        Container(
-          width: 80,
-          child: TextField(
-            controller: isFrom ? controller.fromText : controller.toText,
-            keyboardType: TextInputType.number,
-            textAlign: TextAlign.center,
-            decoration: InputDecoration(
-              fillColor: Colors.white,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5),
-              ),
-            ),
-            onChanged: (value) {
-              if (value == null)
-                controller.updateRangeYear(isFrom ? '1901' : '2019', isFrom);
-              else
-                controller.updateRangeYear('', isFrom);
-            },
+    return Container(
+      width: 120,
+      child: Column(
+        children: [
+          Text(
+            title,
+            style: AppTheme.bodyBoldText,
           ),
-        ),
-      ],
+          SizedBox(height: 5),
+          CustomDropdown(
+            hintText: hintText,
+            itemsList: itemsList,
+            selectedItem: selectedItem,
+            onChanged: onChanged,
+          )
+        ],
+      ),
     );
   }
 }

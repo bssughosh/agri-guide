@@ -1,3 +1,4 @@
+import 'package:agri_guide/app/accounts/domain/usecase/check_login_status_usecase.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 import '../../../core/observer.dart';
@@ -15,6 +16,7 @@ class PredictionPagePresenter extends Presenter {
   FetchDistrictListUsecase _fetchDistrictListUsecase;
   FetchSeasonsListUsecase _fetchSeasonsListUsecase;
   FetchCropListUsecase _fetchCropListUsecase;
+  CheckLoginStatusUsecase _checkLoginStatusUsecase;
 
   PredictionPagePresenter(
     this._fetchUserDetailsUsecase,
@@ -23,6 +25,7 @@ class PredictionPagePresenter extends Presenter {
     this._fetchDistrictListUsecase,
     this._fetchSeasonsListUsecase,
     this._fetchCropListUsecase,
+    this._checkLoginStatusUsecase,
   );
 
   @override
@@ -33,6 +36,11 @@ class PredictionPagePresenter extends Presenter {
     _fetchDistrictListUsecase.dispose();
     _fetchSeasonsListUsecase.dispose();
     _fetchCropListUsecase.dispose();
+    _checkLoginStatusUsecase.dispose();
+  }
+
+  void checkLoginStatus(UseCaseObserver observer) {
+    _checkLoginStatusUsecase.execute(observer);
   }
 
   void fetchUserDetails(UseCaseObserver observer) {

@@ -7,7 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../../core/enums.dart';
-import '../../../core/exceptions.dart';
+import '../../../core/handle_api_errors.dart';
 import '../../../core/observer.dart';
 import '../../../injection_container.dart';
 import '../../navigation_service.dart';
@@ -27,21 +27,25 @@ class DownloadsPageController extends Controller {
   List<String> selectedStates = [];
   List districtList = [];
   List<String> selectedDistricts = [];
-  bool isStateFilterClicked = false;
-  bool isDistrictFilterClicked = false;
-  TextEditingController fromText = new TextEditingController();
-  TextEditingController toText = new TextEditingController();
+
+  String fromText;
+  String toText;
+
+  List<String> years = [];
+
   List paramsList = [
     {'id': describeEnum(DownloadParams.temp), 'name': 'Temperature'},
     {'id': describeEnum(DownloadParams.humidity), 'name': 'Humidity'},
-    {'id': describeEnum(DownloadParams.rainfall), 'name': 'Rainfall'}
+    {'id': describeEnum(DownloadParams.rainfall), 'name': 'Rainfall'},
+    {'id': describeEnum(DownloadParams.yield), 'name': 'Yield'},
   ];
+
   List<String> selectedParams = [
     describeEnum(DownloadParams.temp),
     describeEnum(DownloadParams.humidity),
     describeEnum(DownloadParams.rainfall),
   ];
-  bool isParamsFilterClicked = false;
+
   bool isDownloading = false;
 
   List<String> downloadedFilesToBeDisplayed = [];
@@ -59,6 +63,28 @@ class DownloadsPageController extends Controller {
     return _stateMachine.getCurrentState();
   }
 
+  List<String> createYearsList() {
+    List<String> _years = [];
+    for (int i = 1901; i < 2019; i++) {
+      _years.add(i.toString());
+    }
+
+    return _years;
+  }
+
+  List<DropdownMenuItem> yearItems() {
+    List<DropdownMenuItem> _list = [];
+    for (var year in years) {
+      _list.add(
+        new DropdownMenuItem(
+          value: year,
+          child: Text(year),
+        ),
+      );
+    }
+    return _list;
+  }
+
   void fetchStateList(bool isWeb) {
     _presenter.fetchStateList(
       new UseCaseObserver(
@@ -66,7 +92,7 @@ class DownloadsPageController extends Controller {
           print('State list successfully fetched');
         },
         (error) {
-          _handleAPIErrors(error);
+          handleAPIErrors(error);
           print(error);
         },
         onNextFunction: (List stateListRes) async {
@@ -77,87 +103,6 @@ class DownloadsPageController extends Controller {
         },
       ),
     );
-  }
-
-  _handleAPIErrors(Exception error) {
-    if (error.runtimeType == APIBadRequestError) {
-      Fluttertoast.showToast(
-          msg: 'A bad request was encountered. Please try again');
-    } else if (error.runtimeType == APIForbiddenError) {
-      Fluttertoast.showToast(
-          msg: 'The request was forbidden. Please try again');
-    } else if (error.runtimeType == APINotFoundError) {
-      Fluttertoast.showToast(
-          msg:
-              'The request was incorrect. Please check the request and try again');
-    } else if (error.runtimeType == APITooManyRequestsError) {
-      Fluttertoast.showToast(
-          msg:
-              'There are too many requests serviced right now. Please try again after sometime');
-    } else if (error.runtimeType == APIInternalServerError) {
-      Fluttertoast.showToast(
-          msg:
-              'There was an internal server error. Please try again after sometime');
-    } else if (error.runtimeType == APIServiceUnavailabeError) {
-      Fluttertoast.showToast(
-          msg:
-              'The server is under maintenance right now. Please try again after sometime');
-    } else {
-      Fluttertoast.showToast(
-          msg:
-              'The request was incorrect. Please check the request and try again');
-    }
-  }
-
-  void handleStateFilterClicked() {
-    if (isDistrictFilterClicked || isParamsFilterClicked) {
-    } else {
-      isStateFilterClicked = !isStateFilterClicked;
-    }
-    refreshUI();
-  }
-
-  void handleDistrictFilterClicked() {
-    if (isStateFilterClicked || isParamsFilterClicked) {
-    } else {
-      isDistrictFilterClicked = !isDistrictFilterClicked;
-    }
-    refreshUI();
-  }
-
-  void handleParamsFilterClicked() {
-    if (isStateFilterClicked || isDistrictFilterClicked) {
-    } else {
-      isParamsFilterClicked = !isParamsFilterClicked;
-    }
-    refreshUI();
-  }
-
-  void handleCheckBoxChangeOfState(bool value, String id) {
-    if (value) {
-      selectedStates.add(id);
-    } else {
-      selectedStates.remove(id);
-    }
-    refreshUI();
-  }
-
-  void handleCheckBoxChangeOfDistrict(bool value, String id) {
-    if (value) {
-      selectedDistricts.add(id);
-    } else {
-      selectedDistricts.remove(id);
-    }
-    refreshUI();
-  }
-
-  void handleCheckBoxChangeOfParams(bool value, String id) {
-    if (value) {
-      selectedParams.add(id);
-    } else {
-      selectedParams.remove(id);
-    }
-    refreshUI();
   }
 
   void selectedStateChange() {
@@ -171,7 +116,7 @@ class DownloadsPageController extends Controller {
               print('District list successfully fetched');
             },
             (error) {
-              _handleAPIErrors(error);
+              handleAPIErrors(error);
               print(error);
             },
             onNextFunction: (List districtListRes) {
@@ -187,33 +132,47 @@ class DownloadsPageController extends Controller {
     }
   }
 
-  void selectedDistrictChanged() {
-    refreshUI();
-  }
-
   void selectedParamsChanged() {
     refreshUI();
   }
 
-  void updateRangeYear(String newValue, bool isFrom) {
-    if (newValue != '') {
-      if (isFrom)
-        fromText.text = newValue;
-      else
-        toText.text = newValue;
+  void fromYearUpdated(String newYear) {
+    fromText = newYear;
+    if (fromText == '2019') {
+      fromText = '2018';
     }
+    if (toText != null && fromText != null) {
+      if (int.parse(fromText) >= int.parse(toText)) {
+        toText = (int.parse(fromText) + 1).toString();
+      }
+    }
+
+    refreshUI();
+  }
+
+  void toYearUpdated(String newYear) {
+    toText = newYear;
+    if (toText == '1901') {
+      toText = '1902';
+    }
+    if (toText != null && fromText != null) {
+      if (int.parse(fromText) >= int.parse(toText)) {
+        fromText = (int.parse(toText) - 1).toString();
+      }
+    }
+
     refreshUI();
   }
 
   void downloadFiles() {
     _presenter.getRequiredDownload(
       new UseCaseObserver(() {}, (error) {
-        _handleAPIErrors(error);
+        handleAPIErrors(error);
         print(error);
       }),
       selectedStates,
       selectedDistricts,
-      List<String>.from([fromText.text, toText.text]),
+      List<String>.from([fromText, toText]),
       selectedParams,
     );
   }
@@ -233,12 +192,12 @@ class DownloadsPageController extends Controller {
           toastLength: Toast.LENGTH_LONG,
         );
       }, (error) {
-        _handleAPIErrors(error);
+        handleAPIErrors(error);
         print(error);
       }),
       selectedStates,
       selectedDistricts,
-      List<String>.from([fromText.text, toText.text]),
+      List<String>.from([fromText, toText]),
       selectedParams,
       fileName,
     );
@@ -286,5 +245,20 @@ class DownloadsPageController extends Controller {
       downloadedFilesToBeDisplayed
           .add(_toBeAdded + _pathElements[_pathElements.length - 1]);
     }
+  }
+
+  void updateStateList(List<String> newStateList) {
+    selectedStates = newStateList;
+    districtList = [];
+    selectedDistricts = [];
+    fromText = null;
+    toText = null;
+    selectedStateChange();
+    refreshUI();
+  }
+
+  void updateDistrictList(List<String> newDistrictList) {
+    selectedDistricts = newDistrictList;
+    refreshUI();
   }
 }

@@ -5,6 +5,8 @@ class AppTheme {
   // Colors
   static Color primaryColor = Color(0xFFB4FF7B);
 
+  static Color chipBackground = Color(0xFF8CC63E).withOpacity(0.25);
+
   static Color secondaryColor = Color(0xFF2BB622);
 
   static Color accentColor = Color(0xFF2BB622);
@@ -18,6 +20,8 @@ class AppTheme {
   static Color selectionBarColor = Colors.grey[300].withOpacity(.8);
 
   static Color customTableBorderColor = Colors.black26;
+
+  static Color buttonInactiveBackgroundColor = Color(0xFFCCCCCC);
 
   // Text styles
   static TextStyle bodyRegularText = TextStyle(fontFamily: 'Roboto');
@@ -54,6 +58,12 @@ class AppTheme {
 
   static TextStyle customTableHeadingTextStyle =
       bodyRegularText.copyWith(color: Colors.white);
+
+  static TextStyle buttonActiveTextStyle =
+      bodyBoldText.copyWith(color: Colors.white);
+
+  static TextStyle buttonInactiveTextStyle =
+      bodyBoldText.copyWith(color: Color(0xFF9E9E9E));
 
   // Box decorations
   static BoxDecoration navigationTabSelectedDecoration = BoxDecoration(
@@ -102,5 +112,19 @@ class AppTheme {
   static BoxDecoration customTableRowCellDecoration = BoxDecoration(
     border: Border.all(color: Colors.black26),
     borderRadius: BorderRadius.circular(18),
+  );
+
+  static BoxDecoration normalGreenBorderDecoration = BoxDecoration(
+    borderRadius: BorderRadius.circular(10),
+    border: Border.all(
+      color: AppTheme.secondaryColor,
+    ),
+  );
+
+  static BoxDecoration normalBlackBorderDecoration = BoxDecoration(
+    borderRadius: BorderRadius.circular(10),
+    border: Border.all(
+      color: Colors.black12,
+    ),
   );
 }

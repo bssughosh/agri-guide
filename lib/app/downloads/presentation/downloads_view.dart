@@ -18,8 +18,7 @@ class DownloadsViewState
 
   @override
   void initState() {
-    controller.fromText.text = '1901';
-    controller.toText.text = '2019';
+    controller.years = controller.createYearsList();
     super.initState();
   }
 
