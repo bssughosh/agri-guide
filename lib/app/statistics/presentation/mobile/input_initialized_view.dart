@@ -1,96 +1,98 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/app_theme.dart';
-import '../../../../core/enums.dart';
+import '../../../../core/widgets/custom_button.dart';
+import '../../../../core/widgets/custom_dropdown.dart';
 import '../statistics_controller.dart';
-import '../widgets/location_selection_bar.dart';
-import '../widgets/location_selection_card.dart';
 
 Widget buildStatisticsInputInitializedViewMobile({
   @required BuildContext context,
   @required StatisticsPageController controller,
 }) {
   return Container(
-    width: MediaQuery.of(context).size.width,
+    width: MediaQuery.of(context).size.width * 0.9,
     child: WillPopScope(
       onWillPop: () => Future.sync(controller.onWillPopScopePage1),
       child: Center(
         child: Container(
-          child: Stack(
-            children: [
-              Center(
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Center(
-                          child: Text(
-                            'Agricultural Location Details',
-                            style: AppTheme.headingBoldText,
-                          ),
-                        ),
-                        SizedBox(height: 15),
-                        LocationSelectionBar(
-                          controller: controller,
-                          selectionListType: SelectionListType.STATE,
-                          isWeb: false,
-                        ),
-                        if (controller.selectedState != '')
-                          if (controller.districtListLoading)
-                            CircularProgressIndicator(),
-                        if (controller.selectedState != '')
-                          if (!controller.districtListLoading)
-                            LocationSelectionBar(
-                              controller: controller,
-                              selectionListType: SelectionListType.DISTRICT,
-                              isWeb: false,
-                            ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        if (controller.selectedState != '' &&
-                            controller.selectedDistrict != '')
-                          Center(
-                            child: TextButton(
-                              child: Text(
-                                'Submit',
-                                style: AppTheme.navigationTabSelectedTextStyle,
-                              ),
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        AppTheme.navigationSelectedColor),
-                                overlayColor: MaterialStateProperty.all<Color>(
-                                    AppTheme.secondaryColor),
-                              ),
-                              onPressed: () {
-                                controller.proceedToStatisticsDisplay();
-                              },
-                            ),
-                          )
-                      ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Center(
+                  child: Text(
+                    'Agricultural Location Details',
+                    style: AppTheme.headingBoldText,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 25, bottom: 10),
+                    child: Text(
+                      'State: ',
+                      style: AppTheme.headingBoldText.copyWith(fontSize: 17),
                     ),
                   ),
                 ),
-              ),
-              if (controller.isStateFilterClicked)
-                Center(
-                  child: LocationSelectionCard(
-                    controller: controller,
-                    selectionListType: SelectionListType.STATE,
-                    isWeb: false,
-                  ),
+                SizedBox(height: 5),
+                CustomDropdown(
+                  hintText: 'Select State',
+                  itemsList: controller.stateItems(),
+                  selectedItem: controller.selectedState,
+                  onChanged: (String newValue) {
+                    controller.selectedState = newValue;
+                    controller.selectedStateChange();
+                  },
                 ),
-              if (controller.isDistrictFilterClicked)
-                Center(
-                  child: LocationSelectionCard(
-                    controller: controller,
-                    selectionListType: SelectionListType.DISTRICT,
-                    isWeb: false,
-                  ),
+                if (controller.selectedState != null)
+                  if (controller.districtListLoading)
+                    CircularProgressIndicator(),
+                if (controller.selectedState != null)
+                  if (!controller.districtListLoading) SizedBox(height: 20),
+                if (controller.selectedState != null)
+                  if (!controller.districtListLoading)
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 25, bottom: 10),
+                        child: Text(
+                          'District: ',
+                          style:
+                              AppTheme.headingBoldText.copyWith(fontSize: 17),
+                        ),
+                      ),
+                    ),
+                if (controller.selectedState != null)
+                  if (!controller.districtListLoading) SizedBox(height: 5),
+                if (controller.selectedState != null)
+                  if (!controller.districtListLoading)
+                    CustomDropdown(
+                      hintText: 'Select District',
+                      itemsList: controller.districtItems(),
+                      selectedItem: controller.selectedDistrict,
+                      onChanged: (String newValue) {
+                        controller.selectedDistrict = newValue;
+                        controller.selectedDistrictChange();
+                      },
+                    ),
+                SizedBox(
+                  height: 20,
                 ),
-            ],
+                if (controller.selectedState != null &&
+                    controller.selectedDistrict != null)
+                  Center(
+                    child: CustomButton(
+                      title: 'Submit',
+                      isActive: true,
+                      onPressed: () {
+                        controller.proceedToStatisticsDisplay();
+                      },
+                      isOverlayRequired: true,
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
       ),

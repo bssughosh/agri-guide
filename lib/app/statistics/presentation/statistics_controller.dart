@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../core/enums.dart';
-import '../../../core/exceptions.dart';
+import '../../../core/handle_api_errors.dart';
 import '../../../core/observer.dart';
 import '../../../injection_container.dart';
 import '../../navigation_service.dart';
@@ -26,8 +25,8 @@ class StatisticsPageController extends Controller {
   List districtList = [];
   bool isStateFilterClicked = false;
   bool isDistrictFilterClicked = false;
-  String selectedState = '';
-  String selectedDistrict = '';
+  String selectedState;
+  String selectedDistrict;
   bool districtListLoading = false;
 
   StatisticsEntity statisticsEntity;
@@ -68,52 +67,6 @@ class StatisticsPageController extends Controller {
     super.dispose();
   }
 
-  _handleAPIErrors(Exception error) {
-    if (error.runtimeType == APIBadRequestError) {
-      Fluttertoast.showToast(
-          msg: 'A bad request was encountered. Please try again');
-    } else if (error.runtimeType == APIForbiddenError) {
-      Fluttertoast.showToast(
-          msg: 'The request was forbidden. Please try again');
-    } else if (error.runtimeType == APINotFoundError) {
-      Fluttertoast.showToast(
-          msg:
-              'The request was incorrect. Please check the request and try again');
-    } else if (error.runtimeType == APITooManyRequestsError) {
-      Fluttertoast.showToast(
-          msg:
-              'There are too many requests serviced right now. Please try again after sometime');
-    } else if (error.runtimeType == APIInternalServerError) {
-      Fluttertoast.showToast(
-          msg:
-              'There was an internal server error. Please try again after sometime');
-    } else if (error.runtimeType == APIServiceUnavailabeError) {
-      Fluttertoast.showToast(
-          msg:
-              'The server is under maintenance right now. Please try again after sometime');
-    } else {
-      Fluttertoast.showToast(
-          msg:
-              'The request was incorrect. Please check the request and try again');
-    }
-  }
-
-  void handleStateFilterClicked() {
-    if (isDistrictFilterClicked) {
-    } else {
-      isStateFilterClicked = !isStateFilterClicked;
-    }
-    refreshUI();
-  }
-
-  void handleDistrictFilterClicked() {
-    if (isStateFilterClicked) {
-    } else {
-      isDistrictFilterClicked = !isDistrictFilterClicked;
-    }
-    refreshUI();
-  }
-
   void fetchStateList() {
     _presenter.fetchStateList(
       new UseCaseObserver(
@@ -121,7 +74,7 @@ class StatisticsPageController extends Controller {
           print('State list successfully fetched');
         },
         (error) {
-          _handleAPIErrors(error);
+          handleAPIErrors(error);
           print(error);
         },
         onNextFunction: (List stateListRes) {
@@ -135,13 +88,14 @@ class StatisticsPageController extends Controller {
 
   void fetchDistrictList() {
     districtListLoading = true;
+    refreshUI();
     _presenter.fetchDistrictList(
       new UseCaseObserver(
         () {
           print('District list successfully fetched');
         },
         (error) {
-          _handleAPIErrors(error);
+          handleAPIErrors(error);
           print(error);
         },
         onNextFunction: (List districtListRes) {
@@ -154,16 +108,6 @@ class StatisticsPageController extends Controller {
     );
   }
 
-  void handleRadioChangeOfState(String value) {
-    selectedState = value;
-    refreshUI();
-  }
-
-  void handleRadioChangeOfDistrict(String value) {
-    selectedDistrict = value;
-    refreshUI();
-  }
-
   void selectedStateChange() {
     selectedDistrict = '';
     districtList = [];
@@ -173,6 +117,32 @@ class StatisticsPageController extends Controller {
 
   void selectedDistrictChange() {
     refreshUI();
+  }
+
+  List<DropdownMenuItem> stateItems() {
+    List<DropdownMenuItem> _list = [];
+    for (var state in stateList) {
+      _list.add(
+        new DropdownMenuItem(
+          value: state['id'],
+          child: Text(state['name']),
+        ),
+      );
+    }
+    return _list;
+  }
+
+  List<DropdownMenuItem> districtItems() {
+    List<DropdownMenuItem> _list = [];
+    for (var district in districtList) {
+      _list.add(
+        new DropdownMenuItem(
+          value: district['id'],
+          child: Text(district['name']),
+        ),
+      );
+    }
+    return _list;
   }
 
   void findColorsAndToChartData({
@@ -237,7 +207,7 @@ class StatisticsPageController extends Controller {
       new UseCaseObserver(() {
         print('Whole data fetched');
       }, (error) {
-        _handleAPIErrors(error);
+        handleAPIErrors(error);
         print(error);
       }, onNextFunction: (StatisticsEntity entity) {
         statisticsEntity = entity;
