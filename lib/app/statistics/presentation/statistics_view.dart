@@ -38,6 +38,7 @@ class StatisticsViewState
       case StatisticsPageDisplayInitializedState:
         return buildStatisticsDisplayInitializedViewMobile(
           controller: controller,
+          context: context,
         );
 
       case StatisticsPageLoadingState:

@@ -34,25 +34,11 @@ class StatisticsPageController extends Controller {
   List<ChartData> temperatureChartData = [];
   List<ChartData> humidityChartData = [];
 
-  StatisticsFilters selectedFilter1 = StatisticsFilters.Temperature;
-  StatisticsFilters selectedFilter2 = StatisticsFilters.Rainfall;
-
-  List<StatisticsFilters> filter1 = [
-    StatisticsFilters.Temperature,
-    StatisticsFilters.Humidity,
-    StatisticsFilters.Rainfall,
-  ];
-
-  List<StatisticsFilters> filter2 = [
-    StatisticsFilters.Humidity,
-    StatisticsFilters.Rainfall,
-  ];
-
   int temperatureFirstYear;
   int humidityFirstYear;
   int rainfallFirstYear;
 
-  bool areElementsToBeSwapped = false;
+  List<StatisticsFilters> selectedFilters = [];
 
   @override
   void initListeners() {}
@@ -240,10 +226,6 @@ class StatisticsPageController extends Controller {
           humidityFirstYear = int.parse(humidityChartData[0].x);
         }
 
-        if (temperatureFirstYear > rainfallFirstYear) {
-          areElementsToBeSwapped = true;
-        }
-
         _stateMachine.onEvent(new StatisticsPageDisplayInitializedEvent());
         refreshUI();
       }),
@@ -252,73 +234,73 @@ class StatisticsPageController extends Controller {
     );
   }
 
-  void handleFilter1Changed(StatisticsFilters newFilter) {
-    selectedFilter2 = null;
-    selectedFilter1 = newFilter;
-    filter2 = [];
-    for (StatisticsFilters filter in filter1) {
-      if (filter != newFilter) {
-        filter2.add(filter);
-      }
-    }
-    selectedFilter2 = filter2[0];
-    if (selectedFilter1 == StatisticsFilters.Temperature) {
-      if (selectedFilter2 == StatisticsFilters.Humidity) {
-        if (humidityFirstYear < temperatureFirstYear)
-          areElementsToBeSwapped = true;
-      } else if (selectedFilter2 == StatisticsFilters.Rainfall) {
-        if (rainfallFirstYear < temperatureFirstYear)
-          areElementsToBeSwapped = true;
-      }
-    } else if (selectedFilter1 == StatisticsFilters.Humidity) {
-      if (selectedFilter2 == StatisticsFilters.Temperature) {
-        if (temperatureFirstYear < humidityFirstYear)
-          areElementsToBeSwapped = true;
-      } else if (selectedFilter2 == StatisticsFilters.Rainfall) {
-        if (rainfallFirstYear < humidityFirstYear)
-          areElementsToBeSwapped = true;
-      }
-    } else if (selectedFilter1 == StatisticsFilters.Rainfall) {
-      if (selectedFilter2 == StatisticsFilters.Temperature) {
-        if (temperatureFirstYear < rainfallFirstYear)
-          areElementsToBeSwapped = true;
-      } else if (selectedFilter2 == StatisticsFilters.Humidity) {
-        if (humidityFirstYear < rainfallFirstYear)
-          areElementsToBeSwapped = true;
-      }
-    }
-    refreshUI();
-  }
+  // void handleFilter1Changed(StatisticsFilters newFilter) {
+  //   selectedFilter2 = null;
+  //   selectedFilter1 = newFilter;
+  //   filter2 = [];
+  //   for (StatisticsFilters filter in filter1) {
+  //     if (filter != newFilter) {
+  //       filter2.add(filter);
+  //     }
+  //   }
+  //   selectedFilter2 = filter2[0];
+  //   if (selectedFilter1 == StatisticsFilters.Temperature) {
+  //     if (selectedFilter2 == StatisticsFilters.Humidity) {
+  //       if (humidityFirstYear < temperatureFirstYear)
+  //         areElementsToBeSwapped = true;
+  //     } else if (selectedFilter2 == StatisticsFilters.Rainfall) {
+  //       if (rainfallFirstYear < temperatureFirstYear)
+  //         areElementsToBeSwapped = true;
+  //     }
+  //   } else if (selectedFilter1 == StatisticsFilters.Humidity) {
+  //     if (selectedFilter2 == StatisticsFilters.Temperature) {
+  //       if (temperatureFirstYear < humidityFirstYear)
+  //         areElementsToBeSwapped = true;
+  //     } else if (selectedFilter2 == StatisticsFilters.Rainfall) {
+  //       if (rainfallFirstYear < humidityFirstYear)
+  //         areElementsToBeSwapped = true;
+  //     }
+  //   } else if (selectedFilter1 == StatisticsFilters.Rainfall) {
+  //     if (selectedFilter2 == StatisticsFilters.Temperature) {
+  //       if (temperatureFirstYear < rainfallFirstYear)
+  //         areElementsToBeSwapped = true;
+  //     } else if (selectedFilter2 == StatisticsFilters.Humidity) {
+  //       if (humidityFirstYear < rainfallFirstYear)
+  //         areElementsToBeSwapped = true;
+  //     }
+  //   }
+  //   refreshUI();
+  // }
 
-  void handleFilter2Changed(StatisticsFilters newFilter) {
-    selectedFilter2 = newFilter;
-    if (selectedFilter1 == StatisticsFilters.Temperature) {
-      if (selectedFilter2 == StatisticsFilters.Humidity) {
-        if (humidityFirstYear < temperatureFirstYear)
-          areElementsToBeSwapped = true;
-      } else if (selectedFilter2 == StatisticsFilters.Rainfall) {
-        if (rainfallFirstYear < temperatureFirstYear)
-          areElementsToBeSwapped = true;
-      }
-    } else if (selectedFilter1 == StatisticsFilters.Humidity) {
-      if (selectedFilter2 == StatisticsFilters.Temperature) {
-        if (temperatureFirstYear < humidityFirstYear)
-          areElementsToBeSwapped = true;
-      } else if (selectedFilter2 == StatisticsFilters.Rainfall) {
-        if (rainfallFirstYear < humidityFirstYear)
-          areElementsToBeSwapped = true;
-      }
-    } else if (selectedFilter1 == StatisticsFilters.Rainfall) {
-      if (selectedFilter2 == StatisticsFilters.Temperature) {
-        if (temperatureFirstYear < rainfallFirstYear)
-          areElementsToBeSwapped = true;
-      } else if (selectedFilter2 == StatisticsFilters.Humidity) {
-        if (humidityFirstYear < rainfallFirstYear)
-          areElementsToBeSwapped = true;
-      }
-    }
-    refreshUI();
-  }
+  // void handleFilter2Changed(StatisticsFilters newFilter) {
+  //   selectedFilter2 = newFilter;
+  //   if (selectedFilter1 == StatisticsFilters.Temperature) {
+  //     if (selectedFilter2 == StatisticsFilters.Humidity) {
+  //       if (humidityFirstYear < temperatureFirstYear)
+  //         areElementsToBeSwapped = true;
+  //     } else if (selectedFilter2 == StatisticsFilters.Rainfall) {
+  //       if (rainfallFirstYear < temperatureFirstYear)
+  //         areElementsToBeSwapped = true;
+  //     }
+  //   } else if (selectedFilter1 == StatisticsFilters.Humidity) {
+  //     if (selectedFilter2 == StatisticsFilters.Temperature) {
+  //       if (temperatureFirstYear < humidityFirstYear)
+  //         areElementsToBeSwapped = true;
+  //     } else if (selectedFilter2 == StatisticsFilters.Rainfall) {
+  //       if (rainfallFirstYear < humidityFirstYear)
+  //         areElementsToBeSwapped = true;
+  //     }
+  //   } else if (selectedFilter1 == StatisticsFilters.Rainfall) {
+  //     if (selectedFilter2 == StatisticsFilters.Temperature) {
+  //       if (temperatureFirstYear < rainfallFirstYear)
+  //         areElementsToBeSwapped = true;
+  //     } else if (selectedFilter2 == StatisticsFilters.Humidity) {
+  //       if (humidityFirstYear < rainfallFirstYear)
+  //         areElementsToBeSwapped = true;
+  //     }
+  //   }
+  //   refreshUI();
+  // }
 
   bool onWillPopScopePage1() {
     if (selectedDistrict != '') {
