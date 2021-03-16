@@ -1,12 +1,11 @@
-import 'package:agri_guide/core/widgets/chip.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../../core/app_theme.dart';
-import '../../../../core/enums.dart';
+import '../../../../core/widgets/chip.dart';
 import '../statistics_controller.dart';
-import '../statistics_view.dart';
+import '../widgets/double_graph.dart';
+import '../widgets/single_graph.dart';
 
 Widget buildStatisticsDisplayInitializedViewMobile({
   @required StatisticsPageController controller,
@@ -77,6 +76,32 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                   Image.asset(
                     'assets/no_filter_selected.png',
                     width: MediaQuery.of(context).size.width * 0.9,
+                  ),
+                if (controller.selectedFilters.length == 1)
+                  singleGraph(
+                    xAxisName: 'Year',
+                    visibleMinimum: 10,
+                    maximumLabels: 15,
+                    yAxisName: describeEnum(controller.selectedFilters[0]),
+                    yAxisLabel: controller
+                        .getAxisLabelName(controller.selectedFilters[0]),
+                    dataSource: controller.getPrimaryDatastore(),
+                  ),
+                if (controller.selectedFilters.length == 2)
+                  doubleGraph(
+                    xAxisName: 'Year',
+                    visibleMinimum: 10,
+                    maximumLabels: 15,
+                    primaryYAxisName:
+                        describeEnum(controller.selectedFilters[0]),
+                    primaryYAxisLabel: controller
+                        .getAxisLabelName(controller.selectedFilters[0]),
+                    secondaryYAxisName:
+                        describeEnum(controller.selectedFilters[1]),
+                    secondaryYAxisLabel: controller
+                        .getAxisLabelName(controller.selectedFilters[1]),
+                    primaryDataSource: controller.getPrimaryDatastore(),
+                    secondaryDataSource: controller.getSecondaryDatastore(),
                   ),
               ],
             ),

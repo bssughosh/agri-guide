@@ -332,4 +332,69 @@ class StatisticsPageController extends Controller {
     }
     return '';
   }
+
+  List<ChartData> getPrimaryDatastore() {
+    if (selectedFilters.length > 0) {
+      if (selectedFilters[0] == StatisticsFilters.Temperature)
+        return temperatureChartData;
+      else if (selectedFilters[0] == StatisticsFilters.Humidity)
+        return humidityChartData;
+      else if (selectedFilters[0] == StatisticsFilters.Rainfall)
+        return rainfallChartData;
+      throw Exception('The filter is unknown');
+    }
+
+    throw Exception('The filter is unknown');
+  }
+
+  List<ChartData> getSecondaryDatastore() {
+    if (selectedFilters.length == 2) {
+      // if (selectedFilters[0] == StatisticsFilters.Temperature) {
+      //   if (selectedFilters[1] == StatisticsFilters.Humidity) {
+      //     if (humidityFirstYear >= temperatureFirstYear) {
+      //       return humidityChartData;
+      //     }
+      //     return temperatureChartData;
+      //   } else if (selectedFilters[1] == StatisticsFilters.Rainfall) {
+      //     if (rainfallFirstYear >= temperatureFirstYear) {
+      //       return rainfallChartData;
+      //     }
+      //     return temperatureChartData;
+      //   }
+      // } else if (selectedFilters[0] == StatisticsFilters.Humidity) {
+      //   if (selectedFilters[1] == StatisticsFilters.Temperature) {
+      //     if (temperatureFirstYear >= humidityFirstYear) {
+      //       return temperatureChartData;
+      //     }
+      //     return humidityChartData;
+      //   } else if (selectedFilters[1] == StatisticsFilters.Rainfall) {
+      //     if (rainfallFirstYear >= humidityFirstYear) {
+      //       return rainfallChartData;
+      //     }
+      //     return humidityChartData;
+      //   }
+      // } else if (selectedFilters[0] == StatisticsFilters.Rainfall) {
+      //   if (selectedFilters[1] == StatisticsFilters.Temperature) {
+      //     if (temperatureFirstYear >= rainfallFirstYear) {
+      //       return temperatureChartData;
+      //     }
+      //     return rainfallChartData;
+      //   } else if (selectedFilters[1] == StatisticsFilters.Humidity) {
+      //     if (humidityFirstYear >= rainfallFirstYear) {
+      //       return humidityChartData;
+      //     }
+      //     return rainfallChartData;
+      //   }
+      // }
+      if (selectedFilters[1] == StatisticsFilters.Temperature)
+        return temperatureChartData;
+      else if (selectedFilters[1] == StatisticsFilters.Humidity)
+        return humidityChartData;
+      else if (selectedFilters[1] == StatisticsFilters.Rainfall)
+        return rainfallChartData;
+      throw Exception('The filter is unknown');
+    }
+
+    throw Exception('The filter is unknown');
+  }
 }
