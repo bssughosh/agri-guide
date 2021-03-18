@@ -269,6 +269,10 @@ class StatisticsPageController extends Controller {
   }
 
   void onFilterClicked(StatisticsFilters clickedFilter) {
+    if (!selectedFilters.contains(clickedFilter) &&
+        selectedFilters.length == 2) {
+      selectedFilters.removeAt(0);
+    }
     if (selectedFilters.contains(clickedFilter)) {
       selectedFilters.remove(clickedFilter);
       if (clickedFilter == selectedFilters1) {
