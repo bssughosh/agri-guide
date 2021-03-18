@@ -67,7 +67,10 @@ class StatisticsViewState
         );
 
       case StatisticsPageDisplayInitializedState:
-        return buildStatisticsDisplayInitializedViewWeb(controller: controller);
+        return buildStatisticsDisplayInitializedViewWeb(
+          controller: controller,
+          context: context,
+        );
 
       case StatisticsPageLoadingState:
         return buildStatisticsLoadingView();

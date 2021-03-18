@@ -1,12 +1,12 @@
-import 'package:agri_guide/app/statistics/presentation/widgets/filter_tab.dart';
-import 'package:agri_guide/core/enums.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/app_theme.dart';
+import '../../../../core/enums.dart';
 import '../../../../core/widgets/chip.dart';
 import '../statistics_controller.dart';
 import '../widgets/double_graph.dart';
+import '../widgets/filter_tab.dart';
 import '../widgets/single_graph.dart';
 
 Widget buildStatisticsDisplayInitializedViewMobile({
