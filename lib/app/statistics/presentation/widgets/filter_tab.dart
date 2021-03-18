@@ -12,6 +12,10 @@ Widget filterTab({
     child: Container(
       decoration: isSelected
           ? BoxDecoration(
+              border: Border.all(
+                color: AppTheme.secondaryColor,
+                width: 2,
+              ),
               borderRadius: BorderRadius.circular(5),
               color: AppTheme.secondaryColor,
             )
@@ -23,10 +27,13 @@ Widget filterTab({
               borderRadius: BorderRadius.circular(5),
               color: Colors.transparent,
             ),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: isSelected ? Colors.white : AppTheme.secondaryColor,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
+        child: Text(
+          text,
+          style: TextStyle(
+            color: isSelected ? Colors.white : AppTheme.secondaryColor,
+          ),
         ),
       ),
     ),

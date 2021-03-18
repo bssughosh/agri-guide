@@ -71,6 +71,8 @@ Widget doubleGraph({
         xValueMapper: (ChartData data, _) => data.x,
         yValueMapper: (ChartData data, _) => data.y,
         color: Colors.black,
+        yAxisName: secondaryYAxisName,
+        xAxisName: 'Year',
       ),
     ],
   );

@@ -13,8 +13,8 @@ Widget singleGraph({
 }) {
   return SfCartesianChart(
     primaryXAxis: CategoryAxis(
-      name: yAxisName,
-      title: AxisTitle(text: yAxisName),
+      name: xAxisName,
+      title: AxisTitle(text: xAxisName),
       visibleMaximum: visibleMinimum,
       labelRotation: -90,
       maximumLabels: maximumLabels,

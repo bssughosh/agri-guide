@@ -36,14 +36,17 @@ Widget buildStatisticsInputInitializedViewMobile({
                   ),
                 ),
                 SizedBox(height: 5),
-                CustomDropdown(
-                  hintText: 'Select State',
-                  itemsList: controller.stateItems(),
-                  selectedItem: controller.selectedState,
-                  onChanged: (String newValue) {
-                    controller.selectedState = newValue;
-                    controller.selectedStateChange();
-                  },
+                Container(
+                  width: double.infinity,
+                  child: CustomDropdown(
+                    hintText: 'Select State',
+                    itemsList: controller.stateItems(),
+                    selectedItem: controller.selectedState,
+                    onChanged: (String newValue) {
+                      controller.selectedState = newValue;
+                      controller.selectedStateChange();
+                    },
+                  ),
                 ),
                 if (controller.selectedState != null)
                   if (controller.districtListLoading)
@@ -67,14 +70,17 @@ Widget buildStatisticsInputInitializedViewMobile({
                   if (!controller.districtListLoading) SizedBox(height: 5),
                 if (controller.selectedState != null)
                   if (!controller.districtListLoading)
-                    CustomDropdown(
-                      hintText: 'Select District',
-                      itemsList: controller.districtItems(),
-                      selectedItem: controller.selectedDistrict,
-                      onChanged: (String newValue) {
-                        controller.selectedDistrict = newValue;
-                        controller.selectedDistrictChange();
-                      },
+                    Container(
+                      width: double.infinity,
+                      child: CustomDropdown(
+                        hintText: 'Select District',
+                        itemsList: controller.districtItems(),
+                        selectedItem: controller.selectedDistrict,
+                        onChanged: (String newValue) {
+                          controller.selectedDistrict = newValue;
+                          controller.selectedDistrictChange();
+                        },
+                      ),
                     ),
                 SizedBox(
                   height: 20,

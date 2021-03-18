@@ -40,11 +40,16 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                       Container(
                         decoration: AppTheme.normalBlackBorderDecoration,
                         margin: EdgeInsets.all(8),
-                        child: chip(
-                          label: controller.selectedState,
-                          color: AppTheme.chipBackground,
-                          textColor: AppTheme.secondaryColor,
-                          elevation: 0,
+                        width: double.infinity,
+                        padding: EdgeInsets.only(left: 8),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: chip(
+                            label: controller.selectedStateName(),
+                            color: AppTheme.chipBackground,
+                            textColor: AppTheme.secondaryColor,
+                            elevation: 0,
+                          ),
                         ),
                       ),
                       SizedBox(height: 10),
@@ -62,11 +67,16 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                       Container(
                         decoration: AppTheme.normalBlackBorderDecoration,
                         margin: EdgeInsets.all(8),
-                        child: chip(
-                          label: controller.selectedDistrict,
-                          color: AppTheme.chipBackground,
-                          textColor: AppTheme.secondaryColor,
-                          elevation: 0,
+                        width: double.infinity,
+                        padding: EdgeInsets.only(left: 8),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: chip(
+                            label: controller.selectedDistrictName(),
+                            color: AppTheme.chipBackground,
+                            textColor: AppTheme.secondaryColor,
+                            elevation: 0,
+                          ),
                         ),
                       ),
                       SizedBox(height: 10),
@@ -77,13 +87,13 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                 if (controller.selectedFilters.length == 0)
                   Image.asset(
                     'assets/no_filter_selected.png',
-                    width: MediaQuery.of(context).size.width * 0.9,
+                    width: MediaQuery.of(context).size.width * 0.6,
                   ),
                 if (controller.selectedFilters.length == 1)
                   singleGraph(
                     xAxisName: 'Year',
                     visibleMinimum: 10,
-                    maximumLabels: 15,
+                    maximumLabels: 20,
                     yAxisName: describeEnum(controller.selectedFilters[0]),
                     yAxisLabel: controller
                         .getAxisLabelName(controller.selectedFilters[0]),

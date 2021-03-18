@@ -98,7 +98,7 @@ class StatisticsPageController extends Controller {
   }
 
   void selectedStateChange() {
-    selectedDistrict = '';
+    selectedDistrict = null;
     districtList = [];
     refreshUI();
     fetchDistrictList();
@@ -237,74 +237,6 @@ class StatisticsPageController extends Controller {
     );
   }
 
-  // void handleFilter1Changed(StatisticsFilters newFilter) {
-  //   selectedFilter2 = null;
-  //   selectedFilter1 = newFilter;
-  //   filter2 = [];
-  //   for (StatisticsFilters filter in filter1) {
-  //     if (filter != newFilter) {
-  //       filter2.add(filter);
-  //     }
-  //   }
-  //   selectedFilter2 = filter2[0];
-  //   if (selectedFilter1 == StatisticsFilters.Temperature) {
-  //     if (selectedFilter2 == StatisticsFilters.Humidity) {
-  //       if (humidityFirstYear < temperatureFirstYear)
-  //         areElementsToBeSwapped = true;
-  //     } else if (selectedFilter2 == StatisticsFilters.Rainfall) {
-  //       if (rainfallFirstYear < temperatureFirstYear)
-  //         areElementsToBeSwapped = true;
-  //     }
-  //   } else if (selectedFilter1 == StatisticsFilters.Humidity) {
-  //     if (selectedFilter2 == StatisticsFilters.Temperature) {
-  //       if (temperatureFirstYear < humidityFirstYear)
-  //         areElementsToBeSwapped = true;
-  //     } else if (selectedFilter2 == StatisticsFilters.Rainfall) {
-  //       if (rainfallFirstYear < humidityFirstYear)
-  //         areElementsToBeSwapped = true;
-  //     }
-  //   } else if (selectedFilter1 == StatisticsFilters.Rainfall) {
-  //     if (selectedFilter2 == StatisticsFilters.Temperature) {
-  //       if (temperatureFirstYear < rainfallFirstYear)
-  //         areElementsToBeSwapped = true;
-  //     } else if (selectedFilter2 == StatisticsFilters.Humidity) {
-  //       if (humidityFirstYear < rainfallFirstYear)
-  //         areElementsToBeSwapped = true;
-  //     }
-  //   }
-  //   refreshUI();
-  // }
-
-  // void handleFilter2Changed(StatisticsFilters newFilter) {
-  //   selectedFilter2 = newFilter;
-  //   if (selectedFilter1 == StatisticsFilters.Temperature) {
-  //     if (selectedFilter2 == StatisticsFilters.Humidity) {
-  //       if (humidityFirstYear < temperatureFirstYear)
-  //         areElementsToBeSwapped = true;
-  //     } else if (selectedFilter2 == StatisticsFilters.Rainfall) {
-  //       if (rainfallFirstYear < temperatureFirstYear)
-  //         areElementsToBeSwapped = true;
-  //     }
-  //   } else if (selectedFilter1 == StatisticsFilters.Humidity) {
-  //     if (selectedFilter2 == StatisticsFilters.Temperature) {
-  //       if (temperatureFirstYear < humidityFirstYear)
-  //         areElementsToBeSwapped = true;
-  //     } else if (selectedFilter2 == StatisticsFilters.Rainfall) {
-  //       if (rainfallFirstYear < humidityFirstYear)
-  //         areElementsToBeSwapped = true;
-  //     }
-  //   } else if (selectedFilter1 == StatisticsFilters.Rainfall) {
-  //     if (selectedFilter2 == StatisticsFilters.Temperature) {
-  //       if (temperatureFirstYear < rainfallFirstYear)
-  //         areElementsToBeSwapped = true;
-  //     } else if (selectedFilter2 == StatisticsFilters.Humidity) {
-  //       if (humidityFirstYear < rainfallFirstYear)
-  //         areElementsToBeSwapped = true;
-  //     }
-  //   }
-  //   refreshUI();
-  // }
-
   bool onWillPopScopePage1() {
     if (selectedDistrict != '') {
       selectedDistrict = '';
@@ -439,5 +371,17 @@ class StatisticsPageController extends Controller {
     }
 
     throw Exception('The filter is unknown');
+  }
+
+  String selectedStateName() {
+    String name = stateList
+        .singleWhere((element) => element['id'] == selectedState)['name'];
+    return name;
+  }
+
+  String selectedDistrictName() {
+    String name = districtList
+        .singleWhere((element) => element['id'] == selectedDistrict)['name'];
+    return name;
   }
 }
