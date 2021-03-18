@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../core/enums.dart';
-import '../../../core/exceptions.dart';
+import '../../../core/handle_api_errors.dart';
 import '../../../core/observer.dart';
 import '../../../injection_container.dart';
 import '../../navigation_service.dart';
@@ -26,8 +25,8 @@ class StatisticsPageController extends Controller {
   List districtList = [];
   bool isStateFilterClicked = false;
   bool isDistrictFilterClicked = false;
-  String selectedState = '';
-  String selectedDistrict = '';
+  String selectedState;
+  String selectedDistrict;
   bool districtListLoading = false;
 
   StatisticsEntity statisticsEntity;
@@ -35,25 +34,14 @@ class StatisticsPageController extends Controller {
   List<ChartData> temperatureChartData = [];
   List<ChartData> humidityChartData = [];
 
-  StatisticsFilters selectedFilter1 = StatisticsFilters.Temperature;
-  StatisticsFilters selectedFilter2 = StatisticsFilters.Rainfall;
-
-  List<StatisticsFilters> filter1 = [
-    StatisticsFilters.Temperature,
-    StatisticsFilters.Humidity,
-    StatisticsFilters.Rainfall,
-  ];
-
-  List<StatisticsFilters> filter2 = [
-    StatisticsFilters.Humidity,
-    StatisticsFilters.Rainfall,
-  ];
-
   int temperatureFirstYear;
   int humidityFirstYear;
   int rainfallFirstYear;
 
-  bool areElementsToBeSwapped = false;
+  List<StatisticsFilters> selectedFilters = [];
+
+  StatisticsFilters selectedFilters1;
+  StatisticsFilters selectedFilters2;
 
   @override
   void initListeners() {}
@@ -68,52 +56,6 @@ class StatisticsPageController extends Controller {
     super.dispose();
   }
 
-  _handleAPIErrors(Exception error) {
-    if (error.runtimeType == APIBadRequestError) {
-      Fluttertoast.showToast(
-          msg: 'A bad request was encountered. Please try again');
-    } else if (error.runtimeType == APIForbiddenError) {
-      Fluttertoast.showToast(
-          msg: 'The request was forbidden. Please try again');
-    } else if (error.runtimeType == APINotFoundError) {
-      Fluttertoast.showToast(
-          msg:
-              'The request was incorrect. Please check the request and try again');
-    } else if (error.runtimeType == APITooManyRequestsError) {
-      Fluttertoast.showToast(
-          msg:
-              'There are too many requests serviced right now. Please try again after sometime');
-    } else if (error.runtimeType == APIInternalServerError) {
-      Fluttertoast.showToast(
-          msg:
-              'There was an internal server error. Please try again after sometime');
-    } else if (error.runtimeType == APIServiceUnavailabeError) {
-      Fluttertoast.showToast(
-          msg:
-              'The server is under maintenance right now. Please try again after sometime');
-    } else {
-      Fluttertoast.showToast(
-          msg:
-              'The request was incorrect. Please check the request and try again');
-    }
-  }
-
-  void handleStateFilterClicked() {
-    if (isDistrictFilterClicked) {
-    } else {
-      isStateFilterClicked = !isStateFilterClicked;
-    }
-    refreshUI();
-  }
-
-  void handleDistrictFilterClicked() {
-    if (isStateFilterClicked) {
-    } else {
-      isDistrictFilterClicked = !isDistrictFilterClicked;
-    }
-    refreshUI();
-  }
-
   void fetchStateList() {
     _presenter.fetchStateList(
       new UseCaseObserver(
@@ -121,7 +63,7 @@ class StatisticsPageController extends Controller {
           print('State list successfully fetched');
         },
         (error) {
-          _handleAPIErrors(error);
+          handleAPIErrors(error);
           print(error);
         },
         onNextFunction: (List stateListRes) {
@@ -135,13 +77,14 @@ class StatisticsPageController extends Controller {
 
   void fetchDistrictList() {
     districtListLoading = true;
+    refreshUI();
     _presenter.fetchDistrictList(
       new UseCaseObserver(
         () {
           print('District list successfully fetched');
         },
         (error) {
-          _handleAPIErrors(error);
+          handleAPIErrors(error);
           print(error);
         },
         onNextFunction: (List districtListRes) {
@@ -154,18 +97,8 @@ class StatisticsPageController extends Controller {
     );
   }
 
-  void handleRadioChangeOfState(String value) {
-    selectedState = value;
-    refreshUI();
-  }
-
-  void handleRadioChangeOfDistrict(String value) {
-    selectedDistrict = value;
-    refreshUI();
-  }
-
   void selectedStateChange() {
-    selectedDistrict = '';
+    selectedDistrict = null;
     districtList = [];
     refreshUI();
     fetchDistrictList();
@@ -173,6 +106,32 @@ class StatisticsPageController extends Controller {
 
   void selectedDistrictChange() {
     refreshUI();
+  }
+
+  List<DropdownMenuItem> stateItems() {
+    List<DropdownMenuItem> _list = [];
+    for (var state in stateList) {
+      _list.add(
+        new DropdownMenuItem(
+          value: state['id'],
+          child: Text(state['name']),
+        ),
+      );
+    }
+    return _list;
+  }
+
+  List<DropdownMenuItem> districtItems() {
+    List<DropdownMenuItem> _list = [];
+    for (var district in districtList) {
+      _list.add(
+        new DropdownMenuItem(
+          value: district['id'],
+          child: Text(district['name']),
+        ),
+      );
+    }
+    return _list;
   }
 
   void findColorsAndToChartData({
@@ -237,7 +196,7 @@ class StatisticsPageController extends Controller {
       new UseCaseObserver(() {
         print('Whole data fetched');
       }, (error) {
-        _handleAPIErrors(error);
+        handleAPIErrors(error);
         print(error);
       }, onNextFunction: (StatisticsEntity entity) {
         statisticsEntity = entity;
@@ -270,84 +229,12 @@ class StatisticsPageController extends Controller {
           humidityFirstYear = int.parse(humidityChartData[0].x);
         }
 
-        if (temperatureFirstYear > rainfallFirstYear) {
-          areElementsToBeSwapped = true;
-        }
-
         _stateMachine.onEvent(new StatisticsPageDisplayInitializedEvent());
         refreshUI();
       }),
       selectedState,
       selectedDistrict,
     );
-  }
-
-  void handleFilter1Changed(StatisticsFilters newFilter) {
-    selectedFilter2 = null;
-    selectedFilter1 = newFilter;
-    filter2 = [];
-    for (StatisticsFilters filter in filter1) {
-      if (filter != newFilter) {
-        filter2.add(filter);
-      }
-    }
-    selectedFilter2 = filter2[0];
-    if (selectedFilter1 == StatisticsFilters.Temperature) {
-      if (selectedFilter2 == StatisticsFilters.Humidity) {
-        if (humidityFirstYear < temperatureFirstYear)
-          areElementsToBeSwapped = true;
-      } else if (selectedFilter2 == StatisticsFilters.Rainfall) {
-        if (rainfallFirstYear < temperatureFirstYear)
-          areElementsToBeSwapped = true;
-      }
-    } else if (selectedFilter1 == StatisticsFilters.Humidity) {
-      if (selectedFilter2 == StatisticsFilters.Temperature) {
-        if (temperatureFirstYear < humidityFirstYear)
-          areElementsToBeSwapped = true;
-      } else if (selectedFilter2 == StatisticsFilters.Rainfall) {
-        if (rainfallFirstYear < humidityFirstYear)
-          areElementsToBeSwapped = true;
-      }
-    } else if (selectedFilter1 == StatisticsFilters.Rainfall) {
-      if (selectedFilter2 == StatisticsFilters.Temperature) {
-        if (temperatureFirstYear < rainfallFirstYear)
-          areElementsToBeSwapped = true;
-      } else if (selectedFilter2 == StatisticsFilters.Humidity) {
-        if (humidityFirstYear < rainfallFirstYear)
-          areElementsToBeSwapped = true;
-      }
-    }
-    refreshUI();
-  }
-
-  void handleFilter2Changed(StatisticsFilters newFilter) {
-    selectedFilter2 = newFilter;
-    if (selectedFilter1 == StatisticsFilters.Temperature) {
-      if (selectedFilter2 == StatisticsFilters.Humidity) {
-        if (humidityFirstYear < temperatureFirstYear)
-          areElementsToBeSwapped = true;
-      } else if (selectedFilter2 == StatisticsFilters.Rainfall) {
-        if (rainfallFirstYear < temperatureFirstYear)
-          areElementsToBeSwapped = true;
-      }
-    } else if (selectedFilter1 == StatisticsFilters.Humidity) {
-      if (selectedFilter2 == StatisticsFilters.Temperature) {
-        if (temperatureFirstYear < humidityFirstYear)
-          areElementsToBeSwapped = true;
-      } else if (selectedFilter2 == StatisticsFilters.Rainfall) {
-        if (rainfallFirstYear < humidityFirstYear)
-          areElementsToBeSwapped = true;
-      }
-    } else if (selectedFilter1 == StatisticsFilters.Rainfall) {
-      if (selectedFilter2 == StatisticsFilters.Temperature) {
-        if (temperatureFirstYear < rainfallFirstYear)
-          areElementsToBeSwapped = true;
-      } else if (selectedFilter2 == StatisticsFilters.Humidity) {
-        if (humidityFirstYear < rainfallFirstYear)
-          areElementsToBeSwapped = true;
-      }
-    }
-    refreshUI();
   }
 
   bool onWillPopScopePage1() {
@@ -379,5 +266,126 @@ class StatisticsPageController extends Controller {
       return 'Rainfall (mm)';
     }
     return '';
+  }
+
+  void onFilterClicked(StatisticsFilters clickedFilter) {
+    if (!selectedFilters.contains(clickedFilter) &&
+        selectedFilters.length == 2) {
+      selectedFilters.removeAt(0);
+    }
+    if (selectedFilters.contains(clickedFilter)) {
+      selectedFilters.remove(clickedFilter);
+      if (clickedFilter == selectedFilters1) {
+        selectedFilters1 =
+            selectedFilters.length == 1 ? selectedFilters2 : null;
+        selectedFilters2 = null;
+      } else if (clickedFilter == selectedFilters2) {
+        selectedFilters2 = null;
+      }
+    } else {
+      selectedFilters.add(clickedFilter);
+      if (selectedFilters.length == 2) {
+        if (selectedFilters[0] == StatisticsFilters.Temperature) {
+          if (selectedFilters[1] == StatisticsFilters.Humidity) {
+            if (humidityFirstYear < temperatureFirstYear) {
+              selectedFilters1 = StatisticsFilters.Humidity;
+              selectedFilters2 = StatisticsFilters.Temperature;
+            } else {
+              selectedFilters2 = StatisticsFilters.Humidity;
+              selectedFilters1 = StatisticsFilters.Temperature;
+            }
+          } else if (selectedFilters[1] == StatisticsFilters.Rainfall) {
+            if (rainfallFirstYear < temperatureFirstYear) {
+              selectedFilters1 = StatisticsFilters.Rainfall;
+              selectedFilters2 = StatisticsFilters.Temperature;
+            } else {
+              selectedFilters2 = StatisticsFilters.Rainfall;
+              selectedFilters1 = StatisticsFilters.Temperature;
+            }
+          }
+        } else if (selectedFilters[0] == StatisticsFilters.Humidity) {
+          if (selectedFilters[1] == StatisticsFilters.Temperature) {
+            if (temperatureFirstYear < humidityFirstYear) {
+              selectedFilters1 = StatisticsFilters.Temperature;
+              selectedFilters2 = StatisticsFilters.Humidity;
+            } else {
+              selectedFilters2 = StatisticsFilters.Temperature;
+              selectedFilters1 = StatisticsFilters.Humidity;
+            }
+          } else if (selectedFilters[1] == StatisticsFilters.Rainfall) {
+            if (rainfallFirstYear < humidityFirstYear) {
+              selectedFilters1 = StatisticsFilters.Rainfall;
+              selectedFilters2 = StatisticsFilters.Humidity;
+            } else {
+              selectedFilters2 = StatisticsFilters.Rainfall;
+              selectedFilters1 = StatisticsFilters.Humidity;
+            }
+          }
+        } else if (selectedFilters[0] == StatisticsFilters.Rainfall) {
+          if (selectedFilters[1] == StatisticsFilters.Temperature) {
+            if (temperatureFirstYear < rainfallFirstYear) {
+              selectedFilters1 = StatisticsFilters.Temperature;
+              selectedFilters2 = StatisticsFilters.Rainfall;
+            } else {
+              selectedFilters2 = StatisticsFilters.Temperature;
+              selectedFilters1 = StatisticsFilters.Rainfall;
+            }
+          } else if (selectedFilters[1] == StatisticsFilters.Humidity) {
+            if (humidityFirstYear < rainfallFirstYear) {
+              selectedFilters1 = StatisticsFilters.Humidity;
+              selectedFilters2 = StatisticsFilters.Rainfall;
+            } else {
+              selectedFilters2 = StatisticsFilters.Humidity;
+              selectedFilters1 = StatisticsFilters.Rainfall;
+            }
+          }
+        }
+      } else if (selectedFilters.length == 1) {
+        selectedFilters1 = clickedFilter;
+        selectedFilters2 = null;
+      }
+    }
+
+    refreshUI();
+  }
+
+  List<ChartData> getPrimaryDatastore() {
+    if (selectedFilters.length > 0) {
+      if (selectedFilters1 == StatisticsFilters.Temperature)
+        return temperatureChartData;
+      else if (selectedFilters1 == StatisticsFilters.Humidity)
+        return humidityChartData;
+      else if (selectedFilters1 == StatisticsFilters.Rainfall)
+        return rainfallChartData;
+      throw Exception('The filter is unknown');
+    }
+
+    throw Exception('The filter is unknown');
+  }
+
+  List<ChartData> getSecondaryDatastore() {
+    if (selectedFilters.length == 2) {
+      if (selectedFilters2 == StatisticsFilters.Temperature)
+        return temperatureChartData;
+      else if (selectedFilters2 == StatisticsFilters.Humidity)
+        return humidityChartData;
+      else if (selectedFilters2 == StatisticsFilters.Rainfall)
+        return rainfallChartData;
+      throw Exception('The filter is unknown');
+    }
+
+    throw Exception('The filter is unknown');
+  }
+
+  String selectedStateName() {
+    String name = stateList
+        .singleWhere((element) => element['id'] == selectedState)['name'];
+    return name;
+  }
+
+  String selectedDistrictName() {
+    String name = districtList
+        .singleWhere((element) => element['id'] == selectedDistrict)['name'];
+    return name;
   }
 }

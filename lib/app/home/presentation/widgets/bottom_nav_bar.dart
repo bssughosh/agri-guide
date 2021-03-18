@@ -94,9 +94,8 @@ class BottomNavBar extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 FloatingActionButton(
-                  backgroundColor: controller.pageNumber == 2
-                      ? AppTheme.secondaryColor
-                      : AppTheme.primaryColor,
+                  backgroundColor: AppTheme.secondaryColor,
+                  elevation: controller.pageNumber == 2 ? 6 : 0,
                   child: Icon(
                     CustomIcons.prediction_logo,
                     size: 28,
