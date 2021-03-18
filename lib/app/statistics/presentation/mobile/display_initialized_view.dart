@@ -1,3 +1,5 @@
+import 'package:agri_guide/app/statistics/presentation/widgets/filter_tab.dart';
+import 'package:agri_guide/core/enums.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -103,6 +105,43 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                     primaryDataSource: controller.getPrimaryDatastore(),
                     secondaryDataSource: controller.getSecondaryDatastore(),
                   ),
+                SizedBox(height: 30),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      filterTab(
+                        onPressed: () {
+                          controller
+                              .onFilterClicked(StatisticsFilters.Temperature);
+                        },
+                        isSelected: controller.selectedFilters
+                            .contains(StatisticsFilters.Temperature),
+                        text: describeEnum(StatisticsFilters.Temperature),
+                      ),
+                      filterTab(
+                        onPressed: () {
+                          controller
+                              .onFilterClicked(StatisticsFilters.Humidity);
+                        },
+                        isSelected: controller.selectedFilters
+                            .contains(StatisticsFilters.Humidity),
+                        text: describeEnum(StatisticsFilters.Humidity),
+                      ),
+                      filterTab(
+                        onPressed: () {
+                          controller
+                              .onFilterClicked(StatisticsFilters.Rainfall);
+                        },
+                        isSelected: controller.selectedFilters
+                            .contains(StatisticsFilters.Rainfall),
+                        text: describeEnum(StatisticsFilters.Rainfall),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

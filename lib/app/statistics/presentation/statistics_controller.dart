@@ -40,6 +40,9 @@ class StatisticsPageController extends Controller {
 
   List<StatisticsFilters> selectedFilters = [];
 
+  StatisticsFilters selectedFilters1;
+  StatisticsFilters selectedFilters2;
+
   @override
   void initListeners() {}
 
@@ -333,13 +336,90 @@ class StatisticsPageController extends Controller {
     return '';
   }
 
+  void onFilterClicked(StatisticsFilters clickedFilter) {
+    if (selectedFilters.contains(clickedFilter)) {
+      selectedFilters.remove(clickedFilter);
+      if (clickedFilter == selectedFilters1) {
+        selectedFilters1 =
+            selectedFilters.length == 1 ? selectedFilters2 : null;
+        selectedFilters2 = null;
+      } else if (clickedFilter == selectedFilters2) {
+        selectedFilters2 = null;
+      }
+    } else {
+      selectedFilters.add(clickedFilter);
+      if (selectedFilters.length == 2) {
+        if (selectedFilters[0] == StatisticsFilters.Temperature) {
+          if (selectedFilters[1] == StatisticsFilters.Humidity) {
+            if (humidityFirstYear < temperatureFirstYear) {
+              selectedFilters1 = StatisticsFilters.Humidity;
+              selectedFilters2 = StatisticsFilters.Temperature;
+            } else {
+              selectedFilters2 = StatisticsFilters.Humidity;
+              selectedFilters1 = StatisticsFilters.Temperature;
+            }
+          } else if (selectedFilters[1] == StatisticsFilters.Rainfall) {
+            if (rainfallFirstYear < temperatureFirstYear) {
+              selectedFilters1 = StatisticsFilters.Rainfall;
+              selectedFilters2 = StatisticsFilters.Temperature;
+            } else {
+              selectedFilters2 = StatisticsFilters.Rainfall;
+              selectedFilters1 = StatisticsFilters.Temperature;
+            }
+          }
+        } else if (selectedFilters[0] == StatisticsFilters.Humidity) {
+          if (selectedFilters[1] == StatisticsFilters.Temperature) {
+            if (temperatureFirstYear < humidityFirstYear) {
+              selectedFilters1 = StatisticsFilters.Temperature;
+              selectedFilters2 = StatisticsFilters.Humidity;
+            } else {
+              selectedFilters2 = StatisticsFilters.Temperature;
+              selectedFilters1 = StatisticsFilters.Humidity;
+            }
+          } else if (selectedFilters[1] == StatisticsFilters.Rainfall) {
+            if (rainfallFirstYear < humidityFirstYear) {
+              selectedFilters1 = StatisticsFilters.Rainfall;
+              selectedFilters2 = StatisticsFilters.Humidity;
+            } else {
+              selectedFilters2 = StatisticsFilters.Rainfall;
+              selectedFilters1 = StatisticsFilters.Humidity;
+            }
+          }
+        } else if (selectedFilters[0] == StatisticsFilters.Rainfall) {
+          if (selectedFilters[1] == StatisticsFilters.Temperature) {
+            if (temperatureFirstYear < rainfallFirstYear) {
+              selectedFilters1 = StatisticsFilters.Temperature;
+              selectedFilters2 = StatisticsFilters.Rainfall;
+            } else {
+              selectedFilters2 = StatisticsFilters.Temperature;
+              selectedFilters1 = StatisticsFilters.Rainfall;
+            }
+          } else if (selectedFilters[1] == StatisticsFilters.Humidity) {
+            if (humidityFirstYear < rainfallFirstYear) {
+              selectedFilters1 = StatisticsFilters.Humidity;
+              selectedFilters2 = StatisticsFilters.Rainfall;
+            } else {
+              selectedFilters2 = StatisticsFilters.Humidity;
+              selectedFilters1 = StatisticsFilters.Rainfall;
+            }
+          }
+        }
+      } else if (selectedFilters.length == 1) {
+        selectedFilters1 = clickedFilter;
+        selectedFilters2 = null;
+      }
+    }
+
+    refreshUI();
+  }
+
   List<ChartData> getPrimaryDatastore() {
     if (selectedFilters.length > 0) {
-      if (selectedFilters[0] == StatisticsFilters.Temperature)
+      if (selectedFilters1 == StatisticsFilters.Temperature)
         return temperatureChartData;
-      else if (selectedFilters[0] == StatisticsFilters.Humidity)
+      else if (selectedFilters1 == StatisticsFilters.Humidity)
         return humidityChartData;
-      else if (selectedFilters[0] == StatisticsFilters.Rainfall)
+      else if (selectedFilters1 == StatisticsFilters.Rainfall)
         return rainfallChartData;
       throw Exception('The filter is unknown');
     }
@@ -349,48 +429,11 @@ class StatisticsPageController extends Controller {
 
   List<ChartData> getSecondaryDatastore() {
     if (selectedFilters.length == 2) {
-      // if (selectedFilters[0] == StatisticsFilters.Temperature) {
-      //   if (selectedFilters[1] == StatisticsFilters.Humidity) {
-      //     if (humidityFirstYear >= temperatureFirstYear) {
-      //       return humidityChartData;
-      //     }
-      //     return temperatureChartData;
-      //   } else if (selectedFilters[1] == StatisticsFilters.Rainfall) {
-      //     if (rainfallFirstYear >= temperatureFirstYear) {
-      //       return rainfallChartData;
-      //     }
-      //     return temperatureChartData;
-      //   }
-      // } else if (selectedFilters[0] == StatisticsFilters.Humidity) {
-      //   if (selectedFilters[1] == StatisticsFilters.Temperature) {
-      //     if (temperatureFirstYear >= humidityFirstYear) {
-      //       return temperatureChartData;
-      //     }
-      //     return humidityChartData;
-      //   } else if (selectedFilters[1] == StatisticsFilters.Rainfall) {
-      //     if (rainfallFirstYear >= humidityFirstYear) {
-      //       return rainfallChartData;
-      //     }
-      //     return humidityChartData;
-      //   }
-      // } else if (selectedFilters[0] == StatisticsFilters.Rainfall) {
-      //   if (selectedFilters[1] == StatisticsFilters.Temperature) {
-      //     if (temperatureFirstYear >= rainfallFirstYear) {
-      //       return temperatureChartData;
-      //     }
-      //     return rainfallChartData;
-      //   } else if (selectedFilters[1] == StatisticsFilters.Humidity) {
-      //     if (humidityFirstYear >= rainfallFirstYear) {
-      //       return humidityChartData;
-      //     }
-      //     return rainfallChartData;
-      //   }
-      // }
-      if (selectedFilters[1] == StatisticsFilters.Temperature)
+      if (selectedFilters2 == StatisticsFilters.Temperature)
         return temperatureChartData;
-      else if (selectedFilters[1] == StatisticsFilters.Humidity)
+      else if (selectedFilters2 == StatisticsFilters.Humidity)
         return humidityChartData;
-      else if (selectedFilters[1] == StatisticsFilters.Rainfall)
+      else if (selectedFilters2 == StatisticsFilters.Rainfall)
         return rainfallChartData;
       throw Exception('The filter is unknown');
     }

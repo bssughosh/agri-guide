@@ -1,11 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../../../../core/app_theme.dart';
-import '../../../../core/enums.dart';
 import '../statistics_controller.dart';
-import '../statistics_view.dart';
 
 Widget buildStatisticsDisplayInitializedViewWeb({
   @required StatisticsPageController controller,
