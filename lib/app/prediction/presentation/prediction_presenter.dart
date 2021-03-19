@@ -1,7 +1,7 @@
-import 'package:agri_guide/app/accounts/domain/usecase/check_login_status_usecase.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 import '../../../core/observer.dart';
+import '../../accounts/domain/usecase/check_login_status_usecase.dart';
 import '../../downloads/domain/usecase/fetch_crop_list_usecase.dart';
 import '../../downloads/domain/usecase/fetch_district_list_usecase.dart';
 import '../../downloads/domain/usecase/fetch_seasons_list_usecase.dart';

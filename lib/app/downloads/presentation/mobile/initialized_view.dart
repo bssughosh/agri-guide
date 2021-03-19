@@ -1,9 +1,8 @@
-import 'package:agri_guide/core/widgets/chip.dart';
-import 'package:agri_guide/core/widgets/custom_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/app_theme.dart';
+import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_checkbox_tile.dart';
 import '../../../../core/widgets/custom_multi_select_form.dart';
 import '../downloads_controller.dart';
@@ -213,11 +212,9 @@ Widget buildDownloadsInitializedViewMobile({
                               children: [
                                 for (String item
                                     in controller.downloadedFilesToBeDisplayed)
-                                  chip(
-                                    label: item,
-                                    color: AppTheme.chipBackground,
-                                    textColor: AppTheme.secondaryColor,
-                                    elevation: 1,
+                                  Text(
+                                    item,
+                                    style: AppTheme.bodyRegularText,
                                   ),
                               ],
                             ),
