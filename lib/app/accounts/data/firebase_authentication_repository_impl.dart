@@ -74,7 +74,7 @@ class FirebaseAuthenticationRepositoryImpl
 
   _fetchStateNames(String stateId) async {
     String url = '$base_url/get_state_value?state_id=$stateId';
-    http.Response value = await http.get(url);
+    http.Response value = await http.get(Uri.parse(url));
     if (value.statusCode == 400) {
       throw APIBadRequestError();
     } else if (value.statusCode == 403) {
@@ -94,7 +94,7 @@ class FirebaseAuthenticationRepositoryImpl
 
   _fetchDistNames(String districtId) async {
     String url = '$base_url/get_dist_value?dist_id=$districtId';
-    http.Response value = await http.get(url);
+    http.Response value = await http.get(Uri.parse(url));
     if (value.statusCode == 400) {
       throw APIBadRequestError();
     } else if (value.statusCode == 403) {

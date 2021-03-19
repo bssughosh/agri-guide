@@ -24,7 +24,7 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
     String url = '$base_url/statistics_data?' +
         'state=${stateName[0]}&' +
         'dist=${districtName[0]}';
-    http.Response value = await http.get(url);
+    http.Response value = await http.get(Uri.parse(url));
     if (value.statusCode == 400) {
       throw APIBadRequestError();
     } else if (value.statusCode == 403) {
@@ -58,7 +58,7 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
       return List<String>.from(['Test']);
     }
     String url = '$base_url/get_state_value?state_id=$stateId';
-    http.Response value = await http.get(url);
+    http.Response value = await http.get(Uri.parse(url));
     if (value.statusCode == 400) {
       throw APIBadRequestError();
     } else if (value.statusCode == 403) {
@@ -81,7 +81,7 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
       return List<String>.from(['Test']);
     }
     String url = '$base_url/get_dist_value?dist_id=$districtId';
-    http.Response value = await http.get(url);
+    http.Response value = await http.get(Uri.parse(url));
     if (value.statusCode == 400) {
       throw APIBadRequestError();
     } else if (value.statusCode == 403) {

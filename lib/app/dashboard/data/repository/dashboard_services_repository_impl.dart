@@ -64,7 +64,7 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
           '&country=india' +
           '&postalcode=$_pinCode' +
           '&format=json';
-      http.Response value = await http.get(url);
+      http.Response value = await http.get(Uri.parse(url));
       if (value.statusCode == 400) {
         throw APIBadRequestError();
       } else if (value.statusCode == 403) {
@@ -135,7 +135,7 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
         '&appid=$_apiKey' +
         '&units=metric';
 
-    http.Response value = await http.get(url);
+    http.Response value = await http.get(Uri.parse(url));
     if (value.statusCode == 400) {
       throw APIBadRequestError();
     } else if (value.statusCode == 403) {

@@ -66,7 +66,7 @@ class AgriGuidePredictionRepositoryImpl
     String url1 = '$base_url/weather?' +
         'state=${stateName[0]}&' +
         'dist=${districtName[0]}';
-    http.Response value = await http.get(url1);
+    http.Response value = await http.get(Uri.parse(url1));
     if (value.statusCode == 400) {
       throw APIBadRequestError();
     } else if (value.statusCode == 403) {
@@ -102,7 +102,7 @@ class AgriGuidePredictionRepositoryImpl
           'dist=${districtName[0]}&' +
           'season=$season&' +
           'crop=$crop';
-      http.Response value = await http.get(url2);
+      http.Response value = await http.get(Uri.parse(url2));
       if (value.statusCode == 400) {
         throw APIBadRequestError();
       } else if (value.statusCode == 403) {
@@ -139,7 +139,7 @@ class AgriGuidePredictionRepositoryImpl
       return List<String>.from(['Test']);
     }
     String url = '$base_url/get_state_value?state_id=$stateId';
-    http.Response value = await http.get(url);
+    http.Response value = await http.get(Uri.parse(url));
     if (value.statusCode == 400) {
       throw APIBadRequestError();
     } else if (value.statusCode == 403) {
@@ -162,7 +162,7 @@ class AgriGuidePredictionRepositoryImpl
       return List<String>.from(['Test']);
     }
     String url = '$base_url/get_dist_value?dist_id=$districtId';
-    http.Response value = await http.get(url);
+    http.Response value = await http.get(Uri.parse(url));
     if (value.statusCode == 400) {
       throw APIBadRequestError();
     } else if (value.statusCode == 403) {
