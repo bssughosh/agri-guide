@@ -37,7 +37,7 @@ class BottomNavBar extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
-                    width: 70,
+                    width: 73,
                     child: BottomNavBarItem(
                       icon: CustomIcons.home_logo,
                       isSelected: controller.pageNumber == 0,
@@ -49,7 +49,7 @@ class BottomNavBar extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    width: 70,
+                    width: 73,
                     child: BottomNavBarItem(
                       icon: CustomIcons.downloads_logo,
                       isSelected: controller.pageNumber == 1,
@@ -62,7 +62,7 @@ class BottomNavBar extends StatelessWidget {
                   ),
                   Container(width: 80),
                   Container(
-                    width: 70,
+                    width: 73,
                     child: BottomNavBarItem(
                       icon: CustomIcons.statistics_logo,
                       isSelected: controller.pageNumber == 3,
@@ -74,7 +74,7 @@ class BottomNavBar extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    width: 70,
+                    width: 73,
                     child: BottomNavBarItem(
                       icon: CustomIcons.accounts_logo,
                       isSelected: controller.pageNumber == 4,

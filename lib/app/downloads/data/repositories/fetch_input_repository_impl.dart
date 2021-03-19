@@ -22,7 +22,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
     String url = isTest == null
         ? '$base_url/get_states'
         : '$base_url/get_states?isTest=true';
-    http.Response value = await http.get(url);
+    http.Response value = await http.get(Uri.parse(url));
     if (value.statusCode == 400) {
       throw APIBadRequestError();
     } else if (value.statusCode == 403) {
@@ -43,7 +43,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
   @override
   Future<List> getDistrictList(String stateId) async {
     String url = '$base_url/get_dists?state_id=$stateId';
-    http.Response value = await http.get(url);
+    http.Response value = await http.get(Uri.parse(url));
     if (value.statusCode == 400) {
       throw APIBadRequestError();
     } else if (value.statusCode == 403) {
@@ -108,7 +108,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
   fetchStateNames(List<String> stateIds) async {
     String formattedStateIds = stateIds.join(',');
     String url = '$base_url/get_state_value?state_id=$formattedStateIds';
-    http.Response value = await http.get(url);
+    http.Response value = await http.get(Uri.parse(url));
     if (value.statusCode == 400) {
       throw APIBadRequestError();
     } else if (value.statusCode == 403) {
@@ -129,7 +129,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
   fetchDistNames(List<String> districtIds) async {
     String formattedDistIds = districtIds.join(',');
     String url = '$base_url/get_dist_value?dist_id=$formattedDistIds';
-    http.Response value = await http.get(url);
+    http.Response value = await http.get(Uri.parse(url));
     if (value.statusCode == 400) {
       throw APIBadRequestError();
     } else if (value.statusCode == 403) {
@@ -160,7 +160,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
     }
     String url =
         '$base_url/get_seasons?state=${_stateList[0]}&dist=${_districtList[0]}';
-    http.Response value = await http.get(url);
+    http.Response value = await http.get(Uri.parse(url));
     if (value.statusCode == 400) {
       throw APIBadRequestError();
     } else if (value.statusCode == 403) {
@@ -193,7 +193,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
         'state=${_stateList[0]}&' +
         'dist=${_districtList[0]}&' +
         'season=$season';
-    http.Response value = await http.get(url);
+    http.Response value = await http.get(Uri.parse(url));
     if (value.statusCode == 400) {
       throw APIBadRequestError();
     } else if (value.statusCode == 403) {

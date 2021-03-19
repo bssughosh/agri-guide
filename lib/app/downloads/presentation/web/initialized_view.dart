@@ -1,8 +1,8 @@
-import 'package:agri_guide/app/downloads/presentation/widgets/range_widget.dart';
-import 'package:agri_guide/core/app_theme.dart';
-import 'package:agri_guide/core/widgets/custom_button.dart';
-import 'package:agri_guide/core/widgets/custom_checkbox_tile.dart';
-import 'package:agri_guide/core/widgets/custom_multi_select_form.dart';
+import '../widgets/range_widget.dart';
+import '../../../../core/app_theme.dart';
+import '../../../../core/widgets/custom_button.dart';
+import '../../../../core/widgets/custom_checkbox_tile.dart';
+import '../../../../core/widgets/custom_multi_select_form.dart';
 import 'package:flutter/material.dart';
 
 import '../downloads_controller.dart';
