@@ -1,3 +1,5 @@
+import 'package:agri_guide/core/app_theme.dart';
+import 'package:agri_guide/core/widgets/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/custom_icons_icons.dart';
@@ -9,6 +11,9 @@ Widget contentBody({
   @required BuildContext context,
   @required DashboardPageController controller,
 }) {
+  bool _showStateList = !controller.stateListLoading;
+  bool _showDistrictList =
+      controller.selectedState != null && !controller.districtListLoading;
   return Container(
     width: MediaQuery.of(context).size.width,
     child: SingleChildScrollView(
@@ -17,11 +22,57 @@ Widget contentBody({
           if (controller.liveWeatherEntity == null ||
               controller.isFetchingLiveWeather)
             CircularProgressIndicator(),
-          if (controller.liveWeatherEntity != null &&
-              !controller.isFetchingLiveWeather)
-            LocationCard(
-              district: controller.liveWeatherEntity.location.district,
-              state: controller.liveWeatherEntity.location.state,
+          if (_showStateList)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 25, bottom: 10),
+                child: Text(
+                  'State: ',
+                  style: AppTheme.headingBoldText.copyWith(fontSize: 17),
+                ),
+              ),
+            ),
+          if (_showStateList) SizedBox(height: 5),
+          if (_showStateList)
+            Container(
+              width: double.infinity,
+              child: CustomDropdown(
+                hintText: 'Select State',
+                itemsList: controller.stateItems(),
+                selectedItem: controller.selectedState,
+                onChanged: (String newValue) {
+                  controller.selectedState = newValue;
+                  controller.selectedStateChange();
+                },
+              ),
+            ),
+          if (_showDistrictList) SizedBox(height: 20),
+          if (_showDistrictList)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 25, bottom: 10),
+                child: Text(
+                  'District: ',
+                  style: AppTheme.headingBoldText.copyWith(fontSize: 17),
+                ),
+              ),
+            ),
+          if (_showDistrictList) SizedBox(height: 5),
+          if (_showDistrictList)
+            Container(
+              width: double.infinity,
+              child: CustomDropdown(
+                hintText: 'Select District',
+                itemsList: controller.districtItems(),
+                selectedItem: controller.selectedDistrict,
+                onChanged: (String newValue) {
+                  controller.selectedDistrict = newValue;
+                  controller.selectedDistrictChange();
+                  _showMyDialog(context: context, controller: controller);
+                },
+              ),
             ),
           if (controller.liveWeatherEntity != null &&
               !controller.isFetchingLiveWeather)

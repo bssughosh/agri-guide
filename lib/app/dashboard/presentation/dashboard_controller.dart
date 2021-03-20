@@ -37,7 +37,7 @@ class DashboardPageController extends Controller {
   LoginStatus loginStatus = LoginStatus.LOGGED_OUT;
   UserEntity userEntity;
 
-  TextEditingController pincode;
+  TextEditingController pincode = TextEditingController();
 
   @override
   void initListeners() {}
