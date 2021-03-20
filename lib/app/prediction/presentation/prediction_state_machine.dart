@@ -9,8 +9,16 @@ class PredictionPageStateMachine
     final eventType = event.runtimeType;
     PredictionState newState = getCurrentState();
     switch (eventType) {
-      case PredictionPageInitializedEvent:
-        newState = PredictionPageInitializedState();
+      case PredictionPageLoggedOutEvent:
+        newState = PredictionPageLoggedOutState();
+        break;
+
+      case PredictionPageInputInitializedEvent:
+        newState = PredictionPageInputInitializedState();
+        break;
+
+      case PredictionPageDisplayInitializedEvent:
+        newState = PredictionPageDisplayInitializedState();
         break;
 
       case PredictionPageLoadingEvent:
@@ -25,12 +33,20 @@ class PredictionState {}
 
 class PredictionPageInitializationState extends PredictionState {}
 
-class PredictionPageInitializedState extends PredictionState {}
+class PredictionPageLoggedOutState extends PredictionState {}
+
+class PredictionPageInputInitializedState extends PredictionState {}
+
+class PredictionPageDisplayInitializedState extends PredictionState {}
 
 class PredictionPageLoadingState extends PredictionState {}
 
 class PredictionEvent {}
 
-class PredictionPageInitializedEvent extends PredictionEvent {}
+class PredictionPageLoggedOutEvent extends PredictionEvent {}
+
+class PredictionPageInputInitializedEvent extends PredictionEvent {}
+
+class PredictionPageDisplayInitializedEvent extends PredictionEvent {}
 
 class PredictionPageLoadingEvent extends PredictionEvent {}

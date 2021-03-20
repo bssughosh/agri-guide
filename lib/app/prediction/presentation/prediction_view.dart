@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
+import 'mobile/display_initialized_view.dart';
 import 'mobile/initialization_view.dart';
-import 'mobile/initialized_view.dart';
+import 'mobile/input_initialized_view.dart';
 import 'mobile/loading_view.dart';
+import 'mobile/logged_out_view.dart';
 import 'prediction_controller.dart';
 import 'prediction_state_machine.dart';
 
@@ -33,11 +35,21 @@ class PredictionViewState
           controller: controller,
         );
 
-      case PredictionPageInitializedState:
-        return buildPredictionInitializedView(
-          isWeb: false,
+      case PredictionPageLoggedOutState:
+        return buildPredictionLoggedOutView(
           controller: controller,
+        );
+
+      case PredictionPageInputInitializedState:
+        return buildPredictionInputInitializedViewMobile(
           context: context,
+          controller: controller,
+        );
+
+      case PredictionPageDisplayInitializedState:
+        return buildPredictionDisplayInitializedViewMobile(
+          context: context,
+          controller: controller,
         );
 
       case PredictionPageLoadingState:
@@ -55,17 +67,28 @@ class PredictionViewState
   Widget buildDesktopView() {
     final currentStateType = controller.getCurrentState().runtimeType;
 
+    //TODO: Change view
     switch (currentStateType) {
       case PredictionPageInitializationState:
         return buildPredictionInitializationView(
           controller: controller,
         );
 
-      case PredictionPageInitializedState:
-        return buildPredictionInitializedView(
-          isWeb: true,
+      case PredictionPageLoggedOutState:
+        return buildPredictionLoggedOutView(
           controller: controller,
+        );
+
+      case PredictionPageInputInitializedState:
+        return buildPredictionInputInitializedViewMobile(
           context: context,
+          controller: controller,
+        );
+
+      case PredictionPageDisplayInitializedState:
+        return buildPredictionDisplayInitializedViewMobile(
+          context: context,
+          controller: controller,
         );
 
       case PredictionPageLoadingState:

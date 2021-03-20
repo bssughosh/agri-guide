@@ -1,4 +1,3 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/app_theme.dart';
@@ -27,32 +26,6 @@ Widget buildLoginInitializedViewMobile({
                   ),
                   SizedBox(
                     height: 30,
-                  ),
-                  ColorizeAnimatedTextKit(
-                    text: [
-                      "AGRI GUIDE",
-                    ],
-                    textStyle:
-                        AppTheme.loginAnimatedText.copyWith(fontSize: 30),
-                    colors: [
-                      Colors.purple,
-                      Colors.blue,
-                      Colors.yellow,
-                      Colors.red,
-                    ],
-                    textAlign: TextAlign.center,
-                  ),
-                  TypewriterAnimatedTextKit(
-                    text: [
-                      "A Smart Innovative Platform for Crop Prediction",
-                    ],
-                    speed: Duration(milliseconds: 100),
-                    pause: Duration(milliseconds: 1000),
-                    textStyle: AppTheme.loginAnimatedText,
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: 10,
                   ),
                   TextField(
                     controller: controller.emailText,
