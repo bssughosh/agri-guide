@@ -47,7 +47,10 @@ class PredictionViewState
         );
 
       case PredictionPageDisplayInitializedState:
-        return buildPredictionDisplayInitializedViewMobile();
+        return buildPredictionDisplayInitializedViewMobile(
+          context: context,
+          controller: controller,
+        );
 
       case PredictionPageLoadingState:
         return buildPredictionLoadingView();
