@@ -5,7 +5,7 @@ import '../../../../core/enums.dart';
 import '../prediction_controller.dart';
 import 'content_body.dart';
 
-Widget buildPredictionInitializedView({
+Widget buildPredictionLoggedOutView({
   @required bool isWeb,
   @required PredictionPageController controller,
   @required BuildContext context,

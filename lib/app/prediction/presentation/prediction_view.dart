@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 import 'mobile/initialization_view.dart';
-import 'mobile/initialized_view.dart';
+import 'mobile/logged_out_view.dart';
 import 'mobile/loading_view.dart';
 import 'prediction_controller.dart';
 import 'prediction_state_machine.dart';
@@ -33,8 +33,8 @@ class PredictionViewState
           controller: controller,
         );
 
-      case PredictionPageInitializedState:
-        return buildPredictionInitializedView(
+      case PredictionPageLoggedOutState:
+        return buildPredictionLoggedOutView(
           isWeb: false,
           controller: controller,
           context: context,
@@ -61,8 +61,8 @@ class PredictionViewState
           controller: controller,
         );
 
-      case PredictionPageInitializedState:
-        return buildPredictionInitializedView(
+      case PredictionPageLoggedOutState:
+        return buildPredictionLoggedOutView(
           isWeb: true,
           controller: controller,
           context: context,

@@ -87,7 +87,7 @@ class PredictionPageController extends Controller {
       }, onNextFunction: (LoginStatus status) {
         loginStatus = status;
         if (status == LoginStatus.LOGGED_OUT) {
-          _stateMachine.onEvent(new PredictionPageInitializedEvent());
+          _stateMachine.onEvent(new PredictionPageLoggedOutEvent());
           refreshUI();
         } else {
           _presenter.fetchUserDetails(
@@ -98,7 +98,7 @@ class PredictionPageController extends Controller {
               },
               onNextFunction: (UserEntity user) {
                 userEntity = user;
-                _stateMachine.onEvent(new PredictionPageInitializedEvent());
+                _stateMachine.onEvent(new PredictionPageLoggedOutEvent());
                 refreshUI();
               },
             ),
