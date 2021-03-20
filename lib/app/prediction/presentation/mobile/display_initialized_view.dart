@@ -21,21 +21,21 @@ Widget buildPredictionDisplayInitializedViewMobile({
               CustomTable(
                 controller: controller,
                 tableType: TableType.TEMPERATURE,
-                isWeb: true,
+                isWeb: false,
               ),
             SizedBox(height: 15),
             if (!controller.isPredicting && controller.humidity.length > 0)
               CustomTable(
                 controller: controller,
                 tableType: TableType.HUMIDITY,
-                isWeb: true,
+                isWeb: false,
               ),
             SizedBox(height: 15),
             if (!controller.isPredicting && controller.rainfall.length > 0)
               CustomTable(
                 controller: controller,
                 tableType: TableType.RAINFALL,
-                isWeb: true,
+                isWeb: false,
               ),
             SizedBox(height: 15),
             if (!controller.isPredicting && controller.predictedYield != -1)
