@@ -1,3 +1,4 @@
+import 'package:agri_guide/core/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/app_theme.dart';
@@ -27,6 +28,13 @@ Widget buildPredictionInputInitializedViewMobile({
   bool _showRangeWidget = !controller.areCropsAvailable &&
       !controller.seasonListLoading &&
       controller.selectedDistrict != null;
+
+  bool _showSubmitButton = controller.selectedState != '' &&
+      controller.selectedDistrict != '' &&
+      (controller.areCropsAvailable
+          ? (controller.selectedCrop != null &&
+              controller.selectedSeason != null)
+          : true);
 
   return WillPopScope(
     onWillPop: () => Future.sync(controller.onWillPopScopePage1),
@@ -181,6 +189,16 @@ Widget buildPredictionInputInitializedViewMobile({
                     controller.selectedCropChange();
                   },
                 ),
+              ),
+            if (_showSubmitButton) SizedBox(height: 40),
+            if (_showSubmitButton)
+              CustomButton(
+                isActive: true,
+                isOverlayRequired: false,
+                onPressed: () {
+                  controller.proceedToPrediction();
+                },
+                title: 'Submit',
               ),
           ],
         ),

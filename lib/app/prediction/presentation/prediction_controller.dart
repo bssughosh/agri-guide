@@ -23,25 +23,11 @@ class PredictionPageController extends Controller {
 
   LoginStatus loginStatus = LoginStatus.LOGGED_OUT;
   UserEntity userEntity;
-  PageController pageController = PageController();
-  int currentPageNumber = 0;
+
   List stateList = [];
   List districtList = [];
   List seasonsList = [];
   List cropsList = [];
-  bool isStateFilterClicked = false;
-  bool isDistrictFilterClicked = false;
-  String selectedState;
-  String selectedDistrict;
-  String selectedSeason;
-  String selectedCrop;
-  bool stateListLoading = false;
-  bool districtListLoading = false;
-  bool stateListInitialized = false;
-  bool seasonListLoading = false;
-  bool cropListLoading = false;
-  bool areCropsAvailable = true;
-  bool isLoadingFirstTime = true;
   List<String> months = [
     'January',
     'February',
@@ -56,6 +42,20 @@ class PredictionPageController extends Controller {
     'November',
     'December',
   ];
+
+  String selectedState;
+  String selectedDistrict;
+  String selectedSeason;
+  String selectedCrop;
+
+  bool stateListLoading = false;
+  bool districtListLoading = false;
+  bool stateListInitialized = false;
+  bool seasonListLoading = false;
+  bool cropListLoading = false;
+  bool areCropsAvailable = true;
+  bool isLoadingFirstTime = true;
+
   String startMonth;
   String endMonth;
 
@@ -115,9 +115,9 @@ class PredictionPageController extends Controller {
         shouldReplace: true);
   }
 
-  void proceedToPrediction(int page) {
-    currentPageNumber = page;
-    pageController.jumpToPage(page);
+  void proceedToPrediction() {
+    _stateMachine.onEvent(new PredictionPageLoadingEvent());
+    refreshUI();
     if (!isPredicting) makePrediction();
     refreshUI();
   }
@@ -232,7 +232,6 @@ class PredictionPageController extends Controller {
   }
 
   void makePrediction() {
-    isPredicting = true;
     _presenter.makePredictions(
       new UseCaseObserver(() {
         print('Complete');
@@ -270,7 +269,7 @@ class PredictionPageController extends Controller {
         if (areCropsAvailable) {
           predictedYield = predictionDataEntity.predictedYield;
         }
-        isPredicting = false;
+        _stateMachine.onEvent(new PredictionPageDisplayInitializedEvent());
         refreshUI();
       }),
       selectedState,
@@ -422,7 +421,7 @@ class PredictionPageController extends Controller {
   }
 
   bool onWillPopScopePage2() {
-    pageController.jumpToPage(0);
+    _stateMachine.onEvent(new PredictionPageInputInitializedEvent());
     refreshUI();
 
     return false;
