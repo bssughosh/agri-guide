@@ -67,6 +67,7 @@ class PredictionViewState
   Widget buildDesktopView() {
     final currentStateType = controller.getCurrentState().runtimeType;
 
+    //TODO: Change view
     switch (currentStateType) {
       case PredictionPageInitializationState:
         return buildPredictionInitializationView(
@@ -75,6 +76,18 @@ class PredictionViewState
 
       case PredictionPageLoggedOutState:
         return buildPredictionLoggedOutView(
+          controller: controller,
+        );
+
+      case PredictionPageInputInitializedState:
+        return buildPredictionInputInitializedViewMobile(
+          context: context,
+          controller: controller,
+        );
+
+      case PredictionPageDisplayInitializedState:
+        return buildPredictionDisplayInitializedViewMobile(
+          context: context,
           controller: controller,
         );
 
