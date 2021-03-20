@@ -10,7 +10,9 @@ import 'app/accounts/presentation/login/login_presenter.dart';
 import 'app/accounts/presentation/register/register_presenter.dart';
 import 'app/dashboard/data/repository/dashboard_services_repository_impl.dart';
 import 'app/dashboard/domain/repository/dashboard_services_repository.dart';
+import 'app/dashboard/domain/usecase/fetch_live_weather_for_new_location_usecase.dart';
 import 'app/dashboard/domain/usecase/fetch_live_weather_usecase.dart';
+import 'app/dashboard/domain/usecase/fetch_location_details_for_new_location_usecase.dart';
 import 'app/dashboard/domain/usecase/fetch_location_details_usecase.dart';
 import 'app/dashboard/presentation/dashboard_presenter.dart';
 import 'app/downloads/data/repositories/fetch_input_repository_impl.dart';
@@ -65,6 +67,10 @@ Future<void> init() async {
       .registerFactory(() => FetchLiveWeatherUsecase(serviceLocator()));
   serviceLocator
       .registerFactory(() => FetchLocationDetailsUsecase(serviceLocator()));
+  serviceLocator.registerFactory(
+      () => FetchLiveWeatherForNewLocationUsecase(serviceLocator()));
+  serviceLocator.registerFactory(
+      () => FetchLocationDetailsForNewLocationUsecase(serviceLocator()));
 
   // downloads page
   serviceLocator.registerLazySingleton<FetchInputRepository>(
