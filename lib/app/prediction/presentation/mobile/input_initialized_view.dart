@@ -18,12 +18,15 @@ Widget buildPredictionInputInitializedViewMobile({
   bool _showStateList = !controller.stateListLoading;
   bool _showDistrictList =
       controller.selectedState != null && !controller.districtListLoading;
-  bool _showSeasonsList =
-      controller.areCropsAvailable && !controller.seasonListLoading;
-  bool _showCropsList =
-      controller.areCropsAvailable && !controller.cropListLoading;
-  bool _showRangeWidget =
-      !controller.areCropsAvailable && !controller.seasonListLoading;
+  bool _showSeasonsList = controller.areCropsAvailable &&
+      !controller.seasonListLoading &&
+      controller.selectedDistrict != null;
+  bool _showCropsList = controller.areCropsAvailable &&
+      !controller.cropListLoading &&
+      controller.selectedSeason != null;
+  bool _showRangeWidget = !controller.areCropsAvailable &&
+      !controller.seasonListLoading &&
+      controller.selectedDistrict != null;
 
   return WillPopScope(
     onWillPop: () => Future.sync(controller.onWillPopScopePage1),
@@ -91,6 +94,7 @@ Widget buildPredictionInputInitializedViewMobile({
                   },
                 ),
               ),
+            if (_showRangeWidget) SizedBox(height: 30),
             if (_showRangeWidget)
               Align(
                 alignment: Alignment.centerLeft,
@@ -107,7 +111,7 @@ Widget buildPredictionInputInitializedViewMobile({
                 decoration: AppTheme.normalGreenBorderDecoration,
                 padding: EdgeInsets.all(8),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     RangeWidget(
                       title: 'From',

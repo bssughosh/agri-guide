@@ -296,6 +296,7 @@ class PredictionPageController extends Controller {
     seasonsList = [];
     cropsList = [];
     refreshUI();
+    fetchSeasonList();
   }
 
   List<DropdownMenuItem> stateItems() {
@@ -339,12 +340,12 @@ class PredictionPageController extends Controller {
 
   void fromMonthUpdated(String newMonth) {
     startMonth = newMonth;
-    if (startMonth == months[11]) {
-      startMonth = months[10];
+    if (startMonth == 'December') {
+      startMonth = 'November';
     }
     if (endMonth != null && startMonth != null) {
-      if (int.parse(startMonth) >= int.parse(endMonth)) {
-        endMonth = (int.parse(startMonth) + 1).toString();
+      if (months.indexOf(startMonth) >= months.indexOf(endMonth)) {
+        endMonth = months[months.indexOf(startMonth) + 1];
       }
     }
 
@@ -353,12 +354,12 @@ class PredictionPageController extends Controller {
 
   void toMonthUpdated(String newMonth) {
     endMonth = newMonth;
-    if (endMonth == months[0]) {
-      endMonth = months[1];
+    if (endMonth == 'January') {
+      endMonth = 'February';
     }
     if (endMonth != null && startMonth != null) {
-      if (int.parse(startMonth) >= int.parse(endMonth)) {
-        startMonth = (int.parse(endMonth) - 1).toString();
+      if (months.indexOf(startMonth) >= months.indexOf(endMonth)) {
+        startMonth = months[months.indexOf(endMonth) - 1];
       }
     }
 
@@ -383,6 +384,7 @@ class PredictionPageController extends Controller {
     areCropsAvailable = true;
     cropsList = [];
     refreshUI();
+    fetchCropsList();
   }
 
   List<DropdownMenuItem> cropItems() {

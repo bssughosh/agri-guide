@@ -21,7 +21,7 @@ class RangeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 180,
+      width: 175,
       child: Column(
         children: [
           Text(
