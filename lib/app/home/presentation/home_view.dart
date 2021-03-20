@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../../core/app_theme.dart';
 import '../../../core/enums.dart';
@@ -59,8 +60,11 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
   _buildHomeInitializationView() {
     controller.checkForLoginStatus();
     return Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
+      body: Container(
+        margin: EdgeInsets.only(top: 100),
+        child: Center(
+          child: SpinKitFoldingCube(color: AppTheme.chipBackground),
+        ),
       ),
     );
   }
