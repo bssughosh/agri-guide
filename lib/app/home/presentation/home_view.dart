@@ -63,7 +63,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
       body: Container(
         margin: EdgeInsets.only(top: 100),
         child: Center(
-          child: SpinKitFoldingCube(color: AppTheme.chipBackground),
+          child: SpinKitFoldingCube(color: AppTheme.secondaryColor),
         ),
       ),
     );

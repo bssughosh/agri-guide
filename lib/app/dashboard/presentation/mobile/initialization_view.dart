@@ -11,7 +11,7 @@ Widget buildDashboardInitializationView({
   return Container(
     margin: EdgeInsets.only(top: 100),
     child: Center(
-      child: SpinKitFoldingCube(color: AppTheme.chipBackground),
+      child: SpinKitFoldingCube(color: AppTheme.secondaryColor),
     ),
   );
 }
