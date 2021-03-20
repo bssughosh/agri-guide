@@ -60,6 +60,11 @@ Future<void> init() async {
       serviceLocator(),
       serviceLocator(),
       serviceLocator(),
+      serviceLocator(),
+      serviceLocator(),
+      serviceLocator(),
+      serviceLocator(),
+      serviceLocator(),
     ),
   );
 

@@ -69,3 +69,42 @@ Widget contentBody({
     ),
   );
 }
+
+Future<void> _showMyDialog({
+  @required BuildContext context,
+  @required DashboardPageController controller,
+}) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Enter Pincode'),
+        content: TextField(
+          controller: controller.pincode,
+          decoration: InputDecoration(
+            fillColor: Colors.white,
+            labelText: 'Pincode',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
+          ),
+          onChanged: (value) {
+            controller.textFieldChanged();
+          },
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Done'),
+            onPressed: () {
+              if (controller.pincode.text.length == 6) {
+                controller.fetchLiveWeatherForNewLocation();
+                Navigator.of(context).pop();
+              }
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
