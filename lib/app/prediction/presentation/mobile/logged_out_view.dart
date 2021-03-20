@@ -4,9 +4,7 @@ import '../../../../core/app_theme.dart';
 import '../prediction_controller.dart';
 
 Widget buildPredictionLoggedOutView({
-  @required bool isWeb,
   @required PredictionPageController controller,
-  @required BuildContext context,
 }) {
   return Center(
     child: Container(
