@@ -1,10 +1,9 @@
-import 'package:agri_guide/core/handle_api_errors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../core/enums.dart';
-import '../../../core/exceptions.dart';
+import '../../../core/handle_api_errors.dart';
 import '../../../core/observer.dart';
 import '../../../injection_container.dart';
 import '../../accounts/domain/entities/user_entity.dart';
@@ -325,16 +324,94 @@ class PredictionPageController extends Controller {
     return _list;
   }
 
+  List<DropdownMenuItem> monthItems() {
+    List<DropdownMenuItem> _list = [];
+    for (var month in months) {
+      _list.add(
+        new DropdownMenuItem(
+          value: month,
+          child: Text(month),
+        ),
+      );
+    }
+    return _list;
+  }
+
+  void fromMonthUpdated(String newMonth) {
+    startMonth = newMonth;
+    if (startMonth == months[11]) {
+      startMonth = months[10];
+    }
+    if (endMonth != null && startMonth != null) {
+      if (int.parse(startMonth) >= int.parse(endMonth)) {
+        endMonth = (int.parse(startMonth) + 1).toString();
+      }
+    }
+
+    refreshUI();
+  }
+
+  void toMonthUpdated(String newMonth) {
+    endMonth = newMonth;
+    if (endMonth == months[0]) {
+      endMonth = months[1];
+    }
+    if (endMonth != null && startMonth != null) {
+      if (int.parse(startMonth) >= int.parse(endMonth)) {
+        startMonth = (int.parse(endMonth) - 1).toString();
+      }
+    }
+
+    refreshUI();
+  }
+
+  List<DropdownMenuItem> seasonItems() {
+    List<DropdownMenuItem> _list = [];
+    for (var season in seasonsList) {
+      _list.add(
+        new DropdownMenuItem(
+          value: season,
+          child: Text(season),
+        ),
+      );
+    }
+    return _list;
+  }
+
+  void selectedSeasonChange() {
+    selectedCrop = null;
+    areCropsAvailable = true;
+    cropsList = [];
+    refreshUI();
+  }
+
+  List<DropdownMenuItem> cropItems() {
+    List<DropdownMenuItem> _list = [];
+    for (var crop in cropsList) {
+      _list.add(
+        new DropdownMenuItem(
+          value: crop['crop_id'],
+          child: Text(crop['name']),
+        ),
+      );
+    }
+    return _list;
+  }
+
+  void selectedCropChange() {
+    refreshUI();
+  }
+
   bool onWillPopScopePage1() {
     if (selectedCrop != null) {
       selectedCrop = null;
     } else if (selectedSeason != null) {
       selectedSeason = null;
-    } else if (selectedDistrict != '') {
-      selectedDistrict = '';
-    } else if (selectedState != '') {
-      selectedState = '';
-      selectedDistrict = '';
+    } else if (selectedDistrict != null) {
+      selectedDistrict = null;
+    } else if (selectedState != null) {
+      selectedState = null;
+      selectedDistrict = null;
       districtList = [];
     }
     refreshUI();
