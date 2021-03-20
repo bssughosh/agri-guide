@@ -41,7 +41,10 @@ class PredictionViewState
         );
 
       case PredictionPageInputInitializedState:
-        return buildPredictionInputInitializedViewMobile();
+        return buildPredictionInputInitializedViewMobile(
+          context: context,
+          controller: controller,
+        );
 
       case PredictionPageDisplayInitializedState:
         return buildPredictionDisplayInitializedViewMobile();

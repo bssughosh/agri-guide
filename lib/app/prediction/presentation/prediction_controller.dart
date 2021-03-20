@@ -1,3 +1,4 @@
+import 'package:agri_guide/core/handle_api_errors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -31,8 +32,8 @@ class PredictionPageController extends Controller {
   List cropsList = [];
   bool isStateFilterClicked = false;
   bool isDistrictFilterClicked = false;
-  String selectedState = '';
-  String selectedDistrict = '';
+  String selectedState;
+  String selectedDistrict;
   String selectedSeason;
   String selectedCrop;
   bool stateListLoading = false;
@@ -84,6 +85,7 @@ class PredictionPageController extends Controller {
     _presenter.checkLoginStatus(
       new UseCaseObserver(() {}, (error) {
         print(error);
+        handleAPIErrors(error);
       }, onNextFunction: (LoginStatus status) {
         loginStatus = status;
         if (status == LoginStatus.LOGGED_OUT) {
@@ -98,7 +100,8 @@ class PredictionPageController extends Controller {
               },
               onNextFunction: (UserEntity user) {
                 userEntity = user;
-                _stateMachine.onEvent(new PredictionPageLoggedOutEvent());
+                _stateMachine
+                    .onEvent(new PredictionPageInputInitializedEvent());
                 refreshUI();
               },
             ),
@@ -106,36 +109,6 @@ class PredictionPageController extends Controller {
         }
       }),
     );
-  }
-
-  _handleAPIErrors(Exception error) {
-    if (error.runtimeType == APIBadRequestError) {
-      Fluttertoast.showToast(
-          msg: 'A bad request was encountered. Please try again');
-    } else if (error.runtimeType == APIForbiddenError) {
-      Fluttertoast.showToast(
-          msg: 'The request was forbidden. Please try again');
-    } else if (error.runtimeType == APINotFoundError) {
-      Fluttertoast.showToast(
-          msg:
-              'The request was incorrect. Please check the request and try again');
-    } else if (error.runtimeType == APITooManyRequestsError) {
-      Fluttertoast.showToast(
-          msg:
-              'There are too many requests serviced right now. Please try again after sometime');
-    } else if (error.runtimeType == APIInternalServerError) {
-      Fluttertoast.showToast(
-          msg:
-              'There was an internal server error. Please try again after sometime');
-    } else if (error.runtimeType == APIServiceUnavailabeError) {
-      Fluttertoast.showToast(
-          msg:
-              'The server is under maintenance right now. Please try again after sometime');
-    } else {
-      Fluttertoast.showToast(
-          msg:
-              'The request was incorrect. Please check the request and try again');
-    }
   }
 
   void navigateToLogin() {
@@ -150,31 +123,13 @@ class PredictionPageController extends Controller {
     refreshUI();
   }
 
-  void handleStateFilterClicked() {
-    if (isDistrictFilterClicked) {
-    } else {
-      isStateFilterClicked = !isStateFilterClicked;
-    }
-    refreshUI();
-  }
-
-  void handleDistrictFilterClicked() {
-    if (isStateFilterClicked) {
-    } else {
-      isDistrictFilterClicked = !isDistrictFilterClicked;
-    }
-    refreshUI();
-  }
-
   void fetchStateList() {
     stateListLoading = true;
     _presenter.fetchStateList(
       new UseCaseObserver(
-        () {
-          print('State list successfully fetched');
-        },
+        () {},
         (error) {
-          _handleAPIErrors(error);
+          handleAPIErrors(error);
           print(error);
         },
         onNextFunction: (List stateListRes) {
@@ -199,11 +154,9 @@ class PredictionPageController extends Controller {
     districtListLoading = true;
     _presenter.fetchDistrictList(
       new UseCaseObserver(
-        () {
-          print('District list successfully fetched');
-        },
+        () {},
         (error) {
-          _handleAPIErrors(error);
+          handleAPIErrors(error);
           print(error);
         },
         onNextFunction: (List districtListRes) {
@@ -231,11 +184,9 @@ class PredictionPageController extends Controller {
     seasonListLoading = true;
     _presenter.fetchSeasonsList(
       new UseCaseObserver(
-        () {
-          print('Seasons list successfully fetched');
-        },
+        () {},
         (error) {
-          _handleAPIErrors(error);
+          handleAPIErrors(error);
           print(error);
         },
         onNextFunction: (List seasonsRes) {
@@ -266,7 +217,7 @@ class PredictionPageController extends Controller {
           print('Crops list successfully fetched');
         },
         (error) {
-          _handleAPIErrors(error);
+          handleAPIErrors(error);
           print(error);
         },
         onNextFunction: (List cropsRes) {
@@ -287,7 +238,7 @@ class PredictionPageController extends Controller {
       new UseCaseObserver(() {
         print('Complete');
       }, (error) {
-        _handleAPIErrors(error);
+        handleAPIErrors(error);
         print(error);
       }, onNextFunction: (PredictionDataEntity entity) {
         predictionDataEntity = entity;
@@ -330,18 +281,8 @@ class PredictionPageController extends Controller {
     );
   }
 
-  void handleRadioChangeOfState(String value) {
-    selectedState = value;
-    refreshUI();
-  }
-
-  void handleRadioChangeOfDistrict(String value) {
-    selectedDistrict = value;
-    refreshUI();
-  }
-
   void selectedStateChange() {
-    selectedDistrict = '';
+    selectedDistrict = null;
     districtList = [];
     seasonsList = [];
     cropsList = [];
@@ -356,41 +297,32 @@ class PredictionPageController extends Controller {
     seasonsList = [];
     cropsList = [];
     refreshUI();
-    fetchSeasonList();
   }
 
-  void handleStartMonthDropDownChange(String value) {
-    startMonth = value;
-    if (months.indexOf(startMonth) == 11) {
-      startMonth = months[10];
+  List<DropdownMenuItem> stateItems() {
+    List<DropdownMenuItem> _list = [];
+    for (var state in stateList) {
+      _list.add(
+        new DropdownMenuItem(
+          value: state['id'],
+          child: Text(state['name']),
+        ),
+      );
     }
-    if (months.indexOf(endMonth) <= months.indexOf(startMonth)) {
-      endMonth = months[months.indexOf(startMonth) + 1];
-    }
-    refreshUI();
+    return _list;
   }
 
-  void handleEndMonthDropDownChange(String value) {
-    endMonth = value;
-    if (months.indexOf(endMonth) == 0) {
-      endMonth = months[1];
+  List<DropdownMenuItem> districtItems() {
+    List<DropdownMenuItem> _list = [];
+    for (var district in districtList) {
+      _list.add(
+        new DropdownMenuItem(
+          value: district['id'],
+          child: Text(district['name']),
+        ),
+      );
     }
-    if (months.indexOf(endMonth) <= months.indexOf(startMonth)) {
-      endMonth = months[months.indexOf(startMonth) + 1];
-    }
-    refreshUI();
-  }
-
-  void handleSeasonDropDownChange(String value) {
-    selectedSeason = value;
-    selectedCrop = null;
-    if (selectedSeason != '') fetchCropsList();
-    refreshUI();
-  }
-
-  void handleCropDropDownChange(String value) {
-    selectedCrop = value;
-    refreshUI();
+    return _list;
   }
 
   bool onWillPopScopePage1() {
