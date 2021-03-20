@@ -18,22 +18,7 @@ class LocationCard extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
       padding: EdgeInsets.all(5.0),
-      decoration: AppTheme.normalBlackBorderDecoration.copyWith(boxShadow: [
-        BoxShadow(
-          color: Colors.black54,
-          offset: const Offset(
-            2.0,
-            2.0,
-          ),
-          blurRadius: 5.0,
-        ),
-        BoxShadow(
-          color: Colors.white,
-          offset: const Offset(0.0, 0.0),
-          blurRadius: 0.0,
-          spreadRadius: 0.0,
-        ),
-      ]),
+      decoration: AppTheme.normalBlackBorderDecoration,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,

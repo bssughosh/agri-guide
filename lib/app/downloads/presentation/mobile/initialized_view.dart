@@ -163,8 +163,8 @@ Widget buildDownloadsInitializedViewMobile({
                           ),
                         if (_showDownloads)
                           Container(
-                            decoration: AppTheme.normalGreenBorderDecoration,
-                            padding: EdgeInsets.symmetric(horizontal: 5),
+                            padding: EdgeInsets.all(8),
+                            decoration: AppTheme.normalBlackBorderDecoration,
                             child: Column(
                               children: [
                                 for (String item
