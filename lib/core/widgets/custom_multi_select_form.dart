@@ -56,8 +56,7 @@ class CustomMultiselectForm extends StatelessWidget {
       final _items = dataSource
           .map((e) => MultiSelectItem(e[valueKey], e[displayKey]))
           .toList();
-      await showModalBottomSheet(
-        isScrollControlled: true,
+      await showDialog(
         context: context,
         builder: (ctx) {
           return MultiSelectDialog(
