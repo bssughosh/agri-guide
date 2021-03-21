@@ -17,6 +17,12 @@ class DashboardViewState
   DashboardViewState() : super(new DashboardPageController());
 
   @override
+  void initState() {
+    controller.pincode.text = '';
+    super.initState();
+  }
+
+  @override
   Widget buildMobileView() {
     final currentState = controller.getCurrentState();
     final currentStateType = controller.getCurrentState().runtimeType;

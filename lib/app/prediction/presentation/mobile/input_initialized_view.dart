@@ -1,4 +1,4 @@
-import 'package:agri_guide/core/widgets/custom_button.dart';
+import '../../../../core/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/app_theme.dart';

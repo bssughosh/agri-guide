@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import '../../../../core/app_theme.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_checkbox_tile.dart';
-import '../../../../core/widgets/custom_multi_select_form.dart';
 import '../downloads_controller.dart';
+import '../widgets/location_card.dart';
 import '../widgets/range_widget.dart';
 
 Widget buildDownloadsInitializedViewMobile({
@@ -47,53 +47,10 @@ Widget buildDownloadsInitializedViewMobile({
                         SizedBox(
                           height: 30,
                         ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 25, bottom: 10),
-                            child: Text(
-                              'States: ',
-                              style: AppTheme.headingBoldText
-                                  .copyWith(fontSize: 17),
-                            ),
-                          ),
+                        LocationCard(
+                          controller: controller,
+                          showDistrictList: _showDistrictList,
                         ),
-                        Container(
-                          child: CustomMultiselectForm(
-                            selectedItemList: controller.selectedStates,
-                            title: 'Select States',
-                            dataSource: controller.stateList,
-                            displayKey: 'name',
-                            valueKey: 'id',
-                            onSavedFunction: controller.updateStateList,
-                          ),
-                        ),
-                        if (_showDistrictList) SizedBox(height: 20),
-                        if (_showDistrictList)
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 25, bottom: 10),
-                              child: Text(
-                                'Districts: ',
-                                style: AppTheme.headingBoldText
-                                    .copyWith(fontSize: 17),
-                              ),
-                            ),
-                          ),
-                        if (_showDistrictList)
-                          Container(
-                            child: CustomMultiselectForm(
-                              selectedItemList: controller.selectedDistricts,
-                              title: 'Select Districts',
-                              dataSource: controller.districtList,
-                              displayKey: 'name',
-                              valueKey: 'id',
-                              onSavedFunction: controller.updateDistrictList,
-                            ),
-                          ),
                         if (_showRange) SizedBox(height: 20),
                         if (_showRange)
                           Align(
@@ -206,8 +163,8 @@ Widget buildDownloadsInitializedViewMobile({
                           ),
                         if (_showDownloads)
                           Container(
-                            decoration: AppTheme.normalGreenBorderDecoration,
-                            padding: EdgeInsets.symmetric(horizontal: 5),
+                            padding: EdgeInsets.all(8),
+                            decoration: AppTheme.normalBlackBorderDecoration,
                             child: Column(
                               children: [
                                 for (String item

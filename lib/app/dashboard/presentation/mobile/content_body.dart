@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/app_theme.dart';
 import '../../../../core/custom_icons_icons.dart';
+import '../../../../core/widgets/custom_dropdown.dart';
 import '../dashboard_controller.dart';
 import '../widgets/live_weather_card.dart';
-import '../widgets/location_card.dart';
 
 Widget contentBody({
   @required BuildContext context,
   @required DashboardPageController controller,
 }) {
+  bool _showStateList = !controller.stateListLoading;
+  bool _showDistrictList =
+      controller.selectedState != null && !controller.districtListLoading;
   return Container(
     width: MediaQuery.of(context).size.width,
     child: SingleChildScrollView(
@@ -17,11 +21,67 @@ Widget contentBody({
           if (controller.liveWeatherEntity == null ||
               controller.isFetchingLiveWeather)
             CircularProgressIndicator(),
-          if (controller.liveWeatherEntity != null &&
-              !controller.isFetchingLiveWeather)
-            LocationCard(
-              district: controller.liveWeatherEntity.location.district,
-              state: controller.liveWeatherEntity.location.state,
+          if (_showStateList)
+            Container(
+              width: MediaQuery.of(context).size.width * 0.7,
+              decoration: AppTheme.normalBlackBorderDecoration,
+              padding: EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 25, bottom: 10),
+                      child: Text(
+                        'State: ',
+                        style: AppTheme.headingBoldText.copyWith(fontSize: 17),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  Container(
+                    width: double.infinity,
+                    child: CustomDropdown(
+                      hintText: 'Select State',
+                      itemsList: controller.stateItems(),
+                      selectedItem: controller.selectedState,
+                      onChanged: (String newValue) {
+                        controller.selectedState = newValue;
+                        controller.selectedStateChange();
+                      },
+                    ),
+                  ),
+                  if (_showDistrictList) SizedBox(height: 20),
+                  if (_showDistrictList)
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 25, bottom: 10),
+                        child: Text(
+                          'District: ',
+                          style:
+                              AppTheme.headingBoldText.copyWith(fontSize: 17),
+                        ),
+                      ),
+                    ),
+                  if (_showDistrictList) SizedBox(height: 5),
+                  if (_showDistrictList)
+                    Container(
+                      width: double.infinity,
+                      child: CustomDropdown(
+                        hintText: 'Select District',
+                        itemsList: controller.districtItems(),
+                        selectedItem: controller.selectedDistrict,
+                        onChanged: (String newValue) {
+                          controller.selectedDistrict = newValue;
+                          controller.selectedDistrictChange();
+                          _showMyDialog(
+                              context: context, controller: controller);
+                        },
+                      ),
+                    ),
+                ],
+              ),
             ),
           if (controller.liveWeatherEntity != null &&
               !controller.isFetchingLiveWeather)
@@ -67,5 +127,44 @@ Widget contentBody({
         ],
       ),
     ),
+  );
+}
+
+Future<void> _showMyDialog({
+  @required BuildContext context,
+  @required DashboardPageController controller,
+}) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Enter Pincode'),
+        content: TextField(
+          controller: controller.pincode,
+          decoration: InputDecoration(
+            fillColor: Colors.white,
+            labelText: 'Pincode',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
+          ),
+          onChanged: (value) {
+            controller.textFieldChanged();
+          },
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Done'),
+            onPressed: () {
+              if (controller.pincode.text.length == 6) {
+                controller.fetchLiveWeatherForNewLocation();
+                Navigator.of(context).pop();
+              }
+            },
+          ),
+        ],
+      );
+    },
   );
 }

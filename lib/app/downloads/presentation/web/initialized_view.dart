@@ -1,11 +1,11 @@
-import '../widgets/range_widget.dart';
+import 'package:flutter/material.dart';
+
 import '../../../../core/app_theme.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_checkbox_tile.dart';
 import '../../../../core/widgets/custom_multi_select_form.dart';
-import 'package:flutter/material.dart';
-
 import '../downloads_controller.dart';
+import '../widgets/range_widget.dart';
 
 Widget buildDownloadsInitializedViewWeb({
   @required BuildContext context,
