@@ -1,11 +1,11 @@
-import 'package:agri_guide/app/accounts/domain/entities/user_entity.dart';
-import 'package:agri_guide/core/handle_api_errors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 import '../../../core/enums.dart';
+import '../../../core/handle_api_errors.dart';
 import '../../../core/observer.dart';
 import '../../../injection_container.dart';
+import '../../accounts/domain/entities/user_entity.dart';
 import '../../navigation_service.dart';
 import '../domain/entity/live_weather_entity.dart';
 import 'dashboard_presenter.dart';
@@ -193,14 +193,14 @@ class DashboardPageController extends Controller {
   void selectedStateChange() {
     selectedDistrict = null;
     districtList = [];
-    isFirstTimeLoading = true;
+    isFirstTimeLoading = false;
     liveWeatherEntity = null;
     refreshUI();
     fetchDistrictList();
   }
 
   void selectedDistrictChange() {
-    isFirstTimeLoading = true;
+    isFirstTimeLoading = false;
     pincode.text = '';
     liveWeatherEntity = null;
     refreshUI();

@@ -1,14 +1,14 @@
-import 'package:agri_guide/app/dashboard/domain/usecase/fetch_live_weather_for_new_location_usecase.dart';
-import 'package:agri_guide/app/dashboard/domain/usecase/fetch_location_details_for_new_location_usecase.dart';
-import 'package:agri_guide/app/downloads/domain/usecase/fetch_district_list_usecase.dart';
-import 'package:agri_guide/app/downloads/domain/usecase/fetch_state_list_usecase.dart';
-import 'package:agri_guide/app/prediction/domain/usecase/fetch_user_details_usecase.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 import '../../../core/observer.dart';
 import '../../accounts/domain/usecase/check_login_status_usecase.dart';
+import '../../downloads/domain/usecase/fetch_district_list_usecase.dart';
+import '../../downloads/domain/usecase/fetch_state_list_usecase.dart';
+import '../../prediction/domain/usecase/fetch_user_details_usecase.dart';
+import '../domain/usecase/fetch_live_weather_for_new_location_usecase.dart';
 import '../domain/usecase/fetch_live_weather_usecase.dart';
+import '../domain/usecase/fetch_location_details_for_new_location_usecase.dart';
 import '../domain/usecase/fetch_location_details_usecase.dart';
 
 class DashboardPagePresenter extends Presenter {
