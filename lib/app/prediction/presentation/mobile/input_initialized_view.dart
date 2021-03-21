@@ -1,13 +1,12 @@
-import 'package:agri_guide/app/prediction/presentation/widgets/crops_column_widget.dart';
-import 'package:agri_guide/app/prediction/presentation/widgets/seasons_column_widget.dart';
-
-import '../../../../core/widgets/custom_button.dart';
+import 'package:agri_guide/app/prediction/presentation/widgets/range_column_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/app_theme.dart';
+import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_dropdown.dart';
 import '../prediction_controller.dart';
-import '../widgets/range_widget.dart';
+import '../widgets/crops_column_widget.dart';
+import '../widgets/seasons_column_widget.dart';
 
 Widget buildPredictionInputInitializedViewMobile({
   @required PredictionPageController controller,
@@ -26,15 +25,20 @@ Widget buildPredictionInputInitializedViewMobile({
       !controller.cropListLoading &&
       controller.selectedDistrict != null &&
       controller.yieldPredictionRequired;
-  bool _showRangeWidget = !controller.areCropsAvailable &&
-      !controller.seasonListLoading &&
+  bool _showRadioButton = !controller.cropListLoading &&
+      controller.areCropsAvailable &&
       controller.selectedDistrict != null;
-
-  bool _showSubmitButton = controller.selectedState != '' &&
-      controller.selectedDistrict != '' &&
+  bool _showRangeWidget = (!controller.areCropsAvailable &&
+          !controller.cropListLoading &&
+          controller.selectedDistrict != null) ||
+      (controller.areCropsAvailable && !controller.yieldPredictionRequired);
+  bool _showSubmitButton = controller.selectedState != null &&
+      controller.selectedDistrict != null &&
       (controller.areCropsAvailable
-          ? (controller.selectedCrop != null &&
-              controller.selectedSeason != null)
+          ? controller.yieldPredictionRequired
+              ? (controller.selectedCrop != null &&
+                  controller.selectedSeason != null)
+              : true
           : true);
 
   return WillPopScope(
@@ -108,9 +112,7 @@ Widget buildPredictionInputInitializedViewMobile({
                 ),
               ),
             if (controller.cropListLoading) CircularProgressIndicator(),
-            if (!controller.cropListLoading &&
-                controller.areCropsAvailable &&
-                controller.selectedDistrict != null)
+            if (_showRadioButton)
               RadioListTile(
                 toggleable: true,
                 title: Text('Predict Yield?'),
@@ -123,6 +125,7 @@ Widget buildPredictionInputInitializedViewMobile({
             if (_showCropsList) CropsColumnWidget(controller: controller),
             if (controller.seasonListLoading) CircularProgressIndicator(),
             if (_showSeasonsList) SeasonsColumnWidget(controller: controller),
+            if (_showRangeWidget) RangeColumnWidget(controller: controller),
             if (_showSubmitButton) SizedBox(height: 40),
             if (_showSubmitButton)
               CustomButton(

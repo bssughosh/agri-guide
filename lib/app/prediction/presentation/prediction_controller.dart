@@ -342,8 +342,8 @@ class PredictionPageController extends Controller {
       }),
       selectedState,
       selectedDistrict,
-      selectedSeason,
-      selectedCrop,
+      yieldPredictionRequired ? selectedSeason : null,
+      yieldPredictionRequired ? selectedCrop : null,
     );
   }
 
