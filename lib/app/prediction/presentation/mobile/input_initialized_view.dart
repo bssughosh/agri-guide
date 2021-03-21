@@ -1,4 +1,3 @@
-import 'package:agri_guide/app/prediction/presentation/widgets/range_column_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/app_theme.dart';
@@ -6,6 +5,7 @@ import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_dropdown.dart';
 import '../prediction_controller.dart';
 import '../widgets/crops_column_widget.dart';
+import '../widgets/range_column_widget.dart';
 import '../widgets/seasons_column_widget.dart';
 
 Widget buildPredictionInputInitializedViewMobile({

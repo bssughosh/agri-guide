@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../core/enums.dart';
 import '../../../core/handle_api_errors.dart';
