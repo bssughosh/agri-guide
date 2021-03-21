@@ -14,7 +14,11 @@ class FetchSeasonsListUsecase
   Future<Stream<List>> buildUseCaseStream(FetchSeasonListParams params) async {
     StreamController<List> streamController = StreamController();
     try {
-      List res = await _repository.getSeasons(params.state, params.district);
+      List res = await _repository.getSeasons(
+        params.state,
+        params.district,
+        params.cropId,
+      );
       streamController.add(res);
       streamController.close();
     } catch (error) {
@@ -27,6 +31,7 @@ class FetchSeasonsListUsecase
 class FetchSeasonListParams {
   final String state;
   final String district;
+  final String cropId;
 
-  FetchSeasonListParams(this.state, this.district);
+  FetchSeasonListParams(this.state, this.district, this.cropId);
 }

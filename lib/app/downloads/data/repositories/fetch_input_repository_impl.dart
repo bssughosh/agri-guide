@@ -148,7 +148,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
   }
 
   @override
-  Future<List> getSeasons(String state, String district) async {
+  Future<List> getSeasons(String state, String district, String cropId) async {
     List<String> _stateList;
     List<String> _districtList;
     if (state != 'Test' || district != 'Test') {
@@ -158,8 +158,10 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
       _stateList = ['Test'];
       _districtList = ['Test'];
     }
-    String url =
-        '$base_url/get_seasons?state=${_stateList[0]}&dist=${_districtList[0]}';
+    String url = '$base_url/get_seasons_v2?' +
+        'state=${_stateList[0]}&' +
+        'dist=${_districtList[0]}&' +
+        'crop=$cropId';
     http.Response value = await http.get(Uri.parse(url));
     if (value.statusCode == 400) {
       throw APIBadRequestError();
@@ -179,7 +181,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
   }
 
   @override
-  Future<List> getCrops(String state, String district, String season) async {
+  Future<List> getCrops(String state, String district) async {
     List<String> _stateList;
     List<String> _districtList;
     if (state != 'Test' || district != 'Test') {
@@ -191,8 +193,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
     }
     String url = '$base_url/get_crops?' +
         'state=${_stateList[0]}&' +
-        'dist=${_districtList[0]}&' +
-        'season=$season';
+        'dist=${_districtList[0]}';
     http.Response value = await http.get(Uri.parse(url));
     if (value.statusCode == 400) {
       throw APIBadRequestError();
