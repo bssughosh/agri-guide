@@ -49,7 +49,7 @@ void main() {
 
     test('should fetch seasons list', () async {
       expect(
-        await fetchInputRepositoryImpl.getSeasons('Test', 'Test'),
+        await fetchInputRepositoryImpl.getSeasons('Test', 'Test', 'Test'),
         [
           'Test',
         ],
@@ -58,7 +58,7 @@ void main() {
 
     test('should fetch crops list', () async {
       expect(
-        await fetchInputRepositoryImpl.getCrops('Test', 'Test', 'Test'),
+        await fetchInputRepositoryImpl.getCrops('Test', 'Test'),
         [
           {'crop_id': 'Test', 'name': 'Test'},
         ],

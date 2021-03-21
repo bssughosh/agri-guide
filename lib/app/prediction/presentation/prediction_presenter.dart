@@ -74,18 +74,17 @@ class PredictionPagePresenter extends Presenter {
   }
 
   void fetchSeasonsList(
-      UseCaseObserver observer, String state, String district) {
+      UseCaseObserver observer, String state, String district, String cropId) {
     _fetchSeasonsListUsecase.execute(
       observer,
-      new FetchSeasonListParams(state, district),
+      new FetchSeasonListParams(state, district, cropId),
     );
   }
 
-  void fetchCropList(
-      UseCaseObserver observer, String state, String district, String season) {
+  void fetchCropList(UseCaseObserver observer, String state, String district) {
     _fetchCropListUsecase.execute(
       observer,
-      new FetchCropListParams(state, district, season),
+      new FetchCropListParams(state, district),
     );
   }
 }

@@ -96,7 +96,7 @@ class AgriGuidePredictionRepositoryImpl
       }
     }
 
-    if (season != '') {
+    if (crop != null) {
       String url2 = '$base_url/yield?' +
           'state=${stateName[0]}&' +
           'dist=${districtName[0]}&' +

@@ -16,7 +16,6 @@ class FetchCropListUsecase extends CompletableUseCase<FetchCropListParams> {
       List res = await _repository.getCrops(
         params.state,
         params.district,
-        params.season,
       );
       streamController.add(res);
       streamController.close();
@@ -30,7 +29,6 @@ class FetchCropListUsecase extends CompletableUseCase<FetchCropListParams> {
 class FetchCropListParams {
   final String state;
   final String district;
-  final String season;
 
-  FetchCropListParams(this.state, this.district, this.season);
+  FetchCropListParams(this.state, this.district);
 }

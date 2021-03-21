@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../core/enums.dart';
 import '../../../core/handle_api_errors.dart';
@@ -55,6 +54,7 @@ class PredictionPageController extends Controller {
   bool cropListLoading = false;
   bool areCropsAvailable = true;
   bool isLoadingFirstTime = true;
+  bool yieldPredictionRequired = false;
 
   String startMonth;
   String endMonth;
@@ -122,6 +122,11 @@ class PredictionPageController extends Controller {
     refreshUI();
   }
 
+  void toggleRadioButton() {
+    yieldPredictionRequired = !yieldPredictionRequired;
+    refreshUI();
+  }
+
   void fetchStateList() {
     stateListLoading = true;
     _presenter.fetchStateList(
@@ -170,7 +175,7 @@ class PredictionPageController extends Controller {
           }
           if (isLoadingFirstTime) {
             isLoadingFirstTime = false;
-            fetchSeasonList();
+            fetchCropsList();
           }
           refreshUI();
         },
@@ -190,21 +195,14 @@ class PredictionPageController extends Controller {
         },
         onNextFunction: (List seasonsRes) {
           seasonListLoading = false;
-          if (seasonsRes.length > 0) {
-            seasonsList = seasonsRes;
-          } else {
-            areCropsAvailable = false;
-            selectedSeason = '';
-            Fluttertoast.showToast(
-              msg:
-                  'There are no crops inout repository at the moment for your selected location',
-            );
-          }
+          seasonsList = seasonsRes;
+
           refreshUI();
         },
       ),
       selectedState,
       selectedDistrict,
+      selectedCrop,
     );
   }
 
@@ -222,12 +220,18 @@ class PredictionPageController extends Controller {
         onNextFunction: (List cropsRes) {
           cropListLoading = false;
           cropsList = cropsRes;
+          if (cropsRes.length > 0) {
+            areCropsAvailable = true;
+            selectedCrop = null;
+          } else {
+            areCropsAvailable = false;
+            selectedCrop = null;
+          }
           refreshUI();
         },
       ),
       selectedState,
       selectedDistrict,
-      selectedSeason,
     );
   }
 
@@ -337,8 +341,8 @@ class PredictionPageController extends Controller {
       }),
       selectedState,
       selectedDistrict,
-      selectedSeason,
-      selectedCrop,
+      yieldPredictionRequired ? selectedSeason : null,
+      yieldPredictionRequired ? selectedCrop : null,
     );
   }
 
@@ -358,7 +362,7 @@ class PredictionPageController extends Controller {
     seasonsList = [];
     cropsList = [];
     refreshUI();
-    fetchSeasonList();
+    fetchCropsList();
   }
 
   List<DropdownMenuItem> stateItems() {
@@ -442,12 +446,7 @@ class PredictionPageController extends Controller {
   }
 
   void selectedSeasonChange() {
-    selectedCrop = null;
-    areCropsAvailable = true;
-    cropsList = [];
-
     refreshUI();
-    fetchCropsList();
   }
 
   List<DropdownMenuItem> cropItems() {
@@ -464,7 +463,10 @@ class PredictionPageController extends Controller {
   }
 
   void selectedCropChange() {
+    selectedSeason = null;
+    seasonsList = [];
     refreshUI();
+    fetchSeasonList();
   }
 
   bool onWillPopScopePage1() {
