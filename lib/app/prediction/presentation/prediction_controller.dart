@@ -123,6 +123,11 @@ class PredictionPageController extends Controller {
     refreshUI();
   }
 
+  void toggleRadioButton() {
+    yieldPredictionRequired = !yieldPredictionRequired;
+    refreshUI();
+  }
+
   void fetchStateList() {
     stateListLoading = true;
     _presenter.fetchStateList(
@@ -217,6 +222,9 @@ class PredictionPageController extends Controller {
           cropListLoading = false;
           cropsList = cropsRes;
           if (cropsRes.length > 0) {
+            areCropsAvailable = true;
+            selectedCrop = null;
+          } else {
             areCropsAvailable = false;
             selectedCrop = null;
           }
@@ -459,6 +467,7 @@ class PredictionPageController extends Controller {
     selectedSeason = null;
     seasonsList = [];
     refreshUI();
+    fetchSeasonList();
   }
 
   bool onWillPopScopePage1() {

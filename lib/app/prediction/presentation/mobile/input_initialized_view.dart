@@ -109,12 +109,20 @@ Widget buildPredictionInputInitializedViewMobile({
               ),
             if (controller.cropListLoading) CircularProgressIndicator(),
             if (!controller.cropListLoading &&
-                controller.yieldPredictionRequired)
-              CropsColumnWidget(controller: controller),
+                controller.areCropsAvailable &&
+                controller.selectedDistrict != null)
+              RadioListTile(
+                toggleable: true,
+                title: Text('Predict Yield?'),
+                value: true,
+                groupValue: controller.yieldPredictionRequired,
+                onChanged: (_) {
+                  controller.toggleRadioButton();
+                },
+              ),
+            if (_showCropsList) CropsColumnWidget(controller: controller),
             if (controller.seasonListLoading) CircularProgressIndicator(),
-            if (!controller.seasonListLoading &&
-                controller.yieldPredictionRequired)
-              SeasonsColumnWidget(controller: controller),
+            if (_showSeasonsList) SeasonsColumnWidget(controller: controller),
             if (_showSubmitButton) SizedBox(height: 40),
             if (_showSubmitButton)
               CustomButton(
