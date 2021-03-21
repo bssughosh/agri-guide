@@ -191,7 +191,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
       _stateList = ['Test'];
       _districtList = ['Test'];
     }
-    String url = '$base_url/get_crops?' +
+    String url = '$base_url/get_crops_v2?' +
         'state=${_stateList[0]}&' +
         'dist=${_districtList[0]}';
     http.Response value = await http.get(Uri.parse(url));

@@ -1,3 +1,6 @@
+import 'package:agri_guide/app/prediction/presentation/widgets/crops_column_widget.dart';
+import 'package:agri_guide/app/prediction/presentation/widgets/seasons_column_widget.dart';
+
 import '../../../../core/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
@@ -12,19 +15,17 @@ Widget buildPredictionInputInitializedViewMobile({
 }) {
   if (!controller.stateListInitialized) controller.fetchStateList();
 
-  bool _showLoadingIndicator = controller.stateListLoading ||
-      controller.districtListLoading ||
-      (controller.areCropsAvailable &&
-          (controller.seasonListLoading || controller.cropListLoading));
   bool _showStateList = !controller.stateListLoading;
   bool _showDistrictList =
       controller.selectedState != null && !controller.districtListLoading;
   bool _showSeasonsList = controller.areCropsAvailable &&
       !controller.seasonListLoading &&
-      controller.selectedDistrict != null;
+      controller.selectedCrop != null &&
+      controller.yieldPredictionRequired;
   bool _showCropsList = controller.areCropsAvailable &&
       !controller.cropListLoading &&
-      controller.selectedSeason != null;
+      controller.selectedDistrict != null &&
+      controller.yieldPredictionRequired;
   bool _showRangeWidget = !controller.areCropsAvailable &&
       !controller.seasonListLoading &&
       controller.selectedDistrict != null;
@@ -43,153 +44,77 @@ Widget buildPredictionInputInitializedViewMobile({
       child: SingleChildScrollView(
         child: Column(
           children: [
-            if (_showLoadingIndicator) CircularProgressIndicator(),
-            Center(
-              child: Text(
-                'Agricultural Location Details',
-                style: AppTheme.headingBoldText,
-              ),
-            ),
-            SizedBox(height: 20),
-            if (_showStateList)
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 25, bottom: 10),
-                  child: Text(
-                    'State: ',
-                    style: AppTheme.headingBoldText.copyWith(fontSize: 17),
-                  ),
-                ),
-              ),
-            if (_showStateList) SizedBox(height: 5),
+            if (!_showStateList || !_showDistrictList)
+              CircularProgressIndicator(),
             if (_showStateList)
               Container(
-                width: double.infinity,
-                child: CustomDropdown(
-                  hintText: 'Select State',
-                  itemsList: controller.stateItems(),
-                  selectedItem: controller.selectedState,
-                  onChanged: (String newValue) {
-                    controller.selectedState = newValue;
-                    controller.selectedStateChange();
-                  },
-                ),
-              ),
-            if (_showDistrictList) SizedBox(height: 20),
-            if (_showDistrictList)
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 25, bottom: 10),
-                  child: Text(
-                    'District: ',
-                    style: AppTheme.headingBoldText.copyWith(fontSize: 17),
-                  ),
-                ),
-              ),
-            if (_showDistrictList) SizedBox(height: 5),
-            if (_showDistrictList)
-              Container(
-                width: double.infinity,
-                child: CustomDropdown(
-                  hintText: 'Select District',
-                  itemsList: controller.districtItems(),
-                  selectedItem: controller.selectedDistrict,
-                  onChanged: (String newValue) {
-                    controller.selectedDistrict = newValue;
-                    controller.selectedDistrictChange();
-                  },
-                ),
-              ),
-            if (_showRangeWidget) SizedBox(height: 30),
-            if (_showRangeWidget)
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 25, bottom: 10),
-                  child: Text(
-                    'Select Range of months: ',
-                    style: AppTheme.headingBoldText.copyWith(fontSize: 17),
-                  ),
-                ),
-              ),
-            if (_showRangeWidget)
-              Container(
-                decoration: AppTheme.normalGreenBorderDecoration,
-                padding: EdgeInsets.all(8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                width: MediaQuery.of(context).size.width * 0.7,
+                decoration: AppTheme.normalBlackBorderDecoration,
+                padding: EdgeInsets.all(8.0),
+                child: Column(
                   children: [
-                    RangeWidget(
-                      title: 'From',
-                      hintText: 'From',
-                      itemsList: controller.monthItems(),
-                      selectedItem: controller.startMonth,
-                      onChanged: controller.fromMonthUpdated,
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 25, bottom: 10),
+                        child: Text(
+                          'State: ',
+                          style:
+                              AppTheme.headingBoldText.copyWith(fontSize: 17),
+                        ),
+                      ),
                     ),
-                    RangeWidget(
-                      title: 'To',
-                      hintText: 'To',
-                      itemsList: controller.monthItems(),
-                      selectedItem: controller.endMonth,
-                      onChanged: controller.toMonthUpdated,
+                    SizedBox(height: 5),
+                    Container(
+                      width: double.infinity,
+                      child: CustomDropdown(
+                        hintText: 'Select State',
+                        itemsList: controller.stateItems(),
+                        selectedItem: controller.selectedState,
+                        onChanged: (String newValue) {
+                          controller.selectedState = newValue;
+                          controller.selectedStateChange();
+                        },
+                      ),
                     ),
+                    if (_showDistrictList) SizedBox(height: 20),
+                    if (_showDistrictList)
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 25, bottom: 10),
+                          child: Text(
+                            'District: ',
+                            style:
+                                AppTheme.headingBoldText.copyWith(fontSize: 17),
+                          ),
+                        ),
+                      ),
+                    if (_showDistrictList) SizedBox(height: 5),
+                    if (_showDistrictList)
+                      Container(
+                        width: double.infinity,
+                        child: CustomDropdown(
+                          hintText: 'Select District',
+                          itemsList: controller.districtItems(),
+                          selectedItem: controller.selectedDistrict,
+                          onChanged: (String newValue) {
+                            controller.selectedDistrict = newValue;
+                            controller.selectedDistrictChange();
+                          },
+                        ),
+                      ),
                   ],
                 ),
               ),
-            if (_showSeasonsList) SizedBox(height: 20),
-            if (_showSeasonsList)
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 25, bottom: 10),
-                  child: Text(
-                    'Season: ',
-                    style: AppTheme.headingBoldText.copyWith(fontSize: 17),
-                  ),
-                ),
-              ),
-            if (_showSeasonsList) SizedBox(height: 5),
-            if (_showSeasonsList)
-              Container(
-                width: double.infinity,
-                child: CustomDropdown(
-                  hintText: 'Select Season',
-                  itemsList: controller.seasonItems(),
-                  selectedItem: controller.selectedSeason,
-                  onChanged: (String newValue) {
-                    controller.selectedSeason = newValue;
-                    controller.selectedSeasonChange();
-                  },
-                ),
-              ),
-            if (_showCropsList) SizedBox(height: 20),
-            if (_showCropsList)
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 25, bottom: 10),
-                  child: Text(
-                    'Crop: ',
-                    style: AppTheme.headingBoldText.copyWith(fontSize: 17),
-                  ),
-                ),
-              ),
-            if (_showCropsList) SizedBox(height: 5),
-            if (_showCropsList)
-              Container(
-                width: double.infinity,
-                child: CustomDropdown(
-                  hintText: 'Select Crop',
-                  itemsList: controller.cropItems(),
-                  selectedItem: controller.selectedCrop,
-                  onChanged: (String newValue) {
-                    controller.selectedCrop = newValue;
-                    controller.selectedCropChange();
-                  },
-                ),
-              ),
+            if (controller.cropListLoading) CircularProgressIndicator(),
+            if (!controller.cropListLoading &&
+                controller.yieldPredictionRequired)
+              CropsColumnWidget(controller: controller),
+            if (controller.seasonListLoading) CircularProgressIndicator(),
+            if (!controller.seasonListLoading &&
+                controller.yieldPredictionRequired)
+              SeasonsColumnWidget(controller: controller),
             if (_showSubmitButton) SizedBox(height: 40),
             if (_showSubmitButton)
               CustomButton(
