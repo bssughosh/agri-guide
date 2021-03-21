@@ -194,6 +194,7 @@ class DashboardPageController extends Controller {
     selectedDistrict = null;
     districtList = [];
     isFirstTimeLoading = true;
+    liveWeatherEntity = null;
     refreshUI();
     fetchDistrictList();
   }
@@ -201,6 +202,7 @@ class DashboardPageController extends Controller {
   void selectedDistrictChange() {
     isFirstTimeLoading = true;
     pincode.text = '';
+    liveWeatherEntity = null;
     refreshUI();
   }
 

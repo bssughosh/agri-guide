@@ -23,55 +23,65 @@ Widget contentBody({
               controller.isFetchingLiveWeather)
             CircularProgressIndicator(),
           if (_showStateList)
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 25, bottom: 10),
-                child: Text(
-                  'State: ',
-                  style: AppTheme.headingBoldText.copyWith(fontSize: 17),
-                ),
-              ),
-            ),
-          if (_showStateList) SizedBox(height: 5),
-          if (_showStateList)
             Container(
-              width: double.infinity,
-              child: CustomDropdown(
-                hintText: 'Select State',
-                itemsList: controller.stateItems(),
-                selectedItem: controller.selectedState,
-                onChanged: (String newValue) {
-                  controller.selectedState = newValue;
-                  controller.selectedStateChange();
-                },
-              ),
-            ),
-          if (_showDistrictList) SizedBox(height: 20),
-          if (_showDistrictList)
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 25, bottom: 10),
-                child: Text(
-                  'District: ',
-                  style: AppTheme.headingBoldText.copyWith(fontSize: 17),
-                ),
-              ),
-            ),
-          if (_showDistrictList) SizedBox(height: 5),
-          if (_showDistrictList)
-            Container(
-              width: double.infinity,
-              child: CustomDropdown(
-                hintText: 'Select District',
-                itemsList: controller.districtItems(),
-                selectedItem: controller.selectedDistrict,
-                onChanged: (String newValue) {
-                  controller.selectedDistrict = newValue;
-                  controller.selectedDistrictChange();
-                  _showMyDialog(context: context, controller: controller);
-                },
+              width: MediaQuery.of(context).size.width * 0.7,
+              decoration: AppTheme.normalBlackBorderDecoration,
+              padding: EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 25, bottom: 10),
+                      child: Text(
+                        'State: ',
+                        style: AppTheme.headingBoldText.copyWith(fontSize: 17),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  Container(
+                    width: double.infinity,
+                    child: CustomDropdown(
+                      hintText: 'Select State',
+                      itemsList: controller.stateItems(),
+                      selectedItem: controller.selectedState,
+                      onChanged: (String newValue) {
+                        controller.selectedState = newValue;
+                        controller.selectedStateChange();
+                      },
+                    ),
+                  ),
+                  if (_showDistrictList) SizedBox(height: 20),
+                  if (_showDistrictList)
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 25, bottom: 10),
+                        child: Text(
+                          'District: ',
+                          style:
+                              AppTheme.headingBoldText.copyWith(fontSize: 17),
+                        ),
+                      ),
+                    ),
+                  if (_showDistrictList) SizedBox(height: 5),
+                  if (_showDistrictList)
+                    Container(
+                      width: double.infinity,
+                      child: CustomDropdown(
+                        hintText: 'Select District',
+                        itemsList: controller.districtItems(),
+                        selectedItem: controller.selectedDistrict,
+                        onChanged: (String newValue) {
+                          controller.selectedDistrict = newValue;
+                          controller.selectedDistrictChange();
+                          _showMyDialog(
+                              context: context, controller: controller);
+                        },
+                      ),
+                    ),
+                ],
               ),
             ),
           if (controller.liveWeatherEntity != null &&
