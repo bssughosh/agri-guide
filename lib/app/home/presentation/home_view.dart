@@ -235,44 +235,28 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
         controller: controller,
         pageController: pageController,
       ),
-      body: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverAppBar(
-              expandedHeight: 200.0,
-              floating: false,
-              pinned: true,
-              leadingWidth: 0,
-              forceElevated: true,
-              flexibleSpace: FlexibleSpaceBar(
-                title: Text(
-                  "Agri Guide",
-                  style: AppTheme.headingBoldText.copyWith(
-                    color: Colors.white,
-                    fontSize: 30,
-                  ),
-                ),
-                background: Image.asset(
-                  'assets/app_bar_bg.png',
-                  fit: BoxFit.fill,
-                ),
-              ),
-            ),
-          ];
-        },
-        body: SafeArea(
-          minimum: EdgeInsets.only(top: 75),
-          child: PageView(
-            controller: pageController,
-            physics: NeverScrollableScrollPhysics(),
-            children: <Widget>[
-              _dashboardPage(),
-              _downloadsPage(),
-              _predictionPage(),
-              _statisticsPage(),
-              _mobileProfilePage(),
-            ],
+      appBar: AppBar(
+        backgroundColor: AppTheme.chipBackground,
+        title: Text(
+          'Agri Guide',
+          style: AppTheme.headingBoldText.copyWith(
+            color: Colors.white,
+            fontSize: 30,
           ),
+        ),
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        child: PageView(
+          controller: pageController,
+          physics: NeverScrollableScrollPhysics(),
+          children: <Widget>[
+            _dashboardPage(),
+            _downloadsPage(),
+            _predictionPage(),
+            _statisticsPage(),
+            _mobileProfilePage(),
+          ],
         ),
       ),
     );
