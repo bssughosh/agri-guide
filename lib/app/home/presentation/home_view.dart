@@ -236,7 +236,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
         pageController: pageController,
       ),
       appBar: AppBar(
-        toolbarHeight: 98,
+        toolbarHeight: 106,
         flexibleSpace: Container(
           decoration: BoxDecoration(
             image: DecorationImage(

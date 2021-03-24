@@ -16,6 +16,7 @@ class LiveWeatherCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      // margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       child: Container(
         width: MediaQuery.of(context).size.width,
         margin: EdgeInsets.symmetric(horizontal: 10),

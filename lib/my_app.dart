@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: NavigationService.generateRoute,
       theme: ThemeData(
         fontFamily: 'Roboto',
-        primaryColor: AppTheme.primaryColor,
+        primaryColor: AppTheme.secondaryColor,
         accentColor: AppTheme.accentColor,
       ),
     );

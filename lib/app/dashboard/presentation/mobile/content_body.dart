@@ -18,7 +18,7 @@ Widget contentBody({
     child: SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(height: 60),
+          SizedBox(height: 40),
           if (controller.liveWeatherEntity == null ||
               controller.isFetchingLiveWeather)
             CircularProgressIndicator(),
@@ -32,7 +32,7 @@ Widget contentBody({
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 25, bottom: 10),
+                      padding: const EdgeInsets.only(left: 5, bottom: 10),
                       child: Text(
                         'State: ',
                         style: AppTheme.headingBoldText.copyWith(fontSize: 17),
@@ -57,7 +57,7 @@ Widget contentBody({
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 25, bottom: 10),
+                        padding: const EdgeInsets.only(left: 5, bottom: 10),
                         child: Text(
                           'District: ',
                           style:
@@ -140,6 +140,9 @@ Future<void> _showMyDialog({
     barrierDismissible: false,
     builder: (BuildContext context) {
       return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        ),
         title: Text('Enter Pincode'),
         content: TextField(
           controller: controller.pincode,
