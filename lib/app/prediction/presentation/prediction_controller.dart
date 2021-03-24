@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
@@ -54,7 +55,18 @@ class PredictionPageController extends Controller {
   bool cropListLoading = false;
   bool areCropsAvailable = true;
   bool isLoadingFirstTime = true;
-  bool yieldPredictionRequired = false;
+
+  List paramsList = [
+    {'id': describeEnum(DownloadParams.temp), 'name': 'Temperature'},
+    {'id': describeEnum(DownloadParams.humidity), 'name': 'Humidity'},
+    {'id': describeEnum(DownloadParams.rainfall), 'name': 'Rainfall'},
+  ];
+
+  List<String> selectedParams = [
+    describeEnum(DownloadParams.temp),
+    describeEnum(DownloadParams.humidity),
+    describeEnum(DownloadParams.rainfall),
+  ];
 
   String startMonth;
   String endMonth;
@@ -122,8 +134,12 @@ class PredictionPageController extends Controller {
     refreshUI();
   }
 
-  void toggleRadioButton() {
-    yieldPredictionRequired = !yieldPredictionRequired;
+  void updateParamsList(List<String> newParamsList) {
+    paramsList = newParamsList;
+    if (!selectedParams.contains(describeEnum(DownloadParams.yield))) {
+      selectedSeason = null;
+      selectedCrop = null;
+    }
     refreshUI();
   }
 
@@ -223,6 +239,9 @@ class PredictionPageController extends Controller {
           if (cropsRes.length > 0) {
             areCropsAvailable = true;
             selectedCrop = null;
+            paramsList.add(
+                {'id': describeEnum(DownloadParams.yield), 'name': 'Yield'});
+            selectedParams.add(describeEnum(DownloadParams.yield));
           } else {
             areCropsAvailable = false;
             selectedCrop = null;
@@ -341,8 +360,8 @@ class PredictionPageController extends Controller {
       }),
       selectedState,
       selectedDistrict,
-      yieldPredictionRequired ? selectedSeason : null,
-      yieldPredictionRequired ? selectedCrop : null,
+      selectedSeason,
+      selectedCrop,
     );
   }
 

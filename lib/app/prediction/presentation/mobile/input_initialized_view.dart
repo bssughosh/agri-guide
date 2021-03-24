@@ -1,10 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/app_theme.dart';
+import '../../../../core/enums.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_dropdown.dart';
 import '../prediction_controller.dart';
 import '../widgets/crops_column_widget.dart';
+import '../widgets/params_column_widget.dart';
 import '../widgets/range_column_widget.dart';
 import '../widgets/seasons_column_widget.dart';
 
@@ -20,22 +23,25 @@ Widget buildPredictionInputInitializedViewMobile({
   bool _showSeasonsList = controller.areCropsAvailable &&
       !controller.seasonListLoading &&
       controller.selectedCrop != null &&
-      controller.yieldPredictionRequired;
+      controller.selectedParams.contains(describeEnum(DownloadParams.yield));
   bool _showCropsList = controller.areCropsAvailable &&
       !controller.cropListLoading &&
       controller.selectedDistrict != null &&
-      controller.yieldPredictionRequired;
-  bool _showRadioButton = !controller.cropListLoading &&
+      controller.selectedParams.contains(describeEnum(DownloadParams.yield));
+  bool _showParams = !controller.cropListLoading &&
       controller.areCropsAvailable &&
       controller.selectedDistrict != null;
-  bool _showRangeWidget = (!controller.areCropsAvailable &&
-          !controller.cropListLoading &&
-          controller.selectedDistrict != null) ||
-      (controller.areCropsAvailable && !controller.yieldPredictionRequired);
+  bool _showRangeWidget = controller.areCropsAvailable
+      ? !controller.selectedParams
+              .contains(describeEnum(DownloadParams.yield)) &&
+          controller.selectedDistrict != null &&
+          !controller.cropListLoading
+      : !controller.cropListLoading && controller.selectedDistrict != null;
   bool _showSubmitButton = controller.selectedState != null &&
       controller.selectedDistrict != null &&
       (controller.areCropsAvailable
-          ? controller.yieldPredictionRequired
+          ? controller.selectedParams
+                  .contains(describeEnum(DownloadParams.yield))
               ? (controller.selectedCrop != null &&
                   controller.selectedSeason != null)
               : true
@@ -112,16 +118,7 @@ Widget buildPredictionInputInitializedViewMobile({
                 ),
               ),
             if (controller.cropListLoading) CircularProgressIndicator(),
-            if (_showRadioButton)
-              RadioListTile(
-                toggleable: true,
-                title: Text('Predict Yield?'),
-                value: true,
-                groupValue: controller.yieldPredictionRequired,
-                onChanged: (_) {
-                  controller.toggleRadioButton();
-                },
-              ),
+            if (_showParams) ParamsColumnWidget(controller: controller),
             if (_showCropsList) CropsColumnWidget(controller: controller),
             if (controller.seasonListLoading) CircularProgressIndicator(),
             if (_showSeasonsList) SeasonsColumnWidget(controller: controller),

@@ -16,7 +16,7 @@ Widget buildDashboardInitializedViewMobile({
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: 30),
+              SizedBox(height: 60),
               Text(
                 'Please Login to get most out of the app',
                 style: AppTheme.headingBoldText,

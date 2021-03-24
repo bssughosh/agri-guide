@@ -235,44 +235,36 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
         controller: controller,
         pageController: pageController,
       ),
-      body: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverAppBar(
-              expandedHeight: 200.0,
-              floating: false,
-              pinned: true,
-              leadingWidth: 0,
-              forceElevated: true,
-              flexibleSpace: FlexibleSpaceBar(
-                title: Text(
-                  "Agri Guide",
-                  style: AppTheme.headingBoldText.copyWith(
-                    color: Colors.white,
-                    fontSize: 30,
-                  ),
-                ),
-                background: Image.asset(
-                  'assets/app_bar_bg.png',
-                  fit: BoxFit.fill,
-                ),
-              ),
+      appBar: AppBar(
+        toolbarHeight: 106,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/app_bar_bg.png'),
+              fit: BoxFit.cover,
             ),
-          ];
-        },
-        body: SafeArea(
-          minimum: EdgeInsets.only(top: 75),
-          child: PageView(
-            controller: pageController,
-            physics: NeverScrollableScrollPhysics(),
-            children: <Widget>[
-              _dashboardPage(),
-              _downloadsPage(),
-              _predictionPage(),
-              _statisticsPage(),
-              _mobileProfilePage(),
-            ],
           ),
+        ),
+        backgroundColor: Colors.transparent,
+        title: Text(
+          'Agri\nGuide',
+          style: AppTheme.headingBoldText.copyWith(
+            color: Colors.white,
+            fontSize: 30,
+          ),
+        ),
+      ),
+      body: SafeArea(
+        child: PageView(
+          controller: pageController,
+          physics: NeverScrollableScrollPhysics(),
+          children: <Widget>[
+            _dashboardPage(),
+            _downloadsPage(),
+            _predictionPage(),
+            _statisticsPage(),
+            _mobileProfilePage(),
+          ],
         ),
       ),
     );
