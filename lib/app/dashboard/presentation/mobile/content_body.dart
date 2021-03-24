@@ -18,12 +18,13 @@ Widget contentBody({
     child: SingleChildScrollView(
       child: Column(
         children: [
+          SizedBox(height: 60),
           if (controller.liveWeatherEntity == null ||
               controller.isFetchingLiveWeather)
             CircularProgressIndicator(),
           if (_showStateList)
             Container(
-              width: MediaQuery.of(context).size.width * 0.7,
+              width: MediaQuery.of(context).size.width * 0.85,
               decoration: AppTheme.normalBlackBorderDecoration,
               padding: EdgeInsets.all(8.0),
               child: Column(
