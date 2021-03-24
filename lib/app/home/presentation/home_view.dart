@@ -236,15 +236,23 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
         pageController: pageController,
       ),
       appBar: AppBar(
-        backgroundColor: AppTheme.chipBackground,
+        toolbarHeight: 98,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/app_bar_bg.png'),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        backgroundColor: Colors.transparent,
         title: Text(
-          'Agri Guide',
+          'Agri\nGuide',
           style: AppTheme.headingBoldText.copyWith(
             color: Colors.white,
             fontSize: 30,
           ),
         ),
-        centerTitle: true,
       ),
       body: SafeArea(
         child: PageView(
