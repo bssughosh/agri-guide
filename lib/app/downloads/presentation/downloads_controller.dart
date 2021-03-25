@@ -206,12 +206,14 @@ class DownloadsPageController extends Controller {
     String _currentDay = currentDateTime.day.toString();
     String _currentHour = currentDateTime.hour.toString();
     String _currentMinute = currentDateTime.minute.toString();
+    String _currentSecond = currentDateTime.second.toString();
 
     String _fileName = _currentYear +
         _currentMonth +
         _currentDay +
         _currentHour +
-        _currentMinute;
+        _currentMinute +
+        _currentSecond;
 
     return _fileName;
   }
