@@ -181,6 +181,9 @@ Widget buildDownloadsInitializedViewMobile({
                                         child: Text(
                                           '${i + 1}: ${controller.downloadedFilesToBeDisplayed[i]}',
                                           style: AppTheme.bodyRegularText,
+                                          overflow: TextOverflow.fade,
+                                          maxLines: 1,
+                                          softWrap: false,
                                         ),
                                       ),
                                       if (i !=

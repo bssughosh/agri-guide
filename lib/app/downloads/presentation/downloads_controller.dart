@@ -241,7 +241,7 @@ class DownloadsPageController extends Controller {
       List<String> _pathElements = _path.split('/');
       String _toBeAdded = 'Android/data/com.agri_guide/files/';
       downloadedFilesToBeDisplayed
-          .add(_toBeAdded + _pathElements[_pathElements.length - 1]);
+          .add('$_toBeAdded${_pathElements[_pathElements.length - 1]}');
     }
   }
 
