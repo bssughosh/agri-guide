@@ -32,7 +32,7 @@ Widget buildDownloadsInitializedViewMobile({
     width: MediaQuery.of(context).size.width,
     child: controller.isDownloading
         ? Container(
-            margin: EdgeInsets.only(top: 100),
+            margin: EdgeInsets.only(top: 200),
             child: Center(
               child: SpinKitFoldingCube(color: AppTheme.secondaryColor),
             ),
