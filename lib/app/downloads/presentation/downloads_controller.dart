@@ -13,6 +13,7 @@ import '../../../injection_container.dart';
 import '../../navigation_service.dart';
 import 'downloads_presenter.dart';
 import 'downloads_state_machine.dart';
+import 'widgets/show_dialog.dart';
 
 class DownloadsPageController extends Controller {
   final DownloadsPagePresenter _presenter;
@@ -173,7 +174,7 @@ class DownloadsPageController extends Controller {
     );
   }
 
-  void downloadFilesMobile() {
+  void downloadFilesMobile({@required BuildContext context}) {
     isDownloading = true;
     refreshUI();
     String fileName = _createTimeStamp();
@@ -181,12 +182,18 @@ class DownloadsPageController extends Controller {
       new UseCaseObserver(() async {
         isDownloading = false;
         await checkDownloadedFiles();
+        selectedParams = [];
+        selectedStates = [];
+        selectedDistricts = [];
+        toText = null;
+        fromText = null;
         refreshUI();
         Fluttertoast.showToast(
           msg:
               'The file is downloaded at location => Android/data/com.agri_guide/$fileName.zip',
           toastLength: Toast.LENGTH_LONG,
         );
+        showMyDialog(context: context);
       }, (error) {
         handleAPIErrors(error);
         print(error);
