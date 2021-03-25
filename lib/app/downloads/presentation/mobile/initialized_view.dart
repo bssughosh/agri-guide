@@ -169,11 +169,27 @@ Widget buildDownloadsInitializedViewMobile({
                             decoration: AppTheme.normalBlackBorderDecoration,
                             child: Column(
                               children: [
-                                for (String item
-                                    in controller.downloadedFilesToBeDisplayed)
-                                  Text(
-                                    item,
-                                    style: AppTheme.bodyRegularText,
+                                for (int i = 0;
+                                    i <
+                                        controller.downloadedFilesToBeDisplayed
+                                            .length;
+                                    i++)
+                                  Column(
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          '${i + 1}: ${controller.downloadedFilesToBeDisplayed[i]}',
+                                          style: AppTheme.bodyRegularText,
+                                        ),
+                                      ),
+                                      if (i !=
+                                          (controller
+                                                  .downloadedFilesToBeDisplayed
+                                                  .length -
+                                              1))
+                                        Divider(),
+                                    ],
                                   ),
                               ],
                             ),
