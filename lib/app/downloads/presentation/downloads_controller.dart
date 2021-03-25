@@ -40,11 +40,7 @@ class DownloadsPageController extends Controller {
     {'id': describeEnum(DownloadParams.yield), 'name': 'Yield'},
   ];
 
-  List<String> selectedParams = [
-    describeEnum(DownloadParams.temp),
-    describeEnum(DownloadParams.humidity),
-    describeEnum(DownloadParams.rainfall),
-  ];
+  List<String> selectedParams = [];
 
   bool isDownloading = false;
 
