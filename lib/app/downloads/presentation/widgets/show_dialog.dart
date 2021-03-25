@@ -1,3 +1,4 @@
+import 'package:agri_guide/core/app_theme.dart';
 import 'package:flutter/material.dart';
 
 Future<void> showMyDialog({
@@ -10,7 +11,10 @@ Future<void> showMyDialog({
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
         ),
-        title: Text('Download successful'),
+        title: Text(
+          'Download successful',
+          style: AppTheme.headingBoldText,
+        ),
         content: Text(
             'The required files were downloaded successfully to your device'),
         actions: <Widget>[
