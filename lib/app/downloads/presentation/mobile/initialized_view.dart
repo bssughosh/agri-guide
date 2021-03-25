@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../../../core/app_theme.dart';
 import '../../../../core/widgets/custom_button.dart';
@@ -31,8 +32,9 @@ Widget buildDownloadsInitializedViewMobile({
     width: MediaQuery.of(context).size.width,
     child: controller.isDownloading
         ? Container(
+            margin: EdgeInsets.only(top: 100),
             child: Center(
-              child: CircularProgressIndicator(),
+              child: SpinKitFoldingCube(color: AppTheme.secondaryColor),
             ),
           )
         : WillPopScope(
