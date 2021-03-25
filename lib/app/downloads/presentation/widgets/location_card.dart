@@ -16,7 +16,7 @@ class LocationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.8,
+      width: MediaQuery.of(context).size.width * 0.9,
       padding: EdgeInsets.all(5.0),
       decoration: AppTheme.normalBlackBorderDecoration,
       child: Column(

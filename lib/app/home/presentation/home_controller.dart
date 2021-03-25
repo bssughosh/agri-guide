@@ -3,6 +3,7 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import '../../../core/enums.dart';
 import '../../../core/observer.dart';
 import '../../../injection_container.dart';
+import '../../../injection_container.dart' as di;
 import '../../accounts/domain/entities/user_entity.dart';
 import '../../navigation_service.dart';
 import 'home_presenter.dart';
@@ -75,9 +76,10 @@ class HomePageController extends Controller {
   void logoutUser() {
     _presenter.logoutUser(
       new UseCaseObserver(
-        () {
+        () async {
           navigationService.navigateTo(NavigationService.homepage,
               shouldReplace: true);
+          await di.reset();
         },
         (error) {
           print(error);

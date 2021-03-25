@@ -13,6 +13,7 @@ import '../../../injection_container.dart';
 import '../../navigation_service.dart';
 import 'downloads_presenter.dart';
 import 'downloads_state_machine.dart';
+import 'widgets/show_dialog.dart';
 
 class DownloadsPageController extends Controller {
   final DownloadsPagePresenter _presenter;
@@ -40,11 +41,7 @@ class DownloadsPageController extends Controller {
     {'id': describeEnum(DownloadParams.yield), 'name': 'Yield'},
   ];
 
-  List<String> selectedParams = [
-    describeEnum(DownloadParams.temp),
-    describeEnum(DownloadParams.humidity),
-    describeEnum(DownloadParams.rainfall),
-  ];
+  List<String> selectedParams = [];
 
   bool isDownloading = false;
 
@@ -177,7 +174,7 @@ class DownloadsPageController extends Controller {
     );
   }
 
-  void downloadFilesMobile() {
+  void downloadFilesMobile({@required BuildContext context}) {
     isDownloading = true;
     refreshUI();
     String fileName = _createTimeStamp();
@@ -185,12 +182,18 @@ class DownloadsPageController extends Controller {
       new UseCaseObserver(() async {
         isDownloading = false;
         await checkDownloadedFiles();
+        selectedParams = [];
+        selectedStates = [];
+        selectedDistricts = [];
+        toText = null;
+        fromText = null;
         refreshUI();
         Fluttertoast.showToast(
           msg:
               'The file is downloaded at location => Android/data/com.agri_guide/$fileName.zip',
           toastLength: Toast.LENGTH_LONG,
         );
+        showMyDialog(context: context);
       }, (error) {
         handleAPIErrors(error);
         print(error);
@@ -210,12 +213,14 @@ class DownloadsPageController extends Controller {
     String _currentDay = currentDateTime.day.toString();
     String _currentHour = currentDateTime.hour.toString();
     String _currentMinute = currentDateTime.minute.toString();
+    String _currentSecond = currentDateTime.second.toString();
 
     String _fileName = _currentYear +
         _currentMonth +
         _currentDay +
         _currentHour +
-        _currentMinute;
+        _currentMinute +
+        _currentSecond;
 
     return _fileName;
   }
@@ -243,7 +248,7 @@ class DownloadsPageController extends Controller {
       List<String> _pathElements = _path.split('/');
       String _toBeAdded = 'Android/data/com.agri_guide/files/';
       downloadedFilesToBeDisplayed
-          .add(_toBeAdded + _pathElements[_pathElements.length - 1]);
+          .add('$_toBeAdded${_pathElements[_pathElements.length - 1]}');
     }
   }
 

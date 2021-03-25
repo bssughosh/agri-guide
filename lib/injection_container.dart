@@ -146,4 +146,10 @@ Future<void> init() async {
   serviceLocator.registerFactory(() => FetchWholeDataUsecase(serviceLocator()));
 }
 
-Future<void> reset() async {}
+Future<void> reset() async {
+  serviceLocator.resetLazySingleton<StatisticsRepository>();
+  serviceLocator.resetLazySingleton<AgriGuidePredictionRepository>();
+  serviceLocator.resetLazySingleton<FirebaseAuthenticationRepository>();
+  serviceLocator.resetLazySingleton<FetchInputRepository>();
+  serviceLocator.resetLazySingleton<DashboardServicesRepository>();
+}

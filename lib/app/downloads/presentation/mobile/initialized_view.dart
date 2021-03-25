@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../../../core/app_theme.dart';
 import '../../../../core/widgets/custom_button.dart';
@@ -31,8 +32,9 @@ Widget buildDownloadsInitializedViewMobile({
     width: MediaQuery.of(context).size.width,
     child: controller.isDownloading
         ? Container(
+            margin: EdgeInsets.only(top: 200),
             child: Center(
-              child: CircularProgressIndicator(),
+              child: SpinKitFoldingCube(color: AppTheme.secondaryColor),
             ),
           )
         : WillPopScope(
@@ -57,7 +59,7 @@ Widget buildDownloadsInitializedViewMobile({
                             alignment: Alignment.centerLeft,
                             child: Padding(
                               padding:
-                                  const EdgeInsets.only(left: 25, bottom: 10),
+                                  const EdgeInsets.only(left: 5, bottom: 10),
                               child: Text(
                                 'Year Range: ',
                                 style: AppTheme.headingBoldText
@@ -82,7 +84,8 @@ Widget buildDownloadsInitializedViewMobile({
                                 RangeWidget(
                                   title: 'To',
                                   hintText: 'To',
-                                  itemsList: controller.yearItems(),
+                                  itemsList:
+                                      controller.yearItems().reversed.toList(),
                                   selectedItem: controller.toText,
                                   onChanged: controller.toYearUpdated,
                                 ),
@@ -95,7 +98,7 @@ Widget buildDownloadsInitializedViewMobile({
                             alignment: Alignment.centerLeft,
                             child: Padding(
                               padding:
-                                  const EdgeInsets.only(left: 25, bottom: 10),
+                                  const EdgeInsets.only(left: 5, bottom: 10),
                               child: Text(
                                 'Select Parameters: ',
                                 style: AppTheme.headingBoldText
@@ -140,7 +143,7 @@ Widget buildDownloadsInitializedViewMobile({
                             title: 'Download',
                             isActive: controller.selectedParams.length > 0,
                             onPressed: () {
-                              controller.downloadFilesMobile();
+                              controller.downloadFilesMobile(context: context);
                             },
                             isOverlayRequired: false,
                           ),
@@ -167,11 +170,30 @@ Widget buildDownloadsInitializedViewMobile({
                             decoration: AppTheme.normalBlackBorderDecoration,
                             child: Column(
                               children: [
-                                for (String item
-                                    in controller.downloadedFilesToBeDisplayed)
-                                  Text(
-                                    item,
-                                    style: AppTheme.bodyRegularText,
+                                for (int i = 0;
+                                    i <
+                                        controller.downloadedFilesToBeDisplayed
+                                            .length;
+                                    i++)
+                                  Column(
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          '${i + 1}: ${controller.downloadedFilesToBeDisplayed[i]}',
+                                          style: AppTheme.bodyRegularText,
+                                          overflow: TextOverflow.fade,
+                                          maxLines: 1,
+                                          softWrap: false,
+                                        ),
+                                      ),
+                                      if (i !=
+                                          (controller
+                                                  .downloadedFilesToBeDisplayed
+                                                  .length -
+                                              1))
+                                        Divider(),
+                                    ],
                                   ),
                               ],
                             ),
