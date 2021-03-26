@@ -61,7 +61,6 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
     controller.checkForLoginStatus();
     return Scaffold(
       body: Container(
-        margin: EdgeInsets.only(top: 100),
         child: Center(
           child: SpinKitFoldingCube(color: AppTheme.secondaryColor),
         ),
