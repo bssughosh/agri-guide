@@ -18,24 +18,17 @@ Widget buildStatisticsInputInitializedViewMobile({
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Center(
-                  child: Text(
-                    'Agricultural Location Details',
-                    style: AppTheme.headingBoldText,
-                  ),
-                ),
-                SizedBox(height: 20),
+                SizedBox(height: 30),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 25, bottom: 10),
+                    padding: const EdgeInsets.only(left: 5, bottom: 10),
                     child: Text(
                       'State: ',
                       style: AppTheme.headingBoldText.copyWith(fontSize: 17),
                     ),
                   ),
                 ),
-                SizedBox(height: 5),
                 Container(
                   width: double.infinity,
                   child: CustomDropdown(
@@ -58,7 +51,7 @@ Widget buildStatisticsInputInitializedViewMobile({
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 25, bottom: 10),
+                        padding: const EdgeInsets.only(left: 5, bottom: 10),
                         child: Text(
                           'District: ',
                           style:
@@ -66,8 +59,6 @@ Widget buildStatisticsInputInitializedViewMobile({
                         ),
                       ),
                     ),
-                if (controller.selectedState != null)
-                  if (!controller.districtListLoading) SizedBox(height: 5),
                 if (controller.selectedState != null)
                   if (!controller.districtListLoading)
                     Container(
