@@ -4,6 +4,7 @@ import 'accounts/presentation/login/login_view.dart';
 import 'accounts/presentation/register/register_view.dart';
 import 'home/presentation/home_view.dart';
 import 'splash/presentation/splash_view.dart';
+import 'statistics/presentation/view_graph/view_graph_view.dart';
 
 class NavigationService {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -11,6 +12,7 @@ class NavigationService {
   static const String homepage = '/home';
   static const String loginPage = '/login';
   static const String registerPage = '/register';
+  static const String viewGraphPage = '/viewGraph';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -25,6 +27,10 @@ class NavigationService {
 
       case registerPage:
         return MaterialPageRoute(builder: (_) => RegisterPage());
+
+      case viewGraphPage:
+        return MaterialPageRoute(
+            builder: (_) => ViewGraphPage(settings.arguments));
 
       default:
         return null;
