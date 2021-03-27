@@ -82,22 +82,15 @@ class ViewGraphViewState
   }) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 106,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/app_bar_bg.png'),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-        backgroundColor: Colors.transparent,
         title: Text(
-          'Agri\nGuide',
-          style: AppTheme.headingBoldText.copyWith(
-            color: Colors.white,
-            fontSize: 30,
-          ),
+          describeEnum(
+                  widget.params.statisticsPageController.selectedFilters1) +
+              (widget.params.statisticsPageController.selectedFilters.length ==
+                      2
+                  ? ' VS ' +
+                      describeEnum(widget
+                          .params.statisticsPageController.selectedFilters2)
+                  : ''),
         ),
       ),
       body: SafeArea(
@@ -105,7 +98,7 @@ class ViewGraphViewState
           child: statisticsPageController.selectedFilters.length == 1
               ? singleGraph(
                   xAxisName: 'Year',
-                  visibleMinimum: 10,
+                  visibleMinimum: 20,
                   maximumLabels: 20,
                   yAxisName:
                       describeEnum(statisticsPageController.selectedFilters[0]),
@@ -136,7 +129,7 @@ class ViewGraphViewState
                 )
               : doubleGraph(
                   xAxisName: 'Year',
-                  visibleMinimum: 10,
+                  visibleMinimum: 20,
                   maximumLabels: 15,
                   primaryYAxisName:
                       describeEnum(statisticsPageController.selectedFilters[0]),

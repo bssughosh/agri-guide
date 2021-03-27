@@ -1,3 +1,4 @@
+import 'package:agri_guide/app/statistics/presentation/view_graph/view_graph_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
@@ -347,6 +348,11 @@ class StatisticsPageController extends Controller {
     }
 
     refreshUI();
+  }
+
+  void navigateToViewGraph(StatisticsPageController controller) {
+    navigationService.navigateTo(NavigationService.viewGraphPage,
+        arguments: ViewGraphParams(statisticsPageController: controller));
   }
 
   List<ChartData> getPrimaryDatastore() {

@@ -181,6 +181,12 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                                   : 5,
                     ),
                   ),
+                if (controller.selectedFilters.length > 0)
+                  IconButton(
+                      icon: Icon(Icons.zoom_in),
+                      onPressed: () {
+                        controller.navigateToViewGraph(controller);
+                      }),
                 SizedBox(height: 30),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
