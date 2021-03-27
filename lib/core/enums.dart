@@ -25,4 +25,5 @@ enum StatisticsFilters {
   Temperature,
   Humidity,
   Rainfall,
+  Yield,
 }

@@ -1,3 +1,6 @@
+import 'package:agri_guide/app/statistics/domain/entities/yield_statistics_entity.dart';
+import 'package:agri_guide/app/statistics/presentation/widgets/show_my_crop_dialog.dart';
+import 'package:agri_guide/app/statistics/presentation/widgets/show_my_season_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
@@ -24,20 +27,30 @@ class StatisticsPageController extends Controller {
 
   List stateList = [];
   List districtList = [];
+  List cropList = [];
+  List seasonList = [];
   bool isStateFilterClicked = false;
   bool isDistrictFilterClicked = false;
   String selectedState;
   String selectedDistrict;
+  String selectedCrop;
+  String selectedSeason;
   bool districtListLoading = false;
+  bool seasonListLoading = false;
+  bool cropListLoading = false;
+  bool areCropsAvailable = true;
 
   StatisticsEntity statisticsEntity;
+  YieldStatisticsEntity yieldStatisticsEntity;
   List<ChartData> rainfallChartData = [];
   List<ChartData> temperatureChartData = [];
   List<ChartData> humidityChartData = [];
+  List<ChartData> yieldCahartData = [];
 
   int temperatureFirstYear;
   int humidityFirstYear;
   int rainfallFirstYear;
+  int yieldFirstYear;
 
   List<StatisticsFilters> selectedFilters = [];
 
@@ -190,6 +203,77 @@ class StatisticsPageController extends Controller {
     });
   }
 
+  void fetchSeasonList(BuildContext context) {
+    _stateMachine.onEvent(new StatisticsPageLoadingEvent());
+    refreshUI();
+    _presenter.fetchSeasonsList(
+      new UseCaseObserver(
+        () {},
+        (error) {
+          handleAPIErrors(error);
+          print(error);
+        },
+        onNextFunction: (List seasonsRes) {
+          seasonList = seasonsRes;
+          _stateMachine.onEvent(new StatisticsPageDisplayInitializedEvent());
+          showMySeasonDialog(
+                  context: context, seasonsList: seasonList, controller: this)
+              .then((value) {});
+          refreshUI();
+        },
+      ),
+      selectedState,
+      selectedDistrict,
+      selectedCrop,
+    );
+  }
+
+  void fetchCropsList(BuildContext context) {
+    _stateMachine.onEvent(new StatisticsPageLoadingEvent());
+    refreshUI();
+    _presenter.fetchCropList(
+      new UseCaseObserver(
+        () {
+          print('Crops list successfully fetched');
+        },
+        (error) {
+          handleAPIErrors(error);
+          print(error);
+        },
+        onNextFunction: (List cropsRes) {
+          cropList = cropsRes;
+          if (cropList.length == 0) {
+            areCropsAvailable = false;
+            _stateMachine.onEvent(new StatisticsPageDisplayInitializedEvent());
+            refreshUI();
+          } else {
+            _stateMachine.onEvent(new StatisticsPageDisplayInitializedEvent());
+            refreshUI();
+            showMyCropDialog(
+                    context: context, cropList: cropList, controller: this)
+                .then((value) {
+              fetchSeasonList(context);
+            });
+          }
+        },
+      ),
+      selectedState,
+      selectedDistrict,
+    );
+  }
+
+  void cropSelected(String cropId, BuildContext context) {
+    selectedCrop = cropId;
+    Navigator.pop(context);
+    refreshUI();
+  }
+
+  void seasonSelected(String season, BuildContext context) {
+    selectedSeason = season;
+    Navigator.pop(context);
+    refreshUI();
+  }
+
   void proceedToStatisticsDisplay() {
     _stateMachine.onEvent(new StatisticsPageLoadingEvent());
     refreshUI();
@@ -267,6 +351,12 @@ class StatisticsPageController extends Controller {
       return 'Rainfall (mm)';
     }
     return '';
+  }
+
+  void yieldClicked(BuildContext context) {
+    if (!selectedFilters.contains(StatisticsFilters.Yield)) {
+      fetchCropsList(context);
+    }
   }
 
   void onFilterClicked(StatisticsFilters clickedFilter) {
@@ -357,15 +447,6 @@ class StatisticsPageController extends Controller {
 
   List<ChartData> getPrimaryDatastore() {
     if (selectedFilters.length > 0) {
-      if (selectedFilters.contains(StatisticsFilters.Humidity)) {
-        if (selectedFilters1 == StatisticsFilters.Temperature)
-          return temperatureChartData.reversed.toList();
-        else if (selectedFilters1 == StatisticsFilters.Humidity)
-          return humidityChartData.reversed.toList();
-        else if (selectedFilters1 == StatisticsFilters.Rainfall)
-          return rainfallChartData.reversed.toList();
-        throw Exception('The filter is unknown');
-      }
       if (selectedFilters1 == StatisticsFilters.Temperature)
         return temperatureChartData;
       else if (selectedFilters1 == StatisticsFilters.Humidity)
@@ -380,15 +461,6 @@ class StatisticsPageController extends Controller {
 
   List<ChartData> getSecondaryDatastore() {
     if (selectedFilters.length == 2) {
-      if (selectedFilters.contains(StatisticsFilters.Humidity)) {
-        if (selectedFilters2 == StatisticsFilters.Temperature)
-          return temperatureChartData.reversed.toList();
-        else if (selectedFilters2 == StatisticsFilters.Humidity)
-          return humidityChartData.reversed.toList();
-        else if (selectedFilters2 == StatisticsFilters.Rainfall)
-          return rainfallChartData.reversed.toList();
-        throw Exception('The filter is unknown');
-      }
       if (selectedFilters2 == StatisticsFilters.Temperature)
         return temperatureChartData;
       else if (selectedFilters2 == StatisticsFilters.Humidity)

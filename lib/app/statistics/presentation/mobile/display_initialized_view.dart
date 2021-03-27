@@ -274,6 +274,15 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                             .contains(StatisticsFilters.Rainfall),
                         text: describeEnum(StatisticsFilters.Rainfall),
                       ),
+                      if (controller.areCropsAvailable)
+                        filterTab(
+                          onPressed: () {
+                            controller.yieldClicked(context);
+                          },
+                          isSelected: controller.selectedFilters
+                              .contains(StatisticsFilters.Yield),
+                          text: describeEnum(StatisticsFilters.Yield),
+                        ),
                     ],
                   ),
                 ),
