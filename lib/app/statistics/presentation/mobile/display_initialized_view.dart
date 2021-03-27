@@ -187,7 +187,7 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                       onPressed: () {
                         controller.navigateToViewGraph(controller);
                       }),
-                SizedBox(height: 30),
+                SizedBox(height: 10),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
