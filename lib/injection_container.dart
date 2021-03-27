@@ -143,6 +143,9 @@ Future<void> init() async {
         serviceLocator(),
         serviceLocator(),
         serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
       ));
 
   serviceLocator.registerFactory(() => FetchWholeDataUsecase(serviceLocator()));
