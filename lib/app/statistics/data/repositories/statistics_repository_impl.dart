@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:agri_guide/app/statistics/domain/entities/yield_statistics_entity.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../core/exceptions.dart';
@@ -10,6 +11,7 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
   final String _keyNameTemperature = 'temperature';
   final String _keyNameHumidity = 'humidity';
   final String _keyNameRainfall = 'rainfall';
+  final String _keyNameYield = 'yield';
 
   static const base_url = String.fromEnvironment(
     'base_url',
@@ -97,5 +99,44 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
     }
     var data = json.decode(value.body);
     return List<String>.from(data['dists']);
+  }
+
+  @override
+  Future<YieldStatisticsEntity> fetchYieldStatisticsData(
+    String state,
+    String district,
+    String cropId,
+    String season,
+  ) async {
+    List<String> stateName = await _fetchStateNames(state);
+    List<String> districtName = await _fetchDistNames(district);
+
+    String url = '$base_url/yield-statistics?' +
+        'state=${stateName[0]}&' +
+        'dist=${districtName[0]}&' +
+        'crop=$cropId&' +
+        'season=$season';
+    http.Response value = await http.get(Uri.parse(url));
+    if (value.statusCode == 400) {
+      throw APIBadRequestError();
+    } else if (value.statusCode == 403) {
+      throw APIForbiddenError();
+    } else if (value.statusCode == 404) {
+      throw APINotFoundError();
+    } else if (value.statusCode == 429) {
+      throw APITooManyRequestsError();
+    } else if (value.statusCode == 500) {
+      throw APIInternalServerError();
+    } else if (value.statusCode == 503) {
+      throw APIServiceUnavailabeError();
+    }
+
+    var data = json.decode(value.body);
+    List _yield = data[_keyNameYield];
+
+    YieldStatisticsEntity yieldStatisticsEntity =
+        new YieldStatisticsEntity(yieldData: _yield);
+
+    return yieldStatisticsEntity;
   }
 }
