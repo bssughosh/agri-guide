@@ -27,8 +27,4 @@ class ViewGraphPageController extends Controller {
     _presenter.dispose();
     super.dispose();
   }
-
-  void handleBackPressed(BuildContext context) {
-    Navigator.pop(context);
-  }
 }

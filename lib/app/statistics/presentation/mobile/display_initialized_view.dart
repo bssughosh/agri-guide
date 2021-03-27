@@ -130,13 +130,13 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                       visibleMinimum: 10,
                       maximumLabels: 15,
                       primaryYAxisName:
-                          describeEnum(controller.selectedFilters[0]),
+                          describeEnum(controller.selectedFilters1),
                       primaryYAxisLabel: controller
-                          .getAxisLabelName(controller.selectedFilters[0]),
+                          .getAxisLabelName(controller.selectedFilters1),
                       secondaryYAxisName:
-                          describeEnum(controller.selectedFilters[1]),
+                          describeEnum(controller.selectedFilters2),
                       secondaryYAxisLabel: controller
-                          .getAxisLabelName(controller.selectedFilters[1]),
+                          .getAxisLabelName(controller.selectedFilters2),
                       primaryDataSource: controller.getPrimaryDatastore(),
                       secondaryDataSource: controller.getSecondaryDatastore(),
                       primaryInterval: controller.selectedFilters1 ==

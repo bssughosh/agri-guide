@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
-import '../../../../core/app_theme.dart';
 import '../../../../core/enums.dart';
 import '../statistics_controller.dart';
 import '../widgets/double_graph.dart';
@@ -64,16 +63,7 @@ class ViewGraphViewState
 
   @override
   Widget buildDesktopView() {
-    final currentStateType = controller.getCurrentState().runtimeType;
-
-    switch (currentStateType) {
-      case ViewGraphPageInitializationState:
-        return _buildViewGraphInitializationViewWeb(
-          controller: controller,
-          statisticsPageController: widget.params.statisticsPageController,
-        );
-    }
-    throw Exception("Unrecognized state $currentStateType encountered");
+    throw Exception("Unrecognized view encountered");
   }
 
   Widget _buildViewGraphInitializationViewMobile({
@@ -87,7 +77,7 @@ class ViewGraphViewState
                   widget.params.statisticsPageController.selectedFilters1) +
               (widget.params.statisticsPageController.selectedFilters.length ==
                       2
-                  ? ' VS ' +
+                  ? ' v/s ' +
                       describeEnum(widget
                           .params.statisticsPageController.selectedFilters2)
                   : ''),
@@ -132,14 +122,14 @@ class ViewGraphViewState
                   visibleMinimum: 20,
                   maximumLabels: 15,
                   primaryYAxisName:
-                      describeEnum(statisticsPageController.selectedFilters[0]),
+                      describeEnum(statisticsPageController.selectedFilters1),
                   primaryYAxisLabel: statisticsPageController.getAxisLabelName(
-                      statisticsPageController.selectedFilters[0]),
+                      statisticsPageController.selectedFilters1),
                   secondaryYAxisName:
-                      describeEnum(statisticsPageController.selectedFilters[1]),
+                      describeEnum(statisticsPageController.selectedFilters2),
                   secondaryYAxisLabel:
                       statisticsPageController.getAxisLabelName(
-                          statisticsPageController.selectedFilters[1]),
+                          statisticsPageController.selectedFilters2),
                   primaryDataSource:
                       statisticsPageController.getPrimaryDatastore(),
                   secondaryDataSource:
@@ -191,13 +181,6 @@ class ViewGraphViewState
         ),
       ),
     );
-  }
-
-  Widget _buildViewGraphInitializationViewWeb({
-    @required ViewGraphPageController controller,
-    @required StatisticsPageController statisticsPageController,
-  }) {
-    return Scaffold();
   }
 }
 

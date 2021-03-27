@@ -357,6 +357,15 @@ class StatisticsPageController extends Controller {
 
   List<ChartData> getPrimaryDatastore() {
     if (selectedFilters.length > 0) {
+      if (selectedFilters.contains(StatisticsFilters.Humidity)) {
+        if (selectedFilters1 == StatisticsFilters.Temperature)
+          return temperatureChartData.reversed.toList();
+        else if (selectedFilters1 == StatisticsFilters.Humidity)
+          return humidityChartData.reversed.toList();
+        else if (selectedFilters1 == StatisticsFilters.Rainfall)
+          return rainfallChartData.reversed.toList();
+        throw Exception('The filter is unknown');
+      }
       if (selectedFilters1 == StatisticsFilters.Temperature)
         return temperatureChartData;
       else if (selectedFilters1 == StatisticsFilters.Humidity)
@@ -371,6 +380,15 @@ class StatisticsPageController extends Controller {
 
   List<ChartData> getSecondaryDatastore() {
     if (selectedFilters.length == 2) {
+      if (selectedFilters.contains(StatisticsFilters.Humidity)) {
+        if (selectedFilters2 == StatisticsFilters.Temperature)
+          return temperatureChartData.reversed.toList();
+        else if (selectedFilters2 == StatisticsFilters.Humidity)
+          return humidityChartData.reversed.toList();
+        else if (selectedFilters2 == StatisticsFilters.Rainfall)
+          return rainfallChartData.reversed.toList();
+        throw Exception('The filter is unknown');
+      }
       if (selectedFilters2 == StatisticsFilters.Temperature)
         return temperatureChartData;
       else if (selectedFilters2 == StatisticsFilters.Humidity)
