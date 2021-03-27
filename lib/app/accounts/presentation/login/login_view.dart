@@ -4,7 +4,8 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'login_controller.dart';
 import 'login_state_machine.dart';
 import 'mobile/initialization_view.dart';
-import 'mobile/initialized_view.dart';
+// import 'mobile/initialized_view.dart';
+import 'mobile/initialized_view copy.dart';
 import 'mobile/loading_view.dart';
 import 'web/initialized_view.dart';
 
@@ -33,8 +34,7 @@ class LoginViewState
         return buildLoginInitilizationView();
 
       case LoginInitializedState:
-        return buildLoginInitializedViewMobile(
-            controller: controller, context: context);
+        return buildLoginInitializedViewMobile(controller: controller);
 
       case LoginLoadingState:
         return buildLoginLoadingView();
