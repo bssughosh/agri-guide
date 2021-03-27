@@ -1,4 +1,3 @@
-import 'package:agri_guide/app/statistics/presentation/view_graph/view_graph_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
@@ -11,6 +10,7 @@ import '../domain/entities/statistics_entity.dart';
 import 'statistics_presenter.dart';
 import 'statistics_state_machine.dart';
 import 'statistics_view.dart';
+import 'view_graph/view_graph_view.dart';
 
 class StatisticsPageController extends Controller {
   final StatisticsPagePresenter _presenter;

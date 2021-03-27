@@ -1,4 +1,4 @@
-import 'package:agri_guide/core/state_machine.dart';
+import '../../../../core/state_machine.dart';
 
 class ViewGraphPageStateMachine
     extends StateMachine<ViewGraphState, ViewGraphEvent> {
