@@ -88,6 +88,18 @@ Widget buildStatisticsInputInitializedViewMobile({
                       isOverlayRequired: true,
                     ),
                   ),
+                SizedBox(height: 50),
+                if (controller.selectedState == null)
+                  Image.asset(
+                    'assets/select_state.png',
+                    width: MediaQuery.of(context).size.width * 0.5,
+                  ),
+                if (controller.selectedDistrict == null &&
+                    controller.selectedState != null)
+                  Image.asset(
+                    'assets/select_district.png',
+                    width: MediaQuery.of(context).size.width * 0.5,
+                  ),
               ],
             ),
           ),

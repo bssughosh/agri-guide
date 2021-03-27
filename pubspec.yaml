@@ -59,4 +59,6 @@ flutter:
     - assets/no_filter_selected.png
     - assets/new_app_bar.png
     - assets/app_bar_bg.png
+    - assets/select_state.png
+    - assets/select_district.png
 
