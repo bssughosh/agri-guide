@@ -21,6 +21,7 @@ Widget buildStatisticsDisplayInitializedViewMobile({
           child: SingleChildScrollView(
             child: Column(
               children: [
+                SizedBox(height: 30),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.9,
                   decoration: AppTheme.normalBlackBorderDecoration,
@@ -29,7 +30,7 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 25, bottom: 10),
+                          padding: const EdgeInsets.only(left: 15, top: 10),
                           child: Text(
                             'State: ',
                             style:
@@ -52,11 +53,10 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                           ),
                         ),
                       ),
-                      SizedBox(height: 10),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 25, bottom: 10),
+                          padding: const EdgeInsets.only(left: 15, top: 10),
                           child: Text(
                             'District: ',
                             style:
@@ -87,35 +87,107 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                 if (controller.selectedFilters.length == 0)
                   Image.asset(
                     'assets/no_filter_selected.png',
-                    width: MediaQuery.of(context).size.width * 0.6,
+                    width: MediaQuery.of(context).size.width * 0.45,
                   ),
                 if (controller.selectedFilters.length == 1)
-                  singleGraph(
-                    xAxisName: 'Year',
-                    visibleMinimum: 10,
-                    maximumLabels: 20,
-                    yAxisName: describeEnum(controller.selectedFilters[0]),
-                    yAxisLabel: controller
-                        .getAxisLabelName(controller.selectedFilters[0]),
-                    dataSource: controller.getPrimaryDatastore(),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 30),
+                    child: singleGraph(
+                      xAxisName: 'Year',
+                      visibleMinimum: 10,
+                      maximumLabels: 20,
+                      yAxisName: describeEnum(controller.selectedFilters[0]),
+                      yAxisLabel: controller
+                          .getAxisLabelName(controller.selectedFilters[0]),
+                      dataSource: controller.getPrimaryDatastore(),
+                      interval: controller.selectedFilters[0] ==
+                              StatisticsFilters.Temperature
+                          ? 1
+                          : controller.selectedFilters[0] ==
+                                  StatisticsFilters.Humidity
+                              ? 2
+                              : controller.selectedFilters[0] ==
+                                      StatisticsFilters.Rainfall
+                                  ? 128
+                                  : 5,
+                      desiredIntervals: controller.selectedFilters[0] ==
+                              StatisticsFilters.Temperature
+                          ? 1
+                          : controller.selectedFilters[0] ==
+                                  StatisticsFilters.Humidity
+                              ? 2
+                              : controller.selectedFilters[0] ==
+                                      StatisticsFilters.Rainfall
+                                  ? 128
+                                  : 5,
+                    ),
                   ),
                 if (controller.selectedFilters.length == 2)
-                  doubleGraph(
-                    xAxisName: 'Year',
-                    visibleMinimum: 10,
-                    maximumLabels: 15,
-                    primaryYAxisName:
-                        describeEnum(controller.selectedFilters[0]),
-                    primaryYAxisLabel: controller
-                        .getAxisLabelName(controller.selectedFilters[0]),
-                    secondaryYAxisName:
-                        describeEnum(controller.selectedFilters[1]),
-                    secondaryYAxisLabel: controller
-                        .getAxisLabelName(controller.selectedFilters[1]),
-                    primaryDataSource: controller.getPrimaryDatastore(),
-                    secondaryDataSource: controller.getSecondaryDatastore(),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 30),
+                    child: doubleGraph(
+                      xAxisName: 'Year',
+                      visibleMinimum: 10,
+                      maximumLabels: 15,
+                      primaryYAxisName:
+                          describeEnum(controller.selectedFilters1),
+                      primaryYAxisLabel: controller
+                          .getAxisLabelName(controller.selectedFilters1),
+                      secondaryYAxisName:
+                          describeEnum(controller.selectedFilters2),
+                      secondaryYAxisLabel: controller
+                          .getAxisLabelName(controller.selectedFilters2),
+                      primaryDataSource: controller.getPrimaryDatastore(),
+                      secondaryDataSource: controller.getSecondaryDatastore(),
+                      primaryInterval: controller.selectedFilters1 ==
+                              StatisticsFilters.Temperature
+                          ? 1
+                          : controller.selectedFilters1 ==
+                                  StatisticsFilters.Humidity
+                              ? 2
+                              : controller.selectedFilters1 ==
+                                      StatisticsFilters.Rainfall
+                                  ? 128
+                                  : 5,
+                      primaryDesiredIntervals: controller.selectedFilters1 ==
+                              StatisticsFilters.Temperature
+                          ? 1
+                          : controller.selectedFilters1 ==
+                                  StatisticsFilters.Humidity
+                              ? 2
+                              : controller.selectedFilters1 ==
+                                      StatisticsFilters.Rainfall
+                                  ? 128
+                                  : 5,
+                      secondaryInterval: controller.selectedFilters2 ==
+                              StatisticsFilters.Temperature
+                          ? 1
+                          : controller.selectedFilters2 ==
+                                  StatisticsFilters.Humidity
+                              ? 2
+                              : controller.selectedFilters2 ==
+                                      StatisticsFilters.Rainfall
+                                  ? 128
+                                  : 5,
+                      secondaryDesiredIntervals: controller.selectedFilters2 ==
+                              StatisticsFilters.Temperature
+                          ? 1
+                          : controller.selectedFilters2 ==
+                                  StatisticsFilters.Humidity
+                              ? 2
+                              : controller.selectedFilters2 ==
+                                      StatisticsFilters.Rainfall
+                                  ? 128
+                                  : 5,
+                    ),
                   ),
-                SizedBox(height: 30),
+                if (controller.selectedFilters.length > 0)
+                  IconButton(
+                      icon: Icon(Icons.zoom_in),
+                      onPressed: () {
+                        controller.navigateToViewGraph(controller);
+                      }),
+                SizedBox(height: 10),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(

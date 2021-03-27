@@ -10,6 +10,7 @@ import '../domain/entities/statistics_entity.dart';
 import 'statistics_presenter.dart';
 import 'statistics_state_machine.dart';
 import 'statistics_view.dart';
+import 'view_graph/view_graph_view.dart';
 
 class StatisticsPageController extends Controller {
   final StatisticsPagePresenter _presenter;
@@ -349,8 +350,22 @@ class StatisticsPageController extends Controller {
     refreshUI();
   }
 
+  void navigateToViewGraph(StatisticsPageController controller) {
+    navigationService.navigateTo(NavigationService.viewGraphPage,
+        arguments: ViewGraphParams(statisticsPageController: controller));
+  }
+
   List<ChartData> getPrimaryDatastore() {
     if (selectedFilters.length > 0) {
+      if (selectedFilters.contains(StatisticsFilters.Humidity)) {
+        if (selectedFilters1 == StatisticsFilters.Temperature)
+          return temperatureChartData.reversed.toList();
+        else if (selectedFilters1 == StatisticsFilters.Humidity)
+          return humidityChartData.reversed.toList();
+        else if (selectedFilters1 == StatisticsFilters.Rainfall)
+          return rainfallChartData.reversed.toList();
+        throw Exception('The filter is unknown');
+      }
       if (selectedFilters1 == StatisticsFilters.Temperature)
         return temperatureChartData;
       else if (selectedFilters1 == StatisticsFilters.Humidity)
@@ -365,6 +380,15 @@ class StatisticsPageController extends Controller {
 
   List<ChartData> getSecondaryDatastore() {
     if (selectedFilters.length == 2) {
+      if (selectedFilters.contains(StatisticsFilters.Humidity)) {
+        if (selectedFilters2 == StatisticsFilters.Temperature)
+          return temperatureChartData.reversed.toList();
+        else if (selectedFilters2 == StatisticsFilters.Humidity)
+          return humidityChartData.reversed.toList();
+        else if (selectedFilters2 == StatisticsFilters.Rainfall)
+          return rainfallChartData.reversed.toList();
+        throw Exception('The filter is unknown');
+      }
       if (selectedFilters2 == StatisticsFilters.Temperature)
         return temperatureChartData;
       else if (selectedFilters2 == StatisticsFilters.Humidity)

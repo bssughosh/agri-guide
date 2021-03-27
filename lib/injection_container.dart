@@ -36,6 +36,7 @@ import 'app/statistics/data/repositories/statistics_repository_impl.dart';
 import 'app/statistics/domain/repositories/statistics_repository.dart';
 import 'app/statistics/domain/usecases/fetch_whole_data_usecase.dart';
 import 'app/statistics/presentation/statistics_presenter.dart';
+import 'app/statistics/presentation/view_graph/view_graph_presenter.dart';
 
 final serviceLocator = GetIt.instance;
 
@@ -144,6 +145,9 @@ Future<void> init() async {
       ));
 
   serviceLocator.registerFactory(() => FetchWholeDataUsecase(serviceLocator()));
+
+  //view graph
+  serviceLocator.registerFactory(() => ViewGraphPagePresenter());
 }
 
 Future<void> reset() async {

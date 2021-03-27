@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+import '../../../../core/app_theme.dart';
 
 Widget buildStatisticsLoadingView() {
-  return Center(
-    child: CircularProgressIndicator(),
+  return Container(
+    margin: EdgeInsets.only(top: 200),
+    child: Center(
+      child: SpinKitFoldingCube(color: AppTheme.secondaryColor),
+    ),
   );
 }

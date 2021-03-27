@@ -10,7 +10,7 @@ Widget buildPredictionInitializationView({
   controller.checkForLoginStatus();
 
   return Container(
-    margin: EdgeInsets.only(top: 100),
+    margin: EdgeInsets.only(top: 200),
     child: Center(
       child: SpinKitFoldingCube(color: AppTheme.secondaryColor),
     ),
