@@ -33,7 +33,8 @@ class LoginViewState
         return buildLoginInitilizationView();
 
       case LoginInitializedState:
-        return buildLoginInitializedViewMobile(controller: controller);
+        return buildLoginInitializedViewMobile(
+            controller: controller, context: context);
 
       case LoginLoadingState:
         return buildLoginLoadingView();

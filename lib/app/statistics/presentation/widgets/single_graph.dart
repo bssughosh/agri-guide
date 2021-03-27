@@ -10,6 +10,8 @@ Widget singleGraph({
   @required String yAxisName,
   @required String yAxisLabel,
   @required List<ChartData> dataSource,
+  @required double interval,
+  @required int desiredIntervals,
 }) {
   return SfCartesianChart(
     primaryXAxis: CategoryAxis(
@@ -21,13 +23,14 @@ Widget singleGraph({
     ),
     primaryYAxis: NumericAxis(
       name: yAxisName,
-      title: AxisTitle(
-        text: yAxisLabel,
-      ),
+      title: AxisTitle(text: yAxisLabel),
+      interval: interval,
+      rangePadding: ChartRangePadding.additional,
+      desiredIntervals: desiredIntervals,
+      decimalPlaces: 0,
     ),
     zoomPanBehavior: ZoomPanBehavior(
       enablePanning: true,
-      enablePinching: true,
     ),
     trackballBehavior: TrackballBehavior(
       enable: true,
@@ -43,6 +46,7 @@ Widget singleGraph({
       position: LegendPosition.bottom,
       borderColor: Colors.black26,
       borderWidth: 1,
+      toggleSeriesVisibility: false,
     ),
     title: ChartTitle(text: 'Statistics'),
     series: <CartesianSeries>[
