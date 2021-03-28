@@ -7,6 +7,8 @@ class AppTheme {
 
   static Color chipBackground = Color(0xFF8CC63E).withOpacity(0.25);
 
+  static Color loginBackground = Color(0xFF8CC63E).withOpacity(0.85);
+
   static Color secondaryColor = Color(0xFF2BB622);
 
   static Color accentColor = Color(0xFF2BB622);
