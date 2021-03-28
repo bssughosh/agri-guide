@@ -20,25 +20,31 @@ Widget buildPredictionDisplayInitializedViewMobile({
             if (controller.selectedParams
                 .contains(describeEnum(DownloadParams.temp)))
               CustomTable(
-                controller: controller,
+                dataSource: controller.temperature,
                 tableType: TableType.TEMPERATURE,
-                isWeb: false,
+                months: controller.monthsToDisplay,
+                columnName:
+                    controller.getColumnNameForTable(TableType.TEMPERATURE),
               ),
             SizedBox(height: 15),
             if (controller.selectedParams
                 .contains(describeEnum(DownloadParams.humidity)))
               CustomTable(
-                controller: controller,
+                dataSource: controller.humidity,
                 tableType: TableType.HUMIDITY,
-                isWeb: false,
+                months: controller.monthsToDisplay,
+                columnName:
+                    controller.getColumnNameForTable(TableType.HUMIDITY),
               ),
             SizedBox(height: 15),
             if (controller.selectedParams
                 .contains(describeEnum(DownloadParams.rainfall)))
               CustomTable(
-                controller: controller,
+                dataSource: controller.rainfall,
                 tableType: TableType.RAINFALL,
-                isWeb: false,
+                months: controller.monthsToDisplay,
+                columnName:
+                    controller.getColumnNameForTable(TableType.RAINFALL),
               ),
             SizedBox(height: 15),
             if (controller.selectedParams

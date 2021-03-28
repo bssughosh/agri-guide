@@ -481,6 +481,17 @@ class PredictionPageController extends Controller {
 
   String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 
+  String getColumnNameForTable(TableType tableType) {
+    if (tableType == TableType.TEMPERATURE) {
+      return 'Predicted Temperature (\u2103)';
+    } else if (tableType == TableType.HUMIDITY) {
+      return 'Predicted Humidity (%)';
+    } else if (tableType == TableType.RAINFALL) {
+      return 'Predicted Rainfall (mm)';
+    }
+    throw Exception('Table type not recognized $tableType');
+  }
+
   bool onWillPopScopePage1() {
     if (selectedCrop != null) {
       selectedCrop = null;

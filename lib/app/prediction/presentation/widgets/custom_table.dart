@@ -3,123 +3,75 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/app_theme.dart';
 import '../../../../core/enums.dart';
-import '../prediction_controller.dart';
 
 class CustomTable extends StatelessWidget {
-  final PredictionPageController controller;
   final TableType tableType;
-  final bool isWeb;
+  final List<String> dataSource;
+  final List<String> months;
+  final String columnName;
 
   const CustomTable({
-    @required this.controller,
     @required this.tableType,
-    @required this.isWeb,
+    @required this.months,
+    @required this.dataSource,
+    @required this.columnName,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: isWeb
-          ? MediaQuery.of(context).size.width / 3
-          : MediaQuery.of(context).size.width,
-      margin: EdgeInsets.symmetric(
-        horizontal: 15,
-      ),
+      width: double.infinity,
+      margin: EdgeInsets.symmetric(horizontal: 15),
       child: Column(
         children: [
-          Center(
-            child: Text(
-              '${(describeEnum(tableType))} PREDICTION',
-              style: AppTheme.headingBoldText,
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 5, bottom: 10),
+              child: Text(
+                '${(describeEnum(tableType))} PREDICTION',
+                style: AppTheme.headingBoldText.copyWith(fontSize: 17),
+              ),
             ),
           ),
-          SizedBox(height: 15),
-          Center(
-            child: Table(
-              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-              children: [
-                TableRow(
-                  decoration: AppTheme.customTableHeadingCellDecoration,
-                  children: [
-                    TableCell(
-                      child: Center(
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            'MONTH',
-                            style: AppTheme.customTableHeadingTextStyle,
-                          ),
-                        ),
+          SizedBox(height: 5),
+          DataTable(
+            showCheckboxColumn: false,
+            headingTextStyle: AppTheme.headingBoldText
+                .copyWith(fontSize: 15, color: Colors.white),
+            decoration: BoxDecoration(
+              border: Border.all(),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            headingRowColor:
+                MaterialStateProperty.all<Color>(AppTheme.secondaryColor),
+            columns: <DataColumn>[
+              DataColumn(
+                label: Center(child: Text('Month')),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Center(
+                    child: Container(
+                      child: Text(
+                        columnName,
+                        softWrap: true,
+                        textAlign: TextAlign.center,
                       ),
                     ),
-                    TableCell(
-                      child: Center(
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          child: tableType == TableType.TEMPERATURE
-                              ? Text(
-                                  'PREDICTED ${(describeEnum(tableType))} (\u2103)',
-                                  style: AppTheme.customTableHeadingTextStyle,
-                                  textAlign: TextAlign.center,
-                                )
-                              : tableType == TableType.HUMIDITY
-                                  ? Text(
-                                      'PREDICTED ${(describeEnum(tableType))} (%)',
-                                      style:
-                                          AppTheme.customTableHeadingTextStyle,
-                                      textAlign: TextAlign.center,
-                                    )
-                                  : Text(
-                                      'PREDICTED ${(describeEnum(tableType))} (mm)',
-                                      style:
-                                          AppTheme.customTableHeadingTextStyle,
-                                      textAlign: TextAlign.center,
-                                    ),
-                        ),
-                      ),
-                    ),
+                  ),
+                ),
+              ),
+            ],
+            rows: <DataRow>[
+              for (int i = 0; i < dataSource.length; i++)
+                DataRow(
+                  cells: <DataCell>[
+                    DataCell(Center(child: Text(months[i]))),
+                    DataCell(Center(child: Text(dataSource[i]))),
                   ],
                 ),
-                for (int i = 0; i < controller.monthsToDisplay.length; i++)
-                  TableRow(
-                    decoration: AppTheme.customTableRowCellDecoration,
-                    children: [
-                      TableCell(
-                        child: Center(
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            child: Text(
-                              controller.monthsToDisplay[i],
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                      ),
-                      TableCell(
-                        child: Center(
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            child: tableType == TableType.TEMPERATURE
-                                ? Text(
-                                    controller.temperature[i],
-                                    textAlign: TextAlign.center,
-                                  )
-                                : tableType == TableType.HUMIDITY
-                                    ? Text(
-                                        controller.humidity[i],
-                                        textAlign: TextAlign.center,
-                                      )
-                                    : Text(
-                                        controller.rainfall[i],
-                                        textAlign: TextAlign.center,
-                                      ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-              ],
-            ),
+            ],
           ),
         ],
       ),
