@@ -39,6 +39,7 @@ Widget buildPredictionInputInitializedViewMobile({
       : !controller.cropListLoading && controller.selectedDistrict != null;
   bool _showSubmitButton = controller.selectedState != null &&
       controller.selectedDistrict != null &&
+      !controller.cropListLoading &&
       (controller.areCropsAvailable
           ? controller.selectedParams
                   .contains(describeEnum(DownloadParams.yield))
@@ -54,11 +55,11 @@ Widget buildPredictionInputInitializedViewMobile({
       child: SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(height: 30),
             if (!_showStateList || !_showDistrictList)
               CircularProgressIndicator(),
             if (_showStateList)
               Container(
-                width: MediaQuery.of(context).size.width * 0.7,
                 decoration: AppTheme.normalBlackBorderDecoration,
                 padding: EdgeInsets.all(8.0),
                 child: Column(
@@ -66,7 +67,7 @@ Widget buildPredictionInputInitializedViewMobile({
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 25, bottom: 10),
+                        padding: const EdgeInsets.only(left: 5, bottom: 10),
                         child: Text(
                           'State: ',
                           style:
@@ -92,7 +93,7 @@ Widget buildPredictionInputInitializedViewMobile({
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 25, bottom: 10),
+                          padding: const EdgeInsets.only(left: 5, bottom: 10),
                           child: Text(
                             'District: ',
                             style:
@@ -126,7 +127,7 @@ Widget buildPredictionInputInitializedViewMobile({
             if (_showSubmitButton) SizedBox(height: 40),
             if (_showSubmitButton)
               CustomButton(
-                isActive: true,
+                isActive: controller.selectedParams.length > 0,
                 isOverlayRequired: false,
                 onPressed: () {
                   controller.proceedToPrediction();

@@ -18,7 +18,7 @@ class RangeColumnWidget extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: const EdgeInsets.only(left: 25, bottom: 10),
+              padding: const EdgeInsets.only(left: 5, bottom: 10),
               child: Text(
                 'Select Range of months: ',
                 style: AppTheme.headingBoldText.copyWith(fontSize: 17),

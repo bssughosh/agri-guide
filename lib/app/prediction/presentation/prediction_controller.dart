@@ -205,7 +205,6 @@ class PredictionPageController extends Controller {
             selectedCrop = null;
             paramsList.add(
                 {'id': describeEnum(DownloadParams.yield), 'name': 'Yield'});
-            selectedParams.add(describeEnum(DownloadParams.yield));
           } else {
             areCropsAvailable = false;
             selectedCrop = null;
@@ -268,7 +267,7 @@ class PredictionPageController extends Controller {
     );
   }
 
-  // Dropdowns
+  // Dropdowns generators
 
   List<DropdownMenuItem> stateItems() {
     List<DropdownMenuItem> _list = [];
@@ -342,6 +341,15 @@ class PredictionPageController extends Controller {
     districtList = [];
     seasonsList = [];
     cropsList = [];
+    selectedCrop = null;
+    selectedSeason = null;
+    areCropsAvailable = true;
+    if (paramsList.length == 4) {
+      paramsList.removeLast();
+    }
+    if (selectedParams.contains(describeEnum(DownloadParams.yield))) {
+      selectedParams.remove(describeEnum(DownloadParams.yield));
+    }
     refreshUI();
     fetchDistrictList();
   }
@@ -352,6 +360,12 @@ class PredictionPageController extends Controller {
     areCropsAvailable = true;
     seasonsList = [];
     cropsList = [];
+    if (paramsList.length == 4) {
+      paramsList.removeLast();
+    }
+    if (selectedParams.contains(describeEnum(DownloadParams.yield))) {
+      selectedParams.remove(describeEnum(DownloadParams.yield));
+    }
     refreshUI();
     fetchCropsList();
   }
@@ -398,7 +412,7 @@ class PredictionPageController extends Controller {
   // Pamareters list update
 
   void updateParamsList(List<String> newParamsList) {
-    paramsList = newParamsList;
+    selectedParams = newParamsList;
     if (!selectedParams.contains(describeEnum(DownloadParams.yield))) {
       selectedSeason = null;
       selectedCrop = null;
