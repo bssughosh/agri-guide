@@ -210,7 +210,9 @@ class StatisticsPageController extends Controller {
           _stateMachine.onEvent(new StatisticsPageDisplayInitializedEvent());
           showMySeasonDialog(
                   context: context, seasonsList: seasonList, controller: this)
-              .then((value) {});
+              .then((value) {
+            fetchYieldStatistics();
+          });
           refreshUI();
         },
       ),
@@ -241,9 +243,9 @@ class StatisticsPageController extends Controller {
           yieldFirstYear = int.parse(yieldChartData[0].x);
         }
 
-        onFilterClicked(StatisticsFilters.Yield);
-
         _stateMachine.onEvent(new StatisticsPageDisplayInitializedEvent());
+
+        onFilterClicked(StatisticsFilters.Yield);
         refreshUI();
       }),
       selectedState,
@@ -363,7 +365,7 @@ class StatisticsPageController extends Controller {
       else if (filter == StatisticsFilters.Yield)
         yieldChartData.add(
           new ChartData(
-            x: dataItem.keys.first,
+            x: dataItem.keys.first.toString(),
             y: dataItem.values.first,
             color: color,
           ),
@@ -375,6 +377,12 @@ class StatisticsPageController extends Controller {
 
   void yieldClicked(BuildContext context) {
     if (!selectedFilters.contains(StatisticsFilters.Yield)) {
+      cropList = [];
+      seasonList = [];
+      selectedSeason = null;
+      selectedCrop = null;
+      yieldStatisticsEntity = null;
+      yieldFirstYear = null;
       fetchCropsList(context);
     } else {
       onFilterClicked(StatisticsFilters.Yield);
@@ -476,31 +484,31 @@ class StatisticsPageController extends Controller {
               selectedFilters1 = StatisticsFilters.Rainfall;
             }
           }
-        }
-      } else if (selectedFilters[0] == StatisticsFilters.Yield) {
-        if (selectedFilters[1] == StatisticsFilters.Temperature) {
-          if (temperatureFirstYear < yieldFirstYear) {
-            selectedFilters1 = StatisticsFilters.Temperature;
-            selectedFilters2 = StatisticsFilters.Yield;
-          } else {
-            selectedFilters2 = StatisticsFilters.Temperature;
-            selectedFilters1 = StatisticsFilters.Yield;
-          }
-        } else if (selectedFilters[1] == StatisticsFilters.Rainfall) {
-          if (rainfallFirstYear < yieldFirstYear) {
-            selectedFilters1 = StatisticsFilters.Rainfall;
-            selectedFilters2 = StatisticsFilters.Yield;
-          } else {
-            selectedFilters2 = StatisticsFilters.Rainfall;
-            selectedFilters1 = StatisticsFilters.Yield;
-          }
-        } else if (selectedFilters[1] == StatisticsFilters.Humidity) {
-          if (humidityFirstYear < yieldFirstYear) {
-            selectedFilters1 = StatisticsFilters.Humidity;
-            selectedFilters2 = StatisticsFilters.Yield;
-          } else {
-            selectedFilters2 = StatisticsFilters.Humidity;
-            selectedFilters1 = StatisticsFilters.Yield;
+        } else if (selectedFilters[0] == StatisticsFilters.Yield) {
+          if (selectedFilters[1] == StatisticsFilters.Temperature) {
+            if (temperatureFirstYear < yieldFirstYear) {
+              selectedFilters1 = StatisticsFilters.Temperature;
+              selectedFilters2 = StatisticsFilters.Yield;
+            } else {
+              selectedFilters2 = StatisticsFilters.Temperature;
+              selectedFilters1 = StatisticsFilters.Yield;
+            }
+          } else if (selectedFilters[1] == StatisticsFilters.Rainfall) {
+            if (rainfallFirstYear < yieldFirstYear) {
+              selectedFilters1 = StatisticsFilters.Rainfall;
+              selectedFilters2 = StatisticsFilters.Yield;
+            } else {
+              selectedFilters2 = StatisticsFilters.Rainfall;
+              selectedFilters1 = StatisticsFilters.Yield;
+            }
+          } else if (selectedFilters[1] == StatisticsFilters.Humidity) {
+            if (humidityFirstYear < yieldFirstYear) {
+              selectedFilters1 = StatisticsFilters.Humidity;
+              selectedFilters2 = StatisticsFilters.Yield;
+            } else {
+              selectedFilters2 = StatisticsFilters.Humidity;
+              selectedFilters1 = StatisticsFilters.Yield;
+            }
           }
         }
       } else if (selectedFilters.length == 1) {
@@ -522,6 +530,8 @@ class StatisticsPageController extends Controller {
         return humidityChartData;
       else if (selectedFilters1 == StatisticsFilters.Rainfall)
         return rainfallChartData;
+      else if (selectedFilters1 == StatisticsFilters.Yield)
+        return yieldChartData;
       throw Exception('The filter is unknown');
     }
 
@@ -536,6 +546,8 @@ class StatisticsPageController extends Controller {
         return humidityChartData;
       else if (selectedFilters2 == StatisticsFilters.Rainfall)
         return rainfallChartData;
+      else if (selectedFilters2 == StatisticsFilters.Yield)
+        return yieldChartData;
       throw Exception('The filter is unknown');
     }
 
