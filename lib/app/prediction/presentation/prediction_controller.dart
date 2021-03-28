@@ -79,6 +79,15 @@ class PredictionPageController extends Controller {
   double predictedYield = -1;
   List<String> monthsToDisplay = [];
 
+  Map<String, List<int>> _monthsForSeasons = {
+    'Kharif': [6, 7, 8, 9],
+    'Rabi': [9, 10, 11, 0, 1, 2],
+    'Whole Year': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    'Autumn': [8, 9, 10],
+    'Summer': [5, 6, 7],
+    'Winter': [11, 0, 1],
+  };
+
   @override
   void initListeners() {}
 
@@ -91,6 +100,8 @@ class PredictionPageController extends Controller {
     _presenter.dispose();
     super.dispose();
   }
+
+  // API Calls
 
   void checkForLoginStatus() {
     _presenter.checkLoginStatus(
@@ -120,27 +131,6 @@ class PredictionPageController extends Controller {
         }
       }),
     );
-  }
-
-  void navigateToLogin() {
-    navigationService.navigateTo(NavigationService.loginPage,
-        shouldReplace: true);
-  }
-
-  void proceedToPrediction() {
-    _stateMachine.onEvent(new PredictionPageLoadingEvent());
-    refreshUI();
-    if (!isPredicting) makePrediction();
-    refreshUI();
-  }
-
-  void updateParamsList(List<String> newParamsList) {
-    paramsList = newParamsList;
-    if (!selectedParams.contains(describeEnum(DownloadParams.yield))) {
-      selectedSeason = null;
-      selectedCrop = null;
-    }
-    refreshUI();
   }
 
   void fetchStateList() {
@@ -200,28 +190,6 @@ class PredictionPageController extends Controller {
     );
   }
 
-  void fetchSeasonList() {
-    seasonListLoading = true;
-    _presenter.fetchSeasonsList(
-      new UseCaseObserver(
-        () {},
-        (error) {
-          handleAPIErrors(error);
-          print(error);
-        },
-        onNextFunction: (List seasonsRes) {
-          seasonListLoading = false;
-          seasonsList = seasonsRes;
-
-          refreshUI();
-        },
-      ),
-      selectedState,
-      selectedDistrict,
-      selectedCrop,
-    );
-  }
-
   void fetchCropsList() {
     cropListLoading = true;
     _presenter.fetchCropList(
@@ -251,6 +219,28 @@ class PredictionPageController extends Controller {
       ),
       selectedState,
       selectedDistrict,
+    );
+  }
+
+  void fetchSeasonList() {
+    seasonListLoading = true;
+    _presenter.fetchSeasonsList(
+      new UseCaseObserver(
+        () {},
+        (error) {
+          handleAPIErrors(error);
+          print(error);
+        },
+        onNextFunction: (List seasonsRes) {
+          seasonListLoading = false;
+          seasonsList = seasonsRes;
+
+          refreshUI();
+        },
+      ),
+      selectedState,
+      selectedDistrict,
+      selectedCrop,
     );
   }
 
@@ -365,24 +355,7 @@ class PredictionPageController extends Controller {
     );
   }
 
-  void selectedStateChange() {
-    selectedDistrict = null;
-    districtList = [];
-    seasonsList = [];
-    cropsList = [];
-    refreshUI();
-    fetchDistrictList();
-  }
-
-  void selectedDistrictChange() {
-    selectedCrop = null;
-    selectedSeason = null;
-    areCropsAvailable = true;
-    seasonsList = [];
-    cropsList = [];
-    refreshUI();
-    fetchCropsList();
-  }
+  // Dropdowns
 
   List<DropdownMenuItem> stateItems() {
     List<DropdownMenuItem> _list = [];
@@ -423,6 +396,53 @@ class PredictionPageController extends Controller {
     return _list;
   }
 
+  List<DropdownMenuItem> seasonItems() {
+    List<DropdownMenuItem> _list = [];
+    for (var season in seasonsList) {
+      _list.add(
+        new DropdownMenuItem(
+          value: season,
+          child: Text(season),
+        ),
+      );
+    }
+    return _list;
+  }
+
+  List<DropdownMenuItem> cropItems() {
+    List<DropdownMenuItem> _list = [];
+    for (var crop in cropsList) {
+      _list.add(
+        new DropdownMenuItem(
+          value: crop['crop_id'],
+          child: Text(crop['name']),
+        ),
+      );
+    }
+    return _list;
+  }
+
+  // Dropdowns on select
+
+  void selectedStateChange() {
+    selectedDistrict = null;
+    districtList = [];
+    seasonsList = [];
+    cropsList = [];
+    refreshUI();
+    fetchDistrictList();
+  }
+
+  void selectedDistrictChange() {
+    selectedCrop = null;
+    selectedSeason = null;
+    areCropsAvailable = true;
+    seasonsList = [];
+    cropsList = [];
+    refreshUI();
+    fetchCropsList();
+  }
+
   void fromMonthUpdated(String newMonth) {
     startMonth = newMonth;
     if (startMonth == 'December') {
@@ -451,42 +471,66 @@ class PredictionPageController extends Controller {
     refreshUI();
   }
 
-  List<DropdownMenuItem> seasonItems() {
-    List<DropdownMenuItem> _list = [];
-    for (var season in seasonsList) {
-      _list.add(
-        new DropdownMenuItem(
-          value: season,
-          child: Text(season),
-        ),
-      );
-    }
-    return _list;
-  }
-
-  void selectedSeasonChange() {
-    refreshUI();
-  }
-
-  List<DropdownMenuItem> cropItems() {
-    List<DropdownMenuItem> _list = [];
-    for (var crop in cropsList) {
-      _list.add(
-        new DropdownMenuItem(
-          value: crop['crop_id'],
-          child: Text(crop['name']),
-        ),
-      );
-    }
-    return _list;
-  }
-
   void selectedCropChange() {
     selectedSeason = null;
     seasonsList = [];
     refreshUI();
     fetchSeasonList();
   }
+
+  void selectedSeasonChange() {
+    refreshUI();
+  }
+
+  // Pamareters list update
+
+  void updateParamsList(List<String> newParamsList) {
+    paramsList = newParamsList;
+    if (!selectedParams.contains(describeEnum(DownloadParams.yield))) {
+      selectedSeason = null;
+      selectedCrop = null;
+    }
+    refreshUI();
+  }
+
+  // Navigations
+
+  void navigateToLogin() {
+    navigationService.navigateTo(NavigationService.loginPage,
+        shouldReplace: true);
+  }
+
+  void proceedToPrediction() {
+    _stateMachine.onEvent(new PredictionPageLoadingEvent());
+    refreshUI();
+    if (!isPredicting) makePrediction();
+    refreshUI();
+  }
+
+  // Utils
+
+  String getCropNameFromCropId(String cropId) {
+    for (var crop in cropsList) {
+      if (cropId == crop['crop_id']) {
+        return crop['name'];
+      }
+    }
+    return '';
+  }
+
+  String calculatePersonalisedYield() {
+    int area = int.parse(userEntity.area);
+    double newYield = predictedYield * area / 10;
+    return newYield.toStringAsFixed(3);
+  }
+
+  String namePreporcessing(String unprocessedString) {
+    String str1 = unprocessedString.replaceAll(new RegExp(r'\+'), ' ');
+    String str2 = str1.split(" ").map((str) => capitalize(str)).join(" ");
+    return str2;
+  }
+
+  String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 
   bool onWillPopScopePage1() {
     if (selectedCrop != null) {
@@ -511,27 +555,4 @@ class PredictionPageController extends Controller {
 
     return false;
   }
-
-  String getCropNameFromCropId(String cropId) {
-    for (var crop in cropsList) {
-      if (cropId == crop['crop_id']) {
-        return crop['name'];
-      }
-    }
-    return '';
-  }
-
-  String calculatePersonalisedYield() {
-    int area = int.parse(userEntity.area);
-    double newYield = predictedYield * area / 10;
-    return newYield.toStringAsFixed(3);
-  }
-
-  String namePreporcessing(String unprocessedString) {
-    String str1 = unprocessedString.replaceAll(new RegExp(r'\+'), ' ');
-    String str2 = str1.split(" ").map((str) => capitalize(str)).join(" ");
-    return str2;
-  }
-
-  String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 }
