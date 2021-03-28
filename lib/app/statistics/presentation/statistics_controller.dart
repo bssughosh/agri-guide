@@ -208,11 +208,17 @@ class StatisticsPageController extends Controller {
         onNextFunction: (List seasonsRes) {
           seasonList = seasonsRes;
           _stateMachine.onEvent(new StatisticsPageDisplayInitializedEvent());
-          showMySeasonDialog(
-                  context: context, seasonsList: seasonList, controller: this)
-              .then((value) {
+          if (seasonList.length == 1) {
+            selectedSeason = seasonList[0];
             fetchYieldStatistics();
-          });
+          } else {
+            showMySeasonDialog(
+                    context: context, seasonsList: seasonList, controller: this)
+                .then((value) {
+              fetchYieldStatistics();
+            });
+          }
+
           refreshUI();
         },
       ),
@@ -371,6 +377,18 @@ class StatisticsPageController extends Controller {
           ),
         );
     });
+  }
+
+  // Change crop selected
+
+  void changeCrop(BuildContext context) {
+    cropList = [];
+    seasonList = [];
+    selectedSeason = null;
+    selectedCrop = null;
+    yieldStatisticsEntity = null;
+    yieldFirstYear = null;
+    fetchCropsList(context);
   }
 
   // Filters clicked

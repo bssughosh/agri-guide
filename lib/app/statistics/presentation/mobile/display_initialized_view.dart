@@ -1,3 +1,4 @@
+import 'package:agri_guide/app/statistics/domain/entities/yield_statistics_entity.dart';
 import 'package:agri_guide/core/widgets/custom_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -286,6 +287,15 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                     ],
                   ),
                 ),
+                if (YieldStatisticsEntity != null)
+                  CustomButton(
+                    isActive: true,
+                    isOverlayRequired: false,
+                    onPressed: () {
+                      controller.changeCrop(context);
+                    },
+                    title: 'Change Crop',
+                  ),
               ],
             ),
           ),
