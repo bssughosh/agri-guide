@@ -1,9 +1,10 @@
 import 'dart:async';
 
-import 'package:agri_guide/app/statistics/domain/entities/yield_statistics_entity.dart';
-import 'package:agri_guide/app/statistics/domain/repositories/statistics_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
+
+import '../entities/yield_statistics_entity.dart';
+import '../repositories/statistics_repository.dart';
 
 class FetchYieldStatisticsUsecase
     extends CompletableUseCase<FetchYieldStatisticsParams> {

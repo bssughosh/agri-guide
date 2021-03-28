@@ -1,6 +1,5 @@
-import 'package:agri_guide/app/statistics/domain/entities/yield_statistics_entity.dart';
-
 import '../entities/statistics_entity.dart';
+import '../entities/yield_statistics_entity.dart';
 
 abstract class StatisticsRepository {
   /// A function to fetch whole data for plotting the graph
