@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:agri_guide/app/statistics/domain/entities/yield_statistics_entity.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../core/exceptions.dart';
 import '../../domain/entities/statistics_entity.dart';
+import '../../domain/entities/yield_statistics_entity.dart';
 import '../../domain/repositories/statistics_repository.dart';
 
 class StatisticsRepositoryImpl implements StatisticsRepository {

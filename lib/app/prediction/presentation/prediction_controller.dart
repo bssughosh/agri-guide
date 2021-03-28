@@ -62,11 +62,7 @@ class PredictionPageController extends Controller {
     {'id': describeEnum(DownloadParams.rainfall), 'name': 'Rainfall'},
   ];
 
-  List<String> selectedParams = [
-    describeEnum(DownloadParams.temp),
-    describeEnum(DownloadParams.humidity),
-    describeEnum(DownloadParams.rainfall),
-  ];
+  List<String> selectedParams = [];
 
   String startMonth;
   String endMonth;
@@ -78,6 +74,15 @@ class PredictionPageController extends Controller {
   List<String> humidity = [];
   double predictedYield = -1;
   List<String> monthsToDisplay = [];
+
+  Map<String, List<int>> _monthsForSeasons = {
+    'Kharif': [6, 7, 8, 9],
+    'Rabi': [9, 10, 11, 0, 1, 2],
+    'Whole Year': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    'Autumn': [8, 9, 10],
+    'Summer': [5, 6, 7],
+    'Winter': [11, 0, 1],
+  };
 
   @override
   void initListeners() {}
@@ -91,6 +96,8 @@ class PredictionPageController extends Controller {
     _presenter.dispose();
     super.dispose();
   }
+
+  // API Calls
 
   void checkForLoginStatus() {
     _presenter.checkLoginStatus(
@@ -120,27 +127,6 @@ class PredictionPageController extends Controller {
         }
       }),
     );
-  }
-
-  void navigateToLogin() {
-    navigationService.navigateTo(NavigationService.loginPage,
-        shouldReplace: true);
-  }
-
-  void proceedToPrediction() {
-    _stateMachine.onEvent(new PredictionPageLoadingEvent());
-    refreshUI();
-    if (!isPredicting) makePrediction();
-    refreshUI();
-  }
-
-  void updateParamsList(List<String> newParamsList) {
-    paramsList = newParamsList;
-    if (!selectedParams.contains(describeEnum(DownloadParams.yield))) {
-      selectedSeason = null;
-      selectedCrop = null;
-    }
-    refreshUI();
   }
 
   void fetchStateList() {
@@ -200,6 +186,37 @@ class PredictionPageController extends Controller {
     );
   }
 
+  void fetchCropsList() {
+    cropListLoading = true;
+    _presenter.fetchCropList(
+      new UseCaseObserver(
+        () {
+          print('Crops list successfully fetched');
+        },
+        (error) {
+          handleAPIErrors(error);
+          print(error);
+        },
+        onNextFunction: (List cropsRes) {
+          cropListLoading = false;
+          cropsList = cropsRes;
+          if (cropsRes.length > 0) {
+            areCropsAvailable = true;
+            selectedCrop = null;
+            paramsList.add(
+                {'id': describeEnum(DownloadParams.yield), 'name': 'Yield'});
+          } else {
+            areCropsAvailable = false;
+            selectedCrop = null;
+          }
+          refreshUI();
+        },
+      ),
+      selectedState,
+      selectedDistrict,
+    );
+  }
+
   void fetchSeasonList() {
     seasonListLoading = true;
     _presenter.fetchSeasonsList(
@@ -222,38 +239,6 @@ class PredictionPageController extends Controller {
     );
   }
 
-  void fetchCropsList() {
-    cropListLoading = true;
-    _presenter.fetchCropList(
-      new UseCaseObserver(
-        () {
-          print('Crops list successfully fetched');
-        },
-        (error) {
-          handleAPIErrors(error);
-          print(error);
-        },
-        onNextFunction: (List cropsRes) {
-          cropListLoading = false;
-          cropsList = cropsRes;
-          if (cropsRes.length > 0) {
-            areCropsAvailable = true;
-            selectedCrop = null;
-            paramsList.add(
-                {'id': describeEnum(DownloadParams.yield), 'name': 'Yield'});
-            selectedParams.add(describeEnum(DownloadParams.yield));
-          } else {
-            areCropsAvailable = false;
-            selectedCrop = null;
-          }
-          refreshUI();
-        },
-      ),
-      selectedState,
-      selectedDistrict,
-    );
-  }
-
   void makePrediction() {
     _presenter.makePredictions(
       new UseCaseObserver(() {
@@ -263,98 +248,15 @@ class PredictionPageController extends Controller {
         print(error);
       }, onNextFunction: (PredictionDataEntity entity) {
         predictionDataEntity = entity;
-        if (!areCropsAvailable) {
-          int _startIndex = months.indexOf(startMonth);
-          int _endIndex = months.indexOf(endMonth);
-          temperature = List<String>.from(
-            predictionDataEntity.temperature.getRange(
-              _startIndex,
-              _endIndex + 1,
-            ),
-          );
-          humidity = List<String>.from(
-            predictionDataEntity.humidity.getRange(
-              _startIndex,
-              _endIndex + 1,
-            ),
-          );
-          rainfall = List<String>.from(
-            predictionDataEntity.rainfall.getRange(
-              _startIndex,
-              _endIndex + 1,
-            ),
-          );
-          monthsToDisplay = List<String>.from(
-            months.getRange(
-              _startIndex,
-              _endIndex + 1,
-            ),
-          );
-        } else {
-          temperature = List<String>.from(selectedSeason == 'Kharif'
-              ? [
-                  predictionDataEntity.temperature[5],
-                  predictionDataEntity.temperature[6],
-                  predictionDataEntity.temperature[7],
-                  predictionDataEntity.temperature[8],
-                ]
-              : [
-                  predictionDataEntity.temperature[9],
-                  predictionDataEntity.temperature[10],
-                  predictionDataEntity.temperature[11],
-                  predictionDataEntity.temperature[0],
-                  predictionDataEntity.temperature[1],
-                  predictionDataEntity.temperature[2],
-                ]);
-          humidity = List<String>.from(selectedSeason == 'Kharif'
-              ? [
-                  predictionDataEntity.humidity[5],
-                  predictionDataEntity.humidity[6],
-                  predictionDataEntity.humidity[7],
-                  predictionDataEntity.humidity[8],
-                ]
-              : [
-                  predictionDataEntity.humidity[9],
-                  predictionDataEntity.humidity[10],
-                  predictionDataEntity.humidity[11],
-                  predictionDataEntity.humidity[0],
-                  predictionDataEntity.humidity[1],
-                  predictionDataEntity.humidity[2],
-                ]);
-          rainfall = List<String>.from(selectedSeason == 'Kharif'
-              ? [
-                  predictionDataEntity.rainfall[5],
-                  predictionDataEntity.rainfall[6],
-                  predictionDataEntity.rainfall[7],
-                  predictionDataEntity.rainfall[8],
-                ]
-              : [
-                  predictionDataEntity.rainfall[9],
-                  predictionDataEntity.rainfall[10],
-                  predictionDataEntity.rainfall[11],
-                  predictionDataEntity.rainfall[0],
-                  predictionDataEntity.rainfall[1],
-                  predictionDataEntity.rainfall[2],
-                ]);
-          monthsToDisplay = List<String>.from(selectedSeason == 'Kharif'
-              ? [
-                  months[5],
-                  months[6],
-                  months[7],
-                  months[8],
-                ]
-              : [
-                  months[9],
-                  months[10],
-                  months[11],
-                  months[0],
-                  months[1],
-                  months[2],
-                ]);
-        }
-        if (areCropsAvailable) {
+        temperature = getListToBeDisplayed(predictionDataEntity.temperature);
+        humidity = getListToBeDisplayed(predictionDataEntity.humidity);
+        rainfall = getListToBeDisplayed(predictionDataEntity.rainfall);
+        monthsToDisplay = getListToBeDisplayed(months);
+
+        if (selectedSeason != null && selectedCrop != null) {
           predictedYield = predictionDataEntity.predictedYield;
         }
+
         _stateMachine.onEvent(new PredictionPageDisplayInitializedEvent());
         refreshUI();
       }),
@@ -365,24 +267,7 @@ class PredictionPageController extends Controller {
     );
   }
 
-  void selectedStateChange() {
-    selectedDistrict = null;
-    districtList = [];
-    seasonsList = [];
-    cropsList = [];
-    refreshUI();
-    fetchDistrictList();
-  }
-
-  void selectedDistrictChange() {
-    selectedCrop = null;
-    selectedSeason = null;
-    areCropsAvailable = true;
-    seasonsList = [];
-    cropsList = [];
-    refreshUI();
-    fetchCropsList();
-  }
+  // Dropdowns generators
 
   List<DropdownMenuItem> stateItems() {
     List<DropdownMenuItem> _list = [];
@@ -423,6 +308,68 @@ class PredictionPageController extends Controller {
     return _list;
   }
 
+  List<DropdownMenuItem> seasonItems() {
+    List<DropdownMenuItem> _list = [];
+    for (var season in seasonsList) {
+      _list.add(
+        new DropdownMenuItem(
+          value: season,
+          child: Text(season),
+        ),
+      );
+    }
+    return _list;
+  }
+
+  List<DropdownMenuItem> cropItems() {
+    List<DropdownMenuItem> _list = [];
+    for (var crop in cropsList) {
+      _list.add(
+        new DropdownMenuItem(
+          value: crop['crop_id'],
+          child: Text(crop['name']),
+        ),
+      );
+    }
+    return _list;
+  }
+
+  // Dropdowns on select
+
+  void selectedStateChange() {
+    selectedDistrict = null;
+    districtList = [];
+    seasonsList = [];
+    cropsList = [];
+    selectedCrop = null;
+    selectedSeason = null;
+    areCropsAvailable = true;
+    if (paramsList.length == 4) {
+      paramsList.removeLast();
+    }
+    if (selectedParams.contains(describeEnum(DownloadParams.yield))) {
+      selectedParams.remove(describeEnum(DownloadParams.yield));
+    }
+    refreshUI();
+    fetchDistrictList();
+  }
+
+  void selectedDistrictChange() {
+    selectedCrop = null;
+    selectedSeason = null;
+    areCropsAvailable = true;
+    seasonsList = [];
+    cropsList = [];
+    if (paramsList.length == 4) {
+      paramsList.removeLast();
+    }
+    if (selectedParams.contains(describeEnum(DownloadParams.yield))) {
+      selectedParams.remove(describeEnum(DownloadParams.yield));
+    }
+    refreshUI();
+    fetchCropsList();
+  }
+
   void fromMonthUpdated(String newMonth) {
     startMonth = newMonth;
     if (startMonth == 'December') {
@@ -451,41 +398,110 @@ class PredictionPageController extends Controller {
     refreshUI();
   }
 
-  List<DropdownMenuItem> seasonItems() {
-    List<DropdownMenuItem> _list = [];
-    for (var season in seasonsList) {
-      _list.add(
-        new DropdownMenuItem(
-          value: season,
-          child: Text(season),
-        ),
-      );
-    }
-    return _list;
+  void selectedCropChange() {
+    selectedSeason = null;
+    seasonsList = [];
+    refreshUI();
+    fetchSeasonList();
   }
 
   void selectedSeasonChange() {
     refreshUI();
   }
 
-  List<DropdownMenuItem> cropItems() {
-    List<DropdownMenuItem> _list = [];
-    for (var crop in cropsList) {
-      _list.add(
-        new DropdownMenuItem(
-          value: crop['crop_id'],
-          child: Text(crop['name']),
-        ),
-      );
+  // Pamareters list update
+
+  void updateParamsList(List<String> newParamsList) {
+    selectedParams = newParamsList;
+    if (!selectedParams.contains(describeEnum(DownloadParams.yield))) {
+      selectedSeason = null;
+      selectedCrop = null;
     }
-    return _list;
+    refreshUI();
   }
 
-  void selectedCropChange() {
-    selectedSeason = null;
-    seasonsList = [];
+  // Navigations
+
+  void navigateToLogin() {
+    navigationService.navigateTo(NavigationService.loginPage,
+        shouldReplace: true);
+  }
+
+  void proceedToPrediction() {
+    _stateMachine.onEvent(new PredictionPageLoadingEvent());
     refreshUI();
-    fetchSeasonList();
+    if (!isPredicting) makePrediction();
+    refreshUI();
+  }
+
+  // Utils
+
+  List<String> getListToBeDisplayed(List<String> wholeList) {
+    List<String> _res = [];
+
+    List<int> _months = [];
+
+    if (selectedParams.contains(describeEnum(DownloadParams.yield))) {
+      _months = _monthsForSeasons[selectedSeason];
+    } else {
+      int _startIndex = months.indexOf(startMonth);
+      int _endIndex = months.indexOf(endMonth);
+      for (int i = _startIndex; i <= _endIndex; i++) {
+        _months.add(i);
+      }
+    }
+
+    for (int month in _months) {
+      _res.add(wholeList[month]);
+    }
+
+    return _res;
+  }
+
+  String getCropNameFromCropId(String cropId) {
+    for (var crop in cropsList) {
+      if (cropId == crop['crop_id']) {
+        return crop['name'];
+      }
+    }
+    return '';
+  }
+
+  String calculatePersonalisedYield() {
+    int area = int.parse(userEntity.area);
+    double newYield = predictedYield * area / 10;
+    return newYield.toStringAsFixed(3);
+  }
+
+  String namePreporcessing(String unprocessedString) {
+    String str1 = unprocessedString.replaceAll(new RegExp(r'\+'), ' ');
+    String str2 = str1.split(" ").map((str) => capitalize(str)).join(" ");
+    return str2;
+  }
+
+  String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
+
+  String getColumnNameForTable(TableType tableType) {
+    if (tableType == TableType.TEMPERATURE) {
+      return 'Predicted Temperature (\u2103)';
+    } else if (tableType == TableType.HUMIDITY) {
+      return 'Predicted Humidity (%)';
+    } else if (tableType == TableType.RAINFALL) {
+      return 'Predicted Rainfall (mm)';
+    }
+    throw Exception('Table type not recognized $tableType');
+  }
+
+  String selectedStateName() {
+    String name = stateList
+        .singleWhere((element) => element['id'] == selectedState)['name'];
+    return name;
+  }
+
+  String selectedDistrictName() {
+    String name = districtList
+        .singleWhere((element) => element['id'] == selectedDistrict)['name'];
+    return name;
   }
 
   bool onWillPopScopePage1() {
@@ -511,27 +527,4 @@ class PredictionPageController extends Controller {
 
     return false;
   }
-
-  String getCropNameFromCropId(String cropId) {
-    for (var crop in cropsList) {
-      if (cropId == crop['crop_id']) {
-        return crop['name'];
-      }
-    }
-    return '';
-  }
-
-  String calculatePersonalisedYield() {
-    int area = int.parse(userEntity.area);
-    double newYield = predictedYield * area / 10;
-    return newYield.toStringAsFixed(3);
-  }
-
-  String namePreporcessing(String unprocessedString) {
-    String str1 = unprocessedString.replaceAll(new RegExp(r'\+'), ' ');
-    String str2 = str1.split(" ").map((str) => capitalize(str)).join(" ");
-    return str2;
-  }
-
-  String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 }

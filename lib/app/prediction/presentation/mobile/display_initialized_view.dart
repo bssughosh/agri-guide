@@ -1,9 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/app_theme.dart';
 import '../../../../core/enums.dart';
 import '../prediction_controller.dart';
 import '../widgets/custom_table.dart';
+import '../widgets/yield_prediction_container.dart';
 
 Widget buildPredictionDisplayInitializedViewMobile({
   @required PredictionPageController controller,
@@ -16,69 +18,82 @@ Widget buildPredictionDisplayInitializedViewMobile({
       child: SingleChildScrollView(
         child: Column(
           children: [
-            if (controller.isPredicting) CircularProgressIndicator(),
-            if (!controller.isPredicting && controller.temperature.length > 0)
-              CustomTable(
-                controller: controller,
-                tableType: TableType.TEMPERATURE,
-                isWeb: false,
-              ),
-            SizedBox(height: 15),
-            if (!controller.isPredicting && controller.humidity.length > 0)
-              CustomTable(
-                controller: controller,
-                tableType: TableType.HUMIDITY,
-                isWeb: false,
-              ),
-            SizedBox(height: 15),
-            if (!controller.isPredicting && controller.rainfall.length > 0)
-              CustomTable(
-                controller: controller,
-                tableType: TableType.RAINFALL,
-                isWeb: false,
-              ),
-            SizedBox(height: 15),
-            if (!controller.isPredicting && controller.predictedYield != -1)
-              Center(
-                child: Container(
-                  child: Column(
-                    children: [
-                      Center(
-                        child: Text(
-                          'YIELD PREDICTION',
-                          style: AppTheme.headingBoldText,
+            SizedBox(height: 30),
+            if (!controller.selectedParams
+                .contains(describeEnum(DownloadParams.yield)))
+              Container(
+                decoration: AppTheme.normalBlackBorderDecoration,
+                padding: EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: RichText(
+                        text: TextSpan(
+                          text: 'State: ',
+                          style: AppTheme.bodyBoldText
+                              .copyWith(color: Colors.black, fontSize: 16),
+                          children: [
+                            TextSpan(
+                              text: controller.selectedStateName(),
+                              style: AppTheme.headingRegularText
+                                  .copyWith(color: Colors.black),
+                            ),
+                          ],
                         ),
                       ),
-                      SizedBox(height: 10),
-                      Center(
-                        child: Text(
-                          'SEASON: ' + controller.selectedSeason,
-                          style: AppTheme.headingRegularText,
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: RichText(
+                        text: TextSpan(
+                          text: 'District: ',
+                          style: AppTheme.bodyBoldText
+                              .copyWith(color: Colors.black, fontSize: 16),
+                          children: [
+                            TextSpan(
+                              text: controller.selectedDistrictName(),
+                              style: AppTheme.headingRegularText
+                                  .copyWith(color: Colors.black),
+                            ),
+                          ],
                         ),
                       ),
-                      SizedBox(height: 10),
-                      Center(
-                        child: Text(
-                          'CROP: ' +
-                              controller.getCropNameFromCropId(
-                                controller.selectedCrop,
-                              ),
-                          style: AppTheme.headingRegularText,
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Center(
-                        child: Text(
-                          'PREDICTED YIELD: ' +
-                              controller.calculatePersonalisedYield() +
-                              ' quintals',
-                          style: AppTheme.headingRegularText,
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
+              )
+            else
+              yieldPredictionContainer(controller: controller),
+            SizedBox(height: 30),
+            if (controller.selectedParams
+                .contains(describeEnum(DownloadParams.temp)))
+              CustomTable(
+                dataSource: controller.temperature,
+                tableType: TableType.TEMPERATURE,
+                months: controller.monthsToDisplay,
+                columnName:
+                    controller.getColumnNameForTable(TableType.TEMPERATURE),
+              ),
+            SizedBox(height: 15),
+            if (controller.selectedParams
+                .contains(describeEnum(DownloadParams.humidity)))
+              CustomTable(
+                dataSource: controller.humidity,
+                tableType: TableType.HUMIDITY,
+                months: controller.monthsToDisplay,
+                columnName:
+                    controller.getColumnNameForTable(TableType.HUMIDITY),
+              ),
+            SizedBox(height: 15),
+            if (controller.selectedParams
+                .contains(describeEnum(DownloadParams.rainfall)))
+              CustomTable(
+                dataSource: controller.rainfall,
+                tableType: TableType.RAINFALL,
+                months: controller.monthsToDisplay,
+                columnName:
+                    controller.getColumnNameForTable(TableType.RAINFALL),
               ),
           ],
         ),

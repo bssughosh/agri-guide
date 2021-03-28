@@ -74,7 +74,7 @@ class LoginPageController extends Controller {
 
   void navigateToRegistration() {
     navigationService.navigateTo(NavigationService.registerPage,
-        shouldReplace: true);
+        shouldReplace: false);
   }
 
   void navigateToHomepage() {
