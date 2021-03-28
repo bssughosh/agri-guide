@@ -1,3 +1,4 @@
+import 'package:agri_guide/app/prediction/presentation/widgets/yield_prediction_container.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,54 @@ Widget buildPredictionDisplayInitializedViewMobile({
       child: SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(height: 30),
+            if (!controller.selectedParams
+                .contains(describeEnum(DownloadParams.yield)))
+              Container(
+                decoration: AppTheme.normalBlackBorderDecoration,
+                padding: EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: RichText(
+                        text: TextSpan(
+                          text: 'State: ',
+                          style: AppTheme.bodyBoldText
+                              .copyWith(color: Colors.black, fontSize: 16),
+                          children: [
+                            TextSpan(
+                              text: controller.selectedStateName(),
+                              style: AppTheme.headingRegularText
+                                  .copyWith(color: Colors.black),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: RichText(
+                        text: TextSpan(
+                          text: 'District: ',
+                          style: AppTheme.bodyBoldText
+                              .copyWith(color: Colors.black, fontSize: 16),
+                          children: [
+                            TextSpan(
+                              text: controller.selectedDistrictName(),
+                              style: AppTheme.headingRegularText
+                                  .copyWith(color: Colors.black),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            else
+              yieldPredictionContainer(controller: controller),
+            SizedBox(height: 30),
             if (controller.selectedParams
                 .contains(describeEnum(DownloadParams.temp)))
               CustomTable(
@@ -45,50 +94,6 @@ Widget buildPredictionDisplayInitializedViewMobile({
                 months: controller.monthsToDisplay,
                 columnName:
                     controller.getColumnNameForTable(TableType.RAINFALL),
-              ),
-            SizedBox(height: 15),
-            if (controller.selectedParams
-                .contains(describeEnum(DownloadParams.yield)))
-              Center(
-                child: Container(
-                  child: Column(
-                    children: [
-                      Center(
-                        child: Text(
-                          'YIELD PREDICTION',
-                          style: AppTheme.headingBoldText,
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Center(
-                        child: Text(
-                          'SEASON: ' + controller.selectedSeason,
-                          style: AppTheme.headingRegularText,
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Center(
-                        child: Text(
-                          'CROP: ' +
-                              controller.getCropNameFromCropId(
-                                controller.selectedCrop,
-                              ),
-                          style: AppTheme.headingRegularText,
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Center(
-                        child: Text(
-                          'PREDICTED YIELD: ' +
-                              controller.calculatePersonalisedYield() +
-                              ' quintals',
-                          style: AppTheme.headingRegularText,
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                    ],
-                  ),
-                ),
               ),
           ],
         ),

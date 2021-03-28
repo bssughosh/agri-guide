@@ -492,6 +492,18 @@ class PredictionPageController extends Controller {
     throw Exception('Table type not recognized $tableType');
   }
 
+  String selectedStateName() {
+    String name = stateList
+        .singleWhere((element) => element['id'] == selectedState)['name'];
+    return name;
+  }
+
+  String selectedDistrictName() {
+    String name = districtList
+        .singleWhere((element) => element['id'] == selectedDistrict)['name'];
+    return name;
+  }
+
   bool onWillPopScopePage1() {
     if (selectedCrop != null) {
       selectedCrop = null;

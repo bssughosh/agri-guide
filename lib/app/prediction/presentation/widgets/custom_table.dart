@@ -21,13 +21,12 @@ class CustomTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 15),
       child: Column(
         children: [
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: const EdgeInsets.only(left: 5, bottom: 10),
+              padding: const EdgeInsets.only(bottom: 10),
               child: Text(
                 '${(describeEnum(tableType))} PREDICTION',
                 style: AppTheme.headingBoldText.copyWith(fontSize: 17),
@@ -35,43 +34,46 @@ class CustomTable extends StatelessWidget {
             ),
           ),
           SizedBox(height: 5),
-          DataTable(
-            showCheckboxColumn: false,
-            headingTextStyle: AppTheme.headingBoldText
-                .copyWith(fontSize: 15, color: Colors.white),
-            decoration: BoxDecoration(
-              border: Border.all(),
-              borderRadius: BorderRadius.circular(5),
-            ),
-            headingRowColor:
-                MaterialStateProperty.all<Color>(AppTheme.secondaryColor),
-            columns: <DataColumn>[
-              DataColumn(
-                label: Center(child: Text('Month')),
+          Container(
+            width: double.infinity,
+            child: DataTable(
+              showCheckboxColumn: false,
+              headingTextStyle: AppTheme.headingBoldText
+                  .copyWith(fontSize: 15, color: Colors.white),
+              decoration: BoxDecoration(
+                border: Border.all(),
+                borderRadius: BorderRadius.circular(5),
               ),
-              DataColumn(
-                label: Expanded(
-                  child: Center(
-                    child: Container(
-                      child: Text(
-                        columnName,
-                        softWrap: true,
-                        textAlign: TextAlign.center,
+              headingRowColor:
+                  MaterialStateProperty.all<Color>(AppTheme.secondaryColor),
+              columns: <DataColumn>[
+                DataColumn(
+                  label: Center(child: Text('Month')),
+                ),
+                DataColumn(
+                  label: Expanded(
+                    child: Center(
+                      child: Container(
+                        child: Text(
+                          columnName,
+                          softWrap: true,
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
-            rows: <DataRow>[
-              for (int i = 0; i < dataSource.length; i++)
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(Center(child: Text(months[i]))),
-                    DataCell(Center(child: Text(dataSource[i]))),
-                  ],
-                ),
-            ],
+              ],
+              rows: <DataRow>[
+                for (int i = 0; i < dataSource.length; i++)
+                  DataRow(
+                    cells: <DataCell>[
+                      DataCell(Center(child: Text(months[i]))),
+                      DataCell(Center(child: Text(dataSource[i]))),
+                    ],
+                  ),
+              ],
+            ),
           ),
         ],
       ),
