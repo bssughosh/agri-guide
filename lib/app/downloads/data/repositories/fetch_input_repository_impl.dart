@@ -18,9 +18,21 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
   );
 
   List _stateList;
+
+  /// Key name `stateId`
   Map<String, List> _districtsList = {};
+
+  /// Key name `stateId`
   Map<String, String> _stateNamesMap = {};
+
+  /// Key name `districtId`
   Map<String, String> _distNamesMap = {};
+
+  /// Key name `stateId/distId`
+  Map<String, List> _cropsList = {};
+
+  /// Key name `stateId/distId/cropId`
+  Map<String, List> _seasonsList = {};
 
   @override
   Future<List> getStateList({bool isTest}) async {
@@ -162,7 +174,22 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
   }
 
   fetchDistNames(List<String> districtIds) async {
-    String formattedDistIds = districtIds.join(',');
+    List<String> distsToBeFetched = [];
+    for (String district in districtIds) {
+      if (!_distNamesMap.containsKey(district)) {
+        distsToBeFetched.add(district);
+      }
+    }
+
+    if (distsToBeFetched.length == 0) {
+      List<String> _res = [];
+      for (String district in districtIds) {
+        _res.add(_distNamesMap[district]);
+      }
+
+      return _res;
+    }
+    String formattedDistIds = distsToBeFetched.join(',');
     String url = '$base_url/get_dist_value?dist_id=$formattedDistIds';
     http.Response value = await http.get(Uri.parse(url));
     if (value.statusCode == 400) {
@@ -179,11 +206,23 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
       throw APIServiceUnavailabeError();
     }
     var data = json.decode(value.body);
-    return List<String>.from(data['dists']);
+    List<String> _output = List<String>.from(data['dists']);
+
+    for (int i = 0; i < distsToBeFetched.length; i++) {
+      _stateNamesMap[distsToBeFetched[i]] = _output[i];
+    }
+    List<String> _res = [];
+    for (String district in districtIds) {
+      _res.add(_distNamesMap[district]);
+    }
+
+    return _res;
   }
 
   @override
   Future<List> getCrops(String state, String district) async {
+    if (_cropsList.containsKey('$state/$district'))
+      return _cropsList['$state/$district'];
     List<String> _stateList;
     List<String> _districtList;
     if (state != 'Test' || district != 'Test') {
@@ -211,11 +250,15 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
       throw APIServiceUnavailabeError();
     }
     var data = json.decode(value.body);
+    _cropsList['$state/$district'] = data['crops'];
+
     return data['crops'];
   }
 
   @override
   Future<List> getSeasons(String state, String district, String cropId) async {
+    if (_seasonsList.containsKey('$state/$district/$cropId'))
+      return _seasonsList['$state/$district/$cropId'];
     List<String> _stateList;
     List<String> _districtList;
     if (state != 'Test' || district != 'Test') {
@@ -244,6 +287,8 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
       throw APIServiceUnavailabeError();
     }
     var data = json.decode(value.body);
+    _seasonsList['$state/$district/$cropId'] = data['seasons'];
+
     return data['seasons'];
   }
 
