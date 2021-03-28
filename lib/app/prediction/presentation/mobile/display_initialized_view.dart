@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/app_theme.dart';
@@ -16,29 +17,32 @@ Widget buildPredictionDisplayInitializedViewMobile({
       child: SingleChildScrollView(
         child: Column(
           children: [
-            if (controller.isPredicting) CircularProgressIndicator(),
-            if (!controller.isPredicting && controller.temperature.length > 0)
+            if (controller.selectedParams
+                .contains(describeEnum(DownloadParams.temp)))
               CustomTable(
                 controller: controller,
                 tableType: TableType.TEMPERATURE,
                 isWeb: false,
               ),
             SizedBox(height: 15),
-            if (!controller.isPredicting && controller.humidity.length > 0)
+            if (controller.selectedParams
+                .contains(describeEnum(DownloadParams.humidity)))
               CustomTable(
                 controller: controller,
                 tableType: TableType.HUMIDITY,
                 isWeb: false,
               ),
             SizedBox(height: 15),
-            if (!controller.isPredicting && controller.rainfall.length > 0)
+            if (controller.selectedParams
+                .contains(describeEnum(DownloadParams.rainfall)))
               CustomTable(
                 controller: controller,
                 tableType: TableType.RAINFALL,
                 isWeb: false,
               ),
             SizedBox(height: 15),
-            if (!controller.isPredicting && controller.predictedYield != -1)
+            if (controller.selectedParams
+                .contains(describeEnum(DownloadParams.yield)))
               Center(
                 child: Container(
                   child: Column(
