@@ -48,6 +48,7 @@ Widget contentBody({
                       selectedItem: controller.selectedState,
                       onChanged: (String newValue) {
                         controller.selectedState = newValue;
+                        controller.isPlaceChanged = true;
                         controller.selectedStateChange();
                       },
                     ),
@@ -75,6 +76,7 @@ Widget contentBody({
                         selectedItem: controller.selectedDistrict,
                         onChanged: (String newValue) {
                           controller.selectedDistrict = newValue;
+                          controller.isPlaceChanged = true;
                           controller.selectedDistrictChange();
                           _showMyDialog(
                               context: context, controller: controller);
@@ -116,7 +118,10 @@ Widget contentBody({
             Center(
               child: InkWell(
                 onTap: () {
-                  controller.fetchLiveWeather();
+                  if (!controller.isPlaceChanged)
+                    controller.fetchLiveWeather();
+                  else
+                    controller.fetchLiveWeatherForNewLocation();
                 },
                 child: Icon(
                   Icons.cached,
