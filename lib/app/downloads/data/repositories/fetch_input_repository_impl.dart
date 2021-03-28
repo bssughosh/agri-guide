@@ -25,7 +25,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
   /// Key name `stateId`
   Map<String, String> _stateNamesMap = {};
 
-  /// Key name `districtId`
+  /// Key name `distId`
   Map<String, String> _distNamesMap = {};
 
   /// Key name `stateId/distId`

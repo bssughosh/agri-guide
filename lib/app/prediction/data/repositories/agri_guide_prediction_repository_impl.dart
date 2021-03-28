@@ -33,12 +33,20 @@ class AgriGuidePredictionRepositoryImpl
     defaultValue: 'https://agri-guide-api.herokuapp.com',
   );
 
+  /// Key Name `uid`
+  Map<String, UserEntity> _userDetails = {};
+
+  /// Key name `stateId/distId/cropId/season`
+  Map<String, PredictionDataEntity> _predictions = {};
+
   @override
   Future<UserEntity> fetchUserDetails() async {
     final CollectionReference userData =
         FirebaseFirestore.instance.collection('userData');
     User currentSignedInUser = FirebaseAuth.instance.currentUser;
     if (currentSignedInUser == null) throw UserNotSignedInError();
+    if (_userDetails.containsKey(currentSignedInUser.uid))
+      return _userDetails[currentSignedInUser.uid];
     DocumentSnapshot userDetails =
         await userData.doc(currentSignedInUser.uid).get();
     UserEntity user = new UserEntity(
@@ -51,6 +59,9 @@ class AgriGuidePredictionRepositoryImpl
       mobile: userDetails[_keyNameMobile],
       pincode: userDetails[_keyNamePincode],
     );
+
+    _userDetails[currentSignedInUser.uid] = user;
+
     return user;
   }
 
@@ -61,6 +72,9 @@ class AgriGuidePredictionRepositoryImpl
     String season,
     String crop,
   ) async {
+    if (_predictions.containsKey('$state/$district/$crop/$season')) {
+      return _predictions['$state/$district/$crop/$season'];
+    }
     List<String> stateName = await _fetchStateNames(state);
     List<String> districtName = await _fetchDistNames(district);
     String url1 = '$base_url/weather?' +
@@ -116,7 +130,6 @@ class AgriGuidePredictionRepositoryImpl
       } else if (value.statusCode == 503) {
         throw APIServiceUnavailabeError();
       }
-      print(value.statusCode);
       var data = json.decode(value.body);
       List _yield = data[_keyNameYield];
       if (_yield.length == 1) {
@@ -130,6 +143,8 @@ class AgriGuidePredictionRepositoryImpl
       humidity: humidity,
       predictedYield: yieldPrediction,
     );
+
+    _predictions['$state/$district/$crop/$season'] = predictionDataEntity;
 
     return predictionDataEntity;
   }
