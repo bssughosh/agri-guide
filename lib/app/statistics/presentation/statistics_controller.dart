@@ -29,16 +29,13 @@ class StatisticsPageController extends Controller {
   List districtList = [];
   List cropList = [];
   List seasonList = [];
-  bool isStateFilterClicked = false;
-  bool isDistrictFilterClicked = false;
   String selectedState;
   String selectedDistrict;
   String selectedCrop;
   String selectedSeason;
   bool districtListLoading = false;
-  bool seasonListLoading = false;
-  bool cropListLoading = false;
   bool areCropsAvailable = true;
+  bool isCropChanged = false;
 
   StatisticsEntity statisticsEntity;
   YieldStatisticsEntity yieldStatisticsEntity;
@@ -250,8 +247,10 @@ class StatisticsPageController extends Controller {
         }
 
         _stateMachine.onEvent(new StatisticsPageDisplayInitializedEvent());
-
-        onFilterClicked(StatisticsFilters.Yield);
+        if (!isCropChanged) {
+          onFilterClicked(StatisticsFilters.Yield);
+          isCropChanged = false;
+        }
         refreshUI();
       }),
       selectedState,
@@ -388,6 +387,7 @@ class StatisticsPageController extends Controller {
     selectedCrop = null;
     yieldStatisticsEntity = null;
     yieldFirstYear = null;
+    isCropChanged = true;
     fetchCropsList(context);
   }
 
@@ -403,6 +403,12 @@ class StatisticsPageController extends Controller {
       yieldFirstYear = null;
       fetchCropsList(context);
     } else {
+      cropList = [];
+      seasonList = [];
+      selectedSeason = null;
+      selectedCrop = null;
+      yieldStatisticsEntity = null;
+      yieldFirstYear = null;
       onFilterClicked(StatisticsFilters.Yield);
     }
   }
