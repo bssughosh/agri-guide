@@ -1,11 +1,10 @@
-import 'package:agri_guide/app/statistics/domain/entities/yield_statistics_entity.dart';
-import 'package:agri_guide/core/widgets/custom_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/app_theme.dart';
 import '../../../../core/enums.dart';
 import '../../../../core/widgets/chip.dart';
+import '../../../../core/widgets/custom_button.dart';
 import '../statistics_controller.dart';
 import '../widgets/double_graph.dart';
 import '../widgets/filter_tab.dart';
@@ -287,7 +286,7 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                     ],
                   ),
                 ),
-                if (YieldStatisticsEntity != null)
+                if (controller.yieldStatisticsEntity != null)
                   CustomButton(
                     isActive: true,
                     isOverlayRequired: false,
