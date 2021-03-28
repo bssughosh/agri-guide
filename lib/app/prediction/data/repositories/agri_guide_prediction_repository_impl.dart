@@ -39,6 +39,12 @@ class AgriGuidePredictionRepositoryImpl
   /// Key name `stateId/distId/cropId/season`
   Map<String, PredictionDataEntity> _predictions = {};
 
+  /// Key name `stateId`
+  Map<String, String> _stateNamesMap = {};
+
+  /// Key name `distId`
+  Map<String, String> _distNamesMap = {};
+
   @override
   Future<UserEntity> fetchUserDetails() async {
     final CollectionReference userData =
@@ -153,6 +159,9 @@ class AgriGuidePredictionRepositoryImpl
     if (stateId == 'Test') {
       return List<String>.from(['Test']);
     }
+    if (_stateNamesMap.containsKey(stateId)) {
+      return _stateNamesMap[stateId];
+    }
     String url = '$base_url/get_state_value?state_id=$stateId';
     http.Response value = await http.get(Uri.parse(url));
     if (value.statusCode == 400) {
@@ -169,12 +178,23 @@ class AgriGuidePredictionRepositoryImpl
       throw APIServiceUnavailabeError();
     }
     var data = json.decode(value.body);
-    return List<String>.from(data['states']);
+    List<String> _output = List<String>.from(data['states']);
+
+    if (_output.length == 1) {
+      _stateNamesMap[stateId] = _output[0];
+    } else {
+      throw Exception('The output is not proper');
+    }
+
+    return _output;
   }
 
   _fetchDistNames(String districtId) async {
     if (districtId == 'Test') {
       return List<String>.from(['Test']);
+    }
+    if (_distNamesMap.containsKey(districtId)) {
+      return _distNamesMap[districtId];
     }
     String url = '$base_url/get_dist_value?dist_id=$districtId';
     http.Response value = await http.get(Uri.parse(url));
@@ -192,6 +212,14 @@ class AgriGuidePredictionRepositoryImpl
       throw APIServiceUnavailabeError();
     }
     var data = json.decode(value.body);
-    return List<String>.from(data['dists']);
+    List<String> _output = List<String>.from(data['dists']);
+
+    if (_output.length == 1) {
+      _distNamesMap[districtId] = _output[0];
+    } else {
+      throw Exception('The output is not proper');
+    }
+
+    return _output;
   }
 }
