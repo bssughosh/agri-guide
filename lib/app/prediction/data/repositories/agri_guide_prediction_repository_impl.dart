@@ -160,7 +160,7 @@ class AgriGuidePredictionRepositoryImpl
       return List<String>.from(['Test']);
     }
     if (_stateNamesMap.containsKey(stateId)) {
-      return _stateNamesMap[stateId];
+      return List<String>.from([_stateNamesMap[stateId]]);
     }
     String url = '$base_url/get_state_value?state_id=$stateId';
     http.Response value = await http.get(Uri.parse(url));
@@ -194,7 +194,7 @@ class AgriGuidePredictionRepositoryImpl
       return List<String>.from(['Test']);
     }
     if (_distNamesMap.containsKey(districtId)) {
-      return _distNamesMap[districtId];
+      return List<String>.from([_distNamesMap[districtId]]);
     }
     String url = '$base_url/get_dist_value?dist_id=$districtId';
     http.Response value = await http.get(Uri.parse(url));

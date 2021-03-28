@@ -592,7 +592,7 @@ class StatisticsPageController extends Controller {
     } else if (filters == StatisticsFilters.Rainfall) {
       return 'Rainfall (mm)';
     } else if (filters == StatisticsFilters.Yield) {
-      return 'Yield (quintals / acre)';
+      return 'Yield (quintals / 10 acres)';
     }
     return '';
   }
@@ -617,6 +617,12 @@ class StatisticsPageController extends Controller {
 
   bool onWillPopScopePage2() {
     _stateMachine.onEvent(new StatisticsPageInputInitializedEvent());
+    selectedSeason = null;
+    selectedCrop = null;
+    selectedFilters = [];
+    selectedFilters1 = null;
+    selectedFilters2 = null;
+    areCropsAvailable = true;
     refreshUI();
 
     return false;

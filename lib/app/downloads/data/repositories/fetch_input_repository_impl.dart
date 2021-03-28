@@ -209,7 +209,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
     List<String> _output = List<String>.from(data['dists']);
 
     for (int i = 0; i < distsToBeFetched.length; i++) {
-      _stateNamesMap[distsToBeFetched[i]] = _output[i];
+      _distNamesMap[distsToBeFetched[i]] = _output[i];
     }
     List<String> _res = [];
     for (String district in districtIds) {
