@@ -114,7 +114,7 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                                   : controller.selectedFilters[0] ==
                                           StatisticsFilters.Rainfall
                                       ? 128
-                                      : 5,
+                                      : 1,
                           desiredIntervals: controller.selectedFilters[0] ==
                                   StatisticsFilters.Temperature
                               ? 1
@@ -124,7 +124,7 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                                   : controller.selectedFilters[0] ==
                                           StatisticsFilters.Rainfall
                                       ? 128
-                                      : 5,
+                                      : 1,
                         ),
                       ),
                       Container(
@@ -181,7 +181,7 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                                   : controller.selectedFilters1 ==
                                           StatisticsFilters.Rainfall
                                       ? 128
-                                      : 5,
+                                      : 1,
                           primaryDesiredIntervals:
                               controller.selectedFilters1 ==
                                       StatisticsFilters.Temperature
@@ -192,7 +192,7 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                                       : controller.selectedFilters1 ==
                                               StatisticsFilters.Rainfall
                                           ? 128
-                                          : 5,
+                                          : 1,
                           secondaryInterval: controller.selectedFilters2 ==
                                   StatisticsFilters.Temperature
                               ? 1
@@ -202,7 +202,7 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                                   : controller.selectedFilters2 ==
                                           StatisticsFilters.Rainfall
                                       ? 128
-                                      : 5,
+                                      : 1,
                           secondaryDesiredIntervals:
                               controller.selectedFilters2 ==
                                       StatisticsFilters.Temperature
@@ -213,7 +213,7 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                                       : controller.selectedFilters2 ==
                                               StatisticsFilters.Rainfall
                                           ? 128
-                                          : 5,
+                                          : 1,
                         ),
                       ),
                       Container(

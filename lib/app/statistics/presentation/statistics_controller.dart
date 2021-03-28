@@ -573,6 +573,8 @@ class StatisticsPageController extends Controller {
       return 'Humidity (%)';
     } else if (filters == StatisticsFilters.Rainfall) {
       return 'Rainfall (mm)';
+    } else if (filters == StatisticsFilters.Yield) {
+      return 'Yield (quintals / acre)';
     }
     return '';
   }
