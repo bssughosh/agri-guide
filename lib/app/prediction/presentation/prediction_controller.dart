@@ -62,11 +62,7 @@ class PredictionPageController extends Controller {
     {'id': describeEnum(DownloadParams.rainfall), 'name': 'Rainfall'},
   ];
 
-  List<String> selectedParams = [
-    describeEnum(DownloadParams.temp),
-    describeEnum(DownloadParams.humidity),
-    describeEnum(DownloadParams.rainfall),
-  ];
+  List<String> selectedParams = [];
 
   String startMonth;
   String endMonth;
@@ -253,98 +249,15 @@ class PredictionPageController extends Controller {
         print(error);
       }, onNextFunction: (PredictionDataEntity entity) {
         predictionDataEntity = entity;
-        if (!areCropsAvailable) {
-          int _startIndex = months.indexOf(startMonth);
-          int _endIndex = months.indexOf(endMonth);
-          temperature = List<String>.from(
-            predictionDataEntity.temperature.getRange(
-              _startIndex,
-              _endIndex + 1,
-            ),
-          );
-          humidity = List<String>.from(
-            predictionDataEntity.humidity.getRange(
-              _startIndex,
-              _endIndex + 1,
-            ),
-          );
-          rainfall = List<String>.from(
-            predictionDataEntity.rainfall.getRange(
-              _startIndex,
-              _endIndex + 1,
-            ),
-          );
-          monthsToDisplay = List<String>.from(
-            months.getRange(
-              _startIndex,
-              _endIndex + 1,
-            ),
-          );
-        } else {
-          temperature = List<String>.from(selectedSeason == 'Kharif'
-              ? [
-                  predictionDataEntity.temperature[5],
-                  predictionDataEntity.temperature[6],
-                  predictionDataEntity.temperature[7],
-                  predictionDataEntity.temperature[8],
-                ]
-              : [
-                  predictionDataEntity.temperature[9],
-                  predictionDataEntity.temperature[10],
-                  predictionDataEntity.temperature[11],
-                  predictionDataEntity.temperature[0],
-                  predictionDataEntity.temperature[1],
-                  predictionDataEntity.temperature[2],
-                ]);
-          humidity = List<String>.from(selectedSeason == 'Kharif'
-              ? [
-                  predictionDataEntity.humidity[5],
-                  predictionDataEntity.humidity[6],
-                  predictionDataEntity.humidity[7],
-                  predictionDataEntity.humidity[8],
-                ]
-              : [
-                  predictionDataEntity.humidity[9],
-                  predictionDataEntity.humidity[10],
-                  predictionDataEntity.humidity[11],
-                  predictionDataEntity.humidity[0],
-                  predictionDataEntity.humidity[1],
-                  predictionDataEntity.humidity[2],
-                ]);
-          rainfall = List<String>.from(selectedSeason == 'Kharif'
-              ? [
-                  predictionDataEntity.rainfall[5],
-                  predictionDataEntity.rainfall[6],
-                  predictionDataEntity.rainfall[7],
-                  predictionDataEntity.rainfall[8],
-                ]
-              : [
-                  predictionDataEntity.rainfall[9],
-                  predictionDataEntity.rainfall[10],
-                  predictionDataEntity.rainfall[11],
-                  predictionDataEntity.rainfall[0],
-                  predictionDataEntity.rainfall[1],
-                  predictionDataEntity.rainfall[2],
-                ]);
-          monthsToDisplay = List<String>.from(selectedSeason == 'Kharif'
-              ? [
-                  months[5],
-                  months[6],
-                  months[7],
-                  months[8],
-                ]
-              : [
-                  months[9],
-                  months[10],
-                  months[11],
-                  months[0],
-                  months[1],
-                  months[2],
-                ]);
-        }
-        if (areCropsAvailable) {
+        temperature = getListToBeDisplayed(predictionDataEntity.temperature);
+        humidity = getListToBeDisplayed(predictionDataEntity.humidity);
+        rainfall = getListToBeDisplayed(predictionDataEntity.rainfall);
+        monthsToDisplay = getListToBeDisplayed(months);
+
+        if (selectedSeason != null && selectedCrop != null) {
           predictedYield = predictionDataEntity.predictedYield;
         }
+
         _stateMachine.onEvent(new PredictionPageDisplayInitializedEvent());
         refreshUI();
       }),
@@ -508,6 +421,28 @@ class PredictionPageController extends Controller {
   }
 
   // Utils
+
+  List<String> getListToBeDisplayed(List<String> wholeList) {
+    List<String> _res = [];
+
+    List<int> _months = [];
+
+    if (selectedParams.contains(describeEnum(DownloadParams.yield))) {
+      _months = _monthsForSeasons[selectedSeason];
+    } else {
+      int _startIndex = months.indexOf(startMonth);
+      int _endIndex = months.indexOf(endMonth);
+      for (int i = _startIndex; i <= _endIndex; i++) {
+        _months.add(i);
+      }
+    }
+
+    for (int month in _months) {
+      _res.add(wholeList[month]);
+    }
+
+    return _res;
+  }
 
   String getCropNameFromCropId(String cropId) {
     for (var crop in cropsList) {
