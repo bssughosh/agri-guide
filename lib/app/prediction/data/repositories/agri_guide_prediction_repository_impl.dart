@@ -33,12 +33,26 @@ class AgriGuidePredictionRepositoryImpl
     defaultValue: 'https://agri-guide-api.herokuapp.com',
   );
 
+  /// Key Name `uid`
+  Map<String, UserEntity> _userDetails = {};
+
+  /// Key name `stateId/distId/cropId/season`
+  Map<String, PredictionDataEntity> _predictions = {};
+
+  /// Key name `stateId`
+  Map<String, String> _stateNamesMap = {};
+
+  /// Key name `distId`
+  Map<String, String> _distNamesMap = {};
+
   @override
   Future<UserEntity> fetchUserDetails() async {
     final CollectionReference userData =
         FirebaseFirestore.instance.collection('userData');
     User currentSignedInUser = FirebaseAuth.instance.currentUser;
     if (currentSignedInUser == null) throw UserNotSignedInError();
+    if (_userDetails.containsKey(currentSignedInUser.uid))
+      return _userDetails[currentSignedInUser.uid];
     DocumentSnapshot userDetails =
         await userData.doc(currentSignedInUser.uid).get();
     UserEntity user = new UserEntity(
@@ -51,6 +65,9 @@ class AgriGuidePredictionRepositoryImpl
       mobile: userDetails[_keyNameMobile],
       pincode: userDetails[_keyNamePincode],
     );
+
+    _userDetails[currentSignedInUser.uid] = user;
+
     return user;
   }
 
@@ -61,6 +78,9 @@ class AgriGuidePredictionRepositoryImpl
     String season,
     String crop,
   ) async {
+    if (_predictions.containsKey('$state/$district/$crop/$season')) {
+      return _predictions['$state/$district/$crop/$season'];
+    }
     List<String> stateName = await _fetchStateNames(state);
     List<String> districtName = await _fetchDistNames(district);
     String url1 = '$base_url/weather?' +
@@ -116,7 +136,6 @@ class AgriGuidePredictionRepositoryImpl
       } else if (value.statusCode == 503) {
         throw APIServiceUnavailabeError();
       }
-      print(value.statusCode);
       var data = json.decode(value.body);
       List _yield = data[_keyNameYield];
       if (_yield.length == 1) {
@@ -131,12 +150,17 @@ class AgriGuidePredictionRepositoryImpl
       predictedYield: yieldPrediction,
     );
 
+    _predictions['$state/$district/$crop/$season'] = predictionDataEntity;
+
     return predictionDataEntity;
   }
 
   _fetchStateNames(String stateId) async {
     if (stateId == 'Test') {
       return List<String>.from(['Test']);
+    }
+    if (_stateNamesMap.containsKey(stateId)) {
+      return List<String>.from([_stateNamesMap[stateId]]);
     }
     String url = '$base_url/get_state_value?state_id=$stateId';
     http.Response value = await http.get(Uri.parse(url));
@@ -154,12 +178,23 @@ class AgriGuidePredictionRepositoryImpl
       throw APIServiceUnavailabeError();
     }
     var data = json.decode(value.body);
-    return List<String>.from(data['states']);
+    List<String> _output = List<String>.from(data['states']);
+
+    if (_output.length == 1) {
+      _stateNamesMap[stateId] = _output[0];
+    } else {
+      throw Exception('The output is not proper');
+    }
+
+    return _output;
   }
 
   _fetchDistNames(String districtId) async {
     if (districtId == 'Test') {
       return List<String>.from(['Test']);
+    }
+    if (_distNamesMap.containsKey(districtId)) {
+      return List<String>.from([_distNamesMap[districtId]]);
     }
     String url = '$base_url/get_dist_value?dist_id=$districtId';
     http.Response value = await http.get(Uri.parse(url));
@@ -177,6 +212,14 @@ class AgriGuidePredictionRepositoryImpl
       throw APIServiceUnavailabeError();
     }
     var data = json.decode(value.body);
-    return List<String>.from(data['dists']);
+    List<String> _output = List<String>.from(data['dists']);
+
+    if (_output.length == 1) {
+      _distNamesMap[districtId] = _output[0];
+    } else {
+      throw Exception('The output is not proper');
+    }
+
+    return _output;
   }
 }

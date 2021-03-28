@@ -7,10 +7,13 @@ import '../../../core/observer.dart';
 import '../../../injection_container.dart';
 import '../../navigation_service.dart';
 import '../domain/entities/statistics_entity.dart';
+import '../domain/entities/yield_statistics_entity.dart';
 import 'statistics_presenter.dart';
 import 'statistics_state_machine.dart';
 import 'statistics_view.dart';
 import 'view_graph/view_graph_view.dart';
+import 'widgets/show_my_crop_dialog.dart';
+import 'widgets/show_my_season_dialog.dart';
 
 class StatisticsPageController extends Controller {
   final StatisticsPagePresenter _presenter;
@@ -24,20 +27,27 @@ class StatisticsPageController extends Controller {
 
   List stateList = [];
   List districtList = [];
-  bool isStateFilterClicked = false;
-  bool isDistrictFilterClicked = false;
+  List cropList = [];
+  List seasonList = [];
   String selectedState;
   String selectedDistrict;
+  String selectedCrop;
+  String selectedSeason;
   bool districtListLoading = false;
+  bool areCropsAvailable = true;
+  bool isCropChanged = false;
 
   StatisticsEntity statisticsEntity;
+  YieldStatisticsEntity yieldStatisticsEntity;
   List<ChartData> rainfallChartData = [];
   List<ChartData> temperatureChartData = [];
   List<ChartData> humidityChartData = [];
+  List<ChartData> yieldChartData = [];
 
   int temperatureFirstYear;
   int humidityFirstYear;
   int rainfallFirstYear;
+  int yieldFirstYear;
 
   List<StatisticsFilters> selectedFilters = [];
 
@@ -56,6 +66,8 @@ class StatisticsPageController extends Controller {
     _presenter.dispose();
     super.dispose();
   }
+
+  // API Calls
 
   void fetchStateList() {
     _presenter.fetchStateList(
@@ -98,16 +110,157 @@ class StatisticsPageController extends Controller {
     );
   }
 
-  void selectedStateChange() {
-    selectedDistrict = null;
-    districtList = [];
+  void proceedToStatisticsDisplay() {
+    _stateMachine.onEvent(new StatisticsPageLoadingEvent());
     refreshUI();
-    fetchDistrictList();
+    _presenter.fetchWholeData(
+      new UseCaseObserver(() {
+        print('Whole data fetched');
+      }, (error) {
+        handleAPIErrors(error);
+        print(error);
+      }, onNextFunction: (StatisticsEntity entity) {
+        statisticsEntity = entity;
+
+        findColorsAndToChartData(
+          filter: StatisticsFilters.Rainfall,
+          statisticsData: statisticsEntity.rainfallData,
+        );
+        findColorsAndToChartData(
+          filter: StatisticsFilters.Temperature,
+          statisticsData: statisticsEntity.temperatureData,
+        );
+        findColorsAndToChartData(
+          filter: StatisticsFilters.Humidity,
+          statisticsData: statisticsEntity.humidityData,
+        );
+
+        if (rainfallChartData.length > 0) {
+          rainfallChartData.sort((a, b) => a.x.compareTo(b.x));
+          rainfallFirstYear = int.parse(rainfallChartData[0].x);
+        }
+
+        if (temperatureChartData.length > 0) {
+          temperatureChartData.sort((a, b) => a.x.compareTo(b.x));
+          temperatureFirstYear = int.parse(temperatureChartData[0].x);
+        }
+
+        if (humidityChartData.length > 0) {
+          humidityChartData.sort((a, b) => a.x.compareTo(b.x));
+          humidityFirstYear = int.parse(humidityChartData[0].x);
+        }
+
+        _stateMachine.onEvent(new StatisticsPageDisplayInitializedEvent());
+        refreshUI();
+      }),
+      selectedState,
+      selectedDistrict,
+    );
   }
 
-  void selectedDistrictChange() {
+  void fetchCropsList(BuildContext context) {
+    _stateMachine.onEvent(new StatisticsPageLoadingEvent());
     refreshUI();
+    _presenter.fetchCropList(
+      new UseCaseObserver(
+        () {
+          print('Crops list successfully fetched');
+        },
+        (error) {
+          handleAPIErrors(error);
+          print(error);
+        },
+        onNextFunction: (List cropsRes) {
+          cropList = cropsRes;
+          if (cropList.length == 0) {
+            areCropsAvailable = false;
+            _stateMachine.onEvent(new StatisticsPageDisplayInitializedEvent());
+            refreshUI();
+          } else {
+            _stateMachine.onEvent(new StatisticsPageDisplayInitializedEvent());
+            refreshUI();
+            showMyCropDialog(
+                    context: context, cropList: cropList, controller: this)
+                .then((value) {
+              fetchSeasonList(context);
+            });
+          }
+        },
+      ),
+      selectedState,
+      selectedDistrict,
+    );
   }
+
+  void fetchSeasonList(BuildContext context) {
+    _stateMachine.onEvent(new StatisticsPageLoadingEvent());
+    refreshUI();
+    _presenter.fetchSeasonsList(
+      new UseCaseObserver(
+        () {},
+        (error) {
+          handleAPIErrors(error);
+          print(error);
+        },
+        onNextFunction: (List seasonsRes) {
+          seasonList = seasonsRes;
+          _stateMachine.onEvent(new StatisticsPageDisplayInitializedEvent());
+          if (seasonList.length == 1) {
+            selectedSeason = seasonList[0];
+            fetchYieldStatistics();
+          } else {
+            showMySeasonDialog(
+                    context: context, seasonsList: seasonList, controller: this)
+                .then((value) {
+              fetchYieldStatistics();
+            });
+          }
+
+          refreshUI();
+        },
+      ),
+      selectedState,
+      selectedDistrict,
+      selectedCrop,
+    );
+  }
+
+  void fetchYieldStatistics() {
+    _stateMachine.onEvent(new StatisticsPageLoadingEvent());
+    refreshUI();
+
+    _presenter.fetchYieldStatistics(
+      new UseCaseObserver(() {}, (error) {
+        handleAPIErrors(error);
+        print(error);
+      }, onNextFunction: (YieldStatisticsEntity yieldStats) {
+        yieldStatisticsEntity = yieldStats;
+
+        findColorsAndToChartData(
+          filter: StatisticsFilters.Yield,
+          statisticsData: yieldStatisticsEntity.yieldData,
+        );
+
+        if (yieldChartData.length > 0) {
+          yieldChartData.sort((a, b) => a.x.compareTo(b.x));
+          yieldFirstYear = int.parse(yieldChartData[0].x);
+        }
+
+        _stateMachine.onEvent(new StatisticsPageDisplayInitializedEvent());
+        if (!isCropChanged) {
+          onFilterClicked(StatisticsFilters.Yield);
+          isCropChanged = false;
+        }
+        refreshUI();
+      }),
+      selectedState,
+      selectedDistrict,
+      selectedCrop,
+      selectedSeason,
+    );
+  }
+
+  // Dropdown items and selection of dropdown
 
   List<DropdownMenuItem> stateItems() {
     List<DropdownMenuItem> _list = [];
@@ -134,6 +287,33 @@ class StatisticsPageController extends Controller {
     }
     return _list;
   }
+
+  void selectedStateChange() {
+    selectedDistrict = null;
+    districtList = [];
+    refreshUI();
+    fetchDistrictList();
+  }
+
+  void selectedDistrictChange() {
+    refreshUI();
+  }
+
+  // Yield selection
+
+  void cropSelected(String cropId, BuildContext context) {
+    selectedCrop = cropId;
+    Navigator.pop(context);
+    refreshUI();
+  }
+
+  void seasonSelected(String season, BuildContext context) {
+    selectedSeason = season;
+    Navigator.pop(context);
+    refreshUI();
+  }
+
+  // Create chart data
 
   void findColorsAndToChartData({
     @required StatisticsFilters filter,
@@ -187,86 +367,50 @@ class StatisticsPageController extends Controller {
             color: color,
           ),
         );
+      else if (filter == StatisticsFilters.Yield)
+        yieldChartData.add(
+          new ChartData(
+            x: dataItem.keys.first.toString(),
+            y: dataItem.values.first,
+            color: color,
+          ),
+        );
     });
   }
 
-  void proceedToStatisticsDisplay() {
-    _stateMachine.onEvent(new StatisticsPageLoadingEvent());
-    refreshUI();
-    _presenter.fetchWholeData(
-      new UseCaseObserver(() {
-        print('Whole data fetched');
-      }, (error) {
-        handleAPIErrors(error);
-        print(error);
-      }, onNextFunction: (StatisticsEntity entity) {
-        statisticsEntity = entity;
+  // Change crop selected
 
-        findColorsAndToChartData(
-          filter: StatisticsFilters.Rainfall,
-          statisticsData: statisticsEntity.rainfallData,
-        );
-        findColorsAndToChartData(
-          filter: StatisticsFilters.Temperature,
-          statisticsData: statisticsEntity.temperatureData,
-        );
-        findColorsAndToChartData(
-          filter: StatisticsFilters.Humidity,
-          statisticsData: statisticsEntity.humidityData,
-        );
-
-        if (rainfallChartData.length > 0) {
-          rainfallChartData.sort((a, b) => a.x.compareTo(b.x));
-          rainfallFirstYear = int.parse(rainfallChartData[0].x);
-        }
-
-        if (temperatureChartData.length > 0) {
-          temperatureChartData.sort((a, b) => a.x.compareTo(b.x));
-          temperatureFirstYear = int.parse(temperatureChartData[0].x);
-        }
-
-        if (humidityChartData.length > 0) {
-          humidityChartData.sort((a, b) => a.x.compareTo(b.x));
-          humidityFirstYear = int.parse(humidityChartData[0].x);
-        }
-
-        _stateMachine.onEvent(new StatisticsPageDisplayInitializedEvent());
-        refreshUI();
-      }),
-      selectedState,
-      selectedDistrict,
-    );
+  void changeCrop(BuildContext context) {
+    cropList = [];
+    seasonList = [];
+    selectedSeason = null;
+    selectedCrop = null;
+    yieldStatisticsEntity = null;
+    yieldFirstYear = null;
+    isCropChanged = true;
+    fetchCropsList(context);
   }
 
-  bool onWillPopScopePage1() {
-    if (selectedDistrict != '') {
-      selectedDistrict = '';
-    } else if (selectedState != '') {
-      selectedState = '';
-      selectedDistrict = '';
-      districtList = [];
+  // Filters clicked
+
+  void yieldClicked(BuildContext context) {
+    if (!selectedFilters.contains(StatisticsFilters.Yield)) {
+      cropList = [];
+      seasonList = [];
+      selectedSeason = null;
+      selectedCrop = null;
+      yieldStatisticsEntity = null;
+      yieldFirstYear = null;
+      fetchCropsList(context);
+    } else {
+      cropList = [];
+      seasonList = [];
+      selectedSeason = null;
+      selectedCrop = null;
+      yieldStatisticsEntity = null;
+      yieldFirstYear = null;
+      onFilterClicked(StatisticsFilters.Yield);
     }
-    refreshUI();
-
-    return false;
-  }
-
-  bool onWillPopScopePage2() {
-    _stateMachine.onEvent(new StatisticsPageInputInitializedEvent());
-    refreshUI();
-
-    return false;
-  }
-
-  String getAxisLabelName(StatisticsFilters filters) {
-    if (filters == StatisticsFilters.Temperature) {
-      return 'Temperature (\u2103)';
-    } else if (filters == StatisticsFilters.Humidity) {
-      return 'Humidity (%)';
-    } else if (filters == StatisticsFilters.Rainfall) {
-      return 'Rainfall (mm)';
-    }
-    return '';
   }
 
   void onFilterClicked(StatisticsFilters clickedFilter) {
@@ -303,6 +447,14 @@ class StatisticsPageController extends Controller {
               selectedFilters2 = StatisticsFilters.Rainfall;
               selectedFilters1 = StatisticsFilters.Temperature;
             }
+          } else if (selectedFilters[1] == StatisticsFilters.Yield) {
+            if (yieldFirstYear < temperatureFirstYear) {
+              selectedFilters1 = StatisticsFilters.Yield;
+              selectedFilters2 = StatisticsFilters.Temperature;
+            } else {
+              selectedFilters2 = StatisticsFilters.Yield;
+              selectedFilters1 = StatisticsFilters.Temperature;
+            }
           }
         } else if (selectedFilters[0] == StatisticsFilters.Humidity) {
           if (selectedFilters[1] == StatisticsFilters.Temperature) {
@@ -319,6 +471,14 @@ class StatisticsPageController extends Controller {
               selectedFilters2 = StatisticsFilters.Humidity;
             } else {
               selectedFilters2 = StatisticsFilters.Rainfall;
+              selectedFilters1 = StatisticsFilters.Humidity;
+            }
+          } else if (selectedFilters[1] == StatisticsFilters.Yield) {
+            if (yieldFirstYear < humidityFirstYear) {
+              selectedFilters1 = StatisticsFilters.Yield;
+              selectedFilters2 = StatisticsFilters.Humidity;
+            } else {
+              selectedFilters2 = StatisticsFilters.Yield;
               selectedFilters1 = StatisticsFilters.Humidity;
             }
           }
@@ -339,6 +499,40 @@ class StatisticsPageController extends Controller {
               selectedFilters2 = StatisticsFilters.Humidity;
               selectedFilters1 = StatisticsFilters.Rainfall;
             }
+          } else if (selectedFilters[1] == StatisticsFilters.Yield) {
+            if (yieldFirstYear < rainfallFirstYear) {
+              selectedFilters1 = StatisticsFilters.Yield;
+              selectedFilters2 = StatisticsFilters.Rainfall;
+            } else {
+              selectedFilters2 = StatisticsFilters.Yield;
+              selectedFilters1 = StatisticsFilters.Rainfall;
+            }
+          }
+        } else if (selectedFilters[0] == StatisticsFilters.Yield) {
+          if (selectedFilters[1] == StatisticsFilters.Temperature) {
+            if (temperatureFirstYear < yieldFirstYear) {
+              selectedFilters1 = StatisticsFilters.Temperature;
+              selectedFilters2 = StatisticsFilters.Yield;
+            } else {
+              selectedFilters2 = StatisticsFilters.Temperature;
+              selectedFilters1 = StatisticsFilters.Yield;
+            }
+          } else if (selectedFilters[1] == StatisticsFilters.Rainfall) {
+            if (rainfallFirstYear < yieldFirstYear) {
+              selectedFilters1 = StatisticsFilters.Rainfall;
+              selectedFilters2 = StatisticsFilters.Yield;
+            } else {
+              selectedFilters2 = StatisticsFilters.Rainfall;
+              selectedFilters1 = StatisticsFilters.Yield;
+            }
+          } else if (selectedFilters[1] == StatisticsFilters.Humidity) {
+            if (humidityFirstYear < yieldFirstYear) {
+              selectedFilters1 = StatisticsFilters.Humidity;
+              selectedFilters2 = StatisticsFilters.Yield;
+            } else {
+              selectedFilters2 = StatisticsFilters.Humidity;
+              selectedFilters1 = StatisticsFilters.Yield;
+            }
           }
         }
       } else if (selectedFilters.length == 1) {
@@ -350,28 +544,18 @@ class StatisticsPageController extends Controller {
     refreshUI();
   }
 
-  void navigateToViewGraph(StatisticsPageController controller) {
-    navigationService.navigateTo(NavigationService.viewGraphPage,
-        arguments: ViewGraphParams(statisticsPageController: controller));
-  }
+  // utils
 
   List<ChartData> getPrimaryDatastore() {
     if (selectedFilters.length > 0) {
-      if (selectedFilters.contains(StatisticsFilters.Humidity)) {
-        if (selectedFilters1 == StatisticsFilters.Temperature)
-          return temperatureChartData.reversed.toList();
-        else if (selectedFilters1 == StatisticsFilters.Humidity)
-          return humidityChartData.reversed.toList();
-        else if (selectedFilters1 == StatisticsFilters.Rainfall)
-          return rainfallChartData.reversed.toList();
-        throw Exception('The filter is unknown');
-      }
       if (selectedFilters1 == StatisticsFilters.Temperature)
         return temperatureChartData;
       else if (selectedFilters1 == StatisticsFilters.Humidity)
         return humidityChartData;
       else if (selectedFilters1 == StatisticsFilters.Rainfall)
         return rainfallChartData;
+      else if (selectedFilters1 == StatisticsFilters.Yield)
+        return yieldChartData;
       throw Exception('The filter is unknown');
     }
 
@@ -380,21 +564,14 @@ class StatisticsPageController extends Controller {
 
   List<ChartData> getSecondaryDatastore() {
     if (selectedFilters.length == 2) {
-      if (selectedFilters.contains(StatisticsFilters.Humidity)) {
-        if (selectedFilters2 == StatisticsFilters.Temperature)
-          return temperatureChartData.reversed.toList();
-        else if (selectedFilters2 == StatisticsFilters.Humidity)
-          return humidityChartData.reversed.toList();
-        else if (selectedFilters2 == StatisticsFilters.Rainfall)
-          return rainfallChartData.reversed.toList();
-        throw Exception('The filter is unknown');
-      }
       if (selectedFilters2 == StatisticsFilters.Temperature)
         return temperatureChartData;
       else if (selectedFilters2 == StatisticsFilters.Humidity)
         return humidityChartData;
       else if (selectedFilters2 == StatisticsFilters.Rainfall)
         return rainfallChartData;
+      else if (selectedFilters2 == StatisticsFilters.Yield)
+        return yieldChartData;
       throw Exception('The filter is unknown');
     }
 
@@ -411,5 +588,49 @@ class StatisticsPageController extends Controller {
     String name = districtList
         .singleWhere((element) => element['id'] == selectedDistrict)['name'];
     return name;
+  }
+
+  String getAxisLabelName(StatisticsFilters filters) {
+    if (filters == StatisticsFilters.Temperature) {
+      return 'Temperature (\u2103)';
+    } else if (filters == StatisticsFilters.Humidity) {
+      return 'Humidity (%)';
+    } else if (filters == StatisticsFilters.Rainfall) {
+      return 'Rainfall (mm)';
+    } else if (filters == StatisticsFilters.Yield) {
+      return 'Yield (quintals / 10 acres)';
+    }
+    return '';
+  }
+
+  void navigateToViewGraph(StatisticsPageController controller) {
+    navigationService.navigateTo(NavigationService.viewGraphPage,
+        arguments: ViewGraphParams(statisticsPageController: controller));
+  }
+
+  bool onWillPopScopePage1() {
+    if (selectedDistrict != null) {
+      selectedDistrict = null;
+    } else if (selectedState != null) {
+      selectedState = null;
+      selectedDistrict = null;
+      districtList = [];
+    }
+    refreshUI();
+
+    return false;
+  }
+
+  bool onWillPopScopePage2() {
+    _stateMachine.onEvent(new StatisticsPageInputInitializedEvent());
+    selectedSeason = null;
+    selectedCrop = null;
+    selectedFilters = [];
+    selectedFilters1 = null;
+    selectedFilters2 = null;
+    areCropsAvailable = true;
+    refreshUI();
+
+    return false;
   }
 }

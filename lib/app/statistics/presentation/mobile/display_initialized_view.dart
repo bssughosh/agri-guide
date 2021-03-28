@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/app_theme.dart';
 import '../../../../core/enums.dart';
 import '../../../../core/widgets/chip.dart';
+import '../../../../core/widgets/custom_button.dart';
 import '../statistics_controller.dart';
 import '../widgets/double_graph.dart';
 import '../widgets/filter_tab.dart';
@@ -90,103 +91,155 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                     width: MediaQuery.of(context).size.width * 0.45,
                   ),
                 if (controller.selectedFilters.length == 1)
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 30),
-                    child: singleGraph(
-                      xAxisName: 'Year',
-                      visibleMinimum: 10,
-                      maximumLabels: 20,
-                      yAxisName: describeEnum(controller.selectedFilters[0]),
-                      yAxisLabel: controller
-                          .getAxisLabelName(controller.selectedFilters[0]),
-                      dataSource: controller.getPrimaryDatastore(),
-                      interval: controller.selectedFilters[0] ==
-                              StatisticsFilters.Temperature
-                          ? 1
-                          : controller.selectedFilters[0] ==
-                                  StatisticsFilters.Humidity
-                              ? 2
+                  Stack(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 30),
+                        height: 280,
+                        child: singleGraph(
+                          xAxisName: 'Year',
+                          visibleMinimum: 10,
+                          maximumLabels: 20,
+                          yAxisName:
+                              describeEnum(controller.selectedFilters[0]),
+                          yAxisLabel: controller
+                              .getAxisLabelName(controller.selectedFilters[0]),
+                          dataSource: controller.getPrimaryDatastore(),
+                          interval: controller.selectedFilters[0] ==
+                                  StatisticsFilters.Temperature
+                              ? 1
                               : controller.selectedFilters[0] ==
-                                      StatisticsFilters.Rainfall
-                                  ? 128
-                                  : 5,
-                      desiredIntervals: controller.selectedFilters[0] ==
-                              StatisticsFilters.Temperature
-                          ? 1
-                          : controller.selectedFilters[0] ==
-                                  StatisticsFilters.Humidity
-                              ? 2
+                                      StatisticsFilters.Humidity
+                                  ? 2
+                                  : controller.selectedFilters[0] ==
+                                          StatisticsFilters.Rainfall
+                                      ? 128
+                                      : 1,
+                          desiredIntervals: controller.selectedFilters[0] ==
+                                  StatisticsFilters.Temperature
+                              ? 1
                               : controller.selectedFilters[0] ==
-                                      StatisticsFilters.Rainfall
-                                  ? 128
-                                  : 5,
-                    ),
+                                      StatisticsFilters.Humidity
+                                  ? 2
+                                  : controller.selectedFilters[0] ==
+                                          StatisticsFilters.Rainfall
+                                      ? 128
+                                      : 1,
+                        ),
+                      ),
+                      Container(
+                        height: 280,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.black45,
+                        ),
+                        margin: EdgeInsets.symmetric(horizontal: 15),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CustomButton(
+                              isActive: true,
+                              isOverlayRequired: false,
+                              onPressed: () {
+                                controller.navigateToViewGraph(controller);
+                              },
+                              title: 'View Graph',
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 if (controller.selectedFilters.length == 2)
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 30),
-                    child: doubleGraph(
-                      xAxisName: 'Year',
-                      visibleMinimum: 10,
-                      maximumLabels: 15,
-                      primaryYAxisName:
-                          describeEnum(controller.selectedFilters1),
-                      primaryYAxisLabel: controller
-                          .getAxisLabelName(controller.selectedFilters1),
-                      secondaryYAxisName:
-                          describeEnum(controller.selectedFilters2),
-                      secondaryYAxisLabel: controller
-                          .getAxisLabelName(controller.selectedFilters2),
-                      primaryDataSource: controller.getPrimaryDatastore(),
-                      secondaryDataSource: controller.getSecondaryDatastore(),
-                      primaryInterval: controller.selectedFilters1 ==
-                              StatisticsFilters.Temperature
-                          ? 1
-                          : controller.selectedFilters1 ==
-                                  StatisticsFilters.Humidity
-                              ? 2
+                  Stack(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 30),
+                        height: 280,
+                        child: doubleGraph(
+                          xAxisName: 'Year',
+                          visibleMinimum: 10,
+                          maximumLabels: 15,
+                          primaryYAxisName:
+                              describeEnum(controller.selectedFilters1),
+                          primaryYAxisLabel: controller
+                              .getAxisLabelName(controller.selectedFilters1),
+                          secondaryYAxisName:
+                              describeEnum(controller.selectedFilters2),
+                          secondaryYAxisLabel: controller
+                              .getAxisLabelName(controller.selectedFilters2),
+                          primaryDataSource: controller.getPrimaryDatastore(),
+                          secondaryDataSource:
+                              controller.getSecondaryDatastore(),
+                          primaryInterval: controller.selectedFilters1 ==
+                                  StatisticsFilters.Temperature
+                              ? 1
                               : controller.selectedFilters1 ==
-                                      StatisticsFilters.Rainfall
-                                  ? 128
-                                  : 5,
-                      primaryDesiredIntervals: controller.selectedFilters1 ==
-                              StatisticsFilters.Temperature
-                          ? 1
-                          : controller.selectedFilters1 ==
-                                  StatisticsFilters.Humidity
-                              ? 2
-                              : controller.selectedFilters1 ==
-                                      StatisticsFilters.Rainfall
-                                  ? 128
-                                  : 5,
-                      secondaryInterval: controller.selectedFilters2 ==
-                              StatisticsFilters.Temperature
-                          ? 1
-                          : controller.selectedFilters2 ==
-                                  StatisticsFilters.Humidity
-                              ? 2
+                                      StatisticsFilters.Humidity
+                                  ? 2
+                                  : controller.selectedFilters1 ==
+                                          StatisticsFilters.Rainfall
+                                      ? 128
+                                      : 1,
+                          primaryDesiredIntervals:
+                              controller.selectedFilters1 ==
+                                      StatisticsFilters.Temperature
+                                  ? 1
+                                  : controller.selectedFilters1 ==
+                                          StatisticsFilters.Humidity
+                                      ? 2
+                                      : controller.selectedFilters1 ==
+                                              StatisticsFilters.Rainfall
+                                          ? 128
+                                          : 1,
+                          secondaryInterval: controller.selectedFilters2 ==
+                                  StatisticsFilters.Temperature
+                              ? 1
                               : controller.selectedFilters2 ==
-                                      StatisticsFilters.Rainfall
-                                  ? 128
-                                  : 5,
-                      secondaryDesiredIntervals: controller.selectedFilters2 ==
-                              StatisticsFilters.Temperature
-                          ? 1
-                          : controller.selectedFilters2 ==
-                                  StatisticsFilters.Humidity
-                              ? 2
-                              : controller.selectedFilters2 ==
-                                      StatisticsFilters.Rainfall
-                                  ? 128
-                                  : 5,
-                    ),
+                                      StatisticsFilters.Humidity
+                                  ? 2
+                                  : controller.selectedFilters2 ==
+                                          StatisticsFilters.Rainfall
+                                      ? 128
+                                      : 1,
+                          secondaryDesiredIntervals:
+                              controller.selectedFilters2 ==
+                                      StatisticsFilters.Temperature
+                                  ? 1
+                                  : controller.selectedFilters2 ==
+                                          StatisticsFilters.Humidity
+                                      ? 2
+                                      : controller.selectedFilters2 ==
+                                              StatisticsFilters.Rainfall
+                                          ? 128
+                                          : 1,
+                        ),
+                      ),
+                      Container(
+                        height: 280,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.black45,
+                        ),
+                        margin: EdgeInsets.symmetric(horizontal: 15),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CustomButton(
+                              isActive: true,
+                              isOverlayRequired: false,
+                              onPressed: () {
+                                controller.navigateToViewGraph(controller);
+                              },
+                              title: 'View Graph',
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                if (controller.selectedFilters.length > 0)
-                  IconButton(
-                      icon: Icon(Icons.zoom_in),
-                      onPressed: () {
-                        controller.navigateToViewGraph(controller);
-                      }),
                 SizedBox(height: 10),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -221,9 +274,27 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                             .contains(StatisticsFilters.Rainfall),
                         text: describeEnum(StatisticsFilters.Rainfall),
                       ),
+                      if (controller.areCropsAvailable)
+                        filterTab(
+                          onPressed: () {
+                            controller.yieldClicked(context);
+                          },
+                          isSelected: controller.selectedFilters
+                              .contains(StatisticsFilters.Yield),
+                          text: describeEnum(StatisticsFilters.Yield),
+                        ),
                     ],
                   ),
                 ),
+                if (controller.yieldStatisticsEntity != null)
+                  CustomButton(
+                    isActive: true,
+                    isOverlayRequired: false,
+                    onPressed: () {
+                      controller.changeCrop(context);
+                    },
+                    title: 'Change Crop',
+                  ),
               ],
             ),
           ),

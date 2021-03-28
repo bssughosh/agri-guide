@@ -17,8 +17,26 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
     defaultValue: 'https://agri-guide-api.herokuapp.com',
   );
 
+  List _stateList;
+
+  /// Key name `stateId`
+  Map<String, List> _districtsList = {};
+
+  /// Key name `stateId`
+  Map<String, String> _stateNamesMap = {};
+
+  /// Key name `distId`
+  Map<String, String> _distNamesMap = {};
+
+  /// Key name `stateId/distId`
+  Map<String, List> _cropsList = {};
+
+  /// Key name `stateId/distId/cropId`
+  Map<String, List> _seasonsList = {};
+
   @override
   Future<List> getStateList({bool isTest}) async {
+    if (_stateList != null) return _stateList;
     String url = isTest == null
         ? '$base_url/get_states'
         : '$base_url/get_states?isTest=true';
@@ -37,11 +55,13 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
       throw APIServiceUnavailabeError();
     }
     var data = json.decode(value.body);
+    _stateList = data['state'];
     return data['state'];
   }
 
   @override
   Future<List> getDistrictList(String stateId) async {
+    if (_districtsList.containsKey(stateId)) return _districtsList[stateId];
     String url = '$base_url/get_dists?state_id=$stateId';
     http.Response value = await http.get(Uri.parse(url));
     if (value.statusCode == 400) {
@@ -58,6 +78,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
       throw APIServiceUnavailabeError();
     }
     var data = json.decode(value.body);
+    _districtsList[stateId] = data['district'];
     return data['district'];
   }
 
@@ -106,7 +127,23 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
   }
 
   fetchStateNames(List<String> stateIds) async {
-    String formattedStateIds = stateIds.join(',');
+    List<String> statesToBeFetched = [];
+    for (String state in stateIds) {
+      if (!_stateNamesMap.containsKey(state)) {
+        statesToBeFetched.add(state);
+      }
+    }
+
+    if (statesToBeFetched.length == 0) {
+      List<String> _res = [];
+      for (String state in stateIds) {
+        _res.add(_stateNamesMap[state]);
+      }
+
+      return _res;
+    }
+
+    String formattedStateIds = statesToBeFetched.join(',');
     String url = '$base_url/get_state_value?state_id=$formattedStateIds';
     http.Response value = await http.get(Uri.parse(url));
     if (value.statusCode == 400) {
@@ -123,11 +160,36 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
       throw APIServiceUnavailabeError();
     }
     var data = json.decode(value.body);
-    return List<String>.from(data['states']);
+
+    List<String> _output = List<String>.from(data['states']);
+    for (int i = 0; i < statesToBeFetched.length; i++) {
+      _stateNamesMap[statesToBeFetched[i]] = _output[i];
+    }
+    List<String> _res = [];
+    for (String state in stateIds) {
+      _res.add(_stateNamesMap[state]);
+    }
+
+    return _res;
   }
 
   fetchDistNames(List<String> districtIds) async {
-    String formattedDistIds = districtIds.join(',');
+    List<String> distsToBeFetched = [];
+    for (String district in districtIds) {
+      if (!_distNamesMap.containsKey(district)) {
+        distsToBeFetched.add(district);
+      }
+    }
+
+    if (distsToBeFetched.length == 0) {
+      List<String> _res = [];
+      for (String district in districtIds) {
+        _res.add(_distNamesMap[district]);
+      }
+
+      return _res;
+    }
+    String formattedDistIds = distsToBeFetched.join(',');
     String url = '$base_url/get_dist_value?dist_id=$formattedDistIds';
     http.Response value = await http.get(Uri.parse(url));
     if (value.statusCode == 400) {
@@ -144,11 +206,59 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
       throw APIServiceUnavailabeError();
     }
     var data = json.decode(value.body);
-    return List<String>.from(data['dists']);
+    List<String> _output = List<String>.from(data['dists']);
+
+    for (int i = 0; i < distsToBeFetched.length; i++) {
+      _distNamesMap[distsToBeFetched[i]] = _output[i];
+    }
+    List<String> _res = [];
+    for (String district in districtIds) {
+      _res.add(_distNamesMap[district]);
+    }
+
+    return _res;
+  }
+
+  @override
+  Future<List> getCrops(String state, String district) async {
+    if (_cropsList.containsKey('$state/$district'))
+      return _cropsList['$state/$district'];
+    List<String> _stateList;
+    List<String> _districtList;
+    if (state != 'Test' || district != 'Test') {
+      _stateList = await fetchStateNames(List<String>.from([state]));
+      _districtList = await fetchDistNames(List<String>.from([district]));
+    } else {
+      _stateList = ['Test'];
+      _districtList = ['Test'];
+    }
+    String url = '$base_url/get_crops_v2?' +
+        'state=${_stateList[0]}&' +
+        'dist=${_districtList[0]}';
+    http.Response value = await http.get(Uri.parse(url));
+    if (value.statusCode == 400) {
+      throw APIBadRequestError();
+    } else if (value.statusCode == 403) {
+      throw APIForbiddenError();
+    } else if (value.statusCode == 404) {
+      throw APINotFoundError();
+    } else if (value.statusCode == 429) {
+      throw APITooManyRequestsError();
+    } else if (value.statusCode == 500) {
+      throw APIInternalServerError();
+    } else if (value.statusCode == 503) {
+      throw APIServiceUnavailabeError();
+    }
+    var data = json.decode(value.body);
+    _cropsList['$state/$district'] = data['crops'];
+
+    return data['crops'];
   }
 
   @override
   Future<List> getSeasons(String state, String district, String cropId) async {
+    if (_seasonsList.containsKey('$state/$district/$cropId'))
+      return _seasonsList['$state/$district/$cropId'];
     List<String> _stateList;
     List<String> _districtList;
     if (state != 'Test' || district != 'Test') {
@@ -177,39 +287,9 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
       throw APIServiceUnavailabeError();
     }
     var data = json.decode(value.body);
-    return data['seasons'];
-  }
+    _seasonsList['$state/$district/$cropId'] = data['seasons'];
 
-  @override
-  Future<List> getCrops(String state, String district) async {
-    List<String> _stateList;
-    List<String> _districtList;
-    if (state != 'Test' || district != 'Test') {
-      _stateList = await fetchStateNames(List<String>.from([state]));
-      _districtList = await fetchDistNames(List<String>.from([district]));
-    } else {
-      _stateList = ['Test'];
-      _districtList = ['Test'];
-    }
-    String url = '$base_url/get_crops_v2?' +
-        'state=${_stateList[0]}&' +
-        'dist=${_districtList[0]}';
-    http.Response value = await http.get(Uri.parse(url));
-    if (value.statusCode == 400) {
-      throw APIBadRequestError();
-    } else if (value.statusCode == 403) {
-      throw APIForbiddenError();
-    } else if (value.statusCode == 404) {
-      throw APINotFoundError();
-    } else if (value.statusCode == 429) {
-      throw APITooManyRequestsError();
-    } else if (value.statusCode == 500) {
-      throw APIInternalServerError();
-    } else if (value.statusCode == 503) {
-      throw APIServiceUnavailabeError();
-    }
-    var data = json.decode(value.body);
-    return data['crops'];
+    return data['seasons'];
   }
 
   @override

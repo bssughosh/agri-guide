@@ -104,7 +104,7 @@ class ViewGraphViewState
                           : statisticsPageController.selectedFilters[0] ==
                                   StatisticsFilters.Rainfall
                               ? 128
-                              : 5,
+                              : 1,
                   desiredIntervals:
                       statisticsPageController.selectedFilters[0] ==
                               StatisticsFilters.Temperature
@@ -115,7 +115,7 @@ class ViewGraphViewState
                               : statisticsPageController.selectedFilters[0] ==
                                       StatisticsFilters.Rainfall
                                   ? 128
-                                  : 5,
+                                  : 1,
                 )
               : doubleGraph(
                   xAxisName: 'Year',
@@ -143,7 +143,7 @@ class ViewGraphViewState
                           : statisticsPageController.selectedFilters1 ==
                                   StatisticsFilters.Rainfall
                               ? 128
-                              : 5,
+                              : 1,
                   primaryDesiredIntervals:
                       statisticsPageController.selectedFilters1 ==
                               StatisticsFilters.Temperature
@@ -154,7 +154,7 @@ class ViewGraphViewState
                               : statisticsPageController.selectedFilters1 ==
                                       StatisticsFilters.Rainfall
                                   ? 128
-                                  : 5,
+                                  : 1,
                   secondaryInterval:
                       statisticsPageController.selectedFilters2 ==
                               StatisticsFilters.Temperature
@@ -165,7 +165,7 @@ class ViewGraphViewState
                               : statisticsPageController.selectedFilters2 ==
                                       StatisticsFilters.Rainfall
                                   ? 128
-                                  : 5,
+                                  : 1,
                   secondaryDesiredIntervals:
                       statisticsPageController.selectedFilters2 ==
                               StatisticsFilters.Temperature
@@ -176,7 +176,7 @@ class ViewGraphViewState
                               : statisticsPageController.selectedFilters2 ==
                                       StatisticsFilters.Rainfall
                                   ? 128
-                                  : 5,
+                                  : 1,
                 ),
         ),
       ),
