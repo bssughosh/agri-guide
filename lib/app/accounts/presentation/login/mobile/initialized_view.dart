@@ -43,62 +43,42 @@ Widget buildLoginInitializedViewMobile({
                       ),
                       child: Column(
                         children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border(
-                                  bottom: BorderSide(color: Colors.black45)),
+                          TextField(
+                            controller: controller.emailText,
+                            keyboardType: TextInputType.emailAddress,
+                            textAlign: TextAlign.center,
+                            decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              prefixIcon: Icon(Icons.portrait),
+                              labelText: 'Email',
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
+                              border: UnderlineInputBorder(),
                             ),
-                            child: TextField(
-                              controller: controller.emailText,
-                              keyboardType: TextInputType.emailAddress,
-                              textAlign: TextAlign.center,
-                              decoration: InputDecoration(
-                                fillColor: Colors.white,
-                                prefixIcon: Icon(Icons.portrait),
-                                labelText: 'Email',
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.never,
-                                border: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                errorBorder: InputBorder.none,
-                                disabledBorder: InputBorder.none,
-                              ),
-                              onChanged: (value) {
-                                controller.updateEmailField(value);
-                              },
-                              autofillHints: [AutofillHints.username],
-                            ),
+                            onChanged: (value) {
+                              controller.updateEmailField(value);
+                            },
+                            autofillHints: [AutofillHints.username],
                           ),
                           SizedBox(
                             height: 10,
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border(
-                                  bottom: BorderSide(color: Colors.black45)),
+                          TextField(
+                            controller: controller.passwordText,
+                            obscureText: true,
+                            textAlign: TextAlign.center,
+                            decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              prefixIcon: Icon(Icons.lock),
+                              labelText: 'Password',
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
+                              border: UnderlineInputBorder(),
                             ),
-                            child: TextField(
-                              controller: controller.passwordText,
-                              obscureText: true,
-                              textAlign: TextAlign.center,
-                              decoration: InputDecoration(
-                                fillColor: Colors.white,
-                                prefixIcon: Icon(Icons.lock),
-                                labelText: 'Password',
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.never,
-                                border: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                errorBorder: InputBorder.none,
-                                disabledBorder: InputBorder.none,
-                              ),
-                              onChanged: (value) {
-                                controller.updatePasswordField(value);
-                              },
-                              autofillHints: [AutofillHints.password],
-                            ),
+                            onChanged: (value) {
+                              controller.updatePasswordField(value);
+                            },
+                            autofillHints: [AutofillHints.password],
                           ),
                           SizedBox(height: 20),
                           Center(
