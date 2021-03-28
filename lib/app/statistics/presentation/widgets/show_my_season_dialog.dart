@@ -21,7 +21,7 @@ Future<void> showMySeasonDialog({
         ),
         content: Container(
           height: 200,
-          width: 300,
+          width: 400,
           child: ListView.builder(
             shrinkWrap: true,
             itemCount: seasonsList.length,

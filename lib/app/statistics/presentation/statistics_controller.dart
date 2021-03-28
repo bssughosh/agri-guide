@@ -45,7 +45,7 @@ class StatisticsPageController extends Controller {
   List<ChartData> rainfallChartData = [];
   List<ChartData> temperatureChartData = [];
   List<ChartData> humidityChartData = [];
-  List<ChartData> yieldCahartData = [];
+  List<ChartData> yieldChartData = [];
 
   int temperatureFirstYear;
   int humidityFirstYear;
@@ -220,6 +220,39 @@ class StatisticsPageController extends Controller {
     );
   }
 
+  void fetchYieldStatistics() {
+    _stateMachine.onEvent(new StatisticsPageLoadingEvent());
+    refreshUI();
+
+    _presenter.fetchYieldStatistics(
+      new UseCaseObserver(() {}, (error) {
+        handleAPIErrors(error);
+        print(error);
+      }, onNextFunction: (YieldStatisticsEntity yieldStats) {
+        yieldStatisticsEntity = yieldStats;
+
+        findColorsAndToChartData(
+          filter: StatisticsFilters.Yield,
+          statisticsData: yieldStatisticsEntity.yieldData,
+        );
+
+        if (yieldChartData.length > 0) {
+          yieldChartData.sort((a, b) => a.x.compareTo(b.x));
+          yieldFirstYear = int.parse(yieldChartData[0].x);
+        }
+
+        onFilterClicked(StatisticsFilters.Yield);
+
+        _stateMachine.onEvent(new StatisticsPageDisplayInitializedEvent());
+        refreshUI();
+      }),
+      selectedState,
+      selectedDistrict,
+      selectedCrop,
+      selectedSeason,
+    );
+  }
+
   // Dropdown items and selection of dropdown
 
   List<DropdownMenuItem> stateItems() {
@@ -327,6 +360,14 @@ class StatisticsPageController extends Controller {
             color: color,
           ),
         );
+      else if (filter == StatisticsFilters.Yield)
+        yieldChartData.add(
+          new ChartData(
+            x: dataItem.keys.first,
+            y: dataItem.values.first,
+            color: color,
+          ),
+        );
     });
   }
 
@@ -335,6 +376,8 @@ class StatisticsPageController extends Controller {
   void yieldClicked(BuildContext context) {
     if (!selectedFilters.contains(StatisticsFilters.Yield)) {
       fetchCropsList(context);
+    } else {
+      onFilterClicked(StatisticsFilters.Yield);
     }
   }
 
@@ -372,6 +415,14 @@ class StatisticsPageController extends Controller {
               selectedFilters2 = StatisticsFilters.Rainfall;
               selectedFilters1 = StatisticsFilters.Temperature;
             }
+          } else if (selectedFilters[1] == StatisticsFilters.Yield) {
+            if (yieldFirstYear < temperatureFirstYear) {
+              selectedFilters1 = StatisticsFilters.Yield;
+              selectedFilters2 = StatisticsFilters.Temperature;
+            } else {
+              selectedFilters2 = StatisticsFilters.Yield;
+              selectedFilters1 = StatisticsFilters.Temperature;
+            }
           }
         } else if (selectedFilters[0] == StatisticsFilters.Humidity) {
           if (selectedFilters[1] == StatisticsFilters.Temperature) {
@@ -388,6 +439,14 @@ class StatisticsPageController extends Controller {
               selectedFilters2 = StatisticsFilters.Humidity;
             } else {
               selectedFilters2 = StatisticsFilters.Rainfall;
+              selectedFilters1 = StatisticsFilters.Humidity;
+            }
+          } else if (selectedFilters[1] == StatisticsFilters.Yield) {
+            if (yieldFirstYear < humidityFirstYear) {
+              selectedFilters1 = StatisticsFilters.Yield;
+              selectedFilters2 = StatisticsFilters.Humidity;
+            } else {
+              selectedFilters2 = StatisticsFilters.Yield;
               selectedFilters1 = StatisticsFilters.Humidity;
             }
           }
@@ -408,6 +467,40 @@ class StatisticsPageController extends Controller {
               selectedFilters2 = StatisticsFilters.Humidity;
               selectedFilters1 = StatisticsFilters.Rainfall;
             }
+          } else if (selectedFilters[1] == StatisticsFilters.Yield) {
+            if (yieldFirstYear < rainfallFirstYear) {
+              selectedFilters1 = StatisticsFilters.Yield;
+              selectedFilters2 = StatisticsFilters.Rainfall;
+            } else {
+              selectedFilters2 = StatisticsFilters.Yield;
+              selectedFilters1 = StatisticsFilters.Rainfall;
+            }
+          }
+        }
+      } else if (selectedFilters[0] == StatisticsFilters.Yield) {
+        if (selectedFilters[1] == StatisticsFilters.Temperature) {
+          if (temperatureFirstYear < yieldFirstYear) {
+            selectedFilters1 = StatisticsFilters.Temperature;
+            selectedFilters2 = StatisticsFilters.Yield;
+          } else {
+            selectedFilters2 = StatisticsFilters.Temperature;
+            selectedFilters1 = StatisticsFilters.Yield;
+          }
+        } else if (selectedFilters[1] == StatisticsFilters.Rainfall) {
+          if (rainfallFirstYear < yieldFirstYear) {
+            selectedFilters1 = StatisticsFilters.Rainfall;
+            selectedFilters2 = StatisticsFilters.Yield;
+          } else {
+            selectedFilters2 = StatisticsFilters.Rainfall;
+            selectedFilters1 = StatisticsFilters.Yield;
+          }
+        } else if (selectedFilters[1] == StatisticsFilters.Humidity) {
+          if (humidityFirstYear < yieldFirstYear) {
+            selectedFilters1 = StatisticsFilters.Humidity;
+            selectedFilters2 = StatisticsFilters.Yield;
+          } else {
+            selectedFilters2 = StatisticsFilters.Humidity;
+            selectedFilters1 = StatisticsFilters.Yield;
           }
         }
       } else if (selectedFilters.length == 1) {
