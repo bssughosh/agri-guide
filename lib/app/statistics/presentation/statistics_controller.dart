@@ -235,7 +235,7 @@ class StatisticsPageController extends Controller {
         print(error);
       }, onNextFunction: (YieldStatisticsEntity yieldStats) {
         yieldStatisticsEntity = yieldStats;
-
+        yieldChartData = [];
         findColorsAndToChartData(
           filter: StatisticsFilters.Yield,
           statisticsData: yieldStatisticsEntity.yieldData,
@@ -247,11 +247,12 @@ class StatisticsPageController extends Controller {
         }
 
         _stateMachine.onEvent(new StatisticsPageDisplayInitializedEvent());
+        refreshUI();
         if (!isCropChanged) {
           onFilterClicked(StatisticsFilters.Yield);
+        } else {
           isCropChanged = false;
         }
-        refreshUI();
       }),
       selectedState,
       selectedDistrict,
