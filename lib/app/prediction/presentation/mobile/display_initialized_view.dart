@@ -1,4 +1,3 @@
-import 'package:agri_guide/app/prediction/presentation/widgets/yield_prediction_container.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -6,6 +5,7 @@ import '../../../../core/app_theme.dart';
 import '../../../../core/enums.dart';
 import '../prediction_controller.dart';
 import '../widgets/custom_table.dart';
+import '../widgets/yield_prediction_container.dart';
 
 Widget buildPredictionDisplayInitializedViewMobile({
   @required PredictionPageController controller,

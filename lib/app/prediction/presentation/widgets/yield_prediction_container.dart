@@ -1,6 +1,6 @@
-import 'package:agri_guide/core/app_theme.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/app_theme.dart';
 import '../prediction_controller.dart';
 
 Widget yieldPredictionContainer({
