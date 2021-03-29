@@ -53,8 +53,25 @@ class ProfileRespositoryImpl extends ProfileRepository {
   }
 
   @override
-  Future<void> updateUserDetails() {
-    // TODO: implement updateUserDetails
-    throw UnimplementedError();
+  Future<void> updateUserDetails(UserEntity newDetails) async {
+    User currentSignedInUser = FirebaseAuth.instance.currentUser;
+    if (currentSignedInUser == null) throw UserNotSignedInError();
+
+    await userData.doc(currentSignedInUser.uid).set({
+      _keyNameArea: newDetails.area,
+      _keyNameDistrict: newDetails.district,
+      _keyNameState: newDetails.state,
+      _keyNamePincode: newDetails.pincode,
+      _keyNameMobile: newDetails.mobile,
+      _keyNameFullName: newDetails.name,
+      _keyNameEmail: newDetails.email,
+      _keyNameAadhar: newDetails.aadhar,
+    });
+
+    _deleteCacheData(currentSignedInUser.uid);
+  }
+
+  _deleteCacheData(String uid) {
+    _userDetails.remove(uid);
   }
 }
