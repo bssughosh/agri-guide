@@ -1,12 +1,11 @@
-import 'package:agri_guide/app/profile/presentation/widgets/bottom_actions_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/app_theme.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_dropdown.dart';
 import '../profile_controller.dart';
+import '../widgets/bottom_actions_widget.dart';
 import '../widgets/custom_textfield.dart';
-import '../widgets/show_change_password_dialog.dart';
 
 Widget buildProfileLoggedInViewMobile({
   @required ProfilePageController controller,
