@@ -23,8 +23,12 @@ class ProfilePageController extends Controller {
   List districtList;
 
   UserEntity userEntity;
+  LoginStatus loginStatus = LoginStatus.LOGGED_OUT;
   TextEditingController name;
   TextEditingController area;
+  TextEditingController pincode;
+  TextEditingController aadhar;
+  TextEditingController email;
   TextEditingController pass1;
   TextEditingController pass2;
 
@@ -52,6 +56,7 @@ class ProfilePageController extends Controller {
         print(error);
         handleAPIErrors(error);
       }, onNextFunction: (LoginStatus status) {
+        loginStatus = status;
         if (status == LoginStatus.LOGGED_OUT) {
           _stateMachine.onEvent(
             new ProfilePageLoggedOutEvent(),
@@ -67,6 +72,10 @@ class ProfilePageController extends Controller {
               },
               onNextFunction: (UserEntity user) {
                 userEntity = user;
+                name.text = userEntity.name;
+                aadhar.text = userEntity.aadhar;
+                email.text = userEntity.email;
+                pincode.text = userEntity.pincode;
                 _stateMachine.onEvent(new ProfilePageLoggedInEvent());
                 refreshUI();
                 fetchStateList();
