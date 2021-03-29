@@ -1,8 +1,8 @@
-import 'package:agri_guide/app/accounts/domain/entities/user_entity.dart';
-import 'package:agri_guide/core/exceptions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../../../core/exceptions.dart';
+import '../../../accounts/domain/entities/user_entity.dart';
 import '../../domain/repository/profile_repository.dart';
 
 class ProfileRespositoryImpl extends ProfileRepository {

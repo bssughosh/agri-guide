@@ -32,7 +32,9 @@ import 'app/prediction/domain/usecase/make_prediction_usecase.dart';
 import 'app/prediction/presentation/prediction_presenter.dart';
 import 'app/profile/data/repository/profile_repository_impl.dart';
 import 'app/profile/domain/repository/profile_repository.dart';
+import 'app/profile/domain/usecase/change_password_usecase.dart';
 import 'app/profile/domain/usecase/fetch_user_details_usecase.dart';
+import 'app/profile/domain/usecase/update_user_details_usecase.dart';
 import 'app/splash/presentation/splash_presenter.dart';
 import 'app/statistics/data/repositories/statistics_repository_impl.dart';
 import 'app/statistics/domain/repositories/statistics_repository.dart';
@@ -161,6 +163,9 @@ Future<void> init() async {
 
   serviceLocator
       .registerFactory(() => FetchUserDetailsUsecase(serviceLocator()));
+  serviceLocator
+      .registerFactory(() => UpdateUserDetailsUsecase(serviceLocator()));
+  serviceLocator.registerFactory(() => ChangePasswordUsecase(serviceLocator()));
 }
 
 Future<void> reset() async {
