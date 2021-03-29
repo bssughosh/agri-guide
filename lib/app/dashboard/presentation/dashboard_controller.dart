@@ -140,6 +140,11 @@ class DashboardPageController extends Controller {
         shouldReplace: true);
   }
 
+  void navigateToRegistration() {
+    navigationService.navigateTo(NavigationService.registerPage,
+        shouldReplace: true);
+  }
+
   void fetchLiveWeather() {
     isFetchingLiveWeather = true;
     _presenter.fetchLocationDetails(
