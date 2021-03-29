@@ -25,8 +25,8 @@ class CustomSecondaryButton extends StatelessWidget {
           child: Text(
             title,
             style: AppTheme.bodyBoldText.copyWith(
-              decoration: TextDecoration.underline,
-              color: AppTheme.secondaryColor,
+              fontSize: 14,
+              color: AppTheme.navigationSelectedColor,
             ),
           ),
         ),

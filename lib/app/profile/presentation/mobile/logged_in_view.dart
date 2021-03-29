@@ -46,7 +46,7 @@ Widget buildProfileLoggedInViewMobile({
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: const EdgeInsets.only(left: 5, bottom: 10),
+              padding: const EdgeInsets.only(left: 5, bottom: 5),
               child: Text(
                 'State: ',
                 style: AppTheme.headingBoldText.copyWith(fontSize: 15),
@@ -70,7 +70,7 @@ Widget buildProfileLoggedInViewMobile({
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: const EdgeInsets.only(left: 5, bottom: 10),
+              padding: const EdgeInsets.only(left: 5, bottom: 5),
               child: Text(
                 'District: ',
                 style: AppTheme.headingBoldText.copyWith(fontSize: 15),
