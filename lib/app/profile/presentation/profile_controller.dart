@@ -245,6 +245,21 @@ class ProfilePageController extends Controller {
         shouldReplace: true);
   }
 
+  void logoutUser() {
+    _presenter.logoutUser(
+      new UseCaseObserver(
+        () async {
+          navigationService.navigateTo(NavigationService.homepage,
+              shouldReplace: true);
+          await di.reset();
+        },
+        (error) {
+          print(error);
+        },
+      ),
+    );
+  }
+
   String selectedStateName() {
     String name = stateList
         .singleWhere((element) => element['id'] == selectedState)['name'];

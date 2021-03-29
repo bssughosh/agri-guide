@@ -3,6 +3,7 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import '../../../core/observer.dart';
 import '../../accounts/domain/entities/user_entity.dart';
 import '../../accounts/domain/usecase/check_login_status_usecase.dart';
+import '../../accounts/domain/usecase/logout_user_usecase.dart';
 import '../../downloads/domain/usecase/fetch_district_list_usecase.dart';
 import '../../downloads/domain/usecase/fetch_state_list_usecase.dart';
 import '../domain/usecase/change_password_usecase.dart';
@@ -16,6 +17,7 @@ class ProfilePagePresenter extends Presenter {
   CheckLoginStatusUsecase _checkLoginStatusUsecase;
   FetchStateListUsecase _fetchStateListUsecase;
   FetchDistrictListUsecase _fetchDistrictListUsecase;
+  LogoutUserUsecase _logoutUserUsecase;
 
   ProfilePagePresenter(
     this._changePasswordUsecase,
@@ -24,6 +26,7 @@ class ProfilePagePresenter extends Presenter {
     this._checkLoginStatusUsecase,
     this._fetchStateListUsecase,
     this._fetchDistrictListUsecase,
+    this._logoutUserUsecase,
   );
 
   @override
@@ -34,6 +37,7 @@ class ProfilePagePresenter extends Presenter {
     _fetchStateListUsecase.dispose();
     _fetchDistrictListUsecase.dispose();
     _checkLoginStatusUsecase.dispose();
+    _logoutUserUsecase.dispose();
   }
 
   void checkLoginStatus(UseCaseObserver observer) {
@@ -69,5 +73,9 @@ class ProfilePagePresenter extends Presenter {
       observer,
       new ChangePasswordParams(newPassword: newPassword),
     );
+  }
+
+  void logoutUser(UseCaseObserver observer) {
+    _logoutUserUsecase.execute(observer);
   }
 }

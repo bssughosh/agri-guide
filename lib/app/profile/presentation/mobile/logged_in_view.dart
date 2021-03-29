@@ -1,3 +1,4 @@
+import 'package:agri_guide/app/profile/presentation/widgets/bottom_actions_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/app_theme.dart';
@@ -34,16 +35,6 @@ Widget buildProfileLoggedInViewMobile({
             isEnabled: false,
           ),
           SizedBox(height: 10),
-          CustomButton(
-            isActive: true,
-            isOverlayRequired: false,
-            onPressed: () {
-              showChangePasswordDialog(
-                  context: context, controller: controller);
-            },
-            title: 'Change Password',
-          ),
-          SizedBox(height: 10),
           CustomTextField(
             textController: controller.aadhar,
             title: 'Aadhar Card Number',
@@ -58,7 +49,7 @@ Widget buildProfileLoggedInViewMobile({
               padding: const EdgeInsets.only(left: 5, bottom: 10),
               child: Text(
                 'State: ',
-                style: AppTheme.headingBoldText.copyWith(fontSize: 17),
+                style: AppTheme.headingBoldText.copyWith(fontSize: 15),
               ),
             ),
           ),
@@ -82,7 +73,7 @@ Widget buildProfileLoggedInViewMobile({
               padding: const EdgeInsets.only(left: 5, bottom: 10),
               child: Text(
                 'District: ',
-                style: AppTheme.headingBoldText.copyWith(fontSize: 17),
+                style: AppTheme.headingBoldText.copyWith(fontSize: 15),
               ),
             ),
           ),
@@ -115,7 +106,7 @@ Widget buildProfileLoggedInViewMobile({
             onChanged: controller.textFieldChanged,
             isEnabled: true,
           ),
-          if (controller.isProfileUpdated) SizedBox(height: 20),
+          SizedBox(height: 20),
           if (controller.isProfileUpdated)
             CustomButton(
               isActive: true,
@@ -125,7 +116,12 @@ Widget buildProfileLoggedInViewMobile({
               },
               isOverlayRequired: false,
             ),
-          SizedBox(height: 50),
+          if (!controller.isProfileUpdated)
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 5),
+              child:
+                  bottomActionsWidget(controller: controller, context: context),
+            ),
         ],
       ),
     ),
