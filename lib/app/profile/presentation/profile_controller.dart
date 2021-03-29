@@ -37,6 +37,7 @@ class ProfilePageController extends Controller {
   String selectedDistrict;
 
   bool isFirstTimeLoading = true;
+  bool isProfileUpdated = false;
 
   @override
   void initListeners() {}
@@ -145,30 +146,43 @@ class ProfilePageController extends Controller {
         Fluttertoast.showToast(msg: 'The passwords do not match');
       } else {
         _presenter.changePassword(
-            new UseCaseObserver(() {
-              Fluttertoast.showToast(msg: 'The password is updated');
-            }, (error) {
-              print(error);
-            }),
-            pass1.text);
+          new UseCaseObserver(() {
+            Fluttertoast.showToast(msg: 'The password is updated');
+          }, (error) {
+            print(error);
+          }),
+          pass1.text,
+        );
       }
     }
   }
 
   void updateUserDetails() {
+    UserEntity _newEntity = UserEntity(
+      name: name.text,
+      email: email.text,
+      aadhar: aadhar.text,
+      state: selectedStateName(),
+      district: selectedDistrictName(),
+      area: area.text,
+      pincode: pincode.text,
+    );
     _presenter.updateUserDetails(
-        new UseCaseObserver(() async {
-          await di.reset();
-          userEntity = null;
-          _stateMachine.onEvent(new ProfilePageInitializationEvent());
-          refreshUI();
-        }, (error) {
-          print(error);
-        }),
-        userEntity);
+      new UseCaseObserver(() async {
+        await di.reset();
+        userEntity = null;
+        isProfileUpdated = false;
+        _stateMachine.onEvent(new ProfilePageInitializationEvent());
+        refreshUI();
+      }, (error) {
+        print(error);
+      }),
+      _newEntity,
+    );
   }
 
   void selectedStateChange() {
+    isProfileUpdated = true;
     selectedDistrict = null;
     districtList = [];
     refreshUI();
@@ -176,6 +190,7 @@ class ProfilePageController extends Controller {
   }
 
   void selectedDistrictChange() {
+    isProfileUpdated = true;
     refreshUI();
   }
 
@@ -206,6 +221,7 @@ class ProfilePageController extends Controller {
   }
 
   void textFieldChanged() {
+    isProfileUpdated = true;
     refreshUI();
   }
 
