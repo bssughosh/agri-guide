@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/app_theme.dart';
 import '../../../../core/widgets/custom_button.dart';
-import '../prediction_controller.dart';
+import '../profile_controller.dart';
 
-Widget buildPredictionLoggedOutView({
-  @required PredictionPageController controller,
+Widget buildProfileLoggedOutViewMobile({
+  @required ProfilePageController controller,
   @required BuildContext context,
 }) {
   double screenWidth = MediaQuery.of(context).size.width;

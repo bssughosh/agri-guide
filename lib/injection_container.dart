@@ -28,9 +28,14 @@ import 'app/home/presentation/home_presenter.dart';
 import 'app/navigation_service.dart';
 import 'app/prediction/data/repositories/agri_guide_prediction_repository_impl.dart';
 import 'app/prediction/domain/repositories/agri_guide_prediction_repository.dart';
-import 'app/prediction/domain/usecase/fetch_user_details_usecase.dart';
 import 'app/prediction/domain/usecase/make_prediction_usecase.dart';
 import 'app/prediction/presentation/prediction_presenter.dart';
+import 'app/profile/data/repository/profile_repository_impl.dart';
+import 'app/profile/domain/repository/profile_repository.dart';
+import 'app/profile/domain/usecase/change_password_usecase.dart';
+import 'app/profile/domain/usecase/fetch_user_details_usecase.dart';
+import 'app/profile/domain/usecase/update_user_details_usecase.dart';
+import 'app/profile/presentation/profile_presenter.dart';
 import 'app/splash/presentation/splash_presenter.dart';
 import 'app/statistics/data/repositories/statistics_repository_impl.dart';
 import 'app/statistics/domain/repositories/statistics_repository.dart';
@@ -132,8 +137,6 @@ Future<void> init() async {
         serviceLocator(),
       ));
 
-  serviceLocator
-      .registerFactory(() => FetchUserDetailsUsecase(serviceLocator()));
   serviceLocator.registerFactory(() => MakePredictionUsecase(serviceLocator()));
 
   //statistics
@@ -154,6 +157,26 @@ Future<void> init() async {
 
   //view graph
   serviceLocator.registerFactory(() => ViewGraphPagePresenter());
+
+  //profile
+  serviceLocator.registerLazySingleton<ProfileRepository>(
+      () => (ProfileRespositoryImpl()));
+
+  serviceLocator.registerFactory(() => ProfilePagePresenter(
+        serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
+      ));
+
+  serviceLocator
+      .registerFactory(() => FetchUserDetailsUsecase(serviceLocator()));
+  serviceLocator
+      .registerFactory(() => UpdateUserDetailsUsecase(serviceLocator()));
+  serviceLocator.registerFactory(() => ChangePasswordUsecase(serviceLocator()));
 }
 
 Future<void> reset() async {
@@ -162,4 +185,5 @@ Future<void> reset() async {
   serviceLocator.resetLazySingleton<FirebaseAuthenticationRepository>();
   serviceLocator.resetLazySingleton<FetchInputRepository>();
   serviceLocator.resetLazySingleton<DashboardServicesRepository>();
+  serviceLocator.resetLazySingleton<ProfileRepository>();
 }

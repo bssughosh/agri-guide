@@ -1,48 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../core/enums.dart';
 import '../../../core/handle_api_errors.dart';
 import '../../../core/observer.dart';
+import '../../../injection_container.dart' as di;
 import '../../../injection_container.dart';
 import '../../accounts/domain/entities/user_entity.dart';
 import '../../navigation_service.dart';
-import '../domain/entity/live_weather_entity.dart';
-import 'dashboard_presenter.dart';
-import 'dashboard_state_machine.dart';
+import 'profile_presenter.dart';
+import 'profile_state_machine.dart';
 
-class DashboardPageController extends Controller {
-  final DashboardPagePresenter _presenter;
-  final DashboardPageStateMachine _stateMachine =
-      new DashboardPageStateMachine();
+class ProfilePageController extends Controller {
+  final ProfilePagePresenter _presenter;
+  final ProfilePageStateMachine _stateMachine = new ProfilePageStateMachine();
   final navigationService = serviceLocator<NavigationService>();
-  DashboardPageController()
-      : _presenter = serviceLocator<DashboardPagePresenter>(),
+  ProfilePageController()
+      : _presenter = serviceLocator<ProfilePagePresenter>(),
         super();
 
-  List stateList = [];
-  List districtList = [];
+  List stateList;
+  List districtList;
 
-  LiveWeatherEntity liveWeatherEntity;
+  UserEntity userEntity;
+  LoginStatus loginStatus = LoginStatus.LOGGED_OUT;
+  TextEditingController name = new TextEditingController();
+  TextEditingController area = new TextEditingController();
+  TextEditingController pincode = new TextEditingController();
+  TextEditingController aadhar = new TextEditingController();
+  TextEditingController email = new TextEditingController();
+  TextEditingController pass1 = new TextEditingController();
+  TextEditingController pass2 = new TextEditingController();
 
   String selectedState;
   String selectedDistrict;
 
-  bool stateListLoading = false;
-  bool districtListLoading = false;
-  bool isFetchingLiveWeather = false;
   bool isFirstTimeLoading = true;
-  bool isPlaceChanged = false;
-
-  LoginStatus loginStatus = LoginStatus.LOGGED_OUT;
-  UserEntity userEntity;
-
-  TextEditingController pincode = TextEditingController();
+  bool isProfileUpdated = false;
 
   @override
   void initListeners() {}
 
-  DashboardState getCurrentState() {
+  ProfileState getCurrentState() {
     return _stateMachine.getCurrentState();
   }
 
@@ -61,7 +61,7 @@ class DashboardPageController extends Controller {
         loginStatus = status;
         if (status == LoginStatus.LOGGED_OUT) {
           _stateMachine.onEvent(
-            new DashboardPageInitializedEvent(loginStatus: status),
+            new ProfilePageLoggedOutEvent(),
           );
           refreshUI();
         }
@@ -74,10 +74,14 @@ class DashboardPageController extends Controller {
               },
               onNextFunction: (UserEntity user) {
                 userEntity = user;
-                fetchStateList();
-                _stateMachine.onEvent(
-                    new DashboardPageInitializedEvent(loginStatus: status));
+                name.text = userEntity.name;
+                aadhar.text = userEntity.aadhar;
+                email.text = userEntity.email;
+                pincode.text = userEntity.pincode;
+                area.text = userEntity.area;
+                _stateMachine.onEvent(new ProfilePageLoggedInEvent());
                 refreshUI();
+                fetchStateList();
               },
             ),
           );
@@ -87,14 +91,14 @@ class DashboardPageController extends Controller {
   }
 
   void fetchStateList() {
-    stateListLoading = true;
+    _stateMachine.onEvent(new ProfilePageLoadingEvent());
+    refreshUI();
     _presenter.fetchStateList(
       new UseCaseObserver(() {}, (error) {
         handleAPIErrors(error);
         print(error);
       }, onNextFunction: (List stateListRes) {
         stateList = stateListRes;
-        stateListLoading = false;
         String newState = namePreporcessing(userEntity.state);
         for (var state in stateListRes) {
           if (state['name'] == newState) {
@@ -102,21 +106,23 @@ class DashboardPageController extends Controller {
             break;
           }
         }
-        fetchDistrictList();
+        _stateMachine.onEvent(new ProfilePageLoggedInEvent());
         refreshUI();
+
+        fetchDistrictList();
       }),
     );
   }
 
   void fetchDistrictList() {
-    districtListLoading = true;
+    _stateMachine.onEvent(new ProfilePageLoadingEvent());
+    refreshUI();
     _presenter.fetchDistrictList(
       new UseCaseObserver(() {}, (error) {
         handleAPIErrors(error);
         print(error);
       }, onNextFunction: (List districtListRes) {
         districtList = districtListRes;
-        districtListLoading = false;
         if (isFirstTimeLoading) {
           String newDist = namePreporcessing(userEntity.district);
           for (var dist in districtListRes) {
@@ -125,89 +131,72 @@ class DashboardPageController extends Controller {
               break;
             }
           }
-
-          fetchLiveWeather();
+          isFirstTimeLoading = false;
         }
-        isFirstTimeLoading = false;
+
+        _stateMachine.onEvent(new ProfilePageLoggedInEvent());
         refreshUI();
       }),
       selectedState,
     );
   }
 
-  void navigateToLogin() {
-    navigationService.navigateTo(NavigationService.loginPage,
-        shouldReplace: true);
+  void changePassword() {
+    if (pass1.text.length > 0) {
+      if (pass1.text != pass2.text) {
+        Fluttertoast.showToast(msg: 'The passwords do not match');
+      } else {
+        _presenter.changePassword(
+          new UseCaseObserver(() {
+            Fluttertoast.showToast(msg: 'The password is updated');
+          }, (error) {
+            print(error);
+          }),
+          pass1.text,
+        );
+      }
+    }
   }
 
-  void navigateToRegistration() {
-    navigationService.navigateTo(NavigationService.registerPage,
-        shouldReplace: true);
-  }
-
-  void fetchLiveWeather() {
-    isFetchingLiveWeather = true;
-    _presenter.fetchLocationDetails(
-      new UseCaseObserver(
-        () {
-          _presenter.fetchLiveWeather(
-            new UseCaseObserver(() {}, (error) {
-              print(error);
-            }, onNextFunction: (LiveWeatherEntity _liveWeatherEntity) {
-              liveWeatherEntity = _liveWeatherEntity;
-              isFetchingLiveWeather = false;
-              refreshUI();
-            }),
-          );
-        },
-        (error) {
-          print(error);
-        },
-      ),
-    );
-  }
-
-  void fetchLiveWeatherForNewLocation() {
-    isFetchingLiveWeather = true;
-    _presenter.fetchLocationDetailsForNewLocation(
-      new UseCaseObserver(
-        () {
-          _presenter.fetchLiveWeatherForNewLocation(
-            new UseCaseObserver(() {}, (error) {
-              print(error);
-            }, onNextFunction: (LiveWeatherEntity _liveWeatherEntity) {
-              liveWeatherEntity = _liveWeatherEntity;
-              isFetchingLiveWeather = false;
-              refreshUI();
-            }),
-            district: selectedDistrictName(),
-            state: selectedStateName(),
-            pincode: pincode.text,
-          );
-        },
-        (error) {
-          print(error);
-        },
-      ),
-      district: selectedDistrictName(),
+  void updateUserDetails() {
+    UserEntity _newEntity = UserEntity(
+      name: name.text,
+      email: email.text,
+      aadhar: aadhar.text,
       state: selectedStateName(),
+      district: selectedDistrictName(),
+      area: area.text,
       pincode: pincode.text,
+    );
+
+    _stateMachine.onEvent(new ProfilePageLoadingEvent());
+    refreshUI();
+
+    _presenter.updateUserDetails(
+      new UseCaseObserver(() async {
+        await di.reset();
+        userEntity = null;
+        isProfileUpdated = false;
+        Fluttertoast.showToast(msg: 'The profile was successfully updated');
+        _stateMachine.onEvent(new ProfilePageInitializationEvent());
+        refreshUI();
+      }, (error) {
+        print(error);
+      }),
+      _newEntity,
     );
   }
 
   void selectedStateChange() {
+    isProfileUpdated = true;
     selectedDistrict = null;
     districtList = [];
-    isFirstTimeLoading = false;
-    liveWeatherEntity = null;
     refreshUI();
     fetchDistrictList();
   }
 
   void selectedDistrictChange() {
-    isFirstTimeLoading = false;
-    pincode.text = '';
-    liveWeatherEntity = null;
+    isProfileUpdated = true;
     refreshUI();
   }
 
@@ -238,7 +227,37 @@ class DashboardPageController extends Controller {
   }
 
   void textFieldChanged() {
+    isProfileUpdated = true;
     refreshUI();
+  }
+
+  void passwordFieldChanged() {
+    refreshUI();
+  }
+
+  void navigateToLogin() {
+    navigationService.navigateTo(NavigationService.loginPage,
+        shouldReplace: true);
+  }
+
+  void navigateToRegistration() {
+    navigationService.navigateTo(NavigationService.registerPage,
+        shouldReplace: true);
+  }
+
+  void logoutUser() {
+    _presenter.logoutUser(
+      new UseCaseObserver(
+        () async {
+          navigationService.navigateTo(NavigationService.homepage,
+              shouldReplace: true);
+          await di.reset();
+        },
+        (error) {
+          print(error);
+        },
+      ),
+    );
   }
 
   String selectedStateName() {

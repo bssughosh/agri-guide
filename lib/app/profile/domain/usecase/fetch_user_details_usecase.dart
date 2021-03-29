@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 import '../../../accounts/domain/entities/user_entity.dart';
-import '../repositories/agri_guide_prediction_repository.dart';
+import '../repository/profile_repository.dart';
 
 class FetchUserDetailsUsecase extends CompletableUseCase<void> {
-  final AgriGuidePredictionRepository _repository;
+  final ProfileRepository _repository;
 
   FetchUserDetailsUsecase(this._repository);
 

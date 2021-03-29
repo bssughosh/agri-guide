@@ -1,24 +1,13 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../core/exceptions.dart';
-import '../../../accounts/domain/entities/user_entity.dart';
 import '../../domain/entities/prediction_data_entity.dart';
 import '../../domain/repositories/agri_guide_prediction_repository.dart';
 
 class AgriGuidePredictionRepositoryImpl
     implements AgriGuidePredictionRepository {
-  final String _keyNameFullName = 'name';
-  final String _keyNameEmail = 'email';
-  final String _keyNameAadhar = 'aadhar';
-  final String _keyNameState = 'state';
-  final String _keyNameDistrict = 'district';
-  final String _keyNameMobile = 'mobile';
-  final String _keyNameArea = 'area';
-  final String _keyNamePincode = 'pincode';
   final String _keyNameTemperature = 'temperature';
   final String _keyNameHumidity = 'humidity';
   final String _keyNameRainfall = 'rainfall';
@@ -33,9 +22,6 @@ class AgriGuidePredictionRepositoryImpl
     defaultValue: 'https://agri-guide-api.herokuapp.com',
   );
 
-  /// Key Name `uid`
-  Map<String, UserEntity> _userDetails = {};
-
   /// Key name `stateId/distId/cropId/season`
   Map<String, PredictionDataEntity> _predictions = {};
 
@@ -44,32 +30,6 @@ class AgriGuidePredictionRepositoryImpl
 
   /// Key name `distId`
   Map<String, String> _distNamesMap = {};
-
-  @override
-  Future<UserEntity> fetchUserDetails() async {
-    final CollectionReference userData =
-        FirebaseFirestore.instance.collection('userData');
-    User currentSignedInUser = FirebaseAuth.instance.currentUser;
-    if (currentSignedInUser == null) throw UserNotSignedInError();
-    if (_userDetails.containsKey(currentSignedInUser.uid))
-      return _userDetails[currentSignedInUser.uid];
-    DocumentSnapshot userDetails =
-        await userData.doc(currentSignedInUser.uid).get();
-    UserEntity user = new UserEntity(
-      aadhar: userDetails[_keyNameAadhar],
-      name: userDetails[_keyNameFullName],
-      email: userDetails[_keyNameEmail],
-      area: userDetails[_keyNameArea],
-      state: userDetails[_keyNameState],
-      district: userDetails[_keyNameDistrict],
-      mobile: userDetails[_keyNameMobile],
-      pincode: userDetails[_keyNamePincode],
-    );
-
-    _userDetails[currentSignedInUser.uid] = user;
-
-    return user;
-  }
 
   @override
   Future<PredictionDataEntity> makePrediction(

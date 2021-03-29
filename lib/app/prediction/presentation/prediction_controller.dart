@@ -427,6 +427,11 @@ class PredictionPageController extends Controller {
         shouldReplace: true);
   }
 
+  void navigateToRegistration() {
+    navigationService.navigateTo(NavigationService.registerPage,
+        shouldReplace: true);
+  }
+
   void proceedToPrediction() {
     _stateMachine.onEvent(new PredictionPageLoadingEvent());
     refreshUI();
