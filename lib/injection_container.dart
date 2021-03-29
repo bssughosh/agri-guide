@@ -1,4 +1,4 @@
-import 'package:agri_guide/app/profile/presentation/profile_presenter.dart';
+import 'app/profile/presentation/profile_presenter.dart';
 import 'package:get_it/get_it.dart';
 
 import 'app/accounts/data/firebase_authentication_repository_impl.dart';

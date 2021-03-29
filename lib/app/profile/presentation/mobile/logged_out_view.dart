@@ -1,7 +1,8 @@
-import 'package:agri_guide/app/profile/presentation/profile_controller.dart';
-import 'package:agri_guide/core/app_theme.dart';
-import 'package:agri_guide/core/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../core/app_theme.dart';
+import '../../../../core/widgets/custom_button.dart';
+import '../profile_controller.dart';
 
 Widget buildProfileLoggedOutViewMobile({
   @required ProfilePageController controller,

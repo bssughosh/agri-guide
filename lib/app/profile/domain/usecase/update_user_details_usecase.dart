@@ -1,9 +1,10 @@
 import 'dart:async';
 
-import 'package:agri_guide/app/accounts/domain/entities/user_entity.dart';
-import 'package:agri_guide/app/profile/domain/repository/profile_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
+
+import '../../../accounts/domain/entities/user_entity.dart';
+import '../repository/profile_repository.dart';
 
 class UpdateUserDetailsUsecase
     extends CompletableUseCase<UpdateUserDetailsParams> {
