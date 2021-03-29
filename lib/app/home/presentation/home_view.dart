@@ -1,3 +1,4 @@
+import 'package:agri_guide/app/profile/presentation/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
@@ -341,50 +342,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: 20),
-              Image.asset(
-                'assets/icon.png',
-                width: 70,
-              ),
-              Text(
-                'Agri Guide',
-                style: AppTheme.bodyBoldText,
-              ),
-              SizedBox(height: 30),
-              if (controller.loginStatus == LoginStatus.LOGGED_OUT)
-                TextButton(
-                  child: Text(
-                    'Login / Register',
-                    style: AppTheme.navigationTabSelectedTextStyle,
-                  ),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        AppTheme.navigationSelectedColor),
-                  ),
-                  onPressed: () {
-                    controller.navigateToLogin();
-                  },
-                ),
-              if (controller.loginStatus == LoginStatus.LOGGED_IN)
-                Text(
-                  'Welcome, ${controller.userEntity.name}',
-                  style: AppTheme.bodyBoldText,
-                ),
-              SizedBox(height: 30),
-              if (controller.loginStatus == LoginStatus.LOGGED_IN)
-                TextButton(
-                  child: Text(
-                    'Logout',
-                    style: AppTheme.navigationTabSelectedTextStyle,
-                  ),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        AppTheme.navigationSelectedColor),
-                  ),
-                  onPressed: () {
-                    controller.logoutUser();
-                  },
-                ),
+              ProfilePage(),
             ],
           ),
         ),

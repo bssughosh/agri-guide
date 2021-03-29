@@ -14,11 +14,12 @@ Widget buildProfileLoggedOutViewMobile({
     child: SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(height: 40),
+          SizedBox(height: 70),
           Image.asset(
             'assets/login_to_continue.png',
             width: screenWidth * 0.6,
           ),
+          SizedBox(height: 50),
           CustomButton(
             isActive: true,
             isOverlayRequired: false,
@@ -27,22 +28,28 @@ Widget buildProfileLoggedOutViewMobile({
             },
             title: 'Login',
           ),
-          Container(
-            child: Row(
-              children: [
-                Text('New User?'),
-                SizedBox(width: 10),
-                GestureDetector(
-                  child: Text(
-                    'Register',
-                    style: AppTheme.bodyBoldText
-                        .copyWith(decoration: TextDecoration.underline),
-                  ),
-                  onTap: () {
-                    controller.navigateToRegistration();
-                  },
-                )
-              ],
+          SizedBox(height: 10),
+          Center(
+            child: Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('New User?'),
+                  SizedBox(width: 10),
+                  GestureDetector(
+                    child: Text(
+                      'Register',
+                      style: AppTheme.bodyBoldText.copyWith(
+                        decoration: TextDecoration.underline,
+                        color: AppTheme.secondaryColor,
+                      ),
+                    ),
+                    onTap: () {
+                      controller.navigateToRegistration();
+                    },
+                  )
+                ],
+              ),
             ),
           )
         ],

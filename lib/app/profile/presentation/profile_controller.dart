@@ -210,11 +210,13 @@ class ProfilePageController extends Controller {
   }
 
   void navigateToLogin() {
-    navigationService.navigateTo(NavigationService.loginPage);
+    navigationService.navigateTo(NavigationService.loginPage,
+        shouldReplace: true);
   }
 
   void navigateToRegistration() {
-    navigationService.navigateTo(NavigationService.registerPage);
+    navigationService.navigateTo(NavigationService.registerPage,
+        shouldReplace: true);
   }
 
   String selectedStateName() {
