@@ -1,4 +1,3 @@
-import 'app/profile/presentation/profile_presenter.dart';
 import 'package:get_it/get_it.dart';
 
 import 'app/accounts/data/firebase_authentication_repository_impl.dart';
@@ -36,6 +35,7 @@ import 'app/profile/domain/repository/profile_repository.dart';
 import 'app/profile/domain/usecase/change_password_usecase.dart';
 import 'app/profile/domain/usecase/fetch_user_details_usecase.dart';
 import 'app/profile/domain/usecase/update_user_details_usecase.dart';
+import 'app/profile/presentation/profile_presenter.dart';
 import 'app/splash/presentation/splash_presenter.dart';
 import 'app/statistics/data/repositories/statistics_repository_impl.dart';
 import 'app/statistics/domain/repositories/statistics_repository.dart';

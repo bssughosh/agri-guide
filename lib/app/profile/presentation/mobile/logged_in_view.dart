@@ -1,11 +1,11 @@
-import 'package:agri_guide/app/profile/presentation/widgets/custom_textfield.dart';
-import 'package:agri_guide/app/profile/presentation/widgets/show_change_password_dialog.dart';
-import 'package:agri_guide/core/app_theme.dart';
-import 'package:agri_guide/core/widgets/custom_button.dart';
-import 'package:agri_guide/core/widgets/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/app_theme.dart';
+import '../../../../core/widgets/custom_button.dart';
+import '../../../../core/widgets/custom_dropdown.dart';
 import '../profile_controller.dart';
+import '../widgets/custom_textfield.dart';
+import '../widgets/show_change_password_dialog.dart';
 
 Widget buildProfileLoggedInViewMobile({
   @required ProfilePageController controller,
@@ -51,6 +51,7 @@ Widget buildProfileLoggedInViewMobile({
             onChanged: controller.textFieldChanged,
             isEnabled: false,
           ),
+          SizedBox(height: 10),
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
@@ -124,6 +125,7 @@ Widget buildProfileLoggedInViewMobile({
               },
               isOverlayRequired: false,
             ),
+          SizedBox(height: 50),
         ],
       ),
     ),

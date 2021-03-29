@@ -1,4 +1,3 @@
-import 'package:agri_guide/app/profile/presentation/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
@@ -9,6 +8,7 @@ import '../../../core/enums.dart';
 import '../../dashboard/presentation/dashboard_view.dart';
 import '../../downloads/presentation/downloads_view.dart';
 import '../../prediction/presentation/prediction_view.dart';
+import '../../profile/presentation/profile_view.dart';
 import '../../statistics/presentation/statistics_view.dart';
 import 'home_controller.dart';
 import 'home_state_machine.dart';
