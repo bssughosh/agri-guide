@@ -12,8 +12,12 @@ class ProfilePageStateMachine extends StateMachine<ProfileState, ProfileEvent> {
         newState = ProfilePageInitializationState();
         break;
 
-      case ProfilePageInitializedEvent:
-        newState = ProfilePageInitializedState();
+      case ProfilePageLoggedOutEvent:
+        newState = ProfilePageLoggedOutState();
+        break;
+
+      case ProfilePageLoggedInEvent:
+        newState = ProfilePageLoggedInState();
         break;
 
       case ProfilePageLoadingEvent:
@@ -28,7 +32,9 @@ class ProfileState {}
 
 class ProfilePageInitializationState extends ProfileState {}
 
-class ProfilePageInitializedState extends ProfileState {}
+class ProfilePageLoggedOutState extends ProfileState {}
+
+class ProfilePageLoggedInState extends ProfileState {}
 
 class ProfilePageLoadingState extends ProfileState {}
 
@@ -36,6 +42,8 @@ class ProfileEvent {}
 
 class ProfilePageInitializationEvent extends ProfileEvent {}
 
-class ProfilePageInitializedEvent extends ProfileEvent {}
+class ProfilePageLoggedOutEvent extends ProfileEvent {}
+
+class ProfilePageLoggedInEvent extends ProfileEvent {}
 
 class ProfilePageLoadingEvent extends ProfileEvent {}
