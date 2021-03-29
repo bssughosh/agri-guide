@@ -38,6 +38,7 @@ class PredictionViewState
       case PredictionPageLoggedOutState:
         return buildPredictionLoggedOutView(
           controller: controller,
+          context: context,
         );
 
       case PredictionPageInputInitializedState:
@@ -77,6 +78,7 @@ class PredictionViewState
       case PredictionPageLoggedOutState:
         return buildPredictionLoggedOutView(
           controller: controller,
+          context: context,
         );
 
       case PredictionPageInputInitializedState:
