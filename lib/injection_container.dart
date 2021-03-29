@@ -1,3 +1,4 @@
+import 'package:agri_guide/app/profile/presentation/profile_presenter.dart';
 import 'package:get_it/get_it.dart';
 
 import 'app/accounts/data/firebase_authentication_repository_impl.dart';
@@ -160,6 +161,15 @@ Future<void> init() async {
   //profile
   serviceLocator.registerLazySingleton<ProfileRepository>(
       () => (ProfileRespositoryImpl()));
+
+  serviceLocator.registerFactory(() => ProfilePagePresenter(
+        serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
+      ));
 
   serviceLocator
       .registerFactory(() => FetchUserDetailsUsecase(serviceLocator()));
