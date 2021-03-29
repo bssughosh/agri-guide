@@ -3,7 +3,7 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import '../../../core/observer.dart';
 import '../../accounts/domain/usecase/check_login_status_usecase.dart';
 import '../../accounts/domain/usecase/logout_user_usecase.dart';
-import '../../prediction/domain/usecase/fetch_user_details_usecase.dart';
+import '../../profile/domain/usecase/fetch_user_details_usecase.dart';
 
 class HomePagePresenter extends Presenter {
   CheckLoginStatusUsecase _checkLoginStatusUsecase;

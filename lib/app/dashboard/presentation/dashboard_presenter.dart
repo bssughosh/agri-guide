@@ -5,7 +5,7 @@ import '../../../core/observer.dart';
 import '../../accounts/domain/usecase/check_login_status_usecase.dart';
 import '../../downloads/domain/usecase/fetch_district_list_usecase.dart';
 import '../../downloads/domain/usecase/fetch_state_list_usecase.dart';
-import '../../prediction/domain/usecase/fetch_user_details_usecase.dart';
+import '../../profile/domain/usecase/fetch_user_details_usecase.dart';
 import '../domain/usecase/fetch_live_weather_for_new_location_usecase.dart';
 import '../domain/usecase/fetch_live_weather_usecase.dart';
 import '../domain/usecase/fetch_location_details_for_new_location_usecase.dart';

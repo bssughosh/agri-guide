@@ -6,7 +6,7 @@ import '../../downloads/domain/usecase/fetch_crop_list_usecase.dart';
 import '../../downloads/domain/usecase/fetch_district_list_usecase.dart';
 import '../../downloads/domain/usecase/fetch_seasons_list_usecase.dart';
 import '../../downloads/domain/usecase/fetch_state_list_usecase.dart';
-import '../domain/usecase/fetch_user_details_usecase.dart';
+import '../../profile/domain/usecase/fetch_user_details_usecase.dart';
 import '../domain/usecase/make_prediction_usecase.dart';
 
 class PredictionPagePresenter extends Presenter {

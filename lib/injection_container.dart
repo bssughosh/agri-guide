@@ -28,7 +28,7 @@ import 'app/home/presentation/home_presenter.dart';
 import 'app/navigation_service.dart';
 import 'app/prediction/data/repositories/agri_guide_prediction_repository_impl.dart';
 import 'app/prediction/domain/repositories/agri_guide_prediction_repository.dart';
-import 'app/prediction/domain/usecase/fetch_user_details_usecase.dart';
+import 'app/profile/domain/usecase/fetch_user_details_usecase.dart';
 import 'app/prediction/domain/usecase/make_prediction_usecase.dart';
 import 'app/prediction/presentation/prediction_presenter.dart';
 import 'app/splash/presentation/splash_presenter.dart';
