@@ -25,13 +25,13 @@ class ProfilePageController extends Controller {
 
   UserEntity userEntity;
   LoginStatus loginStatus = LoginStatus.LOGGED_OUT;
-  TextEditingController name;
-  TextEditingController area;
-  TextEditingController pincode;
-  TextEditingController aadhar;
-  TextEditingController email;
-  TextEditingController pass1;
-  TextEditingController pass2;
+  TextEditingController name = new TextEditingController();
+  TextEditingController area = new TextEditingController();
+  TextEditingController pincode = new TextEditingController();
+  TextEditingController aadhar = new TextEditingController();
+  TextEditingController email = new TextEditingController();
+  TextEditingController pass1 = new TextEditingController();
+  TextEditingController pass2 = new TextEditingController();
 
   String selectedState;
   String selectedDistrict;
@@ -78,6 +78,7 @@ class ProfilePageController extends Controller {
                 aadhar.text = userEntity.aadhar;
                 email.text = userEntity.email;
                 pincode.text = userEntity.pincode;
+                area.text = userEntity.area;
                 _stateMachine.onEvent(new ProfilePageLoggedInEvent());
                 refreshUI();
                 fetchStateList();
