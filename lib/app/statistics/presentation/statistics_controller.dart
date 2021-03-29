@@ -122,6 +122,10 @@ class StatisticsPageController extends Controller {
       }, onNextFunction: (StatisticsEntity entity) {
         statisticsEntity = entity;
 
+        temperatureChartData = [];
+        humidityChartData = [];
+        rainfallChartData = [];
+
         findColorsAndToChartData(
           filter: StatisticsFilters.Rainfall,
           statisticsData: statisticsEntity.rainfallData,
