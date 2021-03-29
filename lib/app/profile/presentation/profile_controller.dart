@@ -168,11 +168,16 @@ class ProfilePageController extends Controller {
       area: area.text,
       pincode: pincode.text,
     );
+
+    _stateMachine.onEvent(new ProfilePageLoadingEvent());
+    refreshUI();
+
     _presenter.updateUserDetails(
       new UseCaseObserver(() async {
         await di.reset();
         userEntity = null;
         isProfileUpdated = false;
+        Fluttertoast.showToast(msg: 'The profile was successfully updated');
         _stateMachine.onEvent(new ProfilePageInitializationEvent());
         refreshUI();
       }, (error) {
@@ -223,6 +228,10 @@ class ProfilePageController extends Controller {
 
   void textFieldChanged() {
     isProfileUpdated = true;
+    refreshUI();
+  }
+
+  void passwordFieldChanged() {
     refreshUI();
   }
 

@@ -1,4 +1,5 @@
 import 'package:agri_guide/app/profile/presentation/widgets/custom_textfield.dart';
+import 'package:agri_guide/app/profile/presentation/widgets/show_change_password_dialog.dart';
 import 'package:agri_guide/core/app_theme.dart';
 import 'package:agri_guide/core/widgets/custom_button.dart';
 import 'package:agri_guide/core/widgets/custom_dropdown.dart';
@@ -22,7 +23,7 @@ Widget buildProfileLoggedInViewMobile({
             title: 'Name',
             hint: 'Full Name',
             onChanged: controller.textFieldChanged,
-            isEnabled: true,
+            isEnabled: false,
           ),
           SizedBox(height: 10),
           CustomTextField(
@@ -31,6 +32,16 @@ Widget buildProfileLoggedInViewMobile({
             hint: 'Email Id',
             onChanged: controller.textFieldChanged,
             isEnabled: false,
+          ),
+          SizedBox(height: 10),
+          CustomButton(
+            isActive: true,
+            isOverlayRequired: false,
+            onPressed: () {
+              showChangePasswordDialog(
+                  context: context, controller: controller);
+            },
+            title: 'Change Password',
           ),
           SizedBox(height: 10),
           CustomTextField(
@@ -63,7 +74,7 @@ Widget buildProfileLoggedInViewMobile({
               },
             ),
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 10),
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
@@ -87,7 +98,7 @@ Widget buildProfileLoggedInViewMobile({
               },
             ),
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 10),
           CustomTextField(
             textController: controller.pincode,
             title: 'Pincode',
@@ -95,7 +106,7 @@ Widget buildProfileLoggedInViewMobile({
             onChanged: controller.textFieldChanged,
             isEnabled: true,
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 10),
           CustomTextField(
             textController: controller.area,
             title: 'Area of Land',

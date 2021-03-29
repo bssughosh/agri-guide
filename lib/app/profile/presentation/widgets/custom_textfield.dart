@@ -1,5 +1,6 @@
-import 'package:agri_guide/core/app_theme.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../core/app_theme.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController textController;
@@ -7,6 +8,7 @@ class CustomTextField extends StatelessWidget {
   final String hint;
   final Function onChanged;
   final bool isEnabled;
+  final bool obscureText;
 
   const CustomTextField({
     @required this.textController,
@@ -14,6 +16,7 @@ class CustomTextField extends StatelessWidget {
     @required this.hint,
     @required this.onChanged,
     @required this.isEnabled,
+    this.obscureText,
   });
 
   @override
@@ -31,6 +34,7 @@ class CustomTextField extends StatelessWidget {
           ),
         ),
         TextField(
+          obscureText: obscureText ?? false,
           enabled: isEnabled,
           controller: textController,
           decoration: InputDecoration(
