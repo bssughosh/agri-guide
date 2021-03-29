@@ -61,4 +61,5 @@ flutter:
     - assets/app_bar_bg.png
     - assets/select_state.png
     - assets/select_district.png
+    - assets/login_to_continue.png
 

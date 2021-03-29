@@ -1,12 +1,13 @@
-import 'package:agri_guide/app/accounts/domain/entities/user_entity.dart';
-import 'package:agri_guide/core/enums.dart';
-import 'package:agri_guide/core/handle_api_errors.dart';
-import 'package:agri_guide/core/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+import '../../../core/enums.dart';
+import '../../../core/handle_api_errors.dart';
+import '../../../core/observer.dart';
 import '../../../injection_container.dart' as di;
 import '../../../injection_container.dart';
+import '../../accounts/domain/entities/user_entity.dart';
 import '../../navigation_service.dart';
 import 'profile_presenter.dart';
 import 'profile_state_machine.dart';
@@ -206,6 +207,14 @@ class ProfilePageController extends Controller {
 
   void textFieldChanged() {
     refreshUI();
+  }
+
+  void navigateToLogin() {
+    navigationService.navigateTo(NavigationService.loginPage);
+  }
+
+  void navigateToRegistration() {
+    navigationService.navigateTo(NavigationService.registerPage);
   }
 
   String selectedStateName() {
