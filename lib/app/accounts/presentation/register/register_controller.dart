@@ -307,4 +307,10 @@ class RegisterPageController extends Controller {
     navigationService.navigateTo(NavigationService.homepage,
         shouldReplace: true);
   }
+
+  bool onWillPopScope() {
+    navigateToHomepage();
+
+    return false;
+  }
 }
