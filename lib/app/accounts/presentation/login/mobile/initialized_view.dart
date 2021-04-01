@@ -10,7 +10,7 @@ Widget buildLoginInitializedViewMobile({
   @required BuildContext context,
 }) {
   double screenHeight = MediaQuery.of(context).size.height;
-  double screenWidth = MediaQuery.of(context).size.width;
+
   return Scaffold(
     resizeToAvoidBottomInset: false,
     body: SafeArea(
@@ -35,17 +35,17 @@ Widget buildLoginInitializedViewMobile({
                         title: 'Email',
                         textController: controller.emailText,
                         onChanged: controller.updateEmailField,
-                        hint: 'Eamil',
+                        hint: 'Email',
                         autofillHints: [AutofillHints.username],
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 20,
                       ),
                       CustomTextField(
                         title: 'Password',
                         textController: controller.passwordText,
                         onChanged: controller.updatePasswordField,
-                        hint: 'Passwword',
+                        hint: 'Password',
                         autofillHints: [AutofillHints.password],
                         obscureText: true,
                       ),

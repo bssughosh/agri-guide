@@ -29,7 +29,7 @@ class CustomTextField extends StatelessWidget {
             padding: const EdgeInsets.only(left: 5, bottom: 10),
             child: Text(
               title,
-              style: AppTheme.headingBoldText.copyWith(fontSize: 15),
+              style: AppTheme.headingBoldText.copyWith(fontSize: 17),
             ),
           ),
         ),
