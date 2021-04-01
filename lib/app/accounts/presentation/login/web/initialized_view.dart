@@ -44,7 +44,7 @@ Widget buildLoginInitializedViewWeb({
                     ),
                   ),
                   onChanged: (value) {
-                    controller.updateEmailField(value);
+                    controller.updateEmailField();
                   },
                   autofillHints: [AutofillHints.username],
                 ),
@@ -64,7 +64,7 @@ Widget buildLoginInitializedViewWeb({
                     ),
                   ),
                   onChanged: (value) {
-                    controller.updatePasswordField(value);
+                    controller.updatePasswordField();
                   },
                   autofillHints: [AutofillHints.password],
                 ),
