@@ -20,14 +20,13 @@ Widget buildLoginInitializedViewMobile({
           child: Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage('assets/login_heading.png'),
+                  image: AssetImage('assets/login_heading1.png'),
                   fit: BoxFit.fitWidth,
                   alignment: Alignment.topCenter),
             ),
             child: Column(
               children: [
                 SizedBox(height: screenHeight * 0.5),
-                SizedBox(height: 30),
                 Container(
                   padding: EdgeInsets.all(10),
                   child: Column(
