@@ -47,7 +47,8 @@ Widget buildRegistrationInitializedView({
                           controller: controller, width: screenWidth * 0.9),
                       registrationPage2(
                           controller: controller, width: screenWidth * 0.9),
-                      registrationPage3(controller: controller),
+                      registrationPage3(
+                          controller: controller, width: screenWidth * 0.9),
                     ],
                   ),
                 ),
@@ -77,7 +78,7 @@ Widget buildRegistrationInitializedView({
                             padding: const EdgeInsets.only(right: 8.0),
                             child: TextButton.icon(
                               icon: controller.currentPageNumber ==
-                                  controller.lastPageNumber
+                                      controller.lastPageNumber
                                   ? Icon(Icons.done)
                                   : Icon(Icons.arrow_forward),
                               onPressed: () {
@@ -89,7 +90,7 @@ Widget buildRegistrationInitializedView({
                               },
                               label: Text(
                                 controller.currentPageNumber ==
-                                    controller.lastPageNumber
+                                        controller.lastPageNumber
                                     ? 'Submit'
                                     : 'Next',
                               ),
