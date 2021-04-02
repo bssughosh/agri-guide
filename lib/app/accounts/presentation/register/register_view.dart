@@ -24,6 +24,7 @@ class RegisterViewState
     controller.areaText.text = '';
     controller.pass1Text.text = '';
     controller.pass2Text.text = '';
+    controller.fetchStateList();
     super.initState();
   }
 

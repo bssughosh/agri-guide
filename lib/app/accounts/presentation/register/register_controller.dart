@@ -1,3 +1,4 @@
+import 'package:agri_guide/core/handle_api_errors.dart';
 import 'package:checkdigit/checkdigit.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -23,29 +24,21 @@ class RegisterPageController extends Controller {
   int currentPageNumber = 0;
   int lastPageNumber = 2;
   PageController pageController = PageController();
-  List stateList = [];
-  List districtList = [];
-  bool isStateFilterClicked = false;
-  bool isDistrictFilterClicked = false;
+  List stateList;
+  List districtList;
 
   //Page 1
+  String selectedState;
+  String selectedDistrict;
+  TextEditingController areaText = new TextEditingController();
+  TextEditingController pincodeText = new TextEditingController();
+  bool stateListInitialized = false;
+
+  //Page 2
   TextEditingController nameText = new TextEditingController();
   TextEditingController emailText = new TextEditingController();
   TextEditingController phoneText = new TextEditingController();
   TextEditingController aadharText = new TextEditingController();
-  bool isEmailTextFine = true;
-  bool isPhoneTextFine = true;
-  bool isAadharTextFine = true;
-
-  //Page 2
-  String selectedState = '';
-  String selectedDistrict = '';
-  TextEditingController areaText = new TextEditingController();
-  TextEditingController pincodeText = new TextEditingController();
-  bool isPincodeTextFine = true;
-  bool stateListLoading = false;
-  bool districtListLoading = false;
-  bool stateListInitialized = false;
 
   //Page 3
   TextEditingController pass1Text = new TextEditingController();
@@ -65,6 +58,77 @@ class RegisterPageController extends Controller {
     super.dispose();
   }
 
+  void fetchStateList() {
+    _stateMachine.onEvent(new RegisterLoadingEvent());
+    refreshUI();
+    _presenter.fetchStateList(
+      new UseCaseObserver(() {}, (error) {
+        handleAPIErrors(error);
+        print(error);
+      }, onNextFunction: (List stateListRes) {
+        stateList = stateListRes;
+
+        stateListInitialized = true;
+
+        _stateMachine.onEvent(new RegisterInitializedEvent());
+        refreshUI();
+      }),
+    );
+  }
+
+  void fetchDistrictList() {
+    _stateMachine.onEvent(new RegisterLoadingEvent());
+    refreshUI();
+    _presenter.fetchDistrictList(
+      new UseCaseObserver(() {}, (error) {
+        handleAPIErrors(error);
+        print(error);
+      }, onNextFunction: (List districtListRes) {
+        districtList = districtListRes;
+        _stateMachine.onEvent(new RegisterInitializedEvent());
+        refreshUI();
+      }),
+      selectedState,
+    );
+  }
+
+  void selectedStateChange() {
+    selectedDistrict = null;
+    districtList = [];
+    refreshUI();
+    fetchDistrictList();
+  }
+
+  void selectedDistrictChange() {
+    refreshUI();
+  }
+
+  List<DropdownMenuItem> stateItems() {
+    List<DropdownMenuItem> _list = [];
+    for (var state in stateList) {
+      _list.add(
+        new DropdownMenuItem(
+          value: state['id'],
+          child: Text(state['name']),
+        ),
+      );
+    }
+    return _list;
+  }
+
+  List<DropdownMenuItem> districtItems() {
+    List<DropdownMenuItem> _list = [];
+    for (var district in districtList) {
+      _list.add(
+        new DropdownMenuItem(
+          value: district['id'],
+          child: Text(district['name']),
+        ),
+      );
+    }
+    return _list;
+  }
+
   void updatePageNumber(int page) {
     currentPageNumber = page;
     pageController.jumpToPage(page);
@@ -76,42 +140,6 @@ class RegisterPageController extends Controller {
   }
 
   void textFieldChanged() {
-    if (emailText.text.length != 0) {
-      if (!EmailValidator.validate(emailText.text.trim())) {
-        isEmailTextFine = false;
-      } else {
-        isEmailTextFine = true;
-      }
-    } else {
-      isEmailTextFine = true;
-    }
-    if (aadharText.text.length != 0) {
-      if (!verhoeff.validate(aadharText.text.trim())) {
-        isAadharTextFine = false;
-      } else {
-        isAadharTextFine = true;
-      }
-    } else {
-      isAadharTextFine = true;
-    }
-    if (pincodeText.text.length != 0) {
-      if (pincodeText.text.length == 6) {
-        isPincodeTextFine = true;
-      } else {
-        isPincodeTextFine = false;
-      }
-    } else {
-      isPincodeTextFine = true;
-    }
-    if (phoneText.text != '') {
-      if (phoneText.text.length != 10) {
-        isPhoneTextFine = false;
-      } else {
-        isPhoneTextFine = true;
-      }
-    } else {
-      isPhoneTextFine = true;
-    }
     if (pass1Text.text.length != 0) {
       if (pass2Text.text.length != 0) {
         if (pass1Text.text != pass2Text.text) {
@@ -129,6 +157,20 @@ class RegisterPageController extends Controller {
   }
 
   bool validatePage1() {
+    if (pincodeText.text.length == 0) {
+      Fluttertoast.showToast(msg: 'Pincode cannot be empty');
+      return false;
+    } else if (pincodeText.text.length != 6) {
+      Fluttertoast.showToast(msg: 'Pincode entered appears to be wrong');
+      return false;
+    } else if (areaText.text.length == 0) {
+      Fluttertoast.showToast(msg: 'Area cannot be empty');
+      return false;
+    }
+    return true;
+  }
+
+  bool validatePage2() {
     if (nameText.text.length == 0) {
       Fluttertoast.showToast(msg: 'Name cannot be empty');
       return false;
@@ -149,20 +191,6 @@ class RegisterPageController extends Controller {
         Fluttertoast.showToast(msg: 'Please enter a valid Mobile number');
         return false;
       }
-    }
-    return true;
-  }
-
-  bool validatePage2() {
-    if (pincodeText.text.length == 0) {
-      Fluttertoast.showToast(msg: 'Pincode cannot be empty');
-      return false;
-    } else if (pincodeText.text.length != 6) {
-      Fluttertoast.showToast(msg: 'Pincode entered appears to be wrong');
-      return false;
-    } else if (areaText.text.length == 0) {
-      Fluttertoast.showToast(msg: 'Area cannot be empty');
-      return false;
     }
     return true;
   }
@@ -229,78 +257,6 @@ class RegisterPageController extends Controller {
       Fluttertoast.showToast(msg: 'Registration failed');
     }
     refreshUI();
-  }
-
-  void handleStateFilterClicked() {
-    if (isDistrictFilterClicked) {
-    } else {
-      isStateFilterClicked = !isStateFilterClicked;
-    }
-    refreshUI();
-  }
-
-  void handleDistrictFilterClicked() {
-    if (isStateFilterClicked) {
-    } else {
-      isDistrictFilterClicked = !isDistrictFilterClicked;
-    }
-    refreshUI();
-  }
-
-  void fetchStateList() {
-    stateListLoading = true;
-    _presenter.fetchStateList(
-      new UseCaseObserver(
-        () {
-          print('State list successfully fetched');
-        },
-        (error) {
-          print(error);
-        },
-        onNextFunction: (List stateListRes) {
-          stateList = stateListRes;
-          stateListLoading = false;
-          stateListInitialized = true;
-          refreshUI();
-        },
-      ),
-    );
-  }
-
-  void fetchDistrictList() {
-    districtListLoading = true;
-    _presenter.fetchDistrictList(
-      new UseCaseObserver(
-        () {
-          print('District list successfully fetched');
-        },
-        (error) {
-          print(error);
-        },
-        onNextFunction: (List districtListRes) {
-          districtList = districtListRes;
-          districtListLoading = false;
-          refreshUI();
-        },
-      ),
-      selectedState,
-    );
-  }
-
-  void handleRadioChangeOfState(String value) {
-    selectedState = value;
-    refreshUI();
-  }
-
-  void handleRadioChangeOfDistrict(String value) {
-    selectedDistrict = value;
-    refreshUI();
-  }
-
-  void selectedStateChange() {
-    selectedDistrict = '';
-    refreshUI();
-    fetchDistrictList();
   }
 
   void navigateToHomepage() {
