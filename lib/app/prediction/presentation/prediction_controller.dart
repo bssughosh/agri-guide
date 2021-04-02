@@ -76,11 +76,11 @@ class PredictionPageController extends Controller {
   List<String> monthsToDisplay = [];
 
   Map<String, List<int>> _monthsForSeasons = {
-    'Kharif': [6, 7, 8, 9],
-    'Rabi': [9, 10, 11, 0, 1, 2],
+    'Kharif': [5, 6, 7, 8, 9],
+    'Rabi': [10, 11, 0, 1, 2, 3],
     'Whole Year': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-    'Autumn': [8, 9, 10],
-    'Summer': [5, 6, 7],
+    'Autumn': [8, 9],
+    'Summer': [2, 3, 4],
     'Winter': [11, 0, 1],
   };
 
