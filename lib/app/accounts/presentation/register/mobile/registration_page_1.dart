@@ -19,7 +19,7 @@ Widget registrationPage1({
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: const EdgeInsets.only(left: 5, bottom: 5),
+              padding: const EdgeInsets.only(left: 20, bottom: 5),
               child: Text(
                 'State: ',
                 style: AppTheme.headingBoldText.copyWith(fontSize: 17),
@@ -28,7 +28,7 @@ Widget registrationPage1({
           ),
           SizedBox(height: 5),
           Container(
-            width: double.infinity,
+            width: width,
             child: CustomDropdown(
               hintText: 'Select State',
               itemsList: controller.stateItems(),
@@ -44,7 +44,7 @@ Widget registrationPage1({
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: const EdgeInsets.only(left: 5, bottom: 5),
+                padding: const EdgeInsets.only(left: 20, bottom: 5),
                 child: Text(
                   'District: ',
                   style: AppTheme.headingBoldText.copyWith(fontSize: 17),
@@ -54,7 +54,7 @@ Widget registrationPage1({
           if (controller.selectedState != null) SizedBox(height: 5),
           if (controller.selectedState != null)
             Container(
-              width: double.infinity,
+              width: width,
               child: CustomDropdown(
                 hintText: 'Select District',
                 itemsList: controller.districtItems(),
@@ -70,22 +70,28 @@ Widget registrationPage1({
             SizedBox(height: 10),
           if (controller.selectedDistrict != null &&
               controller.selectedState != null)
-            CustomTextField(
-              title: 'Area',
-              hint: 'Area (in acres)',
-              onChanged: controller.textFieldChanged,
-              textController: controller.areaText,
+            Container(
+              width: width,
+              child: CustomTextField(
+                title: 'Area',
+                hint: 'Area (in acres)',
+                onChanged: controller.textFieldChanged,
+                textController: controller.areaText,
+              ),
             ),
           if (controller.selectedDistrict != null &&
               controller.selectedState != null)
             SizedBox(height: 10),
           if (controller.selectedDistrict != null &&
               controller.selectedState != null)
-            CustomTextField(
-              title: 'Pincode',
-              hint: 'Pincode',
-              onChanged: controller.textFieldChanged,
-              textController: controller.pincodeText,
+            Container(
+              width: width,
+              child: CustomTextField(
+                title: 'Pincode',
+                hint: 'Pincode',
+                onChanged: controller.textFieldChanged,
+                textController: controller.pincodeText,
+              ),
             ),
         ],
       ),

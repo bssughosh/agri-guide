@@ -55,36 +55,42 @@ Widget buildRegistrationInitializedView({
                     child: Container(
                       width: isWeb
                           ? MediaQuery.of(context).size.width / 3
-                          : MediaQuery.of(context).size.width * 0.9,
+                          : MediaQuery.of(context).size.width,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           if (controller.currentPageNumber != 0)
-                            TextButton.icon(
-                              icon: Icon(Icons.arrow_back),
-                              onPressed: () {
-                                controller.backButtonPressed();
-                              },
-                              label: Text('Back'),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: TextButton.icon(
+                                icon: Icon(Icons.arrow_back),
+                                onPressed: () {
+                                  controller.backButtonPressed();
+                                },
+                                label: Text('Back'),
+                              ),
                             ),
                           if (controller.currentPageNumber == 0) Container(),
-                          TextButton.icon(
-                            icon: controller.currentPageNumber ==
-                                    controller.lastPageNumber
-                                ? Icon(Icons.done)
-                                : Icon(Icons.arrow_forward),
-                            onPressed: () {
-                              if (controller.currentPageNumber ==
-                                  controller.lastPageNumber)
-                                controller.submitButtonPressed();
-                              else
-                                controller.nextButtonPressed();
-                            },
-                            label: Text(
-                              controller.currentPageNumber ==
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: TextButton.icon(
+                              icon: controller.currentPageNumber ==
                                       controller.lastPageNumber
-                                  ? 'Submit'
-                                  : 'Next',
+                                  ? Icon(Icons.done)
+                                  : Icon(Icons.arrow_forward),
+                              onPressed: () {
+                                if (controller.currentPageNumber ==
+                                    controller.lastPageNumber)
+                                  controller.submitButtonPressed();
+                                else
+                                  controller.nextButtonPressed();
+                              },
+                              label: Text(
+                                controller.currentPageNumber ==
+                                        controller.lastPageNumber
+                                    ? 'Submit'
+                                    : 'Next',
+                              ),
                             ),
                           ),
                         ],
