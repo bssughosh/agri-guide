@@ -17,6 +17,7 @@ class RegisterPageController extends Controller {
   final RegisterPagePresenter _presenter;
   final RegisterStateMachine _stateMachine = new RegisterStateMachine();
   final navigationService = serviceLocator<NavigationService>();
+
   RegisterPageController()
       : _presenter = serviceLocator<RegisterPagePresenter>(),
         super();
@@ -157,7 +158,13 @@ class RegisterPageController extends Controller {
   }
 
   bool validatePage1() {
-    if (pincodeText.text.length == 0) {
+    if (selectedState == null) {
+      Fluttertoast.showToast(msg: 'Please select a state');
+      return false;
+    } else if (selectedDistrict == null) {
+      Fluttertoast.showToast(msg: 'Please select a district');
+      return false;
+    } else if (pincodeText.text.length == 0) {
       Fluttertoast.showToast(msg: 'Pincode cannot be empty');
       return false;
     } else if (pincodeText.text.length != 6) {

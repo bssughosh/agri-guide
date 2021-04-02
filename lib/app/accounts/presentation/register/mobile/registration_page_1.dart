@@ -1,8 +1,8 @@
-import 'package:agri_guide/app/accounts/presentation/widgets/custom_textfield.dart';
 import 'package:agri_guide/core/app_theme.dart';
 import 'package:agri_guide/core/widgets/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 
+import '../../widgets/custom_textfield.dart';
 import '../register_controller.dart';
 
 Widget registrationPage1({
@@ -77,6 +77,7 @@ Widget registrationPage1({
                 hint: 'Area (in acres)',
                 onChanged: controller.textFieldChanged,
                 textController: controller.areaText,
+                textInputType: TextInputType.number,
               ),
             ),
           if (controller.selectedDistrict != null &&
@@ -91,6 +92,7 @@ Widget registrationPage1({
                 hint: 'Pincode',
                 onChanged: controller.textFieldChanged,
                 textController: controller.pincodeText,
+                textInputType: TextInputType.number,
               ),
             ),
         ],

@@ -9,6 +9,7 @@ class CustomTextField extends StatelessWidget {
   final Function onChanged;
   final bool obscureText;
   final List<String> autofillHints;
+  final TextInputType textInputType;
 
   const CustomTextField({
     @required this.textController,
@@ -17,6 +18,7 @@ class CustomTextField extends StatelessWidget {
     @required this.onChanged,
     this.autofillHints,
     this.obscureText,
+    this.textInputType,
   });
 
   @override
@@ -36,6 +38,7 @@ class CustomTextField extends StatelessWidget {
         TextField(
           obscureText: obscureText ?? false,
           controller: textController,
+          keyboardType: textInputType ?? TextInputType.text,
           decoration: InputDecoration(
             fillColor: Colors.white,
             hintText: hint,
