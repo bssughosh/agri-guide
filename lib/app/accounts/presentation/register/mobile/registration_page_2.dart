@@ -1,110 +1,63 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/app_theme.dart';
-import '../../../../../core/enums.dart';
+import '../../widgets/custom_textfield.dart';
 import '../register_controller.dart';
-import '../widgets/location_selection_bar.dart';
-import '../widgets/location_selection_card.dart';
 
 Widget registrationPage2({
-  @required bool isWeb,
   @required RegisterPageController controller,
+  @required double width,
 }) {
-  // state, dist, area
-  if (!controller.stateListInitialized) controller.fetchStateList();
+  // name, email, phone, aadhar
   return Container(
-    child: Stack(
-      children: [
-        Center(
-          child: Container(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Center(
-                    child: Text(
-                      'Agricultural Location Details',
-                      style: AppTheme.headingBoldText,
-                    ),
-                  ),
-                  SizedBox(height: 15),
-                  if (controller.stateListLoading) CircularProgressIndicator(),
-                  if (!controller.stateListLoading)
-                    LocationSelectionBar(
-                      controller: controller,
-                      selectionListType: SelectionListType.STATE,
-                      isWeb: isWeb,
-                    ),
-                  if (!controller.stateListLoading &&
-                      controller.selectedState != '')
-                    if (controller.districtListLoading)
-                      CircularProgressIndicator(),
-                  if (!controller.stateListLoading &&
-                      controller.selectedState != '')
-                    if (!controller.districtListLoading)
-                      LocationSelectionBar(
-                        controller: controller,
-                        selectionListType: SelectionListType.DISTRICT,
-                        isWeb: isWeb,
-                      ),
-                  if (controller.selectedState != '' &&
-                      controller.selectedDistrict != '')
-                    TextField(
-                      controller: controller.pincodeText,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        hintText: 'Pincode',
-                        labelText: 'Pincode',
-                        errorText: controller.isPincodeTextFine
-                            ? null
-                            : 'Please enter a pincode',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
-                      onChanged: (value) {
-                        controller.textFieldChanged();
-                      },
-                    ),
-                  if (controller.selectedState != '' &&
-                      controller.selectedDistrict != '')
-                    TextField(
-                      controller: controller.areaText,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        hintText: 'Area of the plot (acres)',
-                        labelText: 'Area (acres)',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
-                      onChanged: (value) {
-                        controller.textFieldChanged();
-                      },
-                    ),
-                ],
-              ),
+    width: width,
+    child: SingleChildScrollView(
+      child: Column(
+        children: [
+          SizedBox(height: 30),
+          Container(
+            width: width,
+            child: CustomTextField(
+              title: 'Name',
+              hint: 'Full Name',
+              onChanged: controller.textFieldChanged,
+              textController: controller.nameText,
             ),
           ),
-        ),
-        if (controller.isStateFilterClicked)
-          Center(
-            child: LocationSelectionCard(
-              controller: controller,
-              selectionListType: SelectionListType.STATE,
-              isWeb: isWeb,
+          SizedBox(height: 10),
+          Container(
+            width: width,
+            child: CustomTextField(
+              title: 'Email',
+              hint: 'Email ID',
+              onChanged: controller.textFieldChanged,
+              textController: controller.emailText,
+              textInputType: TextInputType.emailAddress,
             ),
           ),
-        if (controller.isDistrictFilterClicked)
-          Center(
-            child: LocationSelectionCard(
-              controller: controller,
-              selectionListType: SelectionListType.DISTRICT,
-              isWeb: isWeb,
+          SizedBox(height: 10),
+          Container(
+            width: width,
+            child: CustomTextField(
+              title: 'Aadhar Card Number',
+              hint: '12 digit Aadhar card number',
+              onChanged: controller.textFieldChanged,
+              textController: controller.aadharText,
+              textInputType: TextInputType.number,
             ),
           ),
-      ],
+          SizedBox(height: 10),
+          Container(
+            width: width,
+            child: CustomTextField(
+              title: 'Phone Number',
+              hint: '10 digit mobile number',
+              onChanged: controller.textFieldChanged,
+              textController: controller.phoneText,
+              textInputType: TextInputType.phone,
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }

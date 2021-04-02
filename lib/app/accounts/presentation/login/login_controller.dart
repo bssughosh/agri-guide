@@ -32,11 +32,11 @@ class LoginPageController extends Controller {
     return _stateMachine.getCurrentState();
   }
 
-  void updateEmailField(String value) {
+  void updateEmailField() {
     refreshUI();
   }
 
-  void updatePasswordField(String value) {
+  void updatePasswordField() {
     refreshUI();
   }
 

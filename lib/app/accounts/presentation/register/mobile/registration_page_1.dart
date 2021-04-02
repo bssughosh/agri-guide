@@ -1,101 +1,101 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/app_theme.dart';
+import '../../../../../core/widgets/custom_dropdown.dart';
+import '../../widgets/custom_textfield.dart';
 import '../register_controller.dart';
 
 Widget registrationPage1({
   @required RegisterPageController controller,
+  @required double width,
 }) {
-  // name, email, phone, aadhar
-  return Center(
-    child: Container(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Center(
+  // state, dist, area, pincode
+  return Container(
+    width: width,
+    child: SingleChildScrollView(
+      child: Column(
+        children: [
+          SizedBox(height: 30),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20, bottom: 5),
               child: Text(
-                'Personal Details',
-                style: AppTheme.headingBoldText,
+                'State: ',
+                style: AppTheme.headingBoldText.copyWith(fontSize: 17),
               ),
             ),
-            SizedBox(height: 15),
-            TextField(
-              controller: controller.nameText,
-              decoration: InputDecoration(
-                fillColor: Colors.white,
-                hintText: 'Full Name',
-                labelText: 'Full Name',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              onChanged: (value) {
-                controller.textFieldChanged();
-              },
-              autofillHints: [AutofillHints.name],
-            ),
-            SizedBox(height: 5),
-            TextField(
-              controller: controller.emailText,
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                fillColor: Colors.white,
-                hintText: 'Email Address',
-                labelText: 'Email Address',
-                errorText: controller.isEmailTextFine
-                    ? null
-                    : 'Please enter a valid email',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              onChanged: (value) {
-                controller.textFieldChanged();
-              },
-              autofillHints: [AutofillHints.newUsername],
-            ),
-            SizedBox(height: 5),
-            TextField(
-              controller: controller.aadharText,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                fillColor: Colors.white,
-                hintText: 'Aadhar Card Number',
-                labelText: 'Aadhar Card Number',
-                errorText: controller.isAadharTextFine
-                    ? null
-                    : 'Please enter an Aadhar card number',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              onChanged: (value) {
-                controller.textFieldChanged();
+          ),
+          SizedBox(height: 5),
+          Container(
+            width: width,
+            child: CustomDropdown(
+              hintText: 'Select State',
+              itemsList: controller.stateItems(),
+              selectedItem: controller.selectedState,
+              onChanged: (String newValue) {
+                controller.selectedState = newValue;
+                controller.selectedStateChange();
               },
             ),
-            SizedBox(height: 5),
-            TextField(
-              controller: controller.phoneText,
-              keyboardType: TextInputType.phone,
-              decoration: InputDecoration(
-                fillColor: Colors.white,
-                hintText: 'Mobile Number (optional)',
-                labelText: 'Mobile Number',
-                errorText: controller.isPhoneTextFine
-                    ? null
-                    : 'Please enter a valid mobile number',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
+          ),
+          if (controller.selectedState != null) SizedBox(height: 10),
+          if (controller.selectedState != null)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20, bottom: 5),
+                child: Text(
+                  'District: ',
+                  style: AppTheme.headingBoldText.copyWith(fontSize: 17),
                 ),
               ),
-              onChanged: (value) {
-                controller.textFieldChanged();
-              },
-              autofillHints: [AutofillHints.telephoneNumber],
             ),
-            SizedBox(height: 15),
-          ],
-        ),
+          if (controller.selectedState != null) SizedBox(height: 5),
+          if (controller.selectedState != null)
+            Container(
+              width: width,
+              child: CustomDropdown(
+                hintText: 'Select District',
+                itemsList: controller.districtItems(),
+                selectedItem: controller.selectedDistrict,
+                onChanged: (String newValue) {
+                  controller.selectedDistrict = newValue;
+                  controller.selectedDistrictChange();
+                },
+              ),
+            ),
+          if (controller.selectedDistrict != null &&
+              controller.selectedState != null)
+            SizedBox(height: 10),
+          if (controller.selectedDistrict != null &&
+              controller.selectedState != null)
+            Container(
+              width: width,
+              child: CustomTextField(
+                title: 'Area',
+                hint: 'Area (in acres)',
+                onChanged: controller.textFieldChanged,
+                textController: controller.areaText,
+                textInputType: TextInputType.number,
+              ),
+            ),
+          if (controller.selectedDistrict != null &&
+              controller.selectedState != null)
+            SizedBox(height: 10),
+          if (controller.selectedDistrict != null &&
+              controller.selectedState != null)
+            Container(
+              width: width,
+              child: CustomTextField(
+                title: 'Pincode',
+                hint: 'Pincode',
+                onChanged: controller.textFieldChanged,
+                textController: controller.pincodeText,
+                textInputType: TextInputType.number,
+              ),
+            ),
+        ],
       ),
     ),
   );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/app_theme.dart';
 import '../../../../../core/widgets/custom_button.dart';
+import '../../widgets/custom_textfield.dart';
 import '../login_controller.dart';
 
 Widget buildLoginInitializedViewMobile({
@@ -9,114 +10,83 @@ Widget buildLoginInitializedViewMobile({
   @required BuildContext context,
 }) {
   double screenHeight = MediaQuery.of(context).size.height;
+
   return Scaffold(
-    backgroundColor: AppTheme.loginBackground,
     resizeToAvoidBottomInset: false,
     body: SafeArea(
       child: WillPopScope(
         onWillPop: () => Future.sync(controller.onWillPopScope),
-        child: Center(
+        child: AutofillGroup(
           child: Container(
-            width: double.infinity,
-            margin: EdgeInsets.symmetric(horizontal: 15),
-            child: AutofillGroup(
-              child: Container(
-                child: Column(
-                  children: [
-                    SizedBox(height: screenHeight * 0.25),
-                    Image.asset(
-                      'assets/login_icon.png',
-                      height: 100,
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      'Agri Guide',
-                      style: AppTheme.headingBoldText
-                          .copyWith(fontSize: 19, color: Colors.white),
-                    ),
-                    SizedBox(height: 30),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('assets/login_heading1.png'),
+                  fit: BoxFit.fitWidth,
+                  alignment: Alignment.topCenter),
+            ),
+            child: Column(
+              children: [
+                SizedBox(height: screenHeight * 0.5),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      CustomTextField(
+                        title: 'Email',
+                        textController: controller.emailText,
+                        onChanged: controller.updateEmailField,
+                        hint: 'Email',
+                        autofillHints: [AutofillHints.username],
                       ),
-                      child: Column(
-                        children: [
-                          TextField(
-                            controller: controller.emailText,
-                            keyboardType: TextInputType.emailAddress,
-                            textAlign: TextAlign.center,
-                            decoration: InputDecoration(
-                              fillColor: Colors.white,
-                              prefixIcon: Icon(Icons.portrait),
-                              labelText: 'Email',
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.never,
-                              border: UnderlineInputBorder(),
-                            ),
-                            onChanged: (value) {
-                              controller.updateEmailField(value);
-                            },
-                            autofillHints: [AutofillHints.username],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          TextField(
-                            controller: controller.passwordText,
-                            obscureText: true,
-                            textAlign: TextAlign.center,
-                            decoration: InputDecoration(
-                              fillColor: Colors.white,
-                              prefixIcon: Icon(Icons.lock),
-                              labelText: 'Password',
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.never,
-                              border: UnderlineInputBorder(),
-                            ),
-                            onChanged: (value) {
-                              controller.updatePasswordField(value);
-                            },
-                            autofillHints: [AutofillHints.password],
-                          ),
-                          SizedBox(height: 20),
-                          Center(
-                            child: Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  CustomButton(
-                                    isOverlayRequired: false,
-                                    isActive: true,
-                                    title: 'Login',
-                                    onPressed: () {
-                                      controller.loginUser();
-                                    },
-                                  ),
-                                  SizedBox(width: 50),
-                                  GestureDetector(
-                                    onTap: () {
-                                      controller.navigateToRegistration();
-                                    },
-                                    child: Text(
-                                      'Register',
-                                      style: AppTheme.buttonActiveTextStyle
-                                          .copyWith(
-                                              color: AppTheme
-                                                  .navigationSelectedColor),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+                      SizedBox(
+                        height: 20,
                       ),
-                    ),
-                  ],
+                      CustomTextField(
+                        title: 'Password',
+                        textController: controller.passwordText,
+                        onChanged: controller.updatePasswordField,
+                        hint: 'Password',
+                        autofillHints: [AutofillHints.password],
+                        obscureText: true,
+                      ),
+                      SizedBox(height: 20),
+                      CustomButton(
+                        isActive: controller.emailText.text.length > 0 &&
+                            controller.passwordText.text.length > 0,
+                        isOverlayRequired: false,
+                        onPressed: () {
+                          controller.loginUser();
+                        },
+                        title: 'Login',
+                      ),
+                      SizedBox(height: 10),
+                      Center(
+                        child: Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('New User?'),
+                              SizedBox(width: 10),
+                              GestureDetector(
+                                child: Text(
+                                  'Register',
+                                  style: AppTheme.bodyBoldText.copyWith(
+                                    decoration: TextDecoration.underline,
+                                    color: AppTheme.secondaryColor,
+                                  ),
+                                ),
+                                onTap: () {
+                                  controller.navigateToRegistration();
+                                },
+                              )
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
         ),
