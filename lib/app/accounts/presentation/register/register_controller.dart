@@ -1,4 +1,3 @@
-import 'package:agri_guide/core/handle_api_errors.dart';
 import 'package:checkdigit/checkdigit.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +5,7 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../../core/exceptions.dart';
+import '../../../../core/handle_api_errors.dart';
 import '../../../../core/observer.dart';
 import '../../../../injection_container.dart';
 import '../../../navigation_service.dart';

@@ -1,8 +1,8 @@
-import 'package:agri_guide/app/accounts/presentation/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/app_theme.dart';
 import '../../../../../core/widgets/custom_button.dart';
+import '../../widgets/custom_textfield.dart';
 import '../login_controller.dart';
 
 Widget buildLoginInitializedViewMobile({

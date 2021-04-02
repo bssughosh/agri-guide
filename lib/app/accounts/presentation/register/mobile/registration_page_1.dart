@@ -1,7 +1,7 @@
-import 'package:agri_guide/core/app_theme.dart';
-import 'package:agri_guide/core/widgets/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../core/app_theme.dart';
+import '../../../../../core/widgets/custom_dropdown.dart';
 import '../../widgets/custom_textfield.dart';
 import '../register_controller.dart';
 

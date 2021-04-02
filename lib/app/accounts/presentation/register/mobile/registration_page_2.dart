@@ -1,6 +1,6 @@
-import 'package:agri_guide/app/accounts/presentation/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 
+import '../../widgets/custom_textfield.dart';
 import '../register_controller.dart';
 
 Widget registrationPage2({
