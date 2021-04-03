@@ -18,6 +18,10 @@ class DashboardPageStateMachine
           loginStatus: initializedEvent.loginStatus,
         );
         break;
+
+      case DashboardPageLoadingEvent:
+        newState = DashboardPageLoadingState();
+        break;
     }
     return newState;
   }
@@ -35,6 +39,8 @@ class DashboardPageInitializedState extends DashboardState {
   });
 }
 
+class DashboardPageLoadingState extends DashboardState {}
+
 class DashboardEvent {}
 
 class DashboardPageInitializedEvent extends DashboardEvent {
@@ -44,3 +50,5 @@ class DashboardPageInitializedEvent extends DashboardEvent {
     @required this.loginStatus,
   });
 }
+
+class DashboardPageLoadingEvent extends DashboardEvent {}

@@ -5,6 +5,7 @@ import 'dashboard_controller.dart';
 import 'dashboard_state_machine.dart';
 import 'mobile/initialization_view.dart';
 import 'mobile/initialized_view.dart';
+import 'mobile/loading_view.dart';
 import 'web/initialized_view.dart';
 
 class DashboardPage extends View {
@@ -40,6 +41,9 @@ class DashboardViewState
           context: context,
           controller: controller,
         );
+
+      case DashboardPageLoadingState:
+        return buildDashboardLoadingView();
     }
     throw Exception("Unknown state $currentState encountered");
   }
