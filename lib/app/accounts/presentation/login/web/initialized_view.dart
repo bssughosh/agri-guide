@@ -1,3 +1,5 @@
+import 'package:agri_guide/app/accounts/presentation/widgets/custom_textfield.dart';
+import 'package:agri_guide/core/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/app_theme.dart';
@@ -5,116 +7,88 @@ import '../login_controller.dart';
 
 Widget buildLoginInitializedViewWeb({
   @required LoginPageController controller,
+  @required BuildContext context,
 }) {
+  double screenHeight = MediaQuery.of(context).size.height;
+
   return Scaffold(
-    floatingActionButton: FloatingActionButton(
-      child: Icon(Icons.home),
-      onPressed: () {
-        controller.navigateToHomepage();
-      },
-    ),
-    floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    body: Center(
-      child: Container(
-        width: 500,
-        child: SingleChildScrollView(
-          child: AutofillGroup(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 30,
-                ),
-                Image.asset(
-                  "assets/login_icon.png",
-                  height: 100,
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                TextField(
-                  controller: controller.emailText,
-                  keyboardType: TextInputType.emailAddress,
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    prefixIcon: Icon(Icons.portrait),
-                    hintText: 'Email ID',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  onChanged: (value) {
-                    controller.updateEmailField();
-                  },
-                  autofillHints: [AutofillHints.username],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextField(
-                  controller: controller.passwordText,
-                  obscureText: true,
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    prefixIcon: Icon(Icons.lock),
-                    hintText: 'Password',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  onChanged: (value) {
-                    controller.updatePasswordField();
-                  },
-                  autofillHints: [AutofillHints.password],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Center(
-                  child: Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+    body: SafeArea(
+      child: WillPopScope(
+        onWillPop: () => Future.sync(controller.onWillPopScope),
+        child: AutofillGroup(
+          child: SingleChildScrollView(
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/login_heading1.png'),
+                    fit: BoxFit.fitWidth,
+                    alignment: Alignment.topCenter),
+              ),
+              child: Column(
+                children: [
+                  SizedBox(height: screenHeight * 0.5),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
                       children: [
-                        TextButton(
-                          child: Text(
-                            'Login',
-                            style: AppTheme.navigationTabSelectedTextStyle,
-                          ),
-                          style: ButtonStyle(
-                            backgroundColor:
-                                controller.passwordText.text.length != 0 &&
-                                        controller.emailText.text.length != 0
-                                    ? MaterialStateProperty.all<Color>(
-                                        AppTheme.buttonActiveColor)
-                                    : MaterialStateProperty.all<Color>(
-                                        AppTheme.buttonDeactiveColor),
-                          ),
-                          onPressed: () {
-                            if (controller.passwordText.text.length != 0 &&
-                                controller.emailText.text.length != 0)
-                              controller.loginUser();
-                          },
+                        CustomTextField(
+                          title: 'Email',
+                          textController: controller.emailText,
+                          onChanged: controller.updateEmailField,
+                          hint: 'Email',
+                          autofillHints: [AutofillHints.username],
                         ),
-                        SizedBox(width: 20),
-                        TextButton(
-                          child: Text(
-                            'Register',
-                            style: AppTheme.navigationTabSelectedTextStyle,
-                          ),
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                AppTheme.navigationSelectedColor),
-                          ),
-                          onPressed: () {
-                            controller.navigateToRegistration();
-                          },
+                        SizedBox(
+                          height: 20,
                         ),
+                        CustomTextField(
+                          title: 'Password',
+                          textController: controller.passwordText,
+                          onChanged: controller.updatePasswordField,
+                          hint: 'Password',
+                          autofillHints: [AutofillHints.password],
+                          obscureText: true,
+                          onSaved: controller.loginUser,
+                        ),
+                        SizedBox(height: 20),
+                        CustomButton(
+                          isActive: controller.emailText.text.length > 0 &&
+                              controller.passwordText.text.length > 0,
+                          isOverlayRequired: false,
+                          onPressed: () {
+                            controller.loginUser();
+                          },
+                          title: 'Login',
+                        ),
+                        SizedBox(height: 10),
+                        Center(
+                          child: Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('New User?'),
+                                SizedBox(width: 10),
+                                GestureDetector(
+                                  child: Text(
+                                    'Register',
+                                    style: AppTheme.bodyBoldText.copyWith(
+                                      decoration: TextDecoration.underline,
+                                      color: AppTheme.secondaryColor,
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    controller.navigateToRegistration();
+                                  },
+                                )
+                              ],
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

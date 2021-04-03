@@ -53,9 +53,8 @@ flutter:
 
   assets:
     - assets/icon.png
-    - assets/login_icon.png
-    - assets/splash_logo.gif
     - assets/splash_v1.png
+    - assets/splash_web.png
     - assets/no_filter_selected.png
     - assets/app_bar_bg.png
     - assets/select_state.png
