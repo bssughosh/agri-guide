@@ -18,28 +18,25 @@ Widget buildPredictionInputInitializedViewMobile({
 }) {
   if (!controller.stateListInitialized) controller.fetchStateList();
 
-  bool _showStateList = !controller.stateListLoading;
+  bool _showStateList = controller.stateList.isNotEmpty;
   bool _showDistrictList =
-      controller.selectedState != null && !controller.districtListLoading;
-  bool _showSeasonsList = controller.areCropsAvailable &&
-      !controller.seasonListLoading &&
-      controller.selectedCrop != null &&
-      controller.selectedParams.contains(describeEnum(DownloadParams.yield));
+      controller.selectedState != null && controller.districtList.isNotEmpty;
   bool _showCropsList = controller.areCropsAvailable &&
-      !controller.cropListLoading &&
+      controller.cropsList.isNotEmpty &&
       controller.selectedDistrict != null &&
       controller.selectedParams.contains(describeEnum(DownloadParams.yield));
-  bool _showParams =
-      !controller.cropListLoading && controller.selectedDistrict != null;
+  bool _showSeasonsList = controller.areCropsAvailable &&
+      controller.seasonsList.isNotEmpty &&
+      controller.selectedCrop != null &&
+      controller.selectedParams.contains(describeEnum(DownloadParams.yield));
+  bool _showParams = controller.selectedDistrict != null;
   bool _showRangeWidget = controller.areCropsAvailable
       ? !controller.selectedParams
               .contains(describeEnum(DownloadParams.yield)) &&
-          controller.selectedDistrict != null &&
-          !controller.cropListLoading
-      : !controller.cropListLoading && controller.selectedDistrict != null;
+          controller.selectedDistrict != null
+      : controller.selectedDistrict != null;
   bool _showSubmitButton = controller.selectedState != null &&
       controller.selectedDistrict != null &&
-      !controller.cropListLoading &&
       (controller.areCropsAvailable
           ? controller.selectedParams
                   .contains(describeEnum(DownloadParams.yield))
@@ -56,8 +53,6 @@ Widget buildPredictionInputInitializedViewMobile({
         child: Column(
           children: [
             SizedBox(height: 30),
-            if (!_showStateList || !_showDistrictList)
-              CircularProgressIndicator(),
             if (_showStateList)
               Container(
                 decoration: AppTheme.normalBlackBorderDecoration,
@@ -121,10 +116,8 @@ Widget buildPredictionInputInitializedViewMobile({
                   ],
                 ),
               ),
-            if (controller.cropListLoading) CircularProgressIndicator(),
             if (_showParams) ParamsColumnWidget(controller: controller),
             if (_showCropsList) CropsColumnWidget(controller: controller),
-            if (controller.seasonListLoading) CircularProgressIndicator(),
             if (_showSeasonsList) SeasonsColumnWidget(controller: controller),
             if (_showRangeWidget) RangeColumnWidget(controller: controller),
             if (_showSubmitButton) SizedBox(height: 40),
