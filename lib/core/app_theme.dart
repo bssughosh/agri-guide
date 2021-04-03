@@ -9,13 +9,13 @@ class AppTheme {
 
   static Color loginBackground = Color(0xFF8CC63E).withOpacity(0.85);
 
-  static Color secondaryColor = Color(0xFF53732B);
+  static Color secondaryColor = Color(0xFF2BB622);
 
-  static Color accentColor = Color(0xFF53732B);
+  static Color accentColor = Color(0xFF2BB622);
 
   static Color navigationSelectedColor = Color(0xFF1D5B70);
 
-  static Color buttonActiveColor = Color(0xFF53732B);
+  static Color buttonActiveColor = Color(0xFF2BB622);
 
   static Color buttonDeactiveColor = Colors.grey;
 
