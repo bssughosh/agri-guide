@@ -31,15 +31,17 @@ Widget buildPredictionInputInitializedViewMobile({
       controller.selectedParams.contains(describeEnum(DownloadParams.yield));
   bool _showParams = controller.selectedDistrict != null;
   bool _showRangeWidget = controller.areCropsAvailable
-      ? !controller.selectedParams
+      ? controller.selectedParams.isNotEmpty &&
+          !controller.selectedParams
               .contains(describeEnum(DownloadParams.yield)) &&
           controller.selectedDistrict != null
       : controller.selectedDistrict != null;
   bool _showSubmitButton = controller.selectedState != null &&
       controller.selectedDistrict != null &&
       (controller.areCropsAvailable
-          ? controller.selectedParams
-                  .contains(describeEnum(DownloadParams.yield))
+          ? controller.selectedParams.isNotEmpty &&
+                  controller.selectedParams
+                      .contains(describeEnum(DownloadParams.yield))
               ? (controller.selectedCrop != null &&
                   controller.selectedSeason != null)
               : true
