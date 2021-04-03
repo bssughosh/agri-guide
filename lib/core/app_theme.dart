@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 /// A class conating all theming for the application
 class AppTheme {
   // Colors
-  static Color primaryColor = Color(0xFFB4FF7B);
+  static Color primaryColor = Color(0xFFA1CE69);
 
   static Color chipBackground = Color(0xFF8CC63E).withOpacity(0.25);
 
   static Color loginBackground = Color(0xFF8CC63E).withOpacity(0.85);
 
-  static Color secondaryColor = Color(0xFF2BB622);
+  static Color secondaryColor = Color(0xFF53732B);
 
-  static Color accentColor = Color(0xFF2BB622);
+  static Color accentColor = Color(0xFF53732B);
 
   static Color navigationSelectedColor = Color(0xFF1D5B70);
 
-  static Color buttonActiveColor = Color(0xFF2BB622);
+  static Color buttonActiveColor = Color(0xFF53732B);
 
   static Color buttonDeactiveColor = Colors.grey;
 
