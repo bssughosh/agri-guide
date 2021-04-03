@@ -17,6 +17,10 @@ class DownloadsStateMachine
       case DownloadsInitializedEvent:
         newState = DownloadsInitializedState();
         break;
+
+      case DownloadsLoadingEvent:
+        newState = DownloadsLoadingState();
+        break;
     }
     return newState;
   }
