@@ -12,7 +12,6 @@ Widget buildLoginInitializedViewMobile({
   double screenHeight = MediaQuery.of(context).size.height;
 
   return Scaffold(
-    resizeToAvoidBottomInset: false,
     body: SafeArea(
       child: WillPopScope(
         onWillPop: () => Future.sync(controller.onWillPopScope),
