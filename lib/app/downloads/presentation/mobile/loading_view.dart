@@ -4,8 +4,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../../../../core/app_theme.dart';
 
 Widget buildDownloadsLoadingView() {
-  return Scaffold(
-    body: Center(
+  return Container(
+    margin: EdgeInsets.only(top: 200),
+    child: Center(
       child: SpinKitFoldingCube(color: AppTheme.secondaryColor),
     ),
   );
