@@ -13,8 +13,13 @@ class DownloadsStateMachine
         DownloadsInitializationEvent newEvent = event;
         newState = DownloadsInitializationState(newEvent.isFirstLoad);
         break;
+
       case DownloadsInitializedEvent:
         newState = DownloadsInitializedState();
+        break;
+
+      case DownloadsLoadingEvent:
+        newState = DownloadsLoadingState();
         break;
     }
     return newState;
@@ -31,6 +36,8 @@ class DownloadsInitializationState extends DownloadsState {
 
 class DownloadsInitializedState extends DownloadsState {}
 
+class DownloadsLoadingState extends DownloadsState {}
+
 abstract class DownloadsEvent {}
 
 class DownloadsInitializationEvent extends DownloadsEvent {
@@ -40,3 +47,5 @@ class DownloadsInitializationEvent extends DownloadsEvent {
 }
 
 class DownloadsInitializedEvent extends DownloadsEvent {}
+
+class DownloadsLoadingEvent extends DownloadsEvent {}

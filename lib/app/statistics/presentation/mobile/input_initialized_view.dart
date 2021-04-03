@@ -42,12 +42,9 @@ Widget buildStatisticsInputInitializedViewMobile({
                   ),
                 ),
                 if (controller.selectedState != null)
-                  if (controller.districtListLoading)
-                    CircularProgressIndicator(),
+                  if (controller.districtList.isNotEmpty) SizedBox(height: 20),
                 if (controller.selectedState != null)
-                  if (!controller.districtListLoading) SizedBox(height: 20),
-                if (controller.selectedState != null)
-                  if (!controller.districtListLoading)
+                  if (controller.districtList.isNotEmpty)
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
@@ -60,7 +57,7 @@ Widget buildStatisticsInputInitializedViewMobile({
                       ),
                     ),
                 if (controller.selectedState != null)
-                  if (!controller.districtListLoading)
+                  if (controller.districtList.isNotEmpty)
                     Container(
                       width: double.infinity,
                       child: CustomDropdown(

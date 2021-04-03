@@ -43,8 +43,6 @@ class DownloadsPageController extends Controller {
 
   List<String> selectedParams = [];
 
-  bool isDownloading = false;
-
   List<String> downloadedFilesToBeDisplayed = [];
 
   @override
@@ -103,7 +101,7 @@ class DownloadsPageController extends Controller {
   }
 
   void selectedStateChange() {
-    _stateMachine.onEvent(new DownloadsInitializationEvent(false));
+    _stateMachine.onEvent(new DownloadsLoadingEvent());
     refreshUI();
 
     if (selectedStates.length == 1) {
@@ -162,8 +160,14 @@ class DownloadsPageController extends Controller {
   }
 
   void downloadFiles() {
+    _stateMachine.onEvent(new DownloadsLoadingEvent());
+    refreshUI();
+
     _presenter.getRequiredDownload(
-      new UseCaseObserver(() {}, (error) {
+      new UseCaseObserver(() {
+        _stateMachine.onEvent(new DownloadsInitializedEvent());
+        refreshUI();
+      }, (error) {
         handleAPIErrors(error);
         print(error);
       }),
@@ -175,18 +179,19 @@ class DownloadsPageController extends Controller {
   }
 
   void downloadFilesMobile({@required BuildContext context}) {
-    isDownloading = true;
+    _stateMachine.onEvent(new DownloadsLoadingEvent());
     refreshUI();
+
     String fileName = _createTimeStamp();
     _presenter.getRequiredDownloadMobile(
       new UseCaseObserver(() async {
-        isDownloading = false;
         await checkDownloadedFiles();
         selectedParams = [];
         selectedStates = [];
         selectedDistricts = [];
         toText = null;
         fromText = null;
+        _stateMachine.onEvent(new DownloadsInitializedEvent());
         refreshUI();
         Fluttertoast.showToast(
           msg:

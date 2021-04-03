@@ -22,6 +22,7 @@ class PredictionViewState
   void initState() {
     controller.startMonth = controller.months[0];
     controller.endMonth = controller.months[1];
+    controller.areaText.text = '';
     super.initState();
   }
 

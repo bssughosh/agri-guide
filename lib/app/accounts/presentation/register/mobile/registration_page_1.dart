@@ -93,6 +93,7 @@ Widget registrationPage1({
                 onChanged: controller.textFieldChanged,
                 textController: controller.pincodeText,
                 textInputType: TextInputType.number,
+                onSaved: controller.nextButtonPressed,
               ),
             ),
         ],

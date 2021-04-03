@@ -33,7 +33,6 @@ class StatisticsPageController extends Controller {
   String selectedDistrict;
   String selectedCrop;
   String selectedSeason;
-  bool districtListLoading = false;
   bool areCropsAvailable = true;
   bool isCropChanged = false;
 
@@ -89,7 +88,7 @@ class StatisticsPageController extends Controller {
   }
 
   void fetchDistrictList() {
-    districtListLoading = true;
+    _stateMachine.onEvent(new StatisticsPageLoadingEvent());
     refreshUI();
     _presenter.fetchDistrictList(
       new UseCaseObserver(
@@ -102,7 +101,7 @@ class StatisticsPageController extends Controller {
         },
         onNextFunction: (List districtListRes) {
           districtList = districtListRes;
-          districtListLoading = false;
+          _stateMachine.onEvent(new StatisticsPageInputInitializedEvent());
           refreshUI();
         },
       ),

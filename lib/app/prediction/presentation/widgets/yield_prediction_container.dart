@@ -66,7 +66,9 @@ Widget yieldPredictionContainer({
                       .copyWith(color: Colors.black, fontSize: 16),
                   children: [
                     TextSpan(
-                      text: '${controller.userEntity.area} acres',
+                      text: controller.areaText.text.length == 0
+                          ? '${controller.userEntity.area} acres'
+                          : '${controller.areaText.text} acres',
                       style: AppTheme.headingRegularText
                           .copyWith(color: Colors.black),
                     ),

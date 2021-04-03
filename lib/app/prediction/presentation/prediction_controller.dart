@@ -48,12 +48,8 @@ class PredictionPageController extends Controller {
   String selectedSeason;
   String selectedCrop;
 
-  bool stateListLoading = false;
-  bool districtListLoading = false;
   bool stateListInitialized = false;
-  bool seasonListLoading = false;
-  bool cropListLoading = false;
-  bool areCropsAvailable = true;
+  bool areCropsAvailable = false;
   bool isLoadingFirstTime = true;
 
   List paramsList = [
@@ -75,12 +71,14 @@ class PredictionPageController extends Controller {
   double predictedYield = -1;
   List<String> monthsToDisplay = [];
 
+  TextEditingController areaText = new TextEditingController();
+
   Map<String, List<int>> _monthsForSeasons = {
-    'Kharif': [6, 7, 8, 9],
-    'Rabi': [9, 10, 11, 0, 1, 2],
+    'Kharif': [5, 6, 7, 8, 9],
+    'Rabi': [10, 11, 0, 1, 2, 3],
     'Whole Year': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-    'Autumn': [8, 9, 10],
-    'Summer': [5, 6, 7],
+    'Autumn': [8, 9],
+    'Summer': [2, 3, 4],
     'Winter': [11, 0, 1],
   };
 
@@ -130,7 +128,8 @@ class PredictionPageController extends Controller {
   }
 
   void fetchStateList() {
-    stateListLoading = true;
+    _stateMachine.onEvent(new PredictionPageLoadingEvent());
+    refreshUI();
     _presenter.fetchStateList(
       new UseCaseObserver(
         () {},
@@ -140,7 +139,6 @@ class PredictionPageController extends Controller {
         },
         onNextFunction: (List stateListRes) {
           stateList = stateListRes;
-          stateListLoading = false;
           stateListInitialized = true;
           String newState = namePreporcessing(userEntity.state);
           for (var state in stateListRes) {
@@ -149,15 +147,17 @@ class PredictionPageController extends Controller {
               break;
             }
           }
-          if (isLoadingFirstTime) fetchDistrictList();
+          _stateMachine.onEvent(new PredictionPageInputInitializedEvent());
           refreshUI();
+          if (isLoadingFirstTime) fetchDistrictList();
         },
       ),
     );
   }
 
   void fetchDistrictList() {
-    districtListLoading = true;
+    _stateMachine.onEvent(new PredictionPageLoadingEvent());
+    refreshUI();
     _presenter.fetchDistrictList(
       new UseCaseObserver(
         () {},
@@ -167,7 +167,7 @@ class PredictionPageController extends Controller {
         },
         onNextFunction: (List districtListRes) {
           districtList = districtListRes;
-          districtListLoading = false;
+
           String newDist = namePreporcessing(userEntity.district);
           for (var dist in districtListRes) {
             if (dist['name'] == newDist) {
@@ -175,11 +175,12 @@ class PredictionPageController extends Controller {
               break;
             }
           }
+          _stateMachine.onEvent(new PredictionPageInputInitializedEvent());
+          refreshUI();
           if (isLoadingFirstTime) {
             isLoadingFirstTime = false;
             fetchCropsList();
           }
-          refreshUI();
         },
       ),
       selectedState,
@@ -187,7 +188,8 @@ class PredictionPageController extends Controller {
   }
 
   void fetchCropsList() {
-    cropListLoading = true;
+    _stateMachine.onEvent(new PredictionPageLoadingEvent());
+    refreshUI();
     _presenter.fetchCropList(
       new UseCaseObserver(
         () {
@@ -198,7 +200,6 @@ class PredictionPageController extends Controller {
           print(error);
         },
         onNextFunction: (List cropsRes) {
-          cropListLoading = false;
           cropsList = cropsRes;
           if (cropsRes.length > 0) {
             areCropsAvailable = true;
@@ -209,6 +210,7 @@ class PredictionPageController extends Controller {
             areCropsAvailable = false;
             selectedCrop = null;
           }
+          _stateMachine.onEvent(new PredictionPageInputInitializedEvent());
           refreshUI();
         },
       ),
@@ -218,7 +220,8 @@ class PredictionPageController extends Controller {
   }
 
   void fetchSeasonList() {
-    seasonListLoading = true;
+    _stateMachine.onEvent(new PredictionPageLoadingEvent());
+    refreshUI();
     _presenter.fetchSeasonsList(
       new UseCaseObserver(
         () {},
@@ -227,9 +230,9 @@ class PredictionPageController extends Controller {
           print(error);
         },
         onNextFunction: (List seasonsRes) {
-          seasonListLoading = false;
           seasonsList = seasonsRes;
 
+          _stateMachine.onEvent(new PredictionPageInputInitializedEvent());
           refreshUI();
         },
       ),
@@ -347,9 +350,8 @@ class PredictionPageController extends Controller {
     if (paramsList.length == 4) {
       paramsList.removeLast();
     }
-    if (selectedParams.contains(describeEnum(DownloadParams.yield))) {
-      selectedParams.remove(describeEnum(DownloadParams.yield));
-    }
+    selectedParams = [];
+    areaText.text = '';
     refreshUI();
     fetchDistrictList();
   }
@@ -363,9 +365,8 @@ class PredictionPageController extends Controller {
     if (paramsList.length == 4) {
       paramsList.removeLast();
     }
-    if (selectedParams.contains(describeEnum(DownloadParams.yield))) {
-      selectedParams.remove(describeEnum(DownloadParams.yield));
-    }
+    selectedParams = [];
+    areaText.text = '';
     refreshUI();
     fetchCropsList();
   }
@@ -463,6 +464,10 @@ class PredictionPageController extends Controller {
     return _res;
   }
 
+  void textFieldChanged() {
+    refreshUI();
+  }
+
   String getCropNameFromCropId(String cropId) {
     for (var crop in cropsList) {
       if (cropId == crop['crop_id']) {
@@ -473,7 +478,9 @@ class PredictionPageController extends Controller {
   }
 
   String calculatePersonalisedYield() {
-    int area = int.parse(userEntity.area);
+    int area = areaText.text.length == 0
+        ? int.parse(userEntity.area)
+        : int.parse(areaText.text);
     double newYield = predictedYield * area / 10;
     return newYield.toStringAsFixed(3);
   }

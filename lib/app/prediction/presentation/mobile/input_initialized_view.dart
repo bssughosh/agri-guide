@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../../core/app_theme.dart';
 import '../../../../core/enums.dart';
@@ -17,32 +18,30 @@ Widget buildPredictionInputInitializedViewMobile({
 }) {
   if (!controller.stateListInitialized) controller.fetchStateList();
 
-  bool _showStateList = !controller.stateListLoading;
+  bool _showStateList = controller.stateList.isNotEmpty;
   bool _showDistrictList =
-      controller.selectedState != null && !controller.districtListLoading;
+      controller.selectedState != null && controller.districtList.isNotEmpty;
+  bool _showCropsList = controller.areCropsAvailable &&
+      controller.cropsList.isNotEmpty &&
+      controller.selectedDistrict != null &&
+      controller.selectedParams.contains(describeEnum(DownloadParams.yield));
   bool _showSeasonsList = controller.areCropsAvailable &&
-      !controller.seasonListLoading &&
+      controller.seasonsList.isNotEmpty &&
       controller.selectedCrop != null &&
       controller.selectedParams.contains(describeEnum(DownloadParams.yield));
-  bool _showCropsList = controller.areCropsAvailable &&
-      !controller.cropListLoading &&
-      controller.selectedDistrict != null &&
-      controller.selectedParams.contains(describeEnum(DownloadParams.yield));
-  bool _showParams = !controller.cropListLoading &&
-      controller.areCropsAvailable &&
-      controller.selectedDistrict != null;
+  bool _showParams = controller.selectedDistrict != null;
   bool _showRangeWidget = controller.areCropsAvailable
-      ? !controller.selectedParams
+      ? controller.selectedParams.isNotEmpty &&
+          !controller.selectedParams
               .contains(describeEnum(DownloadParams.yield)) &&
-          controller.selectedDistrict != null &&
-          !controller.cropListLoading
-      : !controller.cropListLoading && controller.selectedDistrict != null;
+          controller.selectedDistrict != null
+      : controller.selectedDistrict != null;
   bool _showSubmitButton = controller.selectedState != null &&
       controller.selectedDistrict != null &&
-      !controller.cropListLoading &&
       (controller.areCropsAvailable
-          ? controller.selectedParams
-                  .contains(describeEnum(DownloadParams.yield))
+          ? controller.selectedParams.isNotEmpty &&
+                  controller.selectedParams
+                      .contains(describeEnum(DownloadParams.yield))
               ? (controller.selectedCrop != null &&
                   controller.selectedSeason != null)
               : true
@@ -56,8 +55,6 @@ Widget buildPredictionInputInitializedViewMobile({
         child: Column(
           children: [
             SizedBox(height: 30),
-            if (!_showStateList || !_showDistrictList)
-              CircularProgressIndicator(),
             if (_showStateList)
               Container(
                 decoration: AppTheme.normalBlackBorderDecoration,
@@ -112,16 +109,17 @@ Widget buildPredictionInputInitializedViewMobile({
                           onChanged: (String newValue) {
                             controller.selectedDistrict = newValue;
                             controller.selectedDistrictChange();
+
+                            _showMyDialog(
+                                context: context, controller: controller);
                           },
                         ),
                       ),
                   ],
                 ),
               ),
-            if (controller.cropListLoading) CircularProgressIndicator(),
             if (_showParams) ParamsColumnWidget(controller: controller),
             if (_showCropsList) CropsColumnWidget(controller: controller),
-            if (controller.seasonListLoading) CircularProgressIndicator(),
             if (_showSeasonsList) SeasonsColumnWidget(controller: controller),
             if (_showRangeWidget) RangeColumnWidget(controller: controller),
             if (_showSubmitButton) SizedBox(height: 40),
@@ -138,5 +136,55 @@ Widget buildPredictionInputInitializedViewMobile({
         ),
       ),
     ),
+  );
+}
+
+Future<void> _showMyDialog({
+  @required BuildContext context,
+  @required PredictionPageController controller,
+}) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        ),
+        title: Text('Enter Area'),
+        content: TextField(
+          controller: controller.areaText,
+          decoration: InputDecoration(
+            fillColor: Colors.white,
+            labelText: 'Area',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
+          ),
+          onChanged: (value) {
+            controller.textFieldChanged();
+          },
+          onSubmitted: (value) {
+            if (controller.areaText.text.length > 0) {
+              Navigator.of(context).pop();
+            } else {
+              Fluttertoast.showToast(msg: 'Area cannot be empty');
+            }
+          },
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Done'),
+            onPressed: () {
+              if (controller.areaText.text.length > 0) {
+                Navigator.of(context).pop();
+              } else {
+                Fluttertoast.showToast(msg: 'Area cannot be empty');
+              }
+            },
+          ),
+        ],
+      );
+    },
   );
 }

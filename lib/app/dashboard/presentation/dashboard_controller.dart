@@ -28,9 +28,6 @@ class DashboardPageController extends Controller {
   String selectedState;
   String selectedDistrict;
 
-  bool stateListLoading = false;
-  bool districtListLoading = false;
-  bool isFetchingLiveWeather = false;
   bool isFirstTimeLoading = true;
   bool isPlaceChanged = false;
 
@@ -87,14 +84,15 @@ class DashboardPageController extends Controller {
   }
 
   void fetchStateList() {
-    stateListLoading = true;
+    _stateMachine.onEvent(new DashboardPageLoadingEvent());
+    refreshUI();
     _presenter.fetchStateList(
       new UseCaseObserver(() {}, (error) {
         handleAPIErrors(error);
         print(error);
       }, onNextFunction: (List stateListRes) {
         stateList = stateListRes;
-        stateListLoading = false;
+
         String newState = namePreporcessing(userEntity.state);
         for (var state in stateListRes) {
           if (state['name'] == newState) {
@@ -102,6 +100,9 @@ class DashboardPageController extends Controller {
             break;
           }
         }
+        _stateMachine.onEvent(
+            new DashboardPageInitializedEvent(loginStatus: loginStatus));
+        refreshUI();
         fetchDistrictList();
         refreshUI();
       }),
@@ -109,14 +110,15 @@ class DashboardPageController extends Controller {
   }
 
   void fetchDistrictList() {
-    districtListLoading = true;
+    _stateMachine.onEvent(new DashboardPageLoadingEvent());
+    refreshUI();
     _presenter.fetchDistrictList(
       new UseCaseObserver(() {}, (error) {
         handleAPIErrors(error);
         print(error);
       }, onNextFunction: (List districtListRes) {
         districtList = districtListRes;
-        districtListLoading = false;
+
         if (isFirstTimeLoading) {
           String newDist = namePreporcessing(userEntity.district);
           for (var dist in districtListRes) {
@@ -126,6 +128,9 @@ class DashboardPageController extends Controller {
             }
           }
 
+          _stateMachine.onEvent(
+              new DashboardPageInitializedEvent(loginStatus: loginStatus));
+          refreshUI();
           fetchLiveWeather();
         }
         isFirstTimeLoading = false;
@@ -146,7 +151,8 @@ class DashboardPageController extends Controller {
   }
 
   void fetchLiveWeather() {
-    isFetchingLiveWeather = true;
+    _stateMachine.onEvent(new DashboardPageLoadingEvent());
+    refreshUI();
     _presenter.fetchLocationDetails(
       new UseCaseObserver(
         () {
@@ -155,7 +161,10 @@ class DashboardPageController extends Controller {
               print(error);
             }, onNextFunction: (LiveWeatherEntity _liveWeatherEntity) {
               liveWeatherEntity = _liveWeatherEntity;
-              isFetchingLiveWeather = false;
+
+              _stateMachine.onEvent(
+                  new DashboardPageInitializedEvent(loginStatus: loginStatus));
+              refreshUI();
               refreshUI();
             }),
           );
@@ -168,7 +177,8 @@ class DashboardPageController extends Controller {
   }
 
   void fetchLiveWeatherForNewLocation() {
-    isFetchingLiveWeather = true;
+    _stateMachine.onEvent(new DashboardPageLoadingEvent());
+    refreshUI();
     _presenter.fetchLocationDetailsForNewLocation(
       new UseCaseObserver(
         () {
@@ -177,7 +187,10 @@ class DashboardPageController extends Controller {
               print(error);
             }, onNextFunction: (LiveWeatherEntity _liveWeatherEntity) {
               liveWeatherEntity = _liveWeatherEntity;
-              isFetchingLiveWeather = false;
+
+              _stateMachine.onEvent(
+                  new DashboardPageInitializedEvent(loginStatus: loginStatus));
+              refreshUI();
               refreshUI();
             }),
             district: selectedDistrictName(),

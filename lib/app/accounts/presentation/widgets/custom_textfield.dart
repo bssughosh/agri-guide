@@ -10,6 +10,7 @@ class CustomTextField extends StatelessWidget {
   final bool obscureText;
   final List<String> autofillHints;
   final TextInputType textInputType;
+  final Function onSaved;
 
   const CustomTextField({
     @required this.textController,
@@ -19,6 +20,7 @@ class CustomTextField extends StatelessWidget {
     this.autofillHints,
     this.obscureText,
     this.textInputType,
+    this.onSaved,
   });
 
   @override
@@ -50,6 +52,11 @@ class CustomTextField extends StatelessWidget {
             onChanged();
           },
           autofillHints: autofillHints,
+          onSubmitted: onSaved == null
+              ? (value) {}
+              : (value) {
+                  onSaved();
+                },
         ),
       ],
     );

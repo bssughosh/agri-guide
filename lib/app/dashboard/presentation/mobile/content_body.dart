@@ -10,18 +10,15 @@ Widget contentBody({
   @required BuildContext context,
   @required DashboardPageController controller,
 }) {
-  bool _showStateList = !controller.stateListLoading;
+  bool _showStateList = controller.stateList.length > 0;
   bool _showDistrictList =
-      controller.selectedState != null && !controller.districtListLoading;
+      controller.selectedState != null && controller.districtList.length > 0;
   return Container(
     width: MediaQuery.of(context).size.width,
     child: SingleChildScrollView(
       child: Column(
         children: [
           SizedBox(height: 40),
-          if (controller.liveWeatherEntity == null ||
-              controller.isFetchingLiveWeather)
-            CircularProgressIndicator(),
           if (_showStateList)
             Container(
               width: MediaQuery.of(context).size.width * 0.85,
@@ -86,35 +83,27 @@ Widget contentBody({
                 ],
               ),
             ),
-          if (controller.liveWeatherEntity != null &&
-              !controller.isFetchingLiveWeather)
-            SizedBox(height: 30),
-          if (controller.liveWeatherEntity != null &&
-              !controller.isFetchingLiveWeather)
+          if (controller.liveWeatherEntity != null) SizedBox(height: 30),
+          if (controller.liveWeatherEntity != null)
             LiveWeatherCard(
               icon: CustomIcons.temp_logo_live_weather,
               title: 'Temperature',
               value: controller.liveWeatherEntity.temp + ' \u2103',
             ),
-          if (controller.liveWeatherEntity != null &&
-              !controller.isFetchingLiveWeather)
+          if (controller.liveWeatherEntity != null)
             LiveWeatherCard(
               icon: CustomIcons.humidity_logo_live_weather,
               title: 'Humidity',
               value: controller.liveWeatherEntity.humidity + ' %',
             ),
-          if (controller.liveWeatherEntity != null &&
-              !controller.isFetchingLiveWeather)
+          if (controller.liveWeatherEntity != null)
             LiveWeatherCard(
               icon: CustomIcons.rainfall_logo_live_weather,
               title: 'Rainfall',
               value: controller.liveWeatherEntity.rain + ' mm',
             ),
-          if (controller.liveWeatherEntity != null &&
-              !controller.isFetchingLiveWeather)
-            SizedBox(height: 30),
-          if (controller.liveWeatherEntity != null &&
-              !controller.isFetchingLiveWeather)
+          if (controller.liveWeatherEntity != null) SizedBox(height: 30),
+          if (controller.liveWeatherEntity != null)
             Center(
               child: InkWell(
                 onTap: () {
