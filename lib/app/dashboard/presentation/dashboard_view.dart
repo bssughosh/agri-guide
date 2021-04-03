@@ -71,6 +71,9 @@ class DashboardViewState
           context: context,
           controller: controller,
         );
+
+      case DashboardPageLoadingState:
+        return buildDashboardLoadingView();
     }
     throw Exception("Unknown state $currentState encountered");
   }

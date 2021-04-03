@@ -5,6 +5,7 @@ import 'downloads_controller.dart';
 import 'downloads_state_machine.dart';
 import 'mobile/initialization_view.dart';
 import 'mobile/initialized_view.dart';
+import 'mobile/loading_view.dart';
 import 'web/initialized_view.dart';
 
 class DownloadsPage extends View {
@@ -41,6 +42,9 @@ class DownloadsViewState
           controller: controller,
           context: context,
         );
+
+      case DownloadsLoadingState:
+        return buildDownloadsLoadingView();
     }
     throw Exception("Unrecognized state $currentStateType encountered");
   }
@@ -69,6 +73,9 @@ class DownloadsViewState
           controller: controller,
           context: context,
         );
+
+      case DownloadsLoadingState:
+        return buildDownloadsLoadingView();
     }
     throw Exception("Unrecognized state $currentStateType encountered");
   }
