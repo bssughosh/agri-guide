@@ -347,9 +347,7 @@ class PredictionPageController extends Controller {
     if (paramsList.length == 4) {
       paramsList.removeLast();
     }
-    if (selectedParams.contains(describeEnum(DownloadParams.yield))) {
-      selectedParams.remove(describeEnum(DownloadParams.yield));
-    }
+    selectedParams = [];
     refreshUI();
     fetchDistrictList();
   }
@@ -363,9 +361,7 @@ class PredictionPageController extends Controller {
     if (paramsList.length == 4) {
       paramsList.removeLast();
     }
-    if (selectedParams.contains(describeEnum(DownloadParams.yield))) {
-      selectedParams.remove(describeEnum(DownloadParams.yield));
-    }
+    selectedParams = [];
     refreshUI();
     fetchCropsList();
   }

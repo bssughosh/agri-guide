@@ -28,9 +28,8 @@ Widget buildPredictionInputInitializedViewMobile({
       !controller.cropListLoading &&
       controller.selectedDistrict != null &&
       controller.selectedParams.contains(describeEnum(DownloadParams.yield));
-  bool _showParams = !controller.cropListLoading &&
-      controller.areCropsAvailable &&
-      controller.selectedDistrict != null;
+  bool _showParams =
+      !controller.cropListLoading && controller.selectedDistrict != null;
   bool _showRangeWidget = controller.areCropsAvailable
       ? !controller.selectedParams
               .contains(describeEnum(DownloadParams.yield)) &&
