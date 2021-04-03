@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../../core/app_theme.dart';
 import '../../../../core/enums.dart';
@@ -111,6 +112,9 @@ Widget buildPredictionInputInitializedViewMobile({
                           onChanged: (String newValue) {
                             controller.selectedDistrict = newValue;
                             controller.selectedDistrictChange();
+
+                            _showMyDialog(
+                                context: context, controller: controller);
                           },
                         ),
                       ),
@@ -137,5 +141,55 @@ Widget buildPredictionInputInitializedViewMobile({
         ),
       ),
     ),
+  );
+}
+
+Future<void> _showMyDialog({
+  @required BuildContext context,
+  @required PredictionPageController controller,
+}) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        ),
+        title: Text('Enter Area'),
+        content: TextField(
+          controller: controller.areaText,
+          decoration: InputDecoration(
+            fillColor: Colors.white,
+            labelText: 'Area',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
+          ),
+          onChanged: (value) {
+            controller.textFieldChanged();
+          },
+          onSubmitted: (value) {
+            if (controller.areaText.text.length > 0) {
+              Navigator.of(context).pop();
+            } else {
+              Fluttertoast.showToast(msg: 'Area cannot be empty');
+            }
+          },
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Done'),
+            onPressed: () {
+              if (controller.areaText.text.length > 0) {
+                Navigator.of(context).pop();
+              } else {
+                Fluttertoast.showToast(msg: 'Area cannot be empty');
+              }
+            },
+          ),
+        ],
+      );
+    },
   );
 }

@@ -75,6 +75,8 @@ class PredictionPageController extends Controller {
   double predictedYield = -1;
   List<String> monthsToDisplay = [];
 
+  TextEditingController areaText = new TextEditingController();
+
   Map<String, List<int>> _monthsForSeasons = {
     'Kharif': [5, 6, 7, 8, 9],
     'Rabi': [10, 11, 0, 1, 2, 3],
@@ -348,6 +350,7 @@ class PredictionPageController extends Controller {
       paramsList.removeLast();
     }
     selectedParams = [];
+    areaText.text = '';
     refreshUI();
     fetchDistrictList();
   }
@@ -362,6 +365,7 @@ class PredictionPageController extends Controller {
       paramsList.removeLast();
     }
     selectedParams = [];
+    areaText.text = '';
     refreshUI();
     fetchCropsList();
   }
@@ -459,6 +463,10 @@ class PredictionPageController extends Controller {
     return _res;
   }
 
+  void textFieldChanged() {
+    refreshUI();
+  }
+
   String getCropNameFromCropId(String cropId) {
     for (var crop in cropsList) {
       if (cropId == crop['crop_id']) {
@@ -469,7 +477,9 @@ class PredictionPageController extends Controller {
   }
 
   String calculatePersonalisedYield() {
-    int area = int.parse(userEntity.area);
+    int area = areaText.text.length == 0
+        ? int.parse(userEntity.area)
+        : int.parse(areaText.text);
     double newYield = predictedYield * area / 10;
     return newYield.toStringAsFixed(3);
   }
