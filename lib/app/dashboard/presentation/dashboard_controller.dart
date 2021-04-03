@@ -133,7 +133,10 @@ class DashboardPageController extends Controller {
           refreshUI();
           fetchLiveWeather();
         }
+
         isFirstTimeLoading = false;
+        _stateMachine.onEvent(
+            new DashboardPageInitializedEvent(loginStatus: loginStatus));
         refreshUI();
       }),
       selectedState,
