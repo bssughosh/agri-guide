@@ -54,6 +54,7 @@ Widget registrationPage2({
               onChanged: controller.textFieldChanged,
               textController: controller.phoneText,
               textInputType: TextInputType.phone,
+              onSaved: controller.nextButtonPressed,
             ),
           ),
         ],

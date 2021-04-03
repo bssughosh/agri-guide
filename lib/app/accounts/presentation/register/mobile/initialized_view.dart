@@ -15,7 +15,6 @@ Widget buildRegistrationInitializedView({
   double screenWidth = MediaQuery.of(context).size.width;
 
   return Scaffold(
-    resizeToAvoidBottomInset: false,
     floatingActionButton: isWeb
         ? FloatingActionButton(
             child: Icon(Icons.home),
@@ -56,6 +55,7 @@ Widget buildRegistrationInitializedView({
                   bottom: 10,
                   child: Center(
                     child: Container(
+                      color: Colors.white,
                       width: isWeb
                           ? MediaQuery.of(context).size.width / 3
                           : MediaQuery.of(context).size.width,

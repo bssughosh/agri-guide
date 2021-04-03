@@ -33,6 +33,7 @@ Widget registrationPage3({
               onChanged: controller.textFieldChanged,
               textController: controller.pass2Text,
               obscureText: true,
+              onSaved: controller.submitButtonPressed,
             ),
           ),
         ],
