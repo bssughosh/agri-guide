@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 /// A class conating all theming for the application
 class AppTheme {
   // Colors
-  static Color primaryColor = Color(0xFFB4FF7B);
+  static Color primaryColor = Color(0xFFA1CE69);
 
   static Color chipBackground = Color(0xFF8CC63E).withOpacity(0.25);
 
