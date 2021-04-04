@@ -24,7 +24,7 @@ Widget buildStatisticsDisplayInitializedViewWeb({
               children: [
                 SizedBox(height: 30),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.4,
+                  width: MediaQuery.of(context).size.width * 0.5,
                   decoration: AppTheme.normalBlackBorderDecoration,
                   child: Column(
                     children: [
@@ -43,7 +43,7 @@ Widget buildStatisticsDisplayInitializedViewWeb({
                         decoration: AppTheme.normalBlackBorderDecoration,
                         margin: EdgeInsets.all(8),
                         width: double.infinity,
-                        padding: EdgeInsets.only(left: 8),
+                        padding: EdgeInsets.only(left: 8, top: 8, bottom: 8),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: chip(
@@ -69,7 +69,7 @@ Widget buildStatisticsDisplayInitializedViewWeb({
                         decoration: AppTheme.normalBlackBorderDecoration,
                         margin: EdgeInsets.all(8),
                         width: double.infinity,
-                        padding: EdgeInsets.only(left: 8),
+                        padding: EdgeInsets.only(left: 8, top: 8, bottom: 8),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: chip(
@@ -222,6 +222,7 @@ Widget buildStatisticsDisplayInitializedViewWeb({
                     ],
                   ),
                 ),
+                SizedBox(height: 20),
                 if (controller.yieldStatisticsEntity != null)
                   CustomButton(
                     isActive: true,
@@ -231,6 +232,7 @@ Widget buildStatisticsDisplayInitializedViewWeb({
                     },
                     title: 'Change Crop',
                   ),
+                SizedBox(height: 40),
               ],
             ),
           ),
