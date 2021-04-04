@@ -5,6 +5,10 @@
             "name": "Agri Guide",
             "request": "launch",
             "type": "dart",
+            "args": [
+                "--web-renderer",
+                "html"
+            ],
             "program": "lib/main.dart"
         },
         {

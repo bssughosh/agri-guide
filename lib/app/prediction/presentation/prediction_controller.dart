@@ -71,7 +71,7 @@ class PredictionPageController extends Controller {
   double predictedYield = -1;
   List<String> monthsToDisplay = [];
 
-  TextEditingController areaText = new TextEditingController();
+  TextEditingController areaText = TextEditingController();
 
   Map<String, List<int>> _monthsForSeasons = {
     'Kharif': [5, 6, 7, 8, 9],
@@ -116,9 +116,7 @@ class PredictionPageController extends Controller {
               },
               onNextFunction: (UserEntity user) {
                 userEntity = user;
-                _stateMachine
-                    .onEvent(new PredictionPageInputInitializedEvent());
-                refreshUI();
+                fetchStateList();
               },
             ),
           );
@@ -128,8 +126,6 @@ class PredictionPageController extends Controller {
   }
 
   void fetchStateList() {
-    _stateMachine.onEvent(new PredictionPageLoadingEvent());
-    refreshUI();
     _presenter.fetchStateList(
       new UseCaseObserver(
         () {},

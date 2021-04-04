@@ -9,7 +9,6 @@ import 'mobile/loading_view.dart';
 import 'statistics_controller.dart';
 import 'statistics_state_machine.dart';
 import 'web/display_initialized_view.dart';
-import 'web/initialization_view.dart';
 import 'web/input_initialized_view.dart';
 
 class StatisticsPage extends View {
@@ -27,7 +26,7 @@ class StatisticsViewState
 
     switch (currentStateType) {
       case StatisticsPageInitializationState:
-        return buildStatisticsInitializationViewMobile(controller: controller);
+        return buildStatisticsInitializationView(controller: controller);
 
       case StatisticsPageInputInitializedState:
         return buildStatisticsInputInitializedViewMobile(
@@ -58,7 +57,7 @@ class StatisticsViewState
 
     switch (currentStateType) {
       case StatisticsPageInitializationState:
-        return buildStatisticsInitializationViewWeb(controller: controller);
+        return buildStatisticsInitializationView(controller: controller);
 
       case StatisticsPageInputInitializedState:
         return buildStatisticsInputInitializedViewWeb(

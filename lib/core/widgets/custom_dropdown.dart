@@ -26,17 +26,20 @@ class CustomDropdown extends StatelessWidget {
         ),
       ),
       child: DropdownButtonHideUnderline(
-        child: DropdownButton(
-          hint: Text(hintText, style: AppTheme.bodyItalicText),
-          value: selectedItem,
-          onChanged: (newValue) {
-            onChanged(newValue.toString());
-          },
-          items: itemsList,
-          icon: Icon(
-            Icons.arrow_drop_down,
-            color: Colors.black,
-            size: 32,
+        child: ButtonTheme(
+          alignedDropdown: true,
+          child: DropdownButton(
+            hint: Text(hintText, style: AppTheme.bodyItalicText),
+            value: selectedItem,
+            onChanged: (newValue) {
+              onChanged(newValue.toString());
+            },
+            items: itemsList,
+            icon: Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+              size: 32,
+            ),
           ),
         ),
       ),

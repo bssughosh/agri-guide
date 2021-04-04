@@ -12,7 +12,7 @@ import '../widgets/params_column_widget.dart';
 import '../widgets/range_column_widget.dart';
 import '../widgets/seasons_column_widget.dart';
 
-Widget buildPredictionInputInitializedViewMobile({
+Widget buildPredictionInputInitializedViewWeb({
   @required PredictionPageController controller,
   @required BuildContext context,
 }) {
@@ -48,7 +48,7 @@ Widget buildPredictionInputInitializedViewMobile({
   return WillPopScope(
     onWillPop: () => Future.sync(controller.onWillPopScopePage1),
     child: Container(
-      width: MediaQuery.of(context).size.width * 0.9,
+      width: MediaQuery.of(context).size.width * 0.4,
       child: SingleChildScrollView(
         child: Column(
           children: [

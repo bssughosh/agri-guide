@@ -26,7 +26,7 @@ Widget buildDownloadsInitializedViewWeb({
       (controller.toText != null && controller.fromText != null);
 
   return Container(
-    width: MediaQuery.of(context).size.width,
+    width: MediaQuery.of(context).size.width * 0.4,
     child: WillPopScope(
       onWillPop: () => Future.sync(controller.onWillPopScope),
       child: Container(

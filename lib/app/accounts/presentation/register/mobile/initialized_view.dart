@@ -15,23 +15,26 @@ Widget buildRegistrationInitializedView({
   double screenWidth = MediaQuery.of(context).size.width;
 
   return Scaffold(
-    floatingActionButton: isWeb
-        ? FloatingActionButton(
-            child: Icon(Icons.home),
-            onPressed: () {
-              controller.navigateToHomepage();
-            },
-          )
-        : null,
+    // floatingActionButton: isWeb
+    //     ? FloatingActionButton(
+    //         child: Icon(Icons.home),
+    //         onPressed: () {
+    //           controller.navigateToHomepage();
+    //         },
+    //       )
+    //     : null,
     body: WillPopScope(
       onWillPop: () => Future.sync(controller.onWillPopScope),
       child: Center(
         child: Container(
+          width: isWeb ? screenWidth * 0.42 : screenWidth,
           decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('assets/register_heading.png'),
-                fit: BoxFit.fitWidth,
-                alignment: Alignment.topCenter),
+            image: !isWeb
+                ? DecorationImage(
+                    image: AssetImage('assets/register_heading.png'),
+                    fit: BoxFit.fitWidth,
+                    alignment: Alignment.topCenter)
+                : null,
           ),
           child: Container(
             margin: EdgeInsets.only(top: screenHeight * 0.2),
@@ -43,11 +46,17 @@ Widget buildRegistrationInitializedView({
                     physics: NeverScrollableScrollPhysics(),
                     children: [
                       registrationPage1(
-                          controller: controller, width: screenWidth * 0.9),
+                          controller: controller,
+                          width:
+                              !isWeb ? screenWidth * 0.9 : screenWidth * 0.4),
                       registrationPage2(
-                          controller: controller, width: screenWidth * 0.9),
+                          controller: controller,
+                          width:
+                              !isWeb ? screenWidth * 0.9 : screenWidth * 0.4),
                       registrationPage3(
-                          controller: controller, width: screenWidth * 0.9),
+                          controller: controller,
+                          width:
+                              !isWeb ? screenWidth * 0.9 : screenWidth * 0.4),
                     ],
                   ),
                 ),
@@ -57,7 +66,7 @@ Widget buildRegistrationInitializedView({
                     child: Container(
                       color: Colors.white,
                       width: isWeb
-                          ? MediaQuery.of(context).size.width / 3
+                          ? MediaQuery.of(context).size.width * 0.4
                           : MediaQuery.of(context).size.width,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

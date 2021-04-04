@@ -2,24 +2,26 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/app_theme.dart';
 import '../../../../core/widgets/custom_button.dart';
-import '../prediction_controller.dart';
+import '../profile_controller.dart';
 
-Widget buildPredictionLoggedOutViewMobile({
-  @required PredictionPageController controller,
+Widget buildProfileLoggedOutViewWeb({
+  @required ProfilePageController controller,
   @required BuildContext context,
 }) {
   double screenWidth = MediaQuery.of(context).size.width;
   return Container(
-    width: screenWidth,
+    width: screenWidth * 0.25,
+    margin: EdgeInsets.all(10),
     child: SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(height: 70),
-          Image.asset(
-            'assets/login_to_continue.png',
-            width: screenWidth * 0.6,
+          Center(
+            child: Image.asset(
+              'assets/login_to_continue.png',
+              width: screenWidth * 0.22,
+            ),
           ),
-          SizedBox(height: 50),
+          SizedBox(height: 20),
           CustomButton(
             isActive: true,
             isOverlayRequired: false,
