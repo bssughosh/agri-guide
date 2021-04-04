@@ -22,7 +22,7 @@ Widget buildStatisticsDisplayInitializedViewWeb({
             child: Column(
               children: [
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.6,
+                  width: MediaQuery.of(context).size.width * 0.5,
                   decoration: AppTheme.normalBlackBorderDecoration,
                   child: Column(
                     children: [
@@ -87,13 +87,13 @@ Widget buildStatisticsDisplayInitializedViewWeb({
                 if (controller.selectedFilters.length == 0)
                   Image.asset(
                     'assets/no_filter_selected.png',
-                    width: MediaQuery.of(context).size.width * 0.4,
+                    width: MediaQuery.of(context).size.width * 0.3,
                   ),
                 if (controller.selectedFilters.length == 1)
                   singleGraph(
                     xAxisName: 'Year',
-                    visibleMinimum: 30,
-                    maximumLabels: 40,
+                    visibleMinimum: 20,
+                    maximumLabels: 20,
                     yAxisName: describeEnum(controller.selectedFilters[0]),
                     yAxisLabel: controller
                         .getAxisLabelName(controller.selectedFilters[0]),
@@ -122,8 +122,8 @@ Widget buildStatisticsDisplayInitializedViewWeb({
                 if (controller.selectedFilters.length == 2)
                   doubleGraph(
                     xAxisName: 'Year',
-                    visibleMinimum: 30,
-                    maximumLabels: 40,
+                    visibleMinimum: 20,
+                    maximumLabels: 20,
                     primaryYAxisName:
                         describeEnum(controller.selectedFilters[0]),
                     primaryYAxisLabel: controller

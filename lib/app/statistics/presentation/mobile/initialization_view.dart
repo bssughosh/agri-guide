@@ -4,7 +4,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../../../../core/app_theme.dart';
 import '../statistics_controller.dart';
 
-Widget buildStatisticsInitializationViewMobile({
+Widget buildStatisticsInitializationView({
   @required StatisticsPageController controller,
 }) {
   controller.fetchStateList();
