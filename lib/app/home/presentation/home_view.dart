@@ -4,7 +4,6 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../../core/app_theme.dart';
-import '../../../core/enums.dart';
 import '../../dashboard/presentation/dashboard_view.dart';
 import '../../downloads/presentation/downloads_view.dart';
 import '../../prediction/presentation/prediction_view.dart';
