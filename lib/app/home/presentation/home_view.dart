@@ -73,53 +73,16 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
     return Scaffold(
       key: _scaffoldKey,
       drawer: Drawer(
-        child: Column(
-          children: [
-            SizedBox(height: 20),
-            Image.asset(
-              'assets/icon.png',
-              width: 70,
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.4,
+          height: MediaQuery.of(context).size.height,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                ProfilePage(),
+              ],
             ),
-            Text(
-              'Agri Guide',
-              style: AppTheme.bodyBoldText,
-            ),
-            SizedBox(height: 30),
-            if (controller.loginStatus == LoginStatus.LOGGED_OUT)
-              TextButton(
-                child: Text(
-                  'Login / Register',
-                  style: AppTheme.navigationTabSelectedTextStyle,
-                ),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      AppTheme.navigationSelectedColor),
-                ),
-                onPressed: () {
-                  controller.navigateToLogin();
-                },
-              ),
-            if (controller.loginStatus == LoginStatus.LOGGED_IN)
-              Text(
-                'Welcome, ${controller.userEntity.name}',
-                style: AppTheme.bodyBoldText,
-              ),
-            SizedBox(height: 30),
-            if (controller.loginStatus == LoginStatus.LOGGED_IN)
-              TextButton(
-                child: Text(
-                  'Logout',
-                  style: AppTheme.navigationTabSelectedTextStyle,
-                ),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      AppTheme.navigationSelectedColor),
-                ),
-                onPressed: () {
-                  controller.logoutUser();
-                },
-              ),
-          ],
+          ),
         ),
       ),
       appBar: AppBar(

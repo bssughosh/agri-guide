@@ -7,6 +7,8 @@ import 'mobile/logged_in_view.dart';
 import 'mobile/logged_out_view.dart';
 import 'profile_controller.dart';
 import 'profile_state_machine.dart';
+import 'web/logged_in_view.dart';
+import 'web/logged_out_view.dart';
 
 class ProfilePage extends View {
   @override
@@ -52,6 +54,29 @@ class ProfileViewState
 
   @override
   Widget buildDesktopView() {
-    return buildMobileView(); //TODO: Change view
+    final currentStateType = controller.getCurrentState().runtimeType;
+
+    switch (currentStateType) {
+      case ProfilePageInitializationState:
+        return buildProfileInitializationView(
+          controller: controller,
+        );
+
+      case ProfilePageLoggedOutState:
+        return buildProfileLoggedOutViewWeb(
+          controller: controller,
+          context: context,
+        );
+
+      case ProfilePageLoggedInState:
+        return buildProfileLoggedInViewWeb(
+          controller: controller,
+          context: context,
+        );
+
+      case ProfilePageLoadingState:
+        return buildProfileLoadingViewMobile();
+    }
+    throw Exception("Unrecognized state $currentStateType encountered");
   }
 }
