@@ -4,7 +4,7 @@ import '../../../../core/app_theme.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../prediction_controller.dart';
 
-Widget buildPredictionLoggedOutViewMobile({
+Widget buildPredictionLoggedOutViewWeb({
   @required PredictionPageController controller,
   @required BuildContext context,
 }) {
@@ -14,10 +14,9 @@ Widget buildPredictionLoggedOutViewMobile({
     child: SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(height: 70),
           Image.asset(
             'assets/login_to_continue.png',
-            width: screenWidth * 0.6,
+            width: screenWidth * 0.3,
           ),
           SizedBox(height: 50),
           CustomButton(

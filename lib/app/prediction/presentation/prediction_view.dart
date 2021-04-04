@@ -8,6 +8,9 @@ import 'mobile/loading_view.dart';
 import 'mobile/logged_out_view.dart';
 import 'prediction_controller.dart';
 import 'prediction_state_machine.dart';
+import 'web/display_initialized_view.dart';
+import 'web/input_initialized_view.dart';
+import 'web/logged_out_view.dart';
 
 class PredictionPage extends View {
   @override
@@ -37,7 +40,7 @@ class PredictionViewState
         );
 
       case PredictionPageLoggedOutState:
-        return buildPredictionLoggedOutView(
+        return buildPredictionLoggedOutViewMobile(
           controller: controller,
           context: context,
         );
@@ -69,7 +72,6 @@ class PredictionViewState
   Widget buildDesktopView() {
     final currentStateType = controller.getCurrentState().runtimeType;
 
-    //TODO: Change view
     switch (currentStateType) {
       case PredictionPageInitializationState:
         return buildPredictionInitializationView(
@@ -77,19 +79,19 @@ class PredictionViewState
         );
 
       case PredictionPageLoggedOutState:
-        return buildPredictionLoggedOutView(
+        return buildPredictionLoggedOutViewWeb(
           controller: controller,
           context: context,
         );
 
       case PredictionPageInputInitializedState:
-        return buildPredictionInputInitializedViewMobile(
+        return buildPredictionInputInitializedViewWeb(
           context: context,
           controller: controller,
         );
 
       case PredictionPageDisplayInitializedState:
-        return buildPredictionDisplayInitializedViewMobile(
+        return buildPredictionDisplayInitializedViewWeb(
           context: context,
           controller: controller,
         );
