@@ -16,8 +16,6 @@ Widget buildPredictionInputInitializedViewMobile({
   @required PredictionPageController controller,
   @required BuildContext context,
 }) {
-  if (!controller.stateListInitialized) controller.fetchStateList();
-
   bool _showStateList = controller.stateList.isNotEmpty;
   bool _showDistrictList =
       controller.selectedState != null && controller.districtList.isNotEmpty;
