@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/app_theme.dart';
 import '../../../../core/enums.dart';
 import '../../../../core/widgets/chip.dart';
+import '../../../../core/widgets/custom_button.dart';
 import '../statistics_controller.dart';
 import '../widgets/double_graph.dart';
 import '../widgets/filter_tab.dart';
@@ -21,15 +22,16 @@ Widget buildStatisticsDisplayInitializedViewWeb({
           child: SingleChildScrollView(
             child: Column(
               children: [
+                SizedBox(height: 30),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.5,
+                  width: MediaQuery.of(context).size.width * 0.4,
                   decoration: AppTheme.normalBlackBorderDecoration,
                   child: Column(
                     children: [
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 25, bottom: 10),
+                          padding: const EdgeInsets.only(left: 15, top: 10),
                           child: Text(
                             'State: ',
                             style:
@@ -52,11 +54,10 @@ Widget buildStatisticsDisplayInitializedViewWeb({
                           ),
                         ),
                       ),
-                      SizedBox(height: 10),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 25, bottom: 10),
+                          padding: const EdgeInsets.only(left: 15, top: 10),
                           child: Text(
                             'District: ',
                             style:
@@ -87,13 +88,13 @@ Widget buildStatisticsDisplayInitializedViewWeb({
                 if (controller.selectedFilters.length == 0)
                   Image.asset(
                     'assets/no_filter_selected.png',
-                    width: MediaQuery.of(context).size.width * 0.3,
+                    width: MediaQuery.of(context).size.width * 0.2,
                   ),
                 if (controller.selectedFilters.length == 1)
                   singleGraph(
                     xAxisName: 'Year',
-                    visibleMinimum: 20,
-                    maximumLabels: 20,
+                    visibleMinimum: 30,
+                    maximumLabels: 40,
                     yAxisName: describeEnum(controller.selectedFilters[0]),
                     yAxisLabel: controller
                         .getAxisLabelName(controller.selectedFilters[0]),
@@ -122,8 +123,8 @@ Widget buildStatisticsDisplayInitializedViewWeb({
                 if (controller.selectedFilters.length == 2)
                   doubleGraph(
                     xAxisName: 'Year',
-                    visibleMinimum: 20,
-                    maximumLabels: 20,
+                    visibleMinimum: 30,
+                    maximumLabels: 40,
                     primaryYAxisName:
                         describeEnum(controller.selectedFilters[0]),
                     primaryYAxisLabel: controller
@@ -209,9 +210,27 @@ Widget buildStatisticsDisplayInitializedViewWeb({
                             .contains(StatisticsFilters.Rainfall),
                         text: describeEnum(StatisticsFilters.Rainfall),
                       ),
+                      if (controller.areCropsAvailable)
+                        filterTab(
+                          onPressed: () {
+                            controller.yieldClicked(context);
+                          },
+                          isSelected: controller.selectedFilters
+                              .contains(StatisticsFilters.Yield),
+                          text: describeEnum(StatisticsFilters.Yield),
+                        ),
                     ],
                   ),
                 ),
+                if (controller.yieldStatisticsEntity != null)
+                  CustomButton(
+                    isActive: true,
+                    isOverlayRequired: false,
+                    onPressed: () {
+                      controller.changeCrop(context);
+                    },
+                    title: 'Change Crop',
+                  ),
               ],
             ),
           ),
