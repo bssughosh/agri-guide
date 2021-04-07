@@ -76,37 +76,42 @@ class CustomMultiselectForm extends StatelessWidget {
       );
     }
 
-    return Container(
-      padding: EdgeInsets.fromLTRB(20, 5, 5, 5),
-      decoration: AppTheme.normalGreenBorderDecoration,
-      child: Row(
-        children: [
-          if (selectedItemList.length == 0)
-            Expanded(
-              child: Text(
-                '$title',
-                style:
-                    AppTheme.headingBoldText.copyWith(color: Colors.grey[500]),
+    return GestureDetector(
+      onTap: () {
+        _showMultiSelect();
+      },
+      child: Container(
+        padding: EdgeInsets.fromLTRB(20, 5, 5, 5),
+        decoration: AppTheme.normalGreenBorderDecoration,
+        child: Row(
+          children: [
+            if (selectedItemList.length == 0)
+              Expanded(
+                child: Text(
+                  '$title',
+                  style: AppTheme.headingBoldText
+                      .copyWith(color: Colors.grey[500]),
+                ),
               ),
-            ),
-          if (selectedItemList.length != 0)
-            Expanded(
-              child: Wrap(
-                spacing: 5.0,
-                children: _findListOfSelectedItems(),
+            if (selectedItemList.length != 0)
+              Expanded(
+                child: Wrap(
+                  spacing: 5.0,
+                  children: _findListOfSelectedItems(),
+                ),
               ),
+            IconButton(
+              icon: Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+                size: 40,
+              ),
+              onPressed: () {
+                _showMultiSelect();
+              },
             ),
-          IconButton(
-            icon: Icon(
-              Icons.arrow_drop_down,
-              color: Colors.black,
-              size: 40,
-            ),
-            onPressed: () {
-              _showMultiSelect();
-            },
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
