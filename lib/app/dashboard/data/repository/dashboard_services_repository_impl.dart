@@ -40,7 +40,7 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
   final String _keyNameTempMax = 'temp_max';
   final String _keyNameHumidity = 'humidity';
   final String _keyNameRain = 'rain';
-  final String _keyNameList = 'list';
+  final String _keyName3h = '3h';
   final String _keyNameMain = 'main';
 
   final int weatherDataReloadThresholdInMinutes = 5;
@@ -134,12 +134,12 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
       await fetchLatitudeAndLongitude();
     }
 
-    String _baseUrl = 'http://api.openweathermap.org';
+    String _baseUrl = 'https://api.openweathermap.org';
     String _apiKey = '34e2c047fb1889b5dce88632144fc893';
     String _lat = locationDetails[currentUser.uid].lat;
     String _lon = locationDetails[currentUser.uid].lon;
 
-    String url = '$_baseUrl/data/2.5/find?' +
+    String url = '$_baseUrl/data/2.5/weather?' +
         'lat=$_lat' +
         '&lon=$_lon' +
         '&appid=$_apiKey' +
@@ -161,10 +161,12 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
     }
     var data = json.decode(value.body);
 
-    if (data.containsKey(_keyNameList)) {
-      num _temperature = data[_keyNameList][0][_keyNameMain][_keyNameTempMax];
-      num _humidity = data[_keyNameList][0][_keyNameMain][_keyNameHumidity];
-      num _rain = data[_keyNameList][0][_keyNameRain];
+    if (data.containsKey(_keyNameMain)) {
+      num _temperature = data[_keyNameMain][_keyNameTempMax];
+      num _humidity = data[_keyNameMain][_keyNameHumidity];
+      num _rain = data.containsKey(_keyNameRain)
+          ? data[_keyNameRain][_keyName3h]
+          : null;
 
       lastFetchedTime[currentUser.uid] = DateTime.now();
 
@@ -251,12 +253,12 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
       );
     }
 
-    String _baseUrl = 'http://api.openweathermap.org';
+    String _baseUrl = 'https://api.openweathermap.org';
     String _apiKey = '34e2c047fb1889b5dce88632144fc893';
     String _lat = locationDetailsForNewLocation[pincode].lat;
     String _lon = locationDetailsForNewLocation[pincode].lon;
 
-    String url = '$_baseUrl/data/2.5/find?' +
+    String url = '$_baseUrl/data/2.5/weather?' +
         'lat=$_lat' +
         '&lon=$_lon' +
         '&appid=$_apiKey' +
@@ -278,10 +280,12 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
     }
     var data = json.decode(value.body);
 
-    if (data.containsKey(_keyNameList)) {
-      num _temperature = data[_keyNameList][0][_keyNameMain][_keyNameTempMax];
-      num _humidity = data[_keyNameList][0][_keyNameMain][_keyNameHumidity];
-      num _rain = data[_keyNameList][0][_keyNameRain];
+    if (data.containsKey(_keyNameMain)) {
+      num _temperature = data[_keyNameMain][_keyNameTempMax];
+      num _humidity = data[_keyNameMain][_keyNameHumidity];
+      num _rain = data.containsKey(_keyNameRain)
+          ? data[_keyNameRain][_keyName3h]
+          : null;
 
       lastFetchedTimeForNewLocation[pincode] = DateTime.now();
 
