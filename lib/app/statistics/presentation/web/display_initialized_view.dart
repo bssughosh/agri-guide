@@ -88,7 +88,7 @@ Widget buildStatisticsDisplayInitializedViewWeb({
                 if (controller.selectedFilters.length == 0)
                   Image.asset(
                     'assets/no_filter_selected.png',
-                    width: MediaQuery.of(context).size.width * 0.2,
+                    width: MediaQuery.of(context).size.width * 0.1,
                   ),
                 if (controller.selectedFilters.length == 1)
                   singleGraph(
