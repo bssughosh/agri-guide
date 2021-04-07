@@ -165,6 +165,11 @@ class DownloadsPageController extends Controller {
 
     _presenter.getRequiredDownload(
       new UseCaseObserver(() {
+        selectedParams = [];
+        selectedStates = [];
+        selectedDistricts = [];
+        toText = null;
+        fromText = null;
         _stateMachine.onEvent(new DownloadsInitializedEvent());
         refreshUI();
       }, (error) {

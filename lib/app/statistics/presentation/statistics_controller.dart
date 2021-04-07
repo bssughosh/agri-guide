@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../core/enums.dart';
 import '../../../core/handle_api_errors.dart';
@@ -177,6 +178,8 @@ class StatisticsPageController extends Controller {
           cropList = cropsRes;
           if (cropList.length == 0) {
             areCropsAvailable = false;
+            Fluttertoast.showToast(
+                msg: 'No Crops are available in the selected location.');
             _stateMachine.onEvent(new StatisticsPageDisplayInitializedEvent());
             refreshUI();
           } else {
@@ -552,6 +555,18 @@ class StatisticsPageController extends Controller {
 
   List<ChartData> getPrimaryDatastore() {
     if (selectedFilters.length > 0) {
+      if (selectedFilters.contains(StatisticsFilters.Humidity) ||
+          selectedFilters.contains(StatisticsFilters.Yield)) {
+        if (selectedFilters1 == StatisticsFilters.Temperature)
+          return temperatureChartData.reversed.toList();
+        else if (selectedFilters1 == StatisticsFilters.Humidity)
+          return humidityChartData.reversed.toList();
+        else if (selectedFilters1 == StatisticsFilters.Rainfall)
+          return rainfallChartData.reversed.toList();
+        else if (selectedFilters1 == StatisticsFilters.Yield)
+          return yieldChartData.reversed.toList();
+        throw Exception('The filter is unknown');
+      }
       if (selectedFilters1 == StatisticsFilters.Temperature)
         return temperatureChartData;
       else if (selectedFilters1 == StatisticsFilters.Humidity)
@@ -568,6 +583,18 @@ class StatisticsPageController extends Controller {
 
   List<ChartData> getSecondaryDatastore() {
     if (selectedFilters.length == 2) {
+      if (selectedFilters.contains(StatisticsFilters.Humidity) ||
+          selectedFilters.contains(StatisticsFilters.Yield)) {
+        if (selectedFilters2 == StatisticsFilters.Temperature)
+          return temperatureChartData.reversed.toList();
+        else if (selectedFilters2 == StatisticsFilters.Humidity)
+          return humidityChartData.reversed.toList();
+        else if (selectedFilters2 == StatisticsFilters.Rainfall)
+          return rainfallChartData.reversed.toList();
+        else if (selectedFilters2 == StatisticsFilters.Yield)
+          return yieldChartData.reversed.toList();
+        throw Exception('The filter is unknown');
+      }
       if (selectedFilters2 == StatisticsFilters.Temperature)
         return temperatureChartData;
       else if (selectedFilters2 == StatisticsFilters.Humidity)
@@ -636,5 +663,16 @@ class StatisticsPageController extends Controller {
     refreshUI();
 
     return false;
+  }
+
+  void goBackToInputPage() {
+    _stateMachine.onEvent(new StatisticsPageInputInitializedEvent());
+    selectedSeason = null;
+    selectedCrop = null;
+    selectedFilters = [];
+    selectedFilters1 = null;
+    selectedFilters2 = null;
+    areCropsAvailable = true;
+    refreshUI();
   }
 }
