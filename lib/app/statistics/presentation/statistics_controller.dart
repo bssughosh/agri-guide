@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../core/enums.dart';
 import '../../../core/handle_api_errors.dart';
@@ -177,6 +178,8 @@ class StatisticsPageController extends Controller {
           cropList = cropsRes;
           if (cropList.length == 0) {
             areCropsAvailable = false;
+            Fluttertoast.showToast(
+                msg: 'No Crops are available in the selected location.');
             _stateMachine.onEvent(new StatisticsPageDisplayInitializedEvent());
             refreshUI();
           } else {
