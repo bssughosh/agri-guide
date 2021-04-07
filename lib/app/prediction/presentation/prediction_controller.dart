@@ -535,4 +535,9 @@ class PredictionPageController extends Controller {
 
     return false;
   }
+
+  void goBackToInputPage() {
+    _stateMachine.onEvent(new PredictionPageInputInitializedEvent());
+    refreshUI();
+  }
 }
