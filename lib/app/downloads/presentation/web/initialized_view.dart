@@ -113,7 +113,7 @@ Widget buildDownloadsInitializedViewWeb({
                           RangeWidget(
                             title: 'To',
                             hintText: 'To',
-                            itemsList: controller.yearItems(),
+                            itemsList: controller.yearItems().reversed.toList(),
                             selectedItem: controller.toText,
                             onChanged: controller.toYearUpdated,
                           ),
