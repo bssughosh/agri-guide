@@ -95,6 +95,7 @@ Widget buildPredictionDisplayInitializedViewWeb({
                 columnName:
                     controller.getColumnNameForTable(TableType.RAINFALL),
               ),
+            SizedBox(height: 40),
           ],
         ),
       ),
