@@ -23,6 +23,11 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
   HomeViewState() : super(new HomePageController());
   PageController pageController = new PageController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final ScrollController dashboardScrollController = ScrollController();
+  final ScrollController predictionScrollController = ScrollController();
+  final ScrollController statisticsScrollController = ScrollController();
+  final ScrollController profileScrollController = ScrollController();
+  final ScrollController downloadsScrollController = ScrollController();
 
   @override
   Widget buildMobileView() {
@@ -33,7 +38,13 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
         return _buildHomeInitializationView();
 
       case HomePageInitializedState:
-        return _buildHomeInitializedViewMobile();
+        return _buildHomeInitializedViewMobile(
+          dashboardScrollController: dashboardScrollController,
+          predictionScrollController: predictionScrollController,
+          profileScrollController: profileScrollController,
+          statisticsScrollController: statisticsScrollController,
+          downloadsScrollController: downloadsScrollController,
+        );
     }
     throw Exception("Unrecognized state $currentStateType encountered");
   }
@@ -52,7 +63,12 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
         return _buildHomeInitializationView();
 
       case HomePageInitializedState:
-        return _buildHomeInitializedViewWeb();
+        return _buildHomeInitializedViewWeb(
+          dashboardScrollController: dashboardScrollController,
+          predictionScrollController: predictionScrollController,
+          statisticsScrollController: statisticsScrollController,
+          downloadsScrollController: downloadsScrollController,
+        );
     }
     throw Exception("Unrecognized state $currentStateType encountered");
   }
@@ -68,7 +84,12 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
     );
   }
 
-  _buildHomeInitializedViewWeb() {
+  _buildHomeInitializedViewWeb({
+    @required ScrollController dashboardScrollController,
+    @required ScrollController predictionScrollController,
+    @required ScrollController statisticsScrollController,
+    @required ScrollController downloadsScrollController,
+  }) {
     return Scaffold(
       key: _scaffoldKey,
       drawer: Drawer(
@@ -181,17 +202,23 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
           controller: pageController,
           physics: NeverScrollableScrollPhysics(),
           children: <Widget>[
-            _dashboardPage(),
-            _downloadsPage(),
-            _statisticsPage(),
-            _predictionPage(),
+            _dashboardPage(dashboardScrollController),
+            _downloadsPage(downloadsScrollController),
+            _statisticsPage(statisticsScrollController),
+            _predictionPage(predictionScrollController),
           ],
         ),
       ),
     );
   }
 
-  _buildHomeInitializedViewMobile() {
+  _buildHomeInitializedViewMobile({
+    @required ScrollController dashboardScrollController,
+    @required ScrollController predictionScrollController,
+    @required ScrollController statisticsScrollController,
+    @required ScrollController downloadsScrollController,
+    @required ScrollController profileScrollController,
+  }) {
     return Scaffold(
       bottomNavigationBar: BottomNavBar(
         controller: controller,
@@ -222,91 +249,121 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
           controller: pageController,
           physics: NeverScrollableScrollPhysics(),
           children: <Widget>[
-            _dashboardPage(),
-            _downloadsPage(),
-            _predictionPage(),
-            _statisticsPage(),
-            _mobileProfilePage(),
+            _dashboardPage(dashboardScrollController),
+            _downloadsPage(downloadsScrollController),
+            _predictionPage(predictionScrollController),
+            _statisticsPage(statisticsScrollController),
+            _mobileProfilePage(profileScrollController),
           ],
         ),
       ),
     );
   }
 
-  Widget _dashboardPage() {
+  Widget _dashboardPage(ScrollController scrollController) {
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              DashboardPage(),
-            ],
+        child: RawScrollbar(
+          controller: scrollController,
+          isAlwaysShown: true,
+          thumbColor: Colors.black,
+          child: SingleChildScrollView(
+            controller: scrollController,
+            child: Column(
+              children: [
+                DashboardPage(),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _downloadsPage() {
+  Widget _downloadsPage(ScrollController scrollController) {
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              DownloadsPage(),
-            ],
+        child: RawScrollbar(
+          controller: scrollController,
+          isAlwaysShown: true,
+          thumbColor: Colors.black,
+          child: SingleChildScrollView(
+            controller: scrollController,
+            child: Column(
+              children: <Widget>[
+                DownloadsPage(),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _statisticsPage() {
+  Widget _statisticsPage(ScrollController scrollController) {
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              StatisticsPage(),
-            ],
+        child: RawScrollbar(
+          controller: scrollController,
+          isAlwaysShown: true,
+          thumbColor: Colors.black,
+          child: SingleChildScrollView(
+            controller: scrollController,
+            child: Column(
+              children: <Widget>[
+                StatisticsPage(),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _predictionPage() {
+  Widget _predictionPage(ScrollController scrollController) {
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              PredictionPage(),
-            ],
+        child: RawScrollbar(
+          controller: scrollController,
+          isAlwaysShown: true,
+          thumbColor: Colors.black,
+          child: SingleChildScrollView(
+            controller: scrollController,
+            child: Column(
+              children: <Widget>[
+                PredictionPage(),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _mobileProfilePage() {
+  Widget _mobileProfilePage(ScrollController scrollController) {
     return Center(
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              ProfilePage(),
-            ],
+        child: RawScrollbar(
+          controller: scrollController,
+          isAlwaysShown: true,
+          thumbColor: Colors.black,
+          child: SingleChildScrollView(
+            controller: scrollController,
+            child: Column(
+              children: [
+                ProfilePage(),
+              ],
+            ),
           ),
         ),
       ),
