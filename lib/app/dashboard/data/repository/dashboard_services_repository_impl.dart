@@ -134,7 +134,7 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
       await fetchLatitudeAndLongitude();
     }
 
-    String _baseUrl = 'http://api.openweathermap.org';
+    String _baseUrl = 'api.openweathermap.org';
     String _apiKey = '34e2c047fb1889b5dce88632144fc893';
     String _lat = locationDetails[currentUser.uid].lat;
     String _lon = locationDetails[currentUser.uid].lon;
@@ -251,7 +251,7 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
       );
     }
 
-    String _baseUrl = 'http://api.openweathermap.org';
+    String _baseUrl = 'api.openweathermap.org';
     String _apiKey = '34e2c047fb1889b5dce88632144fc893';
     String _lat = locationDetailsForNewLocation[pincode].lat;
     String _lon = locationDetailsForNewLocation[pincode].lon;
