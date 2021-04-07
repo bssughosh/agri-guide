@@ -664,4 +664,15 @@ class StatisticsPageController extends Controller {
 
     return false;
   }
+
+  void goBackToInputPage() {
+    _stateMachine.onEvent(new StatisticsPageInputInitializedEvent());
+    selectedSeason = null;
+    selectedCrop = null;
+    selectedFilters = [];
+    selectedFilters1 = null;
+    selectedFilters2 = null;
+    areCropsAvailable = true;
+    refreshUI();
+  }
 }
