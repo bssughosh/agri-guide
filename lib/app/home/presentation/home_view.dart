@@ -1,3 +1,4 @@
+import 'package:agri_guide/core/custom_icons_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
@@ -135,6 +136,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
                   child: NavigationTabs(
                     title: 'Dashboard',
                     condition: controller.pageNumber == 0,
+                    icon: CustomIcons.home_logo,
                   ),
                 ),
               ),
@@ -153,6 +155,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
                   child: NavigationTabs(
                     title: 'Downloads',
                     condition: controller.pageNumber == 1,
+                    icon: CustomIcons.downloads_logo,
                   ),
                 ),
               ),
@@ -171,6 +174,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
                   child: NavigationTabs(
                     title: 'Statistics',
                     condition: controller.pageNumber == 2,
+                    icon: CustomIcons.statistics_logo,
                   ),
                 ),
               ),
@@ -189,6 +193,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
                   child: NavigationTabs(
                     title: 'Prediction',
                     condition: controller.pageNumber == 3,
+                    icon: CustomIcons.prediction_logo,
                   ),
                 ),
               ),
