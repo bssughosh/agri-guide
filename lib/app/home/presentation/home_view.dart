@@ -1,4 +1,5 @@
 import 'package:agri_guide/core/custom_icons_icons.dart';
+import 'package:agri_guide/core/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
@@ -110,6 +111,12 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
         backgroundColor: AppTheme.primaryColor,
         toolbarHeight: 70,
         leadingWidth: 100,
+        title: Text(
+          controller.loginStatus == LoginStatus.LOGGED_OUT
+              ? 'Agri Guide'
+              : 'Hello, ${controller.userEntity.name}',
+          style: TextStyle(color: Colors.white),
+        ),
         leading: MouseRegion(
           cursor: SystemMouseCursors.click,
           child: GestureDetector(
