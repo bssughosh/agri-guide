@@ -28,7 +28,7 @@ class NavigationTabs extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.only(right: 5),
+            padding: const EdgeInsets.only(right: 10, bottom: 5),
             child: Icon(icon, size: 20, color: Colors.white),
           ),
           Text(
