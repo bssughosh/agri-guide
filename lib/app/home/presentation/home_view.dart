@@ -4,6 +4,8 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../../core/app_theme.dart';
+import '../../../core/custom_icons_icons.dart';
+import '../../../core/enums.dart';
 import '../../dashboard/presentation/dashboard_view.dart';
 import '../../downloads/presentation/downloads_view.dart';
 import '../../prediction/presentation/prediction_view.dart';
@@ -109,6 +111,12 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
         backgroundColor: AppTheme.primaryColor,
         toolbarHeight: 70,
         leadingWidth: 100,
+        title: Text(
+          controller.loginStatus == LoginStatus.LOGGED_OUT
+              ? 'Agri Guide'
+              : 'Hello, ${controller.userEntity.name}',
+          style: TextStyle(color: Colors.white),
+        ),
         leading: MouseRegion(
           cursor: SystemMouseCursors.click,
           child: GestureDetector(
@@ -135,6 +143,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
                   child: NavigationTabs(
                     title: 'Dashboard',
                     condition: controller.pageNumber == 0,
+                    icon: CustomIcons.home_logo,
                   ),
                 ),
               ),
@@ -153,6 +162,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
                   child: NavigationTabs(
                     title: 'Downloads',
                     condition: controller.pageNumber == 1,
+                    icon: CustomIcons.downloads_logo,
                   ),
                 ),
               ),
@@ -171,6 +181,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
                   child: NavigationTabs(
                     title: 'Statistics',
                     condition: controller.pageNumber == 2,
+                    icon: CustomIcons.statistics_logo,
                   ),
                 ),
               ),
@@ -189,6 +200,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
                   child: NavigationTabs(
                     title: 'Prediction',
                     condition: controller.pageNumber == 3,
+                    icon: CustomIcons.prediction_logo,
                   ),
                 ),
               ),
