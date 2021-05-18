@@ -18,50 +18,48 @@ class LoginViewState
   LoginViewState() : super(new LoginPageController());
 
   @override
-  void initState() {
-    controller.emailText.text = '';
-    controller.passwordText.text = '';
-    super.initState();
-  }
+  Widget get desktopView => ControlledWidgetBuilder<LoginPageController>(
+        builder: (context, controller) {
+          final currentStateType = controller.getCurrentState().runtimeType;
+
+          switch (currentStateType) {
+            case LoginInitializationState:
+              return buildLoginInitilizationView();
+
+            case LoginInitializedState:
+              return buildLoginInitializedViewWeb(
+                  controller: controller, context: context);
+
+            case LoginLoadingState:
+              return buildLoginLoadingView();
+          }
+          throw Exception("Unrecognized state $currentStateType encountered");
+        },
+      );
 
   @override
-  Widget buildMobileView() {
-    final currentStateType = controller.getCurrentState().runtimeType;
+  Widget get mobileView => ControlledWidgetBuilder<LoginPageController>(
+        builder: (context, controller) {
+          final currentStateType = controller.getCurrentState().runtimeType;
 
-    switch (currentStateType) {
-      case LoginInitializationState:
-        return buildLoginInitilizationView();
+          switch (currentStateType) {
+            case LoginInitializationState:
+              return buildLoginInitilizationView();
 
-      case LoginInitializedState:
-        return buildLoginInitializedViewMobile(
-            controller: controller, context: context);
+            case LoginInitializedState:
+              return buildLoginInitializedViewMobile(
+                  controller: controller, context: context);
 
-      case LoginLoadingState:
-        return buildLoginLoadingView();
-    }
-    throw Exception("Unrecognized state $currentStateType encountered");
-  }
-
-  @override
-  Widget buildTabletView() {
-    return buildMobileView();
-  }
+            case LoginLoadingState:
+              return buildLoginLoadingView();
+          }
+          throw Exception("Unrecognized state $currentStateType encountered");
+        },
+      );
 
   @override
-  Widget buildDesktopView() {
-    final currentStateType = controller.getCurrentState().runtimeType;
+  Widget get tabletView => mobileView;
 
-    switch (currentStateType) {
-      case LoginInitializationState:
-        return buildLoginInitilizationView();
-
-      case LoginInitializedState:
-        return buildLoginInitializedViewWeb(
-            controller: controller, context: context);
-
-      case LoginLoadingState:
-        return buildLoginLoadingView();
-    }
-    throw Exception("Unrecognized state $currentStateType encountered");
-  }
+  @override
+  Widget get watchView => throw UnimplementedError();
 }

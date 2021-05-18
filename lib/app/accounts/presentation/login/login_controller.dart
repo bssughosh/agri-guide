@@ -23,9 +23,16 @@ class LoginPageController extends Controller {
   void initListeners() {}
 
   @override
-  dispose() {
+  void onInitState() {
+    super.onInitState();
+    emailText.text = '';
+    passwordText.text = '';
+  }
+
+  @override
+  void onDisposed() {
     _presenter.dispose();
-    super.dispose();
+    super.onDisposed();
   }
 
   LoginState getCurrentState() {
