@@ -16,32 +16,37 @@ class SplashViewState
   SplashViewState() : super(new SplashPageController());
 
   @override
-  Widget buildMobileView() {
-    final currentStateType = controller.getCurrentState().runtimeType;
+  Widget get desktopView => ControlledWidgetBuilder<SplashPageController>(
+        builder: (context, controller) {
+          final currentStateType = controller.getCurrentState().runtimeType;
 
-    switch (currentStateType) {
-      case SplashInitState:
-        return buildSplashInitViewMobile(controller: controller);
-    }
-    throw Exception("Unrecognized state $currentStateType encountered");
-  }
+          switch (currentStateType) {
+            case SplashInitState:
+              return buildSplashInitViewWeb(
+                controller: controller,
+                context: context,
+              );
+          }
+          throw Exception("Unrecognized state $currentStateType encountered");
+        },
+      );
 
   @override
-  Widget buildTabletView() {
-    return buildMobileView();
-  }
+  Widget get mobileView => ControlledWidgetBuilder<SplashPageController>(
+        builder: (context, controller) {
+          final currentStateType = controller.getCurrentState().runtimeType;
+
+          switch (currentStateType) {
+            case SplashInitState:
+              return buildSplashInitViewMobile(controller: controller);
+          }
+          throw Exception("Unrecognized state $currentStateType encountered");
+        },
+      );
 
   @override
-  Widget buildDesktopView() {
-    final currentStateType = controller.getCurrentState().runtimeType;
+  Widget get tabletView => mobileView;
 
-    switch (currentStateType) {
-      case SplashInitState:
-        return buildSplashInitViewWeb(
-          controller: controller,
-          context: context,
-        );
-    }
-    throw Exception("Unrecognized state $currentStateType encountered");
-  }
+  @override
+  Widget get watchView => throw UnimplementedError();
 }
