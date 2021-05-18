@@ -32,50 +32,57 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
   final ScrollController downloadsScrollController = ScrollController();
 
   @override
-  Widget buildMobileView() {
-    final currentStateType = controller.getCurrentState().runtimeType;
+  Widget get desktopView => ControlledWidgetBuilder<HomePageController>(
+        builder: (context, controller) {
+          final currentStateType = controller.getCurrentState().runtimeType;
 
-    switch (currentStateType) {
-      case HomePageInitializationState:
-        return _buildHomeInitializationView();
+          switch (currentStateType) {
+            case HomePageInitializationState:
+              return _buildHomeInitializationView(controller);
 
-      case HomePageInitializedState:
-        return _buildHomeInitializedViewMobile(
-          dashboardScrollController: dashboardScrollController,
-          predictionScrollController: predictionScrollController,
-          profileScrollController: profileScrollController,
-          statisticsScrollController: statisticsScrollController,
-          downloadsScrollController: downloadsScrollController,
-        );
-    }
-    throw Exception("Unrecognized state $currentStateType encountered");
-  }
-
-  @override
-  Widget buildTabletView() {
-    return buildMobileView();
-  }
+            case HomePageInitializedState:
+              return _buildHomeInitializedViewWeb(
+                dashboardScrollController: dashboardScrollController,
+                predictionScrollController: predictionScrollController,
+                statisticsScrollController: statisticsScrollController,
+                downloadsScrollController: downloadsScrollController,
+                controller: controller,
+              );
+          }
+          throw Exception("Unrecognized state $currentStateType encountered");
+        },
+      );
 
   @override
-  Widget buildDesktopView() {
-    final currentStateType = controller.getCurrentState().runtimeType;
+  Widget get mobileView => ControlledWidgetBuilder<HomePageController>(
+        builder: (context, controller) {
+          final currentStateType = controller.getCurrentState().runtimeType;
 
-    switch (currentStateType) {
-      case HomePageInitializationState:
-        return _buildHomeInitializationView();
+          switch (currentStateType) {
+            case HomePageInitializationState:
+              return _buildHomeInitializationView(controller);
 
-      case HomePageInitializedState:
-        return _buildHomeInitializedViewWeb(
-          dashboardScrollController: dashboardScrollController,
-          predictionScrollController: predictionScrollController,
-          statisticsScrollController: statisticsScrollController,
-          downloadsScrollController: downloadsScrollController,
-        );
-    }
-    throw Exception("Unrecognized state $currentStateType encountered");
-  }
+            case HomePageInitializedState:
+              return _buildHomeInitializedViewMobile(
+                dashboardScrollController: dashboardScrollController,
+                predictionScrollController: predictionScrollController,
+                profileScrollController: profileScrollController,
+                statisticsScrollController: statisticsScrollController,
+                downloadsScrollController: downloadsScrollController,
+                controller: controller,
+              );
+          }
+          throw Exception("Unrecognized state $currentStateType encountered");
+        },
+      );
 
-  _buildHomeInitializationView() {
+  @override
+  Widget get tabletView => mobileView;
+
+  @override
+  Widget get watchView => throw UnimplementedError();
+
+  _buildHomeInitializationView(HomePageController controller) {
     controller.checkForLoginStatus();
     return Scaffold(
       body: Container(
@@ -91,6 +98,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
     @required ScrollController predictionScrollController,
     @required ScrollController statisticsScrollController,
     @required ScrollController downloadsScrollController,
+    @required HomePageController controller,
   }) {
     return Scaffold(
       key: _scaffoldKey,
@@ -230,6 +238,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
     @required ScrollController statisticsScrollController,
     @required ScrollController downloadsScrollController,
     @required ScrollController profileScrollController,
+    @required HomePageController controller,
   }) {
     return Scaffold(
       bottomNavigationBar: BottomNavBar(

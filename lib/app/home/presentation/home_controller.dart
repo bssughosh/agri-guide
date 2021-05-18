@@ -26,9 +26,9 @@ class HomePageController extends Controller {
   void initListeners() {}
 
   @override
-  dispose() {
+  void onDisposed() {
     _presenter.dispose();
-    super.dispose();
+    super.onDisposed();
   }
 
   HomePageState getCurrentState() {
