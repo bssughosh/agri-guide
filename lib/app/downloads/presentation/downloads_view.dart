@@ -18,65 +18,64 @@ class DownloadsViewState
   DownloadsViewState() : super(new DownloadsPageController());
 
   @override
-  void initState() {
-    controller.years = controller.createYearsList();
-    super.initState();
-  }
+  Widget get desktopView => ControlledWidgetBuilder<DownloadsPageController>(
+        builder: (context, controller) {
+          final currentState = controller.getCurrentState();
+          final currentStateType = controller.getCurrentState().runtimeType;
+
+          switch (currentStateType) {
+            case DownloadsInitializationState:
+              DownloadsInitializationState newState = currentState;
+              return buildDownloadsInitializationView(
+                isFirstLoad: newState.isFirstLoad,
+                isWeb: true,
+                controller: controller,
+              );
+
+            case DownloadsInitializedState:
+              return buildDownloadsInitializedViewWeb(
+                controller: controller,
+                context: context,
+              );
+
+            case DownloadsLoadingState:
+              return buildDownloadsLoadingView();
+          }
+          throw Exception("Unrecognized state $currentStateType encountered");
+        },
+      );
 
   @override
-  Widget buildMobileView() {
-    final currentState = controller.getCurrentState();
-    final currentStateType = controller.getCurrentState().runtimeType;
+  Widget get mobileView => ControlledWidgetBuilder<DownloadsPageController>(
+        builder: (context, controller) {
+          final currentState = controller.getCurrentState();
+          final currentStateType = controller.getCurrentState().runtimeType;
 
-    switch (currentStateType) {
-      case DownloadsInitializationState:
-        DownloadsInitializationState newState = currentState;
-        return buildDownloadsInitializationView(
-          isFirstLoad: newState.isFirstLoad,
-          isWeb: false,
-          controller: controller,
-        );
+          switch (currentStateType) {
+            case DownloadsInitializationState:
+              DownloadsInitializationState newState = currentState;
+              return buildDownloadsInitializationView(
+                isFirstLoad: newState.isFirstLoad,
+                isWeb: false,
+                controller: controller,
+              );
 
-      case DownloadsInitializedState:
-        return buildDownloadsInitializedViewMobile(
-          controller: controller,
-          context: context,
-        );
+            case DownloadsInitializedState:
+              return buildDownloadsInitializedViewMobile(
+                controller: controller,
+                context: context,
+              );
 
-      case DownloadsLoadingState:
-        return buildDownloadsLoadingView();
-    }
-    throw Exception("Unrecognized state $currentStateType encountered");
-  }
-
-  @override
-  Widget buildTabletView() {
-    return buildMobileView();
-  }
+            case DownloadsLoadingState:
+              return buildDownloadsLoadingView();
+          }
+          throw Exception("Unrecognized state $currentStateType encountered");
+        },
+      );
 
   @override
-  Widget buildDesktopView() {
-    final currentState = controller.getCurrentState();
-    final currentStateType = controller.getCurrentState().runtimeType;
+  Widget get tabletView => mobileView;
 
-    switch (currentStateType) {
-      case DownloadsInitializationState:
-        DownloadsInitializationState newState = currentState;
-        return buildDownloadsInitializationView(
-          isFirstLoad: newState.isFirstLoad,
-          isWeb: true,
-          controller: controller,
-        );
-
-      case DownloadsInitializedState:
-        return buildDownloadsInitializedViewWeb(
-          controller: controller,
-          context: context,
-        );
-
-      case DownloadsLoadingState:
-        return buildDownloadsLoadingView();
-    }
-    throw Exception("Unrecognized state $currentStateType encountered");
-  }
+  @override
+  Widget get watchView => throw UnimplementedError();
 }

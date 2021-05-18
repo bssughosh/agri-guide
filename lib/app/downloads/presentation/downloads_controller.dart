@@ -49,9 +49,15 @@ class DownloadsPageController extends Controller {
   void initListeners() {}
 
   @override
-  dispose() {
+  void onInitState() {
+    super.onInitState();
+    years = createYearsList();
+  }
+
+  @override
+  void onDisposed() {
     _presenter.dispose();
-    super.dispose();
+    super.onDisposed();
   }
 
   DownloadsState getCurrentState() {
