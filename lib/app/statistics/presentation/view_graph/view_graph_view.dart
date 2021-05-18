@@ -24,15 +24,6 @@ class ViewGraphViewState
   ViewGraphViewState() : super(new ViewGraphPageController());
 
   @override
-  void initState() {
-    super.initState();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
-  }
-
-  @override
   void dispose() {
     super.dispose();
     print('Dispose called');
@@ -43,28 +34,30 @@ class ViewGraphViewState
   }
 
   @override
-  Widget buildMobileView() {
-    final currentStateType = controller.getCurrentState().runtimeType;
-
-    switch (currentStateType) {
-      case ViewGraphPageInitializationState:
-        return _buildViewGraphInitializationViewMobile(
-          controller: controller,
-          statisticsPageController: widget.params.statisticsPageController,
-        );
-    }
-    throw Exception("Unrecognized state $currentStateType encountered");
-  }
+  Widget get desktopView => throw UnimplementedError();
 
   @override
-  Widget buildTabletView() {
-    return buildMobileView();
-  }
+  Widget get mobileView => ControlledWidgetBuilder<ViewGraphPageController>(
+        builder: (context, controller) {
+          final currentStateType = controller.getCurrentState().runtimeType;
+
+          switch (currentStateType) {
+            case ViewGraphPageInitializationState:
+              return _buildViewGraphInitializationViewMobile(
+                controller: controller,
+                statisticsPageController:
+                    widget.params.statisticsPageController,
+              );
+          }
+          throw Exception("Unrecognized state $currentStateType encountered");
+        },
+      );
 
   @override
-  Widget buildDesktopView() {
-    throw Exception("Unrecognized view encountered");
-  }
+  Widget get tabletView => mobileView;
+
+  @override
+  Widget get watchView => throw UnimplementedError();
 
   Widget _buildViewGraphInitializationViewMobile({
     @required ViewGraphPageController controller,

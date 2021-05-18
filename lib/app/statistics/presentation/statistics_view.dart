@@ -21,61 +21,66 @@ class StatisticsViewState
   StatisticsViewState() : super(new StatisticsPageController());
 
   @override
-  Widget buildMobileView() {
-    final currentStateType = controller.getCurrentState().runtimeType;
+  Widget get desktopView => ControlledWidgetBuilder<StatisticsPageController>(
+        builder: (context, controller) {
+          final currentStateType = controller.getCurrentState().runtimeType;
 
-    switch (currentStateType) {
-      case StatisticsPageInitializationState:
-        return buildStatisticsInitializationView(controller: controller);
+          switch (currentStateType) {
+            case StatisticsPageInitializationState:
+              return buildStatisticsInitializationView(controller: controller);
 
-      case StatisticsPageInputInitializedState:
-        return buildStatisticsInputInitializedViewMobile(
-          controller: controller,
-          context: context,
-        );
+            case StatisticsPageInputInitializedState:
+              return buildStatisticsInputInitializedViewWeb(
+                controller: controller,
+                context: context,
+              );
 
-      case StatisticsPageDisplayInitializedState:
-        return buildStatisticsDisplayInitializedViewMobile(
-          controller: controller,
-          context: context,
-        );
+            case StatisticsPageDisplayInitializedState:
+              return buildStatisticsDisplayInitializedViewWeb(
+                controller: controller,
+                context: context,
+              );
 
-      case StatisticsPageLoadingState:
-        return buildStatisticsLoadingView();
-    }
-    throw Exception("Unrecognized state $currentStateType encountered");
-  }
-
-  @override
-  Widget buildTabletView() {
-    return buildMobileView();
-  }
+            case StatisticsPageLoadingState:
+              return buildStatisticsLoadingView();
+          }
+          throw Exception("Unrecognized state $currentStateType encountered");
+        },
+      );
 
   @override
-  Widget buildDesktopView() {
-    final currentStateType = controller.getCurrentState().runtimeType;
+  Widget get mobileView => ControlledWidgetBuilder<StatisticsPageController>(
+        builder: (context, controller) {
+          final currentStateType = controller.getCurrentState().runtimeType;
 
-    switch (currentStateType) {
-      case StatisticsPageInitializationState:
-        return buildStatisticsInitializationView(controller: controller);
+          switch (currentStateType) {
+            case StatisticsPageInitializationState:
+              return buildStatisticsInitializationView(controller: controller);
 
-      case StatisticsPageInputInitializedState:
-        return buildStatisticsInputInitializedViewWeb(
-          controller: controller,
-          context: context,
-        );
+            case StatisticsPageInputInitializedState:
+              return buildStatisticsInputInitializedViewMobile(
+                controller: controller,
+                context: context,
+              );
 
-      case StatisticsPageDisplayInitializedState:
-        return buildStatisticsDisplayInitializedViewWeb(
-          controller: controller,
-          context: context,
-        );
+            case StatisticsPageDisplayInitializedState:
+              return buildStatisticsDisplayInitializedViewMobile(
+                controller: controller,
+                context: context,
+              );
 
-      case StatisticsPageLoadingState:
-        return buildStatisticsLoadingView();
-    }
-    throw Exception("Unrecognized state $currentStateType encountered");
-  }
+            case StatisticsPageLoadingState:
+              return buildStatisticsLoadingView();
+          }
+          throw Exception("Unrecognized state $currentStateType encountered");
+        },
+      );
+
+  @override
+  Widget get tabletView => mobileView;
+
+  @override
+  Widget get watchView => throw UnimplementedError();
 }
 
 class ChartData {

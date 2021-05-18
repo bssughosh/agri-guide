@@ -62,9 +62,9 @@ class StatisticsPageController extends Controller {
   }
 
   @override
-  dispose() {
+  void onDisposed() {
     _presenter.dispose();
-    super.dispose();
+    super.onDisposed();
   }
 
   // API Calls

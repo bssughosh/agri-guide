@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 import '../../../../injection_container.dart';
@@ -22,8 +23,17 @@ class ViewGraphPageController extends Controller {
   }
 
   @override
-  dispose() {
+  void onInitState() {
+    super.onInitState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);
+  }
+
+  @override
+  void onDisposed() {
     _presenter.dispose();
-    super.dispose();
+    super.onDisposed();
   }
 }
