@@ -54,9 +54,22 @@ class RegisterPageController extends Controller {
   }
 
   @override
-  dispose() {
+  void onInitState() {
+    super.onInitState();
+    emailText.text = '';
+    aadharText.text = '';
+    phoneText.text = '';
+    nameText.text = '';
+    areaText.text = '';
+    pass1Text.text = '';
+    pass2Text.text = '';
+    fetchStateList();
+  }
+
+  @override
+  void onDisposed() {
     _presenter.dispose();
-    super.dispose();
+    super.onDisposed();
   }
 
   void fetchStateList() {

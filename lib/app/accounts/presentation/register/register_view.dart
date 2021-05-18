@@ -16,56 +16,47 @@ class RegisterViewState
   RegisterViewState() : super(new RegisterPageController());
 
   @override
-  void initState() {
-    controller.emailText.text = '';
-    controller.aadharText.text = '';
-    controller.phoneText.text = '';
-    controller.nameText.text = '';
-    controller.areaText.text = '';
-    controller.pass1Text.text = '';
-    controller.pass2Text.text = '';
-    controller.fetchStateList();
-    super.initState();
-  }
+  Widget get desktopView => ControlledWidgetBuilder<RegisterPageController>(
+        builder: (context, controller) {
+          final currentStateType = controller.getCurrentState().runtimeType;
+
+          switch (currentStateType) {
+            case RegisterInitializedState:
+              return buildRegistrationInitializedView(
+                isWeb: true,
+                controller: controller,
+                context: context,
+              );
+
+            case RegisterLoadingState:
+              return buildRegistrationLoadingView();
+          }
+          throw Exception("Unrecognized state $currentStateType encountered");
+        },
+      );
 
   @override
-  Widget buildMobileView() {
-    final currentStateType = controller.getCurrentState().runtimeType;
+  Widget get mobileView => ControlledWidgetBuilder<RegisterPageController>(
+        builder: (context, controller) {
+          final currentStateType = controller.getCurrentState().runtimeType;
 
-    switch (currentStateType) {
-      case RegisterInitializedState:
-        return buildRegistrationInitializedView(
-          isWeb: false,
-          controller: controller,
-          context: context,
-        );
+          switch (currentStateType) {
+            case RegisterInitializedState:
+              return buildRegistrationInitializedView(
+                isWeb: false,
+                controller: controller,
+                context: context,
+              );
 
-      case RegisterLoadingState:
-        return buildRegistrationLoadingView();
-    }
-    throw Exception("Unrecognized state $currentStateType encountered");
-  }
+            case RegisterLoadingState:
+              return buildRegistrationLoadingView();
+          }
+          throw Exception("Unrecognized state $currentStateType encountered");
+        },
+      );
+  @override
+  Widget get tabletView => mobileView;
 
   @override
-  Widget buildTabletView() {
-    return buildMobileView();
-  }
-
-  @override
-  Widget buildDesktopView() {
-    final currentStateType = controller.getCurrentState().runtimeType;
-
-    switch (currentStateType) {
-      case RegisterInitializedState:
-        return buildRegistrationInitializedView(
-          isWeb: true,
-          controller: controller,
-          context: context,
-        );
-
-      case RegisterLoadingState:
-        return buildRegistrationLoadingView();
-    }
-    throw Exception("Unrecognized state $currentStateType encountered");
-  }
+  Widget get watchView => throw UnimplementedError();
 }
