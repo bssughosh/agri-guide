@@ -56,7 +56,8 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
       return;
     }
 
-    DocumentSnapshot userDetails = await userData.doc(currentUser.uid).get();
+    DocumentSnapshot<Map<String, dynamic>> userDetails =
+        await userData.doc(currentUser.uid).get();
     if (userDetails.data().containsKey(_keyNameLat) &&
         userDetails.data().containsKey(_keyNameLon)) {
       locationDetails[currentUser.uid] = new LocationEntity(

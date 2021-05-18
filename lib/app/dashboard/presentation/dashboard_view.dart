@@ -18,63 +18,62 @@ class DashboardViewState
   DashboardViewState() : super(new DashboardPageController());
 
   @override
-  void initState() {
-    controller.pincode.text = '';
-    super.initState();
-  }
+  Widget get desktopView => ControlledWidgetBuilder<DashboardPageController>(
+        builder: (context, controller) {
+          final currentState = controller.getCurrentState();
+          final currentStateType = controller.getCurrentState().runtimeType;
+
+          switch (currentStateType) {
+            case DashboardPageInitializationState:
+              return buildDashboardInitializationView(
+                controller: controller,
+              );
+
+            case DashboardPageInitializedState:
+              DashboardPageInitializedState initializedState = currentState;
+              return buildDashboardInitializedViewWeb(
+                loginStatus: initializedState.loginStatus,
+                context: context,
+                controller: controller,
+              );
+
+            case DashboardPageLoadingState:
+              return buildDashboardLoadingView();
+          }
+          throw Exception("Unknown state $currentState encountered");
+        },
+      );
 
   @override
-  Widget buildMobileView() {
-    final currentState = controller.getCurrentState();
-    final currentStateType = controller.getCurrentState().runtimeType;
+  Widget get mobileView => ControlledWidgetBuilder<DashboardPageController>(
+        builder: (context, controller) {
+          final currentState = controller.getCurrentState();
+          final currentStateType = controller.getCurrentState().runtimeType;
 
-    switch (currentStateType) {
-      case DashboardPageInitializationState:
-        return buildDashboardInitializationView(
-          controller: controller,
-        );
+          switch (currentStateType) {
+            case DashboardPageInitializationState:
+              return buildDashboardInitializationView(
+                controller: controller,
+              );
 
-      case DashboardPageInitializedState:
-        DashboardPageInitializedState initializedState = currentState;
-        return buildDashboardInitializedViewMobile(
-          loginStatus: initializedState.loginStatus,
-          context: context,
-          controller: controller,
-        );
+            case DashboardPageInitializedState:
+              DashboardPageInitializedState initializedState = currentState;
+              return buildDashboardInitializedViewMobile(
+                loginStatus: initializedState.loginStatus,
+                context: context,
+                controller: controller,
+              );
 
-      case DashboardPageLoadingState:
-        return buildDashboardLoadingView();
-    }
-    throw Exception("Unknown state $currentState encountered");
-  }
-
-  @override
-  Widget buildTabletView() {
-    return buildMobileView();
-  }
+            case DashboardPageLoadingState:
+              return buildDashboardLoadingView();
+          }
+          throw Exception("Unknown state $currentState encountered");
+        },
+      );
 
   @override
-  Widget buildDesktopView() {
-    final currentState = controller.getCurrentState();
-    final currentStateType = controller.getCurrentState().runtimeType;
+  Widget get tabletView => mobileView;
 
-    switch (currentStateType) {
-      case DashboardPageInitializationState:
-        return buildDashboardInitializationView(
-          controller: controller,
-        );
-
-      case DashboardPageInitializedState:
-        DashboardPageInitializedState initializedState = currentState;
-        return buildDashboardInitializedViewWeb(
-          loginStatus: initializedState.loginStatus,
-          context: context,
-          controller: controller,
-        );
-
-      case DashboardPageLoadingState:
-        return buildDashboardLoadingView();
-    }
-    throw Exception("Unknown state $currentState encountered");
-  }
+  @override
+  Widget get watchView => throw UnimplementedError();
 }

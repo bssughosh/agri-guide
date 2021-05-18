@@ -44,9 +44,15 @@ class DashboardPageController extends Controller {
   }
 
   @override
-  dispose() {
+  void onInitState() {
+    super.onInitState();
+    pincode.text = '';
+  }
+
+  @override
+  void onDisposed() {
     _presenter.dispose();
-    super.dispose();
+    super.onDisposed();
   }
 
   void checkForLoginStatus() {
