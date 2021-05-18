@@ -26,17 +26,17 @@ class AgriGuidePredictionRepositoryImpl
   Map<String, PredictionDataEntity> _predictions = {};
 
   /// Key name `stateId`
-  Map<String, String> _stateNamesMap = {};
+  Map<String?, String> _stateNamesMap = {};
 
   /// Key name `distId`
-  Map<String, String> _distNamesMap = {};
+  Map<String?, String> _distNamesMap = {};
 
   @override
-  Future<PredictionDataEntity> makePrediction(
-    String state,
-    String district,
-    String season,
-    String crop,
+  Future<PredictionDataEntity?> makePrediction(
+    String? state,
+    String? district,
+    String? season,
+    String? crop,
   ) async {
     if (_predictions.containsKey('$state/$district/$crop/$season')) {
       return _predictions['$state/$district/$crop/$season'];
@@ -61,18 +61,18 @@ class AgriGuidePredictionRepositoryImpl
       throw APIServiceUnavailabeError();
     }
     var data = json.decode(value.body);
-    List _temperature = data[_keyNameTemperature];
-    List _humidity = data[_keyNameHumidity];
-    List _rainfall = data[_keyNameRainfall];
+    List? _temperature = data[_keyNameTemperature];
+    List? _humidity = data[_keyNameHumidity];
+    List? _rainfall = data[_keyNameRainfall];
     if (stateName[0] == 'Test' && districtName[0] == 'Test') {
-      temperatue.add(_temperature[0].toString());
-      humidity.add(_humidity[0].toString());
-      rainfall.add(_rainfall[0].toString());
+      temperatue.add(_temperature![0].toString());
+      humidity.add(_humidity![0].toString());
+      rainfall.add(_rainfall![0].toString());
     } else {
       for (int i = 0; i < 12; i++) {
-        temperatue.add(_temperature[i].toString());
-        humidity.add(_humidity[i].toString());
-        rainfall.add(_rainfall[i].toString());
+        temperatue.add(_temperature![i].toString());
+        humidity.add(_humidity![i].toString());
+        rainfall.add(_rainfall![i].toString());
       }
     }
 
@@ -115,7 +115,7 @@ class AgriGuidePredictionRepositoryImpl
     return predictionDataEntity;
   }
 
-  _fetchStateNames(String stateId) async {
+  _fetchStateNames(String? stateId) async {
     if (stateId == 'Test') {
       return List<String>.from(['Test']);
     }
@@ -149,7 +149,7 @@ class AgriGuidePredictionRepositoryImpl
     return _output;
   }
 
-  _fetchDistNames(String districtId) async {
+  _fetchDistNames(String? districtId) async {
     if (districtId == 'Test') {
       return List<String>.from(['Test']);
     }

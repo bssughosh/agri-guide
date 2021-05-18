@@ -7,7 +7,7 @@ import '../prediction_controller.dart';
 class ParamsColumnWidget extends StatelessWidget {
   final PredictionPageController controller;
 
-  const ParamsColumnWidget({@required this.controller});
+  const ParamsColumnWidget({required this.controller});
 
   @override
   Widget build(BuildContext context) {

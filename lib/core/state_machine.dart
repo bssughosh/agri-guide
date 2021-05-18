@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 abstract class StateMachine<State, Event> {
-  State _state;
+  State? _state;
 
   StateMachine(State initialState) {
     this._state = initialState;
@@ -10,12 +10,12 @@ abstract class StateMachine<State, Event> {
   @protected
   State getStateOnEvent(Event event);
 
-  State onEvent(Event event) {
+  State? onEvent(Event event) {
     this._state = getStateOnEvent(event);
     return _state;
   }
 
-  State getCurrentState() {
+  State? getCurrentState() {
     return _state;
   }
 }

@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
 
         if (!currentFocus.hasPrimaryFocus &&
             currentFocus.focusedChild != null) {
-          currentFocus.focusedChild.unfocus();
+          currentFocus.focusedChild!.unfocus();
         }
       },
       child: MaterialApp(

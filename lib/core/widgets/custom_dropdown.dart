@@ -5,14 +5,14 @@ import '../app_theme.dart';
 class CustomDropdown extends StatelessWidget {
   final String hintText;
   final List<DropdownMenuItem> itemsList;
-  final String selectedItem;
+  final String? selectedItem;
   final Function onChanged;
 
   const CustomDropdown({
-    @required this.hintText,
-    @required this.itemsList,
-    @required this.selectedItem,
-    @required this.onChanged,
+    required this.hintText,
+    required this.itemsList,
+    required this.selectedItem,
+    required this.onChanged,
   });
 
   @override
@@ -31,7 +31,7 @@ class CustomDropdown extends StatelessWidget {
           child: DropdownButton(
             hint: Text(hintText, style: AppTheme.bodyItalicText),
             value: selectedItem,
-            onChanged: (newValue) {
+            onChanged: (dynamic newValue) {
               onChanged(newValue.toString());
             },
             items: itemsList,

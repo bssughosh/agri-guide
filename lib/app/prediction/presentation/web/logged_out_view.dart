@@ -5,8 +5,8 @@ import '../../../../core/widgets/custom_button.dart';
 import '../prediction_controller.dart';
 
 Widget buildPredictionLoggedOutViewWeb({
-  @required PredictionPageController controller,
-  @required BuildContext context,
+  required PredictionPageController controller,
+  required BuildContext context,
 }) {
   double screenWidth = MediaQuery.of(context).size.width;
   return Container(

@@ -19,10 +19,10 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
   );
 
   /// Key name `stateId`
-  Map<String, String> _stateNamesMap = {};
+  Map<String?, String> _stateNamesMap = {};
 
   /// Key name `distId`
-  Map<String, String> _distNamesMap = {};
+  Map<String?, String> _distNamesMap = {};
 
   /// Key name `stateId/distId`
   Map<String, StatisticsEntity> _statisticsData = {};
@@ -31,7 +31,8 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
   Map<String, YieldStatisticsEntity> _yieldStatisticsData = {};
 
   @override
-  Future<StatisticsEntity> fetchWholeData(String state, String district) async {
+  Future<StatisticsEntity?> fetchWholeData(
+      String? state, String? district) async {
     if (_statisticsData.containsKey('$state/$district'))
       return _statisticsData['$state/$district'];
     List<String> stateName = await _fetchStateNames(state);
@@ -56,14 +57,14 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
     }
 
     var data = json.decode(value.body);
-    List _temperature = data[_keyNameTemperature];
-    List _humidity = data[_keyNameHumidity];
-    List _rainfall = data[_keyNameRainfall];
+    List? _temperature = data[_keyNameTemperature];
+    List? _humidity = data[_keyNameHumidity];
+    List? _rainfall = data[_keyNameRainfall];
 
     StatisticsEntity statisticsEntity = new StatisticsEntity(
-      temperatureData: _temperature,
-      humidityData: _humidity,
-      rainfallData: _rainfall,
+      temperatureData: _temperature!,
+      humidityData: _humidity!,
+      rainfallData: _rainfall!,
     );
 
     _statisticsData['$state/$district'] = statisticsEntity;
@@ -72,11 +73,11 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
   }
 
   @override
-  Future<YieldStatisticsEntity> fetchYieldStatisticsData(
-    String state,
-    String district,
-    String cropId,
-    String season,
+  Future<YieldStatisticsEntity?> fetchYieldStatisticsData(
+    String? state,
+    String? district,
+    String? cropId,
+    String? season,
   ) async {
     if (_yieldStatisticsData.containsKey('$state/$district/$cropId/$season'))
       return _yieldStatisticsData['$state/$district/$cropId/$season'];
@@ -104,10 +105,10 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
     }
 
     var data = json.decode(value.body);
-    List _yield = data[_keyNameYield];
+    List? _yield = data[_keyNameYield];
 
     YieldStatisticsEntity yieldStatisticsEntity =
-        new YieldStatisticsEntity(yieldData: _yield);
+        new YieldStatisticsEntity(yieldData: _yield!);
 
     _yieldStatisticsData['$state/$district/$cropId/$season'] =
         yieldStatisticsEntity;
@@ -115,7 +116,7 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
     return yieldStatisticsEntity;
   }
 
-  _fetchStateNames(String stateId) async {
+  _fetchStateNames(String? stateId) async {
     if (stateId == 'Test') {
       return List<String>.from(['Test']);
     }
@@ -149,7 +150,7 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
     return _output;
   }
 
-  _fetchDistNames(String districtId) async {
+  _fetchDistNames(String? districtId) async {
     if (districtId == 'Test') {
       return List<String>.from(['Test']);
     }

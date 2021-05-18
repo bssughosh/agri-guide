@@ -12,8 +12,8 @@ class StatisticsEntity {
   final List rainfallData;
 
   StatisticsEntity({
-    @required this.temperatureData,
-    @required this.humidityData,
-    @required this.rainfallData,
+    required this.temperatureData,
+    required this.humidityData,
+    required this.rainfallData,
   });
 }

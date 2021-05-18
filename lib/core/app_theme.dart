@@ -19,7 +19,7 @@ class AppTheme {
 
   static Color buttonDeactiveColor = Colors.grey;
 
-  static Color selectionBarColor = Colors.grey[300].withOpacity(.8);
+  static Color selectionBarColor = Colors.grey[300]!.withOpacity(.8);
 
   static Color customTableBorderColor = Colors.black26;
 
@@ -84,7 +84,7 @@ class AppTheme {
     ),
     border: Border.all(
       width: 0.5,
-      color: Colors.grey[200],
+      color: Colors.grey[200]!,
     ),
     color: Colors.white,
   );

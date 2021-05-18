@@ -9,9 +9,9 @@ class LiveWeatherEntity {
   final String humidity;
 
   LiveWeatherEntity({
-    @required this.location,
-    @required this.rain,
-    @required this.temp,
-    @required this.humidity,
+    required this.location,
+    required this.rain,
+    required this.temp,
+    required this.humidity,
   });
 }

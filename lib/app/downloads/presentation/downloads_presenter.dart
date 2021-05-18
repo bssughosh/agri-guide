@@ -7,10 +7,10 @@ import '../domain/usecase/get_required_downloads_usecase.dart';
 import '../domain/usecase/get_required_mobile_downloads_usecase.dart';
 
 class DownloadsPagePresenter extends Presenter {
-  FetchStateListUsecase _fetchStateListUsecase;
-  FetchDistrictListUsecase _fetchDistrictListUsecase;
-  GetRequiredDownloadsUsecase _getRequiredDownloadsUsecase;
-  GetRequiredMobileDownloadsUsecase _getRequiredMobileDownloadsUsecase;
+  FetchStateListUsecase? _fetchStateListUsecase;
+  FetchDistrictListUsecase? _fetchDistrictListUsecase;
+  GetRequiredDownloadsUsecase? _getRequiredDownloadsUsecase;
+  GetRequiredMobileDownloadsUsecase? _getRequiredMobileDownloadsUsecase;
 
   DownloadsPagePresenter(
     this._fetchStateListUsecase,
@@ -21,18 +21,18 @@ class DownloadsPagePresenter extends Presenter {
 
   @override
   dispose() {
-    _fetchStateListUsecase.dispose();
-    _fetchDistrictListUsecase.dispose();
-    _getRequiredDownloadsUsecase.dispose();
-    _getRequiredMobileDownloadsUsecase.dispose();
+    _fetchStateListUsecase!.dispose();
+    _fetchDistrictListUsecase!.dispose();
+    _getRequiredDownloadsUsecase!.dispose();
+    _getRequiredMobileDownloadsUsecase!.dispose();
   }
 
   void fetchStateList(UseCaseObserver observer) {
-    _fetchStateListUsecase.execute(observer);
+    _fetchStateListUsecase!.execute(observer);
   }
 
   void fetchDistrictList(UseCaseObserver observer, String stateId) {
-    _fetchDistrictListUsecase.execute(
+    _fetchDistrictListUsecase!.execute(
       observer,
       new DistrictListParams(
         stateId,
@@ -45,9 +45,9 @@ class DownloadsPagePresenter extends Presenter {
     List<String> states,
     List<String> dists,
     List<String> yrs,
-    List<String> params,
+    List<String?> params,
   ) {
-    _getRequiredDownloadsUsecase.execute(
+    _getRequiredDownloadsUsecase!.execute(
         observer, new GetDownloadParams(states, dists, yrs, params));
   }
 
@@ -56,10 +56,10 @@ class DownloadsPagePresenter extends Presenter {
     List<String> states,
     List<String> dists,
     List<String> yrs,
-    List<String> params,
+    List<String?> params,
     String fileName,
   ) {
-    _getRequiredMobileDownloadsUsecase.execute(observer,
+    _getRequiredMobileDownloadsUsecase!.execute(observer,
         new GetDownloadMobileParams(states, dists, yrs, params, fileName));
   }
 }

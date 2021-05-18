@@ -9,8 +9,8 @@ class LocationCard extends StatelessWidget {
   final bool showDistrictList;
 
   const LocationCard({
-    @required this.controller,
-    @required this.showDistrictList,
+    required this.controller,
+    required this.showDistrictList,
   });
 
   @override

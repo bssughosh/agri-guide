@@ -9,12 +9,12 @@ import '../domain/usecases/fetch_whole_data_usecase.dart';
 import '../domain/usecases/fetch_yield_statistics_usecase.dart';
 
 class StatisticsPagePresenter extends Presenter {
-  FetchStateListUsecase _fetchStateListUsecase;
-  FetchDistrictListUsecase _fetchDistrictListUsecase;
-  FetchWholeDataUsecase _fetchWholeDataUsecase;
-  FetchSeasonsListUsecase _fetchSeasonsListUsecase;
-  FetchCropListUsecase _fetchCropListUsecase;
-  FetchYieldStatisticsUsecase _fetchYieldStatisticsUsecase;
+  FetchStateListUsecase? _fetchStateListUsecase;
+  FetchDistrictListUsecase? _fetchDistrictListUsecase;
+  FetchWholeDataUsecase? _fetchWholeDataUsecase;
+  FetchSeasonsListUsecase? _fetchSeasonsListUsecase;
+  FetchCropListUsecase? _fetchCropListUsecase;
+  FetchYieldStatisticsUsecase? _fetchYieldStatisticsUsecase;
 
   StatisticsPagePresenter(
     this._fetchDistrictListUsecase,
@@ -27,20 +27,20 @@ class StatisticsPagePresenter extends Presenter {
 
   @override
   dispose() {
-    _fetchWholeDataUsecase.dispose();
-    _fetchStateListUsecase.dispose();
-    _fetchDistrictListUsecase.dispose();
-    _fetchSeasonsListUsecase.dispose();
-    _fetchCropListUsecase.dispose();
-    _fetchYieldStatisticsUsecase.dispose();
+    _fetchWholeDataUsecase!.dispose();
+    _fetchStateListUsecase!.dispose();
+    _fetchDistrictListUsecase!.dispose();
+    _fetchSeasonsListUsecase!.dispose();
+    _fetchCropListUsecase!.dispose();
+    _fetchYieldStatisticsUsecase!.dispose();
   }
 
   void fetchStateList(UseCaseObserver observer) {
-    _fetchStateListUsecase.execute(observer);
+    _fetchStateListUsecase!.execute(observer);
   }
 
-  void fetchDistrictList(UseCaseObserver observer, String stateId) {
-    _fetchDistrictListUsecase.execute(
+  void fetchDistrictList(UseCaseObserver observer, String? stateId) {
+    _fetchDistrictListUsecase!.execute(
       observer,
       new DistrictListParams(
         stateId,
@@ -48,8 +48,8 @@ class StatisticsPagePresenter extends Presenter {
     );
   }
 
-  void fetchWholeData(UseCaseObserver observer, String state, String district) {
-    _fetchWholeDataUsecase.execute(
+  void fetchWholeData(UseCaseObserver observer, String? state, String? district) {
+    _fetchWholeDataUsecase!.execute(
       observer,
       new FetchWholeDataParams(
         state,
@@ -59,23 +59,23 @@ class StatisticsPagePresenter extends Presenter {
   }
 
   void fetchSeasonsList(
-      UseCaseObserver observer, String state, String district, String cropId) {
-    _fetchSeasonsListUsecase.execute(
+      UseCaseObserver observer, String? state, String? district, String? cropId) {
+    _fetchSeasonsListUsecase!.execute(
       observer,
       new FetchSeasonListParams(state, district, cropId),
     );
   }
 
-  void fetchCropList(UseCaseObserver observer, String state, String district) {
-    _fetchCropListUsecase.execute(
+  void fetchCropList(UseCaseObserver observer, String? state, String? district) {
+    _fetchCropListUsecase!.execute(
       observer,
       new FetchCropListParams(state, district),
     );
   }
 
-  void fetchYieldStatistics(UseCaseObserver observer, String state,
-      String district, String cropId, String season) {
-    _fetchYieldStatisticsUsecase.execute(
+  void fetchYieldStatistics(UseCaseObserver observer, String? state,
+      String? district, String? cropId, String? season) {
+    _fetchYieldStatisticsUsecase!.execute(
       observer,
       new FetchYieldStatisticsParams(
           crop: cropId, state: state, district: district, season: season),

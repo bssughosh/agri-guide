@@ -6,17 +6,17 @@ import '../repositories/fetch_input_repository.dart';
 
 class GetRequiredMobileDownloadsUsecase
     extends CompletableUseCase<GetDownloadMobileParams> {
-  final FetchInputRepository _repository;
+  final FetchInputRepository? _repository;
 
   GetRequiredMobileDownloadsUsecase(this._repository);
 
   @override
   Future<Stream<void>> buildUseCaseStream(
-      GetDownloadMobileParams params) async {
+      GetDownloadMobileParams? params) async {
     StreamController streamController = StreamController();
     try {
-      await _repository.getRequiredDownloadsMobile(
-        params.states,
+      await _repository!.getRequiredDownloadsMobile(
+        params!.states,
         params.dists,
         params.yrs,
         params.param,
@@ -35,7 +35,7 @@ class GetDownloadMobileParams {
   final List<String> states;
   final List<String> dists;
   final List<String> yrs;
-  final List<String> param;
+  final List<String?> param;
   final String fileName;
 
   GetDownloadMobileParams(

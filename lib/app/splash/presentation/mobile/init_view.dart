@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../splash_controller.dart';
 
 Widget buildSplashInitViewMobile({
-  @required SplashPageController controller,
+  required SplashPageController controller,
 }) {
   Timer(Duration(seconds: 2), () => controller.navigateToHomepage());
   return SafeArea(

@@ -5,7 +5,7 @@ import '../../../../core/app_theme.dart';
 import '../prediction_controller.dart';
 
 Widget buildPredictionInitializationView({
-  @required PredictionPageController controller,
+  required PredictionPageController controller,
 }) {
   controller.checkForLoginStatus();
 

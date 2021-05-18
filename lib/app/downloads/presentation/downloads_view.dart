@@ -25,7 +25,7 @@ class DownloadsViewState
 
           switch (currentStateType) {
             case DownloadsInitializationState:
-              DownloadsInitializationState newState = currentState;
+              DownloadsInitializationState newState = currentState as DownloadsInitializationState;
               return buildDownloadsInitializationView(
                 isFirstLoad: newState.isFirstLoad,
                 isWeb: true,
@@ -53,7 +53,7 @@ class DownloadsViewState
 
           switch (currentStateType) {
             case DownloadsInitializationState:
-              DownloadsInitializationState newState = currentState;
+              DownloadsInitializationState newState = currentState as DownloadsInitializationState;
               return buildDownloadsInitializationView(
                 isFirstLoad: newState.isFirstLoad,
                 isWeb: false,

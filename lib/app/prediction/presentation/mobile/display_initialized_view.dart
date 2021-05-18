@@ -8,8 +8,8 @@ import '../widgets/custom_table.dart';
 import '../widgets/yield_prediction_container.dart';
 
 Widget buildPredictionDisplayInitializedViewMobile({
-  @required PredictionPageController controller,
-  @required BuildContext context,
+  required PredictionPageController controller,
+  required BuildContext context,
 }) {
   return WillPopScope(
     onWillPop: () => Future.sync(controller.onWillPopScopePage2),

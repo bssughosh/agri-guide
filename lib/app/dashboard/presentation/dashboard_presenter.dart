@@ -12,15 +12,15 @@ import '../domain/usecase/fetch_location_details_for_new_location_usecase.dart';
 import '../domain/usecase/fetch_location_details_usecase.dart';
 
 class DashboardPagePresenter extends Presenter {
-  FetchLiveWeatherUsecase _fetchLiveWeatherUsecase;
-  FetchLocationDetailsUsecase _fetchLocationDetailsUsecase;
-  FetchLiveWeatherForNewLocationUsecase _fetchLiveWeatherForNewLocationUsecase;
-  FetchLocationDetailsForNewLocationUsecase
+  FetchLiveWeatherUsecase? _fetchLiveWeatherUsecase;
+  FetchLocationDetailsUsecase? _fetchLocationDetailsUsecase;
+  FetchLiveWeatherForNewLocationUsecase? _fetchLiveWeatherForNewLocationUsecase;
+  FetchLocationDetailsForNewLocationUsecase?
       _fetchLocationDetailsForNewLocationUsecase;
-  CheckLoginStatusUsecase _checkLoginStatusUsecase;
-  FetchStateListUsecase _fetchStateListUsecase;
-  FetchDistrictListUsecase _fetchDistrictListUsecase;
-  FetchUserDetailsUsecase _fetchUserDetailsUsecase;
+  CheckLoginStatusUsecase? _checkLoginStatusUsecase;
+  FetchStateListUsecase? _fetchStateListUsecase;
+  FetchDistrictListUsecase? _fetchDistrictListUsecase;
+  FetchUserDetailsUsecase? _fetchUserDetailsUsecase;
 
   DashboardPagePresenter(
     this._fetchLiveWeatherUsecase,
@@ -35,35 +35,35 @@ class DashboardPagePresenter extends Presenter {
 
   @override
   dispose() {
-    _fetchLocationDetailsUsecase.dispose();
-    _fetchLiveWeatherUsecase.dispose();
-    _checkLoginStatusUsecase.dispose();
-    _fetchLocationDetailsForNewLocationUsecase.dispose();
-    _fetchLiveWeatherForNewLocationUsecase.dispose();
-    _fetchStateListUsecase.dispose();
-    _fetchDistrictListUsecase.dispose();
-    _fetchUserDetailsUsecase.dispose();
+    _fetchLocationDetailsUsecase!.dispose();
+    _fetchLiveWeatherUsecase!.dispose();
+    _checkLoginStatusUsecase!.dispose();
+    _fetchLocationDetailsForNewLocationUsecase!.dispose();
+    _fetchLiveWeatherForNewLocationUsecase!.dispose();
+    _fetchStateListUsecase!.dispose();
+    _fetchDistrictListUsecase!.dispose();
+    _fetchUserDetailsUsecase!.dispose();
   }
 
   void checkLoginStatus(UseCaseObserver observer) {
-    _checkLoginStatusUsecase.execute(observer);
+    _checkLoginStatusUsecase!.execute(observer);
   }
 
   void fetchLocationDetails(UseCaseObserver observer) {
-    _fetchLocationDetailsUsecase.execute(observer);
+    _fetchLocationDetailsUsecase!.execute(observer);
   }
 
   void fetchLiveWeather(UseCaseObserver observer) {
-    _fetchLiveWeatherUsecase.execute(observer);
+    _fetchLiveWeatherUsecase!.execute(observer);
   }
 
   void fetchLocationDetailsForNewLocation(
     UseCaseObserver observer, {
-    @required String state,
-    @required String district,
-    @required String pincode,
+    required String? state,
+    required String? district,
+    required String pincode,
   }) {
-    _fetchLocationDetailsForNewLocationUsecase.execute(
+    _fetchLocationDetailsForNewLocationUsecase!.execute(
       observer,
       new FetchLocationDetailsForNewLocationParams(
           state: state, district: district, pincode: pincode),
@@ -72,11 +72,11 @@ class DashboardPagePresenter extends Presenter {
 
   void fetchLiveWeatherForNewLocation(
     UseCaseObserver observer, {
-    @required String state,
-    @required String district,
-    @required String pincode,
+    required String? state,
+    required String? district,
+    required String pincode,
   }) {
-    _fetchLiveWeatherForNewLocationUsecase.execute(
+    _fetchLiveWeatherForNewLocationUsecase!.execute(
       observer,
       new FetchLiveWeatherForNewLocationParams(
           state: state, district: district, pincode: pincode),
@@ -84,11 +84,11 @@ class DashboardPagePresenter extends Presenter {
   }
 
   void fetchStateList(UseCaseObserver observer) {
-    _fetchStateListUsecase.execute(observer);
+    _fetchStateListUsecase!.execute(observer);
   }
 
-  void fetchDistrictList(UseCaseObserver observer, String stateId) {
-    _fetchDistrictListUsecase.execute(
+  void fetchDistrictList(UseCaseObserver observer, String? stateId) {
+    _fetchDistrictListUsecase!.execute(
       observer,
       new DistrictListParams(
         stateId,
@@ -97,6 +97,6 @@ class DashboardPagePresenter extends Presenter {
   }
 
   void fetchUserDetails(UseCaseObserver observer) {
-    _fetchUserDetailsUsecase.execute(observer);
+    _fetchUserDetailsUsecase!.execute(observer);
   }
 }

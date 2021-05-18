@@ -12,10 +12,11 @@ import 'dashboard_presenter.dart';
 import 'dashboard_state_machine.dart';
 
 class DashboardPageController extends Controller {
-  final DashboardPagePresenter _presenter;
+  final DashboardPagePresenter? _presenter;
   final DashboardPageStateMachine _stateMachine =
       new DashboardPageStateMachine();
-  final navigationService = serviceLocator<NavigationService>();
+  final NavigationService? navigationService =
+      serviceLocator<NavigationService>();
   DashboardPageController()
       : _presenter = serviceLocator<DashboardPagePresenter>(),
         super();
@@ -23,23 +24,23 @@ class DashboardPageController extends Controller {
   List stateList = [];
   List districtList = [];
 
-  LiveWeatherEntity liveWeatherEntity;
+  LiveWeatherEntity? liveWeatherEntity;
 
-  String selectedState;
-  String selectedDistrict;
+  String? selectedState;
+  String? selectedDistrict;
 
   bool isFirstTimeLoading = true;
   bool isPlaceChanged = false;
 
   LoginStatus loginStatus = LoginStatus.LOGGED_OUT;
-  UserEntity userEntity;
+  late UserEntity userEntity;
 
   TextEditingController pincode = TextEditingController();
 
   @override
   void initListeners() {}
 
-  DashboardState getCurrentState() {
+  DashboardState? getCurrentState() {
     return _stateMachine.getCurrentState();
   }
 
@@ -51,12 +52,12 @@ class DashboardPageController extends Controller {
 
   @override
   void onDisposed() {
-    _presenter.dispose();
+    _presenter!.dispose();
     super.onDisposed();
   }
 
   void checkForLoginStatus() {
-    _presenter.checkLoginStatus(
+    _presenter!.checkLoginStatus(
       new UseCaseObserver(() {}, (error) {
         print(error);
         handleAPIErrors(error);
@@ -69,7 +70,7 @@ class DashboardPageController extends Controller {
           refreshUI();
         }
         if (status == LoginStatus.LOGGED_IN) {
-          _presenter.fetchUserDetails(
+          _presenter!.fetchUserDetails(
             new UseCaseObserver(
               () {},
               (error) {
@@ -92,7 +93,7 @@ class DashboardPageController extends Controller {
   void fetchStateList() {
     _stateMachine.onEvent(new DashboardPageLoadingEvent());
     refreshUI();
-    _presenter.fetchStateList(
+    _presenter!.fetchStateList(
       new UseCaseObserver(() {}, (error) {
         handleAPIErrors(error);
         print(error);
@@ -118,7 +119,7 @@ class DashboardPageController extends Controller {
   void fetchDistrictList() {
     _stateMachine.onEvent(new DashboardPageLoadingEvent());
     refreshUI();
-    _presenter.fetchDistrictList(
+    _presenter!.fetchDistrictList(
       new UseCaseObserver(() {}, (error) {
         handleAPIErrors(error);
         print(error);
@@ -150,22 +151,22 @@ class DashboardPageController extends Controller {
   }
 
   void navigateToLogin() {
-    navigationService.navigateTo(NavigationService.loginPage,
-        shouldReplace: true);
+    navigationService!
+        .navigateTo(NavigationService.loginPage, shouldReplace: true);
   }
 
   void navigateToRegistration() {
-    navigationService.navigateTo(NavigationService.registerPage,
-        shouldReplace: true);
+    navigationService!
+        .navigateTo(NavigationService.registerPage, shouldReplace: true);
   }
 
   void fetchLiveWeather() {
     _stateMachine.onEvent(new DashboardPageLoadingEvent());
     refreshUI();
-    _presenter.fetchLocationDetails(
+    _presenter!.fetchLocationDetails(
       new UseCaseObserver(
         () {
-          _presenter.fetchLiveWeather(
+          _presenter!.fetchLiveWeather(
             new UseCaseObserver(() {}, (error) {
               print(error);
             }, onNextFunction: (LiveWeatherEntity _liveWeatherEntity) {
@@ -188,10 +189,10 @@ class DashboardPageController extends Controller {
   void fetchLiveWeatherForNewLocation() {
     _stateMachine.onEvent(new DashboardPageLoadingEvent());
     refreshUI();
-    _presenter.fetchLocationDetailsForNewLocation(
+    _presenter!.fetchLocationDetailsForNewLocation(
       new UseCaseObserver(
         () {
-          _presenter.fetchLiveWeatherForNewLocation(
+          _presenter!.fetchLiveWeatherForNewLocation(
             new UseCaseObserver(() {}, (error) {
               print(error);
             }, onNextFunction: (LiveWeatherEntity _liveWeatherEntity) {
@@ -263,14 +264,14 @@ class DashboardPageController extends Controller {
     refreshUI();
   }
 
-  String selectedStateName() {
-    String name = stateList
+  String? selectedStateName() {
+    String? name = stateList
         .singleWhere((element) => element['id'] == selectedState)['name'];
     return name;
   }
 
-  String selectedDistrictName() {
-    String name = districtList
+  String? selectedDistrictName() {
+    String? name = districtList
         .singleWhere((element) => element['id'] == selectedDistrict)['name'];
     return name;
   }

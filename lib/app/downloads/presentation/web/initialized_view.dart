@@ -8,8 +8,8 @@ import '../downloads_controller.dart';
 import '../widgets/range_widget.dart';
 
 Widget buildDownloadsInitializedViewWeb({
-  @required BuildContext context,
-  @required DownloadsPageController controller,
+  required BuildContext context,
+  required DownloadsPageController controller,
 }) {
   bool _showDistrictList = controller.selectedStates.length == 1 &&
       controller.districtList.length > 0;
@@ -138,7 +138,7 @@ Widget buildDownloadsInitializedViewWeb({
                       child: Column(
                         children: [
                           for (Map<String, String> item
-                              in controller.paramsList)
+                              in controller.paramsList as Iterable<Map<String, String>>)
                             Container(
                               decoration: AppTheme.normalGreenBorderDecoration,
                               margin: EdgeInsets.symmetric(vertical: 10),

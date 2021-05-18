@@ -6,17 +6,17 @@ import '../entity/live_weather_entity.dart';
 import '../repository/dashboard_services_repository.dart';
 
 class FetchLiveWeatherUsecase extends CompletableUseCase<void> {
-  DashboardServicesRepository _repository;
+  DashboardServicesRepository? _repository;
 
   FetchLiveWeatherUsecase(this._repository);
 
   @override
-  Future<Stream<LiveWeatherEntity>> buildUseCaseStream(void params) async {
-    StreamController<LiveWeatherEntity> streamController = StreamController();
+  Future<Stream<LiveWeatherEntity?>> buildUseCaseStream(void params) async {
+    StreamController<LiveWeatherEntity?> streamController = StreamController();
 
     try {
-      LiveWeatherEntity liveWeatherEntity =
-          await _repository.fetchLiveWeather();
+      LiveWeatherEntity? liveWeatherEntity =
+          await _repository!.fetchLiveWeather();
       print('Live weather fetched');
       streamController.add(liveWeatherEntity);
       streamController.close();

@@ -4,14 +4,14 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../statistics_view.dart';
 
 Widget singleGraph({
-  @required String xAxisName,
-  @required double visibleMinimum,
-  @required int maximumLabels,
-  @required String yAxisName,
-  @required String yAxisLabel,
-  @required List<ChartData> dataSource,
-  @required double interval,
-  @required int desiredIntervals,
+  required String xAxisName,
+  required double visibleMinimum,
+  required int maximumLabels,
+  required String yAxisName,
+  required String yAxisLabel,
+  required List<ChartData> dataSource,
+  required double interval,
+  required int desiredIntervals,
 }) {
   return SfCartesianChart(
     primaryXAxis: CategoryAxis(

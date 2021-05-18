@@ -6,7 +6,7 @@ import '../entity/location_entity.dart';
 import '../repository/dashboard_services_repository.dart';
 
 class FetchLocationDetailsUsecase extends CompletableUseCase<void> {
-  DashboardServicesRepository _repository;
+  DashboardServicesRepository? _repository;
 
   FetchLocationDetailsUsecase(this._repository);
 
@@ -15,7 +15,7 @@ class FetchLocationDetailsUsecase extends CompletableUseCase<void> {
     StreamController<LocationEntity> streamController = StreamController();
 
     try {
-      await _repository.fetchLatitudeAndLongitude();
+      await _repository!.fetchLatitudeAndLongitude();
       print('Location details fetched');
       streamController.close();
     } catch (error) {

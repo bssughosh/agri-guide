@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/app_theme.dart';
 
 Future<void> showMyDialog({
-  @required BuildContext context,
+  required BuildContext context,
 }) async {
   return showDialog<void>(
     context: context,

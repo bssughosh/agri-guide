@@ -94,11 +94,11 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
   }
 
   _buildHomeInitializedViewWeb({
-    @required ScrollController dashboardScrollController,
-    @required ScrollController predictionScrollController,
-    @required ScrollController statisticsScrollController,
-    @required ScrollController downloadsScrollController,
-    @required HomePageController controller,
+    required ScrollController dashboardScrollController,
+    required ScrollController predictionScrollController,
+    required ScrollController statisticsScrollController,
+    required ScrollController downloadsScrollController,
+    required HomePageController controller,
   }) {
     return Scaffold(
       key: _scaffoldKey,
@@ -134,7 +134,7 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
               size: 50,
             ),
             onTap: () {
-              _scaffoldKey.currentState.openDrawer();
+              _scaffoldKey.currentState!.openDrawer();
             },
           ),
         ),
@@ -233,12 +233,12 @@ class HomeViewState extends ResponsiveViewState<HomePage, HomePageController> {
   }
 
   _buildHomeInitializedViewMobile({
-    @required ScrollController dashboardScrollController,
-    @required ScrollController predictionScrollController,
-    @required ScrollController statisticsScrollController,
-    @required ScrollController downloadsScrollController,
-    @required ScrollController profileScrollController,
-    @required HomePageController controller,
+    required ScrollController dashboardScrollController,
+    required ScrollController predictionScrollController,
+    required ScrollController statisticsScrollController,
+    required ScrollController downloadsScrollController,
+    required ScrollController profileScrollController,
+    required HomePageController controller,
   }) {
     return Scaffold(
       bottomNavigationBar: BottomNavBar(

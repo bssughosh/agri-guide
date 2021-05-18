@@ -7,18 +7,18 @@ import '../repository/dashboard_services_repository.dart';
 
 class FetchLocationDetailsForNewLocationUsecase
     extends CompletableUseCase<FetchLocationDetailsForNewLocationParams> {
-  DashboardServicesRepository _repository;
+  DashboardServicesRepository? _repository;
 
   FetchLocationDetailsForNewLocationUsecase(this._repository);
 
   @override
   Future<Stream<void>> buildUseCaseStream(
-      FetchLocationDetailsForNewLocationParams params) async {
+      FetchLocationDetailsForNewLocationParams? params) async {
     StreamController streamController = StreamController();
 
     try {
-      await _repository.fetchLatitudeAndLongitudeForNewLocation(
-        state: params.state,
+      await _repository!.fetchLatitudeAndLongitudeForNewLocation(
+        state: params!.state,
         district: params.district,
         pincode: params.pincode,
       );
@@ -34,13 +34,13 @@ class FetchLocationDetailsForNewLocationUsecase
 }
 
 class FetchLocationDetailsForNewLocationParams {
-  final String state;
-  final String district;
+  final String? state;
+  final String? district;
   final String pincode;
 
   FetchLocationDetailsForNewLocationParams({
-    @required this.state,
-    @required this.district,
-    @required this.pincode,
+    required this.state,
+    required this.district,
+    required this.pincode,
   });
 }

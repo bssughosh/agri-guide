@@ -11,8 +11,8 @@ import '../widgets/filter_tab.dart';
 import '../widgets/single_graph.dart';
 
 Widget buildStatisticsDisplayInitializedViewWeb({
-  @required StatisticsPageController controller,
-  @required BuildContext context,
+  required StatisticsPageController controller,
+  required BuildContext context,
 }) {
   return Stack(
     children: [
@@ -47,7 +47,7 @@ Widget buildStatisticsDisplayInitializedViewWeb({
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: chip(
-                              label: controller.selectedStateName(),
+                              label: controller.selectedStateName()!,
                               color: AppTheme.chipBackground,
                               textColor: AppTheme.secondaryColor,
                               elevation: 0,
@@ -73,7 +73,7 @@ Widget buildStatisticsDisplayInitializedViewWeb({
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: chip(
-                              label: controller.selectedDistrictName(),
+                              label: controller.selectedDistrictName()!,
                               color: AppTheme.chipBackground,
                               textColor: AppTheme.secondaryColor,
                               elevation: 0,

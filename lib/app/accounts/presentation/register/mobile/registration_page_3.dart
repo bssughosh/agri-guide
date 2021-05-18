@@ -4,8 +4,8 @@ import '../../widgets/custom_textfield.dart';
 import '../register_controller.dart';
 
 Widget registrationPage3({
-  @required RegisterPageController controller,
-  @required double width,
+  required RegisterPageController controller,
+  required double width,
 }) {
   // pass, confirm pass
   return Container(

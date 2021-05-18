@@ -8,19 +8,19 @@ import '../repository/dashboard_services_repository.dart';
 
 class FetchLiveWeatherForNewLocationUsecase
     extends CompletableUseCase<FetchLiveWeatherForNewLocationParams> {
-  DashboardServicesRepository _repository;
+  DashboardServicesRepository? _repository;
 
   FetchLiveWeatherForNewLocationUsecase(this._repository);
 
   @override
-  Future<Stream<LiveWeatherEntity>> buildUseCaseStream(
-      FetchLiveWeatherForNewLocationParams params) async {
-    StreamController<LiveWeatherEntity> streamController = StreamController();
+  Future<Stream<LiveWeatherEntity?>> buildUseCaseStream(
+      FetchLiveWeatherForNewLocationParams? params) async {
+    StreamController<LiveWeatherEntity?> streamController = StreamController();
 
     try {
-      LiveWeatherEntity liveWeatherEntity =
-          await _repository.fetchLiveWeatherForNewLocation(
-        state: params.state,
+      LiveWeatherEntity? liveWeatherEntity =
+          await _repository!.fetchLiveWeatherForNewLocation(
+        state: params!.state,
         district: params.district,
         pincode: params.pincode,
       );
@@ -37,13 +37,13 @@ class FetchLiveWeatherForNewLocationUsecase
 }
 
 class FetchLiveWeatherForNewLocationParams {
-  final String state;
-  final String district;
+  final String? state;
+  final String? district;
   final String pincode;
 
   FetchLiveWeatherForNewLocationParams({
-    @required this.state,
-    @required this.district,
-    @required this.pincode,
+    required this.state,
+    required this.district,
+    required this.pincode,
   });
 }

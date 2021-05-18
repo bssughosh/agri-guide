@@ -30,7 +30,7 @@ class DashboardViewState
               );
 
             case DashboardPageInitializedState:
-              DashboardPageInitializedState initializedState = currentState;
+              DashboardPageInitializedState initializedState = currentState as DashboardPageInitializedState;
               return buildDashboardInitializedViewWeb(
                 loginStatus: initializedState.loginStatus,
                 context: context,
@@ -57,7 +57,7 @@ class DashboardViewState
               );
 
             case DashboardPageInitializedState:
-              DashboardPageInitializedState initializedState = currentState;
+              DashboardPageInitializedState initializedState = currentState as DashboardPageInitializedState;
               return buildDashboardInitializedViewMobile(
                 loginStatus: initializedState.loginStatus,
                 context: context,

@@ -7,10 +7,10 @@ import 'view_graph_presenter.dart';
 import 'view_graph_state_machine.dart';
 
 class ViewGraphPageController extends Controller {
-  final ViewGraphPagePresenter _presenter;
+  final ViewGraphPagePresenter? _presenter;
   final ViewGraphPageStateMachine _stateMachine =
       new ViewGraphPageStateMachine();
-  final navigationService = serviceLocator<NavigationService>();
+  final NavigationService? navigationService = serviceLocator<NavigationService>();
   ViewGraphPageController()
       : _presenter = serviceLocator<ViewGraphPagePresenter>(),
         super();
@@ -18,7 +18,7 @@ class ViewGraphPageController extends Controller {
   @override
   void initListeners() {}
 
-  ViewGraphState getCurrentState() {
+  ViewGraphState? getCurrentState() {
     return _stateMachine.getCurrentState();
   }
 
@@ -33,7 +33,7 @@ class ViewGraphPageController extends Controller {
 
   @override
   void onDisposed() {
-    _presenter.dispose();
+    _presenter!.dispose();
     super.onDisposed();
   }
 }

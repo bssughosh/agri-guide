@@ -5,7 +5,7 @@ import '../../../../core/app_theme.dart';
 import '../profile_controller.dart';
 
 Widget buildProfileInitializationView(
-    {@required ProfilePageController controller}) {
+    {required ProfilePageController controller}) {
   controller.checkForLoginStatus();
 
   return Container(

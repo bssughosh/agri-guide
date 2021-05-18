@@ -11,7 +11,7 @@ import 'view_graph_controller.dart';
 import 'view_graph_state_machine.dart';
 
 class ViewGraphPage extends View {
-  final ViewGraphParams params;
+  final ViewGraphParams? params;
 
   ViewGraphPage(this.params);
 
@@ -46,7 +46,7 @@ class ViewGraphViewState
               return _buildViewGraphInitializationViewMobile(
                 controller: controller,
                 statisticsPageController:
-                    widget.params.statisticsPageController,
+                    widget.params!.statisticsPageController,
               );
           }
           throw Exception("Unrecognized state $currentStateType encountered");
@@ -60,19 +60,19 @@ class ViewGraphViewState
   Widget get watchView => throw UnimplementedError();
 
   Widget _buildViewGraphInitializationViewMobile({
-    @required ViewGraphPageController controller,
-    @required StatisticsPageController statisticsPageController,
+    required ViewGraphPageController controller,
+    required StatisticsPageController statisticsPageController,
   }) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
           describeEnum(
-                  widget.params.statisticsPageController.selectedFilters1) +
-              (widget.params.statisticsPageController.selectedFilters.length ==
+                  widget.params!.statisticsPageController.selectedFilters1!) +
+              (widget.params!.statisticsPageController.selectedFilters.length ==
                       2
                   ? ' v/s ' +
                       describeEnum(widget
-                          .params.statisticsPageController.selectedFilters2)
+                          .params!.statisticsPageController.selectedFilters2!)
                   : ''),
         ),
       ),
@@ -115,11 +115,11 @@ class ViewGraphViewState
                   visibleMinimum: 20,
                   maximumLabels: 15,
                   primaryYAxisName:
-                      describeEnum(statisticsPageController.selectedFilters1),
+                      describeEnum(statisticsPageController.selectedFilters1!),
                   primaryYAxisLabel: statisticsPageController.getAxisLabelName(
                       statisticsPageController.selectedFilters1),
                   secondaryYAxisName:
-                      describeEnum(statisticsPageController.selectedFilters2),
+                      describeEnum(statisticsPageController.selectedFilters2!),
                   secondaryYAxisLabel:
                       statisticsPageController.getAxisLabelName(
                           statisticsPageController.selectedFilters2),
@@ -181,6 +181,6 @@ class ViewGraphParams {
   final StatisticsPageController statisticsPageController;
 
   ViewGraphParams({
-    @required this.statisticsPageController,
+    required this.statisticsPageController,
   });
 }

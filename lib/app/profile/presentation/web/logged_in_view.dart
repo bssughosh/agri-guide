@@ -8,8 +8,8 @@ import '../widgets/bottom_actions_widget.dart';
 import '../widgets/custom_textfield.dart';
 
 Widget buildProfileLoggedInViewWeb({
-  @required ProfilePageController controller,
-  @required BuildContext context,
+  required ProfilePageController controller,
+  required BuildContext context,
 }) {
   double screenWidth = MediaQuery.of(context).size.width;
   return Container(

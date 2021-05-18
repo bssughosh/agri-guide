@@ -1,16 +1,16 @@
 import '../../../core/state_machine.dart';
 
 class DownloadsStateMachine
-    extends StateMachine<DownloadsState, DownloadsEvent> {
+    extends StateMachine<DownloadsState?, DownloadsEvent> {
   DownloadsStateMachine() : super(DownloadsInitializationState(true));
 
   @override
-  DownloadsState getStateOnEvent(DownloadsEvent event) {
+  DownloadsState? getStateOnEvent(DownloadsEvent event) {
     final eventType = event.runtimeType;
-    DownloadsState newState = getCurrentState();
+    DownloadsState? newState = getCurrentState();
     switch (eventType) {
       case DownloadsInitializationEvent:
-        DownloadsInitializationEvent newEvent = event;
+        DownloadsInitializationEvent newEvent = event as DownloadsInitializationEvent;
         newState = DownloadsInitializationState(newEvent.isFirstLoad);
         break;
 

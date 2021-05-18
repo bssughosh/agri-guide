@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 /// An entity containing user details
 class UserEntity {
   /// Full Name of the User
@@ -27,13 +25,13 @@ class UserEntity {
   final String pincode;
 
   UserEntity({
-    @required this.name,
-    @required this.email,
-    @required this.aadhar,
-    @required this.state,
-    @required this.district,
-    @required this.area,
-    @required this.pincode,
+    required this.name,
+    required this.email,
+    required this.aadhar,
+    required this.state,
+    required this.district,
+    required this.area,
+    required this.pincode,
     this.mobile = '',
   });
 }

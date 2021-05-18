@@ -4,9 +4,9 @@ import '../../../../core/app_theme.dart';
 import '../statistics_controller.dart';
 
 Future<void> showMySeasonDialog({
-  @required BuildContext context,
-  @required List seasonsList,
-  @required StatisticsPageController controller,
+  required BuildContext context,
+  required List seasonsList,
+  required StatisticsPageController controller,
 }) async {
   return showDialog<void>(
     context: context,

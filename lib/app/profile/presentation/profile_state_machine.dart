@@ -1,12 +1,12 @@
 import '../../../core/state_machine.dart';
 
-class ProfilePageStateMachine extends StateMachine<ProfileState, ProfileEvent> {
+class ProfilePageStateMachine extends StateMachine<ProfileState?, ProfileEvent> {
   ProfilePageStateMachine() : super(ProfilePageInitializationState());
 
   @override
-  ProfileState getStateOnEvent(ProfileEvent event) {
+  ProfileState? getStateOnEvent(ProfileEvent event) {
     final eventType = event.runtimeType;
-    ProfileState newState = getCurrentState();
+    ProfileState? newState = getCurrentState();
     switch (eventType) {
       case ProfilePageInitializationEvent:
         newState = ProfilePageInitializationState();

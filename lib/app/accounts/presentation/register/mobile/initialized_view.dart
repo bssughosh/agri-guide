@@ -7,9 +7,9 @@ import 'registration_page_2.dart';
 import 'registration_page_3.dart';
 
 Widget buildRegistrationInitializedView({
-  @required bool isWeb,
-  @required RegisterPageController controller,
-  @required BuildContext context,
+  required bool isWeb,
+  required RegisterPageController controller,
+  required BuildContext context,
 }) {
   double screenHeight = MediaQuery.of(context).size.height;
   double screenWidth = MediaQuery.of(context).size.width;

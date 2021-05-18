@@ -9,9 +9,9 @@ class CustomSecondaryButton extends StatelessWidget {
   final Function onPressed;
 
   const CustomSecondaryButton({
-    @required this.title,
-    @required this.isActive,
-    @required this.onPressed,
+    required this.title,
+    required this.isActive,
+    required this.onPressed,
   });
 
   @override
@@ -19,7 +19,7 @@ class CustomSecondaryButton extends StatelessWidget {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-        onTap: onPressed,
+        onTap: onPressed as void Function()?,
         child: Container(
           padding: EdgeInsets.all(6),
           child: Text(

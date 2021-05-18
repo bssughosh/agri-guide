@@ -5,8 +5,8 @@ import '../../../../core/widgets/custom_button.dart';
 import '../profile_controller.dart';
 
 Widget buildProfileLoggedOutViewWeb({
-  @required ProfilePageController controller,
-  @required BuildContext context,
+  required ProfilePageController controller,
+  required BuildContext context,
 }) {
   double screenWidth = MediaQuery.of(context).size.width;
   return Container(

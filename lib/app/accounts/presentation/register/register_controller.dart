@@ -14,9 +14,10 @@ import 'register_presenter.dart';
 import 'register_state_machine.dart';
 
 class RegisterPageController extends Controller {
-  final RegisterPagePresenter _presenter;
+  final RegisterPagePresenter? _presenter;
   final RegisterStateMachine _stateMachine = new RegisterStateMachine();
-  final navigationService = serviceLocator<NavigationService>();
+  final NavigationService? navigationService =
+      serviceLocator<NavigationService>();
 
   RegisterPageController()
       : _presenter = serviceLocator<RegisterPagePresenter>(),
@@ -25,12 +26,12 @@ class RegisterPageController extends Controller {
   int currentPageNumber = 0;
   int lastPageNumber = 2;
   PageController pageController = PageController();
-  List stateList;
-  List districtList;
+  late List stateList;
+  late List districtList;
 
   //Page 1
-  String selectedState;
-  String selectedDistrict;
+  String? selectedState;
+  String? selectedDistrict;
   TextEditingController areaText = new TextEditingController();
   TextEditingController pincodeText = new TextEditingController();
   bool stateListInitialized = false;
@@ -49,7 +50,7 @@ class RegisterPageController extends Controller {
   @override
   void initListeners() {}
 
-  RegisterState getCurrentState() {
+  RegisterState? getCurrentState() {
     return _stateMachine.getCurrentState();
   }
 
@@ -68,14 +69,14 @@ class RegisterPageController extends Controller {
 
   @override
   void onDisposed() {
-    _presenter.dispose();
+    _presenter!.dispose();
     super.onDisposed();
   }
 
   void fetchStateList() {
     _stateMachine.onEvent(new RegisterLoadingEvent());
     refreshUI();
-    _presenter.fetchStateList(
+    _presenter!.fetchStateList(
       new UseCaseObserver(() {}, (error) {
         handleAPIErrors(error);
         print(error);
@@ -93,7 +94,7 @@ class RegisterPageController extends Controller {
   void fetchDistrictList() {
     _stateMachine.onEvent(new RegisterLoadingEvent());
     refreshUI();
-    _presenter.fetchDistrictList(
+    _presenter!.fetchDistrictList(
       new UseCaseObserver(() {}, (error) {
         handleAPIErrors(error);
         print(error);
@@ -243,8 +244,8 @@ class RegisterPageController extends Controller {
     if (!validatePage3()) return;
     UserEntity newUser = new UserEntity(
       aadhar: aadharText.text,
-      state: selectedState,
-      district: selectedDistrict,
+      state: selectedState!,
+      district: selectedDistrict!,
       name: nameText.text,
       email: emailText.text,
       area: areaText.text,
@@ -253,7 +254,7 @@ class RegisterPageController extends Controller {
     );
     _stateMachine.onEvent(new RegisterLoadingEvent());
     refreshUI();
-    _presenter.createNewUser(
+    _presenter!.createNewUser(
       new UseCaseObserver(() => _handleRegisterSuccess(),
           (error) => _handleRegisterError(error)),
       newUser,
@@ -262,8 +263,8 @@ class RegisterPageController extends Controller {
   }
 
   _handleRegisterSuccess() {
-    navigationService.navigateTo(NavigationService.homepage,
-        shouldReplace: true);
+    navigationService!
+        .navigateTo(NavigationService.homepage, shouldReplace: true);
   }
 
   _handleRegisterError(Exception error) {
@@ -280,8 +281,8 @@ class RegisterPageController extends Controller {
   }
 
   void navigateToHomepage() {
-    navigationService.navigateTo(NavigationService.homepage,
-        shouldReplace: true);
+    navigationService!
+        .navigateTo(NavigationService.homepage, shouldReplace: true);
   }
 
   bool onWillPopScope() {

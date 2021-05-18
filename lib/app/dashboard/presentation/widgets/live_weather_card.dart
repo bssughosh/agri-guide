@@ -8,9 +8,9 @@ class LiveWeatherCard extends StatelessWidget {
   final String value;
 
   const LiveWeatherCard({
-    @required this.icon,
-    @required this.title,
-    @required this.value,
+    required this.icon,
+    required this.title,
+    required this.value,
   });
 
   @override

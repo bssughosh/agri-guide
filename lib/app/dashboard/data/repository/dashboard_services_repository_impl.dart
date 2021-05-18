@@ -51,25 +51,26 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
       throw UserNotSignedInError();
     }
 
-    User currentUser = FirebaseAuth.instance.currentUser;
+    User currentUser = FirebaseAuth.instance.currentUser!;
     if (locationDetails.containsKey(currentUser.uid)) {
       return;
     }
 
-    DocumentSnapshot<Map<String, dynamic>> userDetails =
-        await userData.doc(currentUser.uid).get();
-    if (userDetails.data().containsKey(_keyNameLat) &&
-        userDetails.data().containsKey(_keyNameLon)) {
+    DocumentSnapshot<Map<String, dynamic>> userDetails = await (userData
+        .doc(currentUser.uid)
+        .get() as Future<DocumentSnapshot<Map<String, dynamic>>>);
+    if (userDetails.data()!.containsKey(_keyNameLat) &&
+        userDetails.data()!.containsKey(_keyNameLon)) {
       locationDetails[currentUser.uid] = new LocationEntity(
-        lat: userDetails.data()[_keyNameLat],
-        lon: userDetails.data()[_keyNameLon],
-        state: capitalize(userDetails.data()[_keyNameState].toString()),
-        district: capitalize(userDetails.data()[_keyNameDistrict].toString()),
+        lat: userDetails.data()![_keyNameLat],
+        lon: userDetails.data()![_keyNameLon],
+        state: capitalize(userDetails.data()![_keyNameState].toString()),
+        district: capitalize(userDetails.data()![_keyNameDistrict].toString()),
       );
     } else {
       String _baseUrl = 'https://eu1.locationiq.com';
       String _apiKey = '87b1a8611d97f7';
-      String _pinCode = userDetails.data()[_keyNamePincode];
+      String? _pinCode = userDetails.data()![_keyNamePincode];
       String url = '$_baseUrl/v1/search.php?' +
           'key=$_apiKey' +
           '&country=india' +
@@ -106,8 +107,9 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
         locationDetails[currentUser.uid] = new LocationEntity(
           lat: lat,
           lon: lon,
-          state: capitalize(userDetails.data()[_keyNameState].toString()),
-          district: capitalize(userDetails.data()[_keyNameDistrict].toString()),
+          state: capitalize(userDetails.data()![_keyNameState].toString()),
+          district:
+              capitalize(userDetails.data()![_keyNameDistrict].toString()),
         );
       }
     }
@@ -116,15 +118,15 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
   }
 
   @override
-  Future<LiveWeatherEntity> fetchLiveWeather() async {
+  Future<LiveWeatherEntity?> fetchLiveWeather() async {
     if (FirebaseAuth.instance.currentUser == null) {
       throw UserNotSignedInError();
     }
 
-    User currentUser = FirebaseAuth.instance.currentUser;
+    User currentUser = FirebaseAuth.instance.currentUser!;
     if (liveWeatherDetails.containsKey(currentUser.uid)) {
       if (DateTime.now()
-              .difference(lastFetchedTime[currentUser.uid])
+              .difference(lastFetchedTime[currentUser.uid]!)
               .inMinutes <=
           weatherDataReloadThresholdInMinutes) {
         return liveWeatherDetails[currentUser.uid];
@@ -137,8 +139,8 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
 
     String _baseUrl = 'https://api.openweathermap.org';
     String _apiKey = '34e2c047fb1889b5dce88632144fc893';
-    String _lat = locationDetails[currentUser.uid].lat;
-    String _lon = locationDetails[currentUser.uid].lon;
+    String _lat = locationDetails[currentUser.uid]!.lat;
+    String _lon = locationDetails[currentUser.uid]!.lon;
 
     String url = '$_baseUrl/data/2.5/weather?' +
         'lat=$_lat' +
@@ -163,16 +165,16 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
     var data = json.decode(value.body);
 
     if (data.containsKey(_keyNameMain)) {
-      num _temperature = data[_keyNameMain][_keyNameTempMax];
-      num _humidity = data[_keyNameMain][_keyNameHumidity];
-      num _rain = data.containsKey(_keyNameRain)
+      num? _temperature = data[_keyNameMain][_keyNameTempMax];
+      num? _humidity = data[_keyNameMain][_keyNameHumidity];
+      num? _rain = data.containsKey(_keyNameRain)
           ? data[_keyNameRain][_keyName3h]
           : null;
 
       lastFetchedTime[currentUser.uid] = DateTime.now();
 
       liveWeatherDetails[currentUser.uid] = new LiveWeatherEntity(
-        location: locationDetails[currentUser.uid],
+        location: locationDetails[currentUser.uid]!,
         temp: _temperature != null ? _temperature.toString() : "0",
         humidity: _humidity != null ? _humidity.toString() : "0",
         rain: _rain != null ? _rain.toString() : "0",
@@ -185,9 +187,9 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
 
   @override
   Future<void> fetchLatitudeAndLongitudeForNewLocation({
-    @required String state,
-    @required String district,
-    @required String pincode,
+    required String? state,
+    required String? district,
+    required String pincode,
   }) async {
     if (locationDetailsForNewLocation.containsKey(pincode)) {
       return;
@@ -223,8 +225,8 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
       locationDetailsForNewLocation[pincode] = new LocationEntity(
         lat: lat,
         lon: lon,
-        state: capitalize(state),
-        district: capitalize(district),
+        state: capitalize(state!),
+        district: capitalize(district!),
       );
     }
 
@@ -232,14 +234,14 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
   }
 
   @override
-  Future<LiveWeatherEntity> fetchLiveWeatherForNewLocation({
-    @required String state,
-    @required String district,
-    @required String pincode,
+  Future<LiveWeatherEntity?> fetchLiveWeatherForNewLocation({
+    required String? state,
+    required String? district,
+    required String pincode,
   }) async {
     if (liveWeatherDetailsForNewLocation.containsKey(pincode)) {
       if (DateTime.now()
-              .difference(lastFetchedTimeForNewLocation[pincode])
+              .difference(lastFetchedTimeForNewLocation[pincode]!)
               .inMinutes <=
           weatherDataReloadThresholdInMinutes) {
         return liveWeatherDetailsForNewLocation[pincode];
@@ -256,8 +258,8 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
 
     String _baseUrl = 'https://api.openweathermap.org';
     String _apiKey = '34e2c047fb1889b5dce88632144fc893';
-    String _lat = locationDetailsForNewLocation[pincode].lat;
-    String _lon = locationDetailsForNewLocation[pincode].lon;
+    String? _lat = locationDetailsForNewLocation[pincode]!.lat;
+    String? _lon = locationDetailsForNewLocation[pincode]!.lon;
 
     String url = '$_baseUrl/data/2.5/weather?' +
         'lat=$_lat' +
@@ -282,16 +284,16 @@ class DashboardServicesRepositoryImpl extends DashboardServicesRepository {
     var data = json.decode(value.body);
 
     if (data.containsKey(_keyNameMain)) {
-      num _temperature = data[_keyNameMain][_keyNameTempMax];
-      num _humidity = data[_keyNameMain][_keyNameHumidity];
-      num _rain = data.containsKey(_keyNameRain)
+      num? _temperature = data[_keyNameMain][_keyNameTempMax];
+      num? _humidity = data[_keyNameMain][_keyNameHumidity];
+      num? _rain = data.containsKey(_keyNameRain)
           ? data[_keyNameRain][_keyName3h]
           : null;
 
       lastFetchedTimeForNewLocation[pincode] = DateTime.now();
 
       liveWeatherDetailsForNewLocation[pincode] = new LiveWeatherEntity(
-        location: locationDetailsForNewLocation[pincode],
+        location: locationDetailsForNewLocation[pincode]!,
         temp: _temperature != null ? _temperature.toString() : "0",
         humidity: _humidity != null ? _humidity.toString() : "0",
         rain: _rain != null ? _rain.toString() : "0",

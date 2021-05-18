@@ -5,16 +5,16 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import '../repositories/fetch_input_repository.dart';
 
 class FetchCropListUsecase extends CompletableUseCase<FetchCropListParams> {
-  final FetchInputRepository _repository;
+  final FetchInputRepository? _repository;
 
   FetchCropListUsecase(this._repository);
 
   @override
-  Future<Stream<List>> buildUseCaseStream(FetchCropListParams params) async {
-    StreamController<List> streamController = StreamController();
+  Future<Stream<List?>> buildUseCaseStream(FetchCropListParams? params) async {
+    StreamController<List?> streamController = StreamController();
     try {
-      List res = await _repository.getCrops(
-        params.state,
+      List? res = await _repository!.getCrops(
+        params!.state,
         params.district,
       );
       streamController.add(res);
@@ -27,8 +27,8 @@ class FetchCropListUsecase extends CompletableUseCase<FetchCropListParams> {
 }
 
 class FetchCropListParams {
-  final String state;
-  final String district;
+  final String? state;
+  final String? district;
 
   FetchCropListParams(this.state, this.district);
 }

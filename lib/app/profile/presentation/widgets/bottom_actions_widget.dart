@@ -6,8 +6,8 @@ import '../profile_controller.dart';
 import 'show_change_password_dialog.dart';
 
 Widget bottomActionsWidget({
-  @required ProfilePageController controller,
-  @required BuildContext context,
+  required ProfilePageController controller,
+  required BuildContext context,
 }) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,

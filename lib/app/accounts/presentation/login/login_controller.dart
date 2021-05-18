@@ -10,9 +10,9 @@ import 'login_presenter.dart';
 import 'login_state_machine.dart';
 
 class LoginPageController extends Controller {
-  final LoginPagePresenter _presenter;
+  final LoginPagePresenter? _presenter;
   final LoginStateMachine _stateMachine = new LoginStateMachine();
-  final navigationService = serviceLocator<NavigationService>();
+  final NavigationService? navigationService = serviceLocator<NavigationService>();
   LoginPageController()
       : _presenter = serviceLocator<LoginPagePresenter>(),
         super();
@@ -31,11 +31,11 @@ class LoginPageController extends Controller {
 
   @override
   void onDisposed() {
-    _presenter.dispose();
+    _presenter!.dispose();
     super.onDisposed();
   }
 
-  LoginState getCurrentState() {
+  LoginState? getCurrentState() {
     return _stateMachine.getCurrentState();
   }
 
@@ -50,7 +50,7 @@ class LoginPageController extends Controller {
   void loginUser() {
     _stateMachine.onEvent(new LoginLoadingEvent());
     refreshUI();
-    _presenter.loginWithEmailAndPassword(
+    _presenter!.loginWithEmailAndPassword(
       new UseCaseObserver(
           () => _handleLoginSuccess(), (error) => _handleLoginError(error)),
       emailText.text.trim(),
@@ -59,7 +59,7 @@ class LoginPageController extends Controller {
   }
 
   _handleLoginSuccess() {
-    navigationService.navigateTo(NavigationService.homepage,
+    navigationService!.navigateTo(NavigationService.homepage,
         shouldReplace: true);
   }
 
@@ -80,12 +80,12 @@ class LoginPageController extends Controller {
   }
 
   void navigateToRegistration() {
-    navigationService.navigateTo(NavigationService.registerPage,
+    navigationService!.navigateTo(NavigationService.registerPage,
         shouldReplace: false);
   }
 
   void navigateToHomepage() {
-    navigationService.navigateTo(NavigationService.homepage,
+    navigationService!.navigateTo(NavigationService.homepage,
         shouldReplace: true);
   }
 

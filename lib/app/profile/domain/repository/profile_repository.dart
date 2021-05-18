@@ -5,5 +5,5 @@ abstract class ProfileRepository {
 
   Future<void> updateUserDetails(UserEntity newDetails);
 
-  Future<UserEntity> fetchUserDetails();
+  Future<UserEntity?> fetchUserDetails();
 }

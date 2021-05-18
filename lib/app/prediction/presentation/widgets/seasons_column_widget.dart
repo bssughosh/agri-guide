@@ -7,7 +7,7 @@ import '../prediction_controller.dart';
 class SeasonsColumnWidget extends StatelessWidget {
   final PredictionPageController controller;
 
-  const SeasonsColumnWidget({@required this.controller});
+  const SeasonsColumnWidget({required this.controller});
 
   @override
   Widget build(BuildContext context) {

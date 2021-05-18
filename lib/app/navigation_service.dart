@@ -14,7 +14,7 @@ class NavigationService {
   static const String registerPage = '/register';
   static const String viewGraphPage = '/viewGraph';
 
-  static Route<dynamic> generateRoute(RouteSettings settings) {
+  static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case splashPage:
         return MaterialPageRoute(builder: (_) => SplashPage());
@@ -30,7 +30,7 @@ class NavigationService {
 
       case viewGraphPage:
         return MaterialPageRoute(
-            builder: (_) => ViewGraphPage(settings.arguments));
+            builder: (_) => ViewGraphPage(settings.arguments as ViewGraphParams?));
 
       default:
         return null;
@@ -40,15 +40,15 @@ class NavigationService {
   Future<void> navigateTo(
     String routeName, {
     bool shouldReplace = false,
-    Object arguments,
+    Object? arguments,
   }) {
     if (shouldReplace) {
-      return navigatorKey.currentState.pushReplacementNamed(
+      return navigatorKey.currentState!.pushReplacementNamed(
         routeName,
         arguments: arguments,
       );
     }
-    return navigatorKey.currentState.pushNamed(
+    return navigatorKey.currentState!.pushNamed(
       routeName,
       arguments: arguments,
     );

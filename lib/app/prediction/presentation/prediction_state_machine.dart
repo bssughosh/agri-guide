@@ -1,13 +1,13 @@
 import '../../../core/state_machine.dart';
 
 class PredictionPageStateMachine
-    extends StateMachine<PredictionState, PredictionEvent> {
+    extends StateMachine<PredictionState?, PredictionEvent> {
   PredictionPageStateMachine() : super(PredictionPageInitializationState());
 
   @override
-  PredictionState getStateOnEvent(PredictionEvent event) {
+  PredictionState? getStateOnEvent(PredictionEvent event) {
     final eventType = event.runtimeType;
-    PredictionState newState = getCurrentState();
+    PredictionState? newState = getCurrentState();
     switch (eventType) {
       case PredictionPageLoggedOutEvent:
         newState = PredictionPageLoggedOutState();

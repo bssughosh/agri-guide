@@ -5,7 +5,7 @@ import '../../../../core/app_theme.dart';
 import '../dashboard_controller.dart';
 
 Widget buildDashboardInitializationView({
-  @required DashboardPageController controller,
+  required DashboardPageController controller,
 }) {
   controller.checkForLoginStatus();
   return Container(

@@ -4,16 +4,16 @@ import '../../../core/enums.dart';
 import '../../../core/state_machine.dart';
 
 class DashboardPageStateMachine
-    extends StateMachine<DashboardState, DashboardEvent> {
+    extends StateMachine<DashboardState?, DashboardEvent> {
   DashboardPageStateMachine() : super(DashboardPageInitializationState());
 
   @override
-  DashboardState getStateOnEvent(DashboardEvent event) {
+  DashboardState? getStateOnEvent(DashboardEvent event) {
     final eventType = event.runtimeType;
-    DashboardState newState = getCurrentState();
+    DashboardState? newState = getCurrentState();
     switch (eventType) {
       case DashboardPageInitializedEvent:
-        DashboardPageInitializedEvent initializedEvent = event;
+        DashboardPageInitializedEvent initializedEvent = event as DashboardPageInitializedEvent;
         newState = DashboardPageInitializedState(
           loginStatus: initializedEvent.loginStatus,
         );
@@ -35,7 +35,7 @@ class DashboardPageInitializedState extends DashboardState {
   final LoginStatus loginStatus;
 
   DashboardPageInitializedState({
-    @required this.loginStatus,
+    required this.loginStatus,
   });
 }
 
@@ -47,7 +47,7 @@ class DashboardPageInitializedEvent extends DashboardEvent {
   final LoginStatus loginStatus;
 
   DashboardPageInitializedEvent({
-    @required this.loginStatus,
+    required this.loginStatus,
   });
 }
 

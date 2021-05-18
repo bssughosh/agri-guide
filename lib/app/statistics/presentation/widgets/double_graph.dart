@@ -4,19 +4,19 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../statistics_view.dart';
 
 Widget doubleGraph({
-  @required String xAxisName,
-  @required double visibleMinimum,
-  @required int maximumLabels,
-  @required String primaryYAxisName,
-  @required String primaryYAxisLabel,
-  @required String secondaryYAxisName,
-  @required String secondaryYAxisLabel,
-  @required List<ChartData> primaryDataSource,
-  @required List<ChartData> secondaryDataSource,
-  @required double primaryInterval,
-  @required int primaryDesiredIntervals,
-  @required double secondaryInterval,
-  @required int secondaryDesiredIntervals,
+  required String xAxisName,
+  required double visibleMinimum,
+  required int maximumLabels,
+  required String primaryYAxisName,
+  required String primaryYAxisLabel,
+  required String secondaryYAxisName,
+  required String secondaryYAxisLabel,
+  required List<ChartData> primaryDataSource,
+  required List<ChartData> secondaryDataSource,
+  required double primaryInterval,
+  required int primaryDesiredIntervals,
+  required double secondaryInterval,
+  required int secondaryDesiredIntervals,
 }) {
   return SfCartesianChart(
     primaryXAxis: CategoryAxis(

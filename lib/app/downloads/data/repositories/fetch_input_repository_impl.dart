@@ -17,10 +17,10 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
     defaultValue: 'https://agri-guide-api.herokuapp.com',
   );
 
-  List _stateList;
+  List? _stateList;
 
   /// Key name `stateId`
-  Map<String, List> _districtsList = {};
+  Map<String?, List?> _districtsList = {};
 
   /// Key name `stateId`
   Map<String, String> _stateNamesMap = {};
@@ -29,13 +29,13 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
   Map<String, String> _distNamesMap = {};
 
   /// Key name `stateId/distId`
-  Map<String, List> _cropsList = {};
+  Map<String, List?> _cropsList = {};
 
   /// Key name `stateId/distId/cropId`
-  Map<String, List> _seasonsList = {};
+  Map<String, List?> _seasonsList = {};
 
   @override
-  Future<List> getStateList({bool isTest}) async {
+  Future<List?> getStateList({bool? isTest}) async {
     if (_stateList != null) return _stateList;
     String url = isTest == null
         ? '$base_url/get_states'
@@ -60,7 +60,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
   }
 
   @override
-  Future<List> getDistrictList(String stateId) async {
+  Future<List?> getDistrictList(String? stateId) async {
     if (_districtsList.containsKey(stateId)) return _districtsList[stateId];
     String url = '$base_url/get_dists?state_id=$stateId';
     http.Response value = await http.get(Uri.parse(url));
@@ -87,7 +87,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
     List<String> stateIds,
     List<String> districtIds,
     List<String> years,
-    List<String> params,
+    List<String?> params,
   ) async {
     List<String> _stateList = await fetchStateNames(stateIds);
     List<String> _districtList = [];
@@ -105,10 +105,10 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
   }
 
   _launchURL({
-    @required String states,
-    @required String dists,
-    @required String years,
-    @required String params,
+    required String states,
+    required String dists,
+    required String years,
+    required String params,
   }) async {
     String url = "$base_url/agri_guide/downloads?states=" +
         states +
@@ -135,7 +135,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
     }
 
     if (statesToBeFetched.length == 0) {
-      List<String> _res = [];
+      List<String?> _res = [];
       for (String state in stateIds) {
         _res.add(_stateNamesMap[state]);
       }
@@ -165,7 +165,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
     for (int i = 0; i < statesToBeFetched.length; i++) {
       _stateNamesMap[statesToBeFetched[i]] = _output[i];
     }
-    List<String> _res = [];
+    List<String?> _res = [];
     for (String state in stateIds) {
       _res.add(_stateNamesMap[state]);
     }
@@ -182,7 +182,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
     }
 
     if (distsToBeFetched.length == 0) {
-      List<String> _res = [];
+      List<String?> _res = [];
       for (String district in districtIds) {
         _res.add(_distNamesMap[district]);
       }
@@ -211,7 +211,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
     for (int i = 0; i < distsToBeFetched.length; i++) {
       _distNamesMap[distsToBeFetched[i]] = _output[i];
     }
-    List<String> _res = [];
+    List<String?> _res = [];
     for (String district in districtIds) {
       _res.add(_distNamesMap[district]);
     }
@@ -220,7 +220,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
   }
 
   @override
-  Future<List> getCrops(String state, String district) async {
+  Future<List?> getCrops(String? state, String? district) async {
     if (_cropsList.containsKey('$state/$district'))
       return _cropsList['$state/$district'];
     List<String> _stateList;
@@ -256,7 +256,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
   }
 
   @override
-  Future<List> getSeasons(String state, String district, String cropId) async {
+  Future<List?> getSeasons(String? state, String? district, String? cropId) async {
     if (_seasonsList.containsKey('$state/$district/$cropId'))
       return _seasonsList['$state/$district/$cropId'];
     List<String> _stateList;
@@ -297,7 +297,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
     List<String> stateIds,
     List<String> districtIds,
     List<String> years,
-    List<String> params,
+    List<String?> params,
     String fileName,
   ) async {
     List<String> _stateList = await fetchStateNames(stateIds);
@@ -321,11 +321,11 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
   }
 
   Future<void> _downloadFile({
-    @required String states,
-    @required String dists,
-    @required String years,
-    @required String params,
-    @required String fileName,
+    required String states,
+    required String dists,
+    required String years,
+    required String params,
+    required String fileName,
   }) async {
     String url = "$base_url/weather/downloads?states=" +
         states +
@@ -338,7 +338,7 @@ class FetchInputRepositoryImpl implements FetchInputRepository {
     var request = await httpClient.getUrl(Uri.parse(url));
     var response = await request.close();
     var bytes = await consolidateHttpClientResponseBytes(response);
-    String dir = (await getExternalStorageDirectory()).path;
+    String dir = (await getExternalStorageDirectory())!.path;
     File file = new File('$dir/$fileName.zip');
     await file.writeAsBytes(bytes);
   }

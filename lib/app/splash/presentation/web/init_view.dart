@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import '../splash_controller.dart';
 
 Widget buildSplashInitViewWeb({
-  @required SplashPageController controller,
-  @required BuildContext context,
+  required SplashPageController controller,
+  required BuildContext context,
 }) {
   Timer(Duration(seconds: 2), () => controller.navigateToHomepage());
   return SafeArea(

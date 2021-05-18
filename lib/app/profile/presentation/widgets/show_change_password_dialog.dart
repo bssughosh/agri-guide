@@ -6,8 +6,8 @@ import '../profile_controller.dart';
 import 'custom_textfield.dart';
 
 Future<void> showChangePasswordDialog({
-  @required BuildContext context,
-  @required ProfilePageController controller,
+  required BuildContext context,
+  required ProfilePageController controller,
 }) async {
   return showDialog<void>(
     context: context,

@@ -8,20 +8,20 @@ import '../repositories/statistics_repository.dart';
 
 class FetchYieldStatisticsUsecase
     extends CompletableUseCase<FetchYieldStatisticsParams> {
-  StatisticsRepository _repository;
+  StatisticsRepository? _repository;
 
   FetchYieldStatisticsUsecase(this._repository);
 
   @override
-  Future<Stream<YieldStatisticsEntity>> buildUseCaseStream(
-      FetchYieldStatisticsParams params) async {
-    StreamController<YieldStatisticsEntity> streamController =
+  Future<Stream<YieldStatisticsEntity?>> buildUseCaseStream(
+      FetchYieldStatisticsParams? params) async {
+    StreamController<YieldStatisticsEntity?> streamController =
         new StreamController();
 
     try {
-      YieldStatisticsEntity yieldStatisticsEntity =
-          await _repository.fetchYieldStatisticsData(
-        params.state,
+      YieldStatisticsEntity? yieldStatisticsEntity =
+          await _repository!.fetchYieldStatisticsData(
+        params!.state,
         params.district,
         params.crop,
         params.season,
@@ -37,15 +37,15 @@ class FetchYieldStatisticsUsecase
 }
 
 class FetchYieldStatisticsParams {
-  final String state;
-  final String district;
-  final String crop;
-  final String season;
+  final String? state;
+  final String? district;
+  final String? crop;
+  final String? season;
 
   FetchYieldStatisticsParams({
-    @required this.state,
-    @required this.district,
-    @required this.crop,
-    @required this.season,
+    required this.state,
+    required this.district,
+    required this.crop,
+    required this.season,
   });
 }

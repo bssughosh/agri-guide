@@ -1,12 +1,12 @@
 import '../../../core/state_machine.dart';
 
-class HomePageStateMachine extends StateMachine<HomePageState, HomePageEvent> {
+class HomePageStateMachine extends StateMachine<HomePageState?, HomePageEvent> {
   HomePageStateMachine() : super(new HomePageInitializationState());
 
   @override
-  HomePageState getStateOnEvent(HomePageEvent event) {
+  HomePageState? getStateOnEvent(HomePageEvent event) {
     final eventType = event.runtimeType;
-    HomePageState newState = getCurrentState();
+    HomePageState? newState = getCurrentState();
     switch (eventType) {
       case HomePageInitializatedEvent:
         newState = HomePageInitializedState();

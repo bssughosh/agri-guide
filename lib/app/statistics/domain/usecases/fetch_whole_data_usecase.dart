@@ -6,17 +6,17 @@ import '../entities/statistics_entity.dart';
 import '../repositories/statistics_repository.dart';
 
 class FetchWholeDataUsecase extends CompletableUseCase<FetchWholeDataParams> {
-  StatisticsRepository _repository;
+  StatisticsRepository? _repository;
 
   FetchWholeDataUsecase(this._repository);
 
   @override
-  Future<Stream<StatisticsEntity>> buildUseCaseStream(
-      FetchWholeDataParams params) async {
-    StreamController<StatisticsEntity> streamController = StreamController();
+  Future<Stream<StatisticsEntity?>> buildUseCaseStream(
+      FetchWholeDataParams? params) async {
+    StreamController<StatisticsEntity?> streamController = StreamController();
     try {
-      StatisticsEntity statisticsEntity = await _repository.fetchWholeData(
-        params.state,
+      StatisticsEntity? statisticsEntity = await _repository!.fetchWholeData(
+        params!.state,
         params.district,
       );
       streamController.add(statisticsEntity);
@@ -30,8 +30,8 @@ class FetchWholeDataUsecase extends CompletableUseCase<FetchWholeDataParams> {
 }
 
 class FetchWholeDataParams {
-  final String state;
-  final String district;
+  final String? state;
+  final String? district;
 
   FetchWholeDataParams(this.state, this.district);
 }

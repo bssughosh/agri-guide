@@ -7,9 +7,9 @@ import '../dashboard_controller.dart';
 import 'content_body.dart';
 
 Widget buildDashboardInitializedViewWeb({
-  @required LoginStatus loginStatus,
-  @required DashboardPageController controller,
-  @required BuildContext context,
+  required LoginStatus loginStatus,
+  required DashboardPageController controller,
+  required BuildContext context,
 }) {
   double screenWidth = MediaQuery.of(context).size.width;
   if (loginStatus == LoginStatus.LOGGED_OUT) {

@@ -7,9 +7,9 @@ class LocationEntity {
   final String district;
 
   LocationEntity({
-    @required this.lat,
-    @required this.lon,
-    @required this.state,
-    @required this.district,
+    required this.lat,
+    required this.lon,
+    required this.state,
+    required this.district,
   });
 }

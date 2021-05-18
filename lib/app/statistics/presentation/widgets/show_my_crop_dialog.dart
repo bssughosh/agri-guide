@@ -4,9 +4,9 @@ import '../../../../core/app_theme.dart';
 import '../statistics_controller.dart';
 
 Future<void> showMyCropDialog({
-  @required BuildContext context,
-  @required List cropList,
-  @required StatisticsPageController controller,
+  required BuildContext context,
+  required List cropList,
+  required StatisticsPageController controller,
 }) async {
   return showDialog<void>(
     context: context,

@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import '../../../../core/app_theme.dart';
 
 Widget filterTab({
-  @required Function onPressed,
-  @required bool isSelected,
-  @required String text,
+  required Function onPressed,
+  required bool isSelected,
+  required String text,
 }) {
   return TextButton(
-    onPressed: onPressed,
+    onPressed: onPressed as void Function()?,
     child: Container(
       decoration: isSelected
           ? BoxDecoration(

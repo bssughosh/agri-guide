@@ -10,8 +10,8 @@ class BottomNavBar extends StatelessWidget {
   final PageController pageController;
 
   const BottomNavBar({
-    @required this.controller,
-    @required this.pageController,
+    required this.controller,
+    required this.pageController,
   });
 
   @override

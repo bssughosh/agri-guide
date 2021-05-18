@@ -5,9 +5,9 @@ import '../../../../core/app_theme.dart';
 import '../downloads_controller.dart';
 
 Widget buildDownloadsInitializationView({
-  @required bool isFirstLoad,
-  @required bool isWeb,
-  @required DownloadsPageController controller,
+  required bool isFirstLoad,
+  required bool isWeb,
+  required DownloadsPageController controller,
 }) {
   if (isFirstLoad) controller.fetchStateList(isWeb);
 

@@ -17,10 +17,11 @@ import 'widgets/show_my_crop_dialog.dart';
 import 'widgets/show_my_season_dialog.dart';
 
 class StatisticsPageController extends Controller {
-  final StatisticsPagePresenter _presenter;
+  final StatisticsPagePresenter? _presenter;
   final StatisticsPageStateMachine _stateMachine =
       new StatisticsPageStateMachine();
-  final navigationService = serviceLocator<NavigationService>();
+  final NavigationService? navigationService =
+      serviceLocator<NavigationService>();
 
   StatisticsPageController()
       : _presenter = serviceLocator<StatisticsPagePresenter>(),
@@ -30,47 +31,47 @@ class StatisticsPageController extends Controller {
   List districtList = [];
   List cropList = [];
   List seasonList = [];
-  String selectedState;
-  String selectedDistrict;
-  String selectedCrop;
-  String selectedSeason;
+  String? selectedState;
+  String? selectedDistrict;
+  String? selectedCrop;
+  String? selectedSeason;
   bool areCropsAvailable = true;
   bool isCropChanged = false;
 
-  StatisticsEntity statisticsEntity;
-  YieldStatisticsEntity yieldStatisticsEntity;
+  late StatisticsEntity statisticsEntity;
+  YieldStatisticsEntity? yieldStatisticsEntity;
   List<ChartData> rainfallChartData = [];
   List<ChartData> temperatureChartData = [];
   List<ChartData> humidityChartData = [];
   List<ChartData> yieldChartData = [];
 
-  int temperatureFirstYear;
-  int humidityFirstYear;
-  int rainfallFirstYear;
-  int yieldFirstYear;
+  late int temperatureFirstYear;
+  late int humidityFirstYear;
+  late int rainfallFirstYear;
+  int? yieldFirstYear;
 
   List<StatisticsFilters> selectedFilters = [];
 
-  StatisticsFilters selectedFilters1;
-  StatisticsFilters selectedFilters2;
+  StatisticsFilters? selectedFilters1;
+  StatisticsFilters? selectedFilters2;
 
   @override
   void initListeners() {}
 
-  StatisticsState getCurrentState() {
+  StatisticsState? getCurrentState() {
     return _stateMachine.getCurrentState();
   }
 
   @override
   void onDisposed() {
-    _presenter.dispose();
+    _presenter!.dispose();
     super.onDisposed();
   }
 
   // API Calls
 
   void fetchStateList() {
-    _presenter.fetchStateList(
+    _presenter!.fetchStateList(
       new UseCaseObserver(
         () {
           print('State list successfully fetched');
@@ -91,7 +92,7 @@ class StatisticsPageController extends Controller {
   void fetchDistrictList() {
     _stateMachine.onEvent(new StatisticsPageLoadingEvent());
     refreshUI();
-    _presenter.fetchDistrictList(
+    _presenter!.fetchDistrictList(
       new UseCaseObserver(
         () {
           print('District list successfully fetched');
@@ -113,7 +114,7 @@ class StatisticsPageController extends Controller {
   void proceedToStatisticsDisplay() {
     _stateMachine.onEvent(new StatisticsPageLoadingEvent());
     refreshUI();
-    _presenter.fetchWholeData(
+    _presenter!.fetchWholeData(
       new UseCaseObserver(() {
         print('Whole data fetched');
       }, (error) {
@@ -140,18 +141,18 @@ class StatisticsPageController extends Controller {
         );
 
         if (rainfallChartData.length > 0) {
-          rainfallChartData.sort((a, b) => a.x.compareTo(b.x));
-          rainfallFirstYear = int.parse(rainfallChartData[0].x);
+          rainfallChartData.sort((a, b) => a.x!.compareTo(b.x!));
+          rainfallFirstYear = int.parse(rainfallChartData[0].x!);
         }
 
         if (temperatureChartData.length > 0) {
-          temperatureChartData.sort((a, b) => a.x.compareTo(b.x));
-          temperatureFirstYear = int.parse(temperatureChartData[0].x);
+          temperatureChartData.sort((a, b) => a.x!.compareTo(b.x!));
+          temperatureFirstYear = int.parse(temperatureChartData[0].x!);
         }
 
         if (humidityChartData.length > 0) {
-          humidityChartData.sort((a, b) => a.x.compareTo(b.x));
-          humidityFirstYear = int.parse(humidityChartData[0].x);
+          humidityChartData.sort((a, b) => a.x!.compareTo(b.x!));
+          humidityFirstYear = int.parse(humidityChartData[0].x!);
         }
 
         _stateMachine.onEvent(new StatisticsPageDisplayInitializedEvent());
@@ -165,7 +166,7 @@ class StatisticsPageController extends Controller {
   void fetchCropsList(BuildContext context) {
     _stateMachine.onEvent(new StatisticsPageLoadingEvent());
     refreshUI();
-    _presenter.fetchCropList(
+    _presenter!.fetchCropList(
       new UseCaseObserver(
         () {
           print('Crops list successfully fetched');
@@ -201,7 +202,7 @@ class StatisticsPageController extends Controller {
   void fetchSeasonList(BuildContext context) {
     _stateMachine.onEvent(new StatisticsPageLoadingEvent());
     refreshUI();
-    _presenter.fetchSeasonsList(
+    _presenter!.fetchSeasonsList(
       new UseCaseObserver(
         () {},
         (error) {
@@ -235,7 +236,7 @@ class StatisticsPageController extends Controller {
     _stateMachine.onEvent(new StatisticsPageLoadingEvent());
     refreshUI();
 
-    _presenter.fetchYieldStatistics(
+    _presenter!.fetchYieldStatistics(
       new UseCaseObserver(() {}, (error) {
         handleAPIErrors(error);
         print(error);
@@ -244,12 +245,12 @@ class StatisticsPageController extends Controller {
         yieldChartData = [];
         findColorsAndToChartData(
           filter: StatisticsFilters.Yield,
-          statisticsData: yieldStatisticsEntity.yieldData,
+          statisticsData: yieldStatisticsEntity!.yieldData,
         );
 
         if (yieldChartData.length > 0) {
-          yieldChartData.sort((a, b) => a.x.compareTo(b.x));
-          yieldFirstYear = int.parse(yieldChartData[0].x);
+          yieldChartData.sort((a, b) => a.x!.compareTo(b.x!));
+          yieldFirstYear = int.parse(yieldChartData[0].x!);
         }
 
         _stateMachine.onEvent(new StatisticsPageDisplayInitializedEvent());
@@ -308,7 +309,7 @@ class StatisticsPageController extends Controller {
 
   // Yield selection
 
-  void cropSelected(String cropId, BuildContext context) {
+  void cropSelected(String? cropId, BuildContext context) {
     selectedCrop = cropId;
     Navigator.pop(context);
     refreshUI();
@@ -323,8 +324,8 @@ class StatisticsPageController extends Controller {
   // Create chart data
 
   void findColorsAndToChartData({
-    @required StatisticsFilters filter,
-    @required List statisticsData,
+    required StatisticsFilters filter,
+    required List statisticsData,
   }) {
     double _max = 0;
     double _min = double.infinity;
@@ -455,7 +456,7 @@ class StatisticsPageController extends Controller {
               selectedFilters1 = StatisticsFilters.Temperature;
             }
           } else if (selectedFilters[1] == StatisticsFilters.Yield) {
-            if (yieldFirstYear < temperatureFirstYear) {
+            if (yieldFirstYear! < temperatureFirstYear) {
               selectedFilters1 = StatisticsFilters.Yield;
               selectedFilters2 = StatisticsFilters.Temperature;
             } else {
@@ -481,7 +482,7 @@ class StatisticsPageController extends Controller {
               selectedFilters1 = StatisticsFilters.Humidity;
             }
           } else if (selectedFilters[1] == StatisticsFilters.Yield) {
-            if (yieldFirstYear < humidityFirstYear) {
+            if (yieldFirstYear! < humidityFirstYear) {
               selectedFilters1 = StatisticsFilters.Yield;
               selectedFilters2 = StatisticsFilters.Humidity;
             } else {
@@ -507,7 +508,7 @@ class StatisticsPageController extends Controller {
               selectedFilters1 = StatisticsFilters.Rainfall;
             }
           } else if (selectedFilters[1] == StatisticsFilters.Yield) {
-            if (yieldFirstYear < rainfallFirstYear) {
+            if (yieldFirstYear! < rainfallFirstYear) {
               selectedFilters1 = StatisticsFilters.Yield;
               selectedFilters2 = StatisticsFilters.Rainfall;
             } else {
@@ -517,7 +518,7 @@ class StatisticsPageController extends Controller {
           }
         } else if (selectedFilters[0] == StatisticsFilters.Yield) {
           if (selectedFilters[1] == StatisticsFilters.Temperature) {
-            if (temperatureFirstYear < yieldFirstYear) {
+            if (temperatureFirstYear < yieldFirstYear!) {
               selectedFilters1 = StatisticsFilters.Temperature;
               selectedFilters2 = StatisticsFilters.Yield;
             } else {
@@ -525,7 +526,7 @@ class StatisticsPageController extends Controller {
               selectedFilters1 = StatisticsFilters.Yield;
             }
           } else if (selectedFilters[1] == StatisticsFilters.Rainfall) {
-            if (rainfallFirstYear < yieldFirstYear) {
+            if (rainfallFirstYear < yieldFirstYear!) {
               selectedFilters1 = StatisticsFilters.Rainfall;
               selectedFilters2 = StatisticsFilters.Yield;
             } else {
@@ -533,7 +534,7 @@ class StatisticsPageController extends Controller {
               selectedFilters1 = StatisticsFilters.Yield;
             }
           } else if (selectedFilters[1] == StatisticsFilters.Humidity) {
-            if (humidityFirstYear < yieldFirstYear) {
+            if (humidityFirstYear < yieldFirstYear!) {
               selectedFilters1 = StatisticsFilters.Humidity;
               selectedFilters2 = StatisticsFilters.Yield;
             } else {
@@ -609,19 +610,19 @@ class StatisticsPageController extends Controller {
     throw Exception('The filter is unknown');
   }
 
-  String selectedStateName() {
-    String name = stateList
+  String? selectedStateName() {
+    String? name = stateList
         .singleWhere((element) => element['id'] == selectedState)['name'];
     return name;
   }
 
-  String selectedDistrictName() {
-    String name = districtList
+  String? selectedDistrictName() {
+    String? name = districtList
         .singleWhere((element) => element['id'] == selectedDistrict)['name'];
     return name;
   }
 
-  String getAxisLabelName(StatisticsFilters filters) {
+  String getAxisLabelName(StatisticsFilters? filters) {
     if (filters == StatisticsFilters.Temperature) {
       return 'Temperature (\u2103)';
     } else if (filters == StatisticsFilters.Humidity) {
@@ -635,7 +636,7 @@ class StatisticsPageController extends Controller {
   }
 
   void navigateToViewGraph(StatisticsPageController controller) {
-    navigationService.navigateTo(NavigationService.viewGraphPage,
+    navigationService!.navigateTo(NavigationService.viewGraphPage,
         arguments: ViewGraphParams(statisticsPageController: controller));
   }
 

@@ -8,17 +8,17 @@ import '../repository/profile_repository.dart';
 
 class UpdateUserDetailsUsecase
     extends CompletableUseCase<UpdateUserDetailsParams> {
-  ProfileRepository _repository;
+  ProfileRepository? _repository;
 
   UpdateUserDetailsUsecase(this._repository);
 
   @override
   Future<Stream<void>> buildUseCaseStream(
-      UpdateUserDetailsParams params) async {
+      UpdateUserDetailsParams? params) async {
     StreamController streamController = new StreamController();
 
     try {
-      await _repository.updateUserDetails(params.userEntity);
+      await _repository!.updateUserDetails(params!.userEntity);
       streamController.close();
     } catch (error) {
       streamController.addError(error);
@@ -31,5 +31,5 @@ class UpdateUserDetailsUsecase
 class UpdateUserDetailsParams {
   final UserEntity userEntity;
 
-  UpdateUserDetailsParams({@required this.userEntity});
+  UpdateUserDetailsParams({required this.userEntity});
 }

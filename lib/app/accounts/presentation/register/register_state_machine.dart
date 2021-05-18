@@ -1,12 +1,12 @@
 import '../../../../core/state_machine.dart';
 
-class RegisterStateMachine extends StateMachine<RegisterState, RegisterEvent> {
+class RegisterStateMachine extends StateMachine<RegisterState?, RegisterEvent> {
   RegisterStateMachine() : super(RegisterInitializedState());
 
   @override
-  RegisterState getStateOnEvent(RegisterEvent event) {
+  RegisterState? getStateOnEvent(RegisterEvent event) {
     final eventType = event.runtimeType;
-    RegisterState newState = getCurrentState();
+    RegisterState? newState = getCurrentState();
 
     switch (eventType) {
       case RegisterInitializedEvent:

@@ -22,8 +22,8 @@ class ProfileRespositoryImpl extends ProfileRepository {
       FirebaseFirestore.instance.collection('userData');
 
   @override
-  Future<UserEntity> fetchUserDetails() async {
-    User currentSignedInUser = FirebaseAuth.instance.currentUser;
+  Future<UserEntity?> fetchUserDetails() async {
+    User? currentSignedInUser = FirebaseAuth.instance.currentUser;
     if (currentSignedInUser == null) throw UserNotSignedInError();
     if (_userDetails.containsKey(currentSignedInUser.uid))
       return _userDetails[currentSignedInUser.uid];
@@ -47,14 +47,14 @@ class ProfileRespositoryImpl extends ProfileRepository {
 
   @override
   Future<void> changePassword(String newPassword) async {
-    User currentUser = FirebaseAuth.instance.currentUser;
+    User currentUser = FirebaseAuth.instance.currentUser!;
 
     await currentUser.updatePassword(newPassword);
   }
 
   @override
   Future<void> updateUserDetails(UserEntity newDetails) async {
-    User currentSignedInUser = FirebaseAuth.instance.currentUser;
+    User? currentSignedInUser = FirebaseAuth.instance.currentUser;
     if (currentSignedInUser == null) throw UserNotSignedInError();
 
     await userData.doc(currentSignedInUser.uid).set({

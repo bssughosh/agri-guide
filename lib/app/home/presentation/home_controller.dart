@@ -10,9 +10,9 @@ import 'home_presenter.dart';
 import 'home_state_machine.dart';
 
 class HomePageController extends Controller {
-  final HomePagePresenter _presenter;
+  final HomePagePresenter? _presenter;
   final HomePageStateMachine _stateMachine = new HomePageStateMachine();
-  final navigationService = serviceLocator<NavigationService>();
+  final NavigationService? navigationService = serviceLocator<NavigationService>();
   HomePageController()
       : _presenter = serviceLocator<HomePagePresenter>(),
         super();
@@ -20,18 +20,18 @@ class HomePageController extends Controller {
   int pageNumber = 0;
 
   LoginStatus loginStatus = LoginStatus.LOGGED_OUT;
-  UserEntity userEntity;
+  late UserEntity userEntity;
 
   @override
   void initListeners() {}
 
   @override
   void onDisposed() {
-    _presenter.dispose();
+    _presenter!.dispose();
     super.onDisposed();
   }
 
-  HomePageState getCurrentState() {
+  HomePageState? getCurrentState() {
     return _stateMachine.getCurrentState();
   }
 
@@ -41,7 +41,7 @@ class HomePageController extends Controller {
   }
 
   void checkForLoginStatus() {
-    _presenter.checkLoginStatus(
+    _presenter!.checkLoginStatus(
       new UseCaseObserver(() {}, (error) {
         print(error);
       }, onNextFunction: (LoginStatus status) {
@@ -50,7 +50,7 @@ class HomePageController extends Controller {
           _stateMachine.onEvent(new HomePageInitializatedEvent());
           refreshUI();
         } else {
-          _presenter.fetchUserDetails(
+          _presenter!.fetchUserDetails(
             new UseCaseObserver(
               () {},
               (error) {
@@ -69,15 +69,15 @@ class HomePageController extends Controller {
   }
 
   void navigateToLogin() {
-    navigationService.navigateTo(NavigationService.loginPage,
+    navigationService!.navigateTo(NavigationService.loginPage,
         shouldReplace: true);
   }
 
   void logoutUser() {
-    _presenter.logoutUser(
+    _presenter!.logoutUser(
       new UseCaseObserver(
         () async {
-          navigationService.navigateTo(NavigationService.homepage,
+          navigationService!.navigateTo(NavigationService.homepage,
               shouldReplace: true);
           await di.reset();
         },

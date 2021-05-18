@@ -7,15 +7,15 @@ class RangeWidget extends StatelessWidget {
   final String title;
   final String hintText;
   final List<DropdownMenuItem> itemsList;
-  final String selectedItem;
+  final String? selectedItem;
   final Function onChanged;
 
   const RangeWidget({
-    @required this.title,
-    @required this.hintText,
-    @required this.itemsList,
-    @required this.selectedItem,
-    @required this.onChanged,
+    required this.title,
+    required this.hintText,
+    required this.itemsList,
+    required this.selectedItem,
+    required this.onChanged,
   });
 
   @override

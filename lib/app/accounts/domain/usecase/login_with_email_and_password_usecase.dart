@@ -5,16 +5,16 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import '../repositories/firebase_authentication_repository.dart';
 
 class LoginWithEmailAndPasswordUsecase extends CompletableUseCase<LoginParams> {
-  final FirebaseAuthenticationRepository _repository;
+  final FirebaseAuthenticationRepository? _repository;
 
   LoginWithEmailAndPasswordUsecase(this._repository);
 
   @override
-  Future<Stream<void>> buildUseCaseStream(LoginParams params) async {
+  Future<Stream<void>> buildUseCaseStream(LoginParams? params) async {
     StreamController streamController = StreamController();
     try {
-      await _repository.signInWithEmailAndPassword(
-          params.email, params.password);
+      await _repository!.signInWithEmailAndPassword(
+          params!.email, params.password);
       streamController.close();
     } catch (error) {
       streamController.addError(error);

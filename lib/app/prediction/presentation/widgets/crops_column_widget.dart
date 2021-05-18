@@ -7,7 +7,7 @@ import '../prediction_controller.dart';
 class CropsColumnWidget extends StatelessWidget {
   final PredictionPageController controller;
 
-  const CropsColumnWidget({@required this.controller});
+  const CropsColumnWidget({required this.controller});
 
   @override
   Widget build(BuildContext context) {

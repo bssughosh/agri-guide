@@ -6,15 +6,15 @@ import '../../../accounts/domain/entities/user_entity.dart';
 import '../repository/profile_repository.dart';
 
 class FetchUserDetailsUsecase extends CompletableUseCase<void> {
-  final ProfileRepository _repository;
+  final ProfileRepository? _repository;
 
   FetchUserDetailsUsecase(this._repository);
 
   @override
   Future<Stream<void>> buildUseCaseStream(void params) async {
-    StreamController<UserEntity> streamController = StreamController();
+    StreamController<UserEntity?> streamController = StreamController();
     try {
-      UserEntity user = await _repository.fetchUserDetails();
+      UserEntity? user = await _repository!.fetchUserDetails();
       streamController.add(user);
       streamController.close();
     } catch (error) {

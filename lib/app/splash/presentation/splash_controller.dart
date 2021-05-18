@@ -6,9 +6,9 @@ import 'splash_presenter.dart';
 import 'splash_state_machine.dart';
 
 class SplashPageController extends Controller {
-  final SplashPagePresenter _presenter;
+  final SplashPagePresenter? _presenter;
   final SplashStateMachine _stateMachine = new SplashStateMachine();
-  final navigationService = serviceLocator<NavigationService>();
+  final NavigationService? navigationService = serviceLocator<NavigationService>();
   SplashPageController()
       : _presenter = serviceLocator<SplashPagePresenter>(),
         super();
@@ -16,18 +16,18 @@ class SplashPageController extends Controller {
   @override
   void initListeners() {}
 
-  SplashState getCurrentState() {
+  SplashState? getCurrentState() {
     return _stateMachine.getCurrentState();
   }
 
   @override
   void onDisposed() {
-    _presenter.dispose();
+    _presenter!.dispose();
     super.onDisposed();
   }
 
   void navigateToHomepage() {
-    navigationService.navigateTo(NavigationService.homepage,
+    navigationService!.navigateTo(NavigationService.homepage,
         shouldReplace: true);
   }
 }

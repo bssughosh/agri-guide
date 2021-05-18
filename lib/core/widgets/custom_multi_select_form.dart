@@ -13,12 +13,12 @@ class CustomMultiselectForm extends StatelessWidget {
   final Function onSavedFunction;
 
   const CustomMultiselectForm({
-    @required this.selectedItemList,
-    @required this.title,
-    @required this.dataSource,
-    @required this.displayKey,
-    @required this.valueKey,
-    @required this.onSavedFunction,
+    required this.selectedItemList,
+    required this.title,
+    required this.dataSource,
+    required this.displayKey,
+    required this.valueKey,
+    required this.onSavedFunction,
   });
 
   @override

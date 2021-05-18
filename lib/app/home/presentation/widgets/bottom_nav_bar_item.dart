@@ -9,10 +9,10 @@ class BottomNavBarItem extends StatelessWidget {
   final String title;
 
   const BottomNavBarItem({
-    @required this.icon,
-    @required this.isSelected,
-    @required this.onPressed,
-    @required this.title,
+    required this.icon,
+    required this.isSelected,
+    required this.onPressed,
+    required this.title,
   });
 
   @override
@@ -27,7 +27,7 @@ class BottomNavBarItem extends StatelessWidget {
             size: 23,
             color: isSelected ? AppTheme.secondaryColor : Colors.black,
           ),
-          onPressed: onPressed,
+          onPressed: onPressed as void Function()?,
         ),
         Text(
           title,

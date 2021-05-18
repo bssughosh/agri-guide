@@ -5,7 +5,7 @@ import '../../../../core/app_theme.dart';
 import '../statistics_controller.dart';
 
 Widget buildStatisticsInitializationView({
-  @required StatisticsPageController controller,
+  required StatisticsPageController controller,
 }) {
   controller.fetchStateList();
 

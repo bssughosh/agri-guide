@@ -11,13 +11,13 @@ import '../domain/usecase/fetch_user_details_usecase.dart';
 import '../domain/usecase/update_user_details_usecase.dart';
 
 class ProfilePagePresenter extends Presenter {
-  FetchUserDetailsUsecase _fetchUserDetailsUsecase;
-  ChangePasswordUsecase _changePasswordUsecase;
-  UpdateUserDetailsUsecase _updateUserDetailsUsecase;
-  CheckLoginStatusUsecase _checkLoginStatusUsecase;
-  FetchStateListUsecase _fetchStateListUsecase;
-  FetchDistrictListUsecase _fetchDistrictListUsecase;
-  LogoutUserUsecase _logoutUserUsecase;
+  FetchUserDetailsUsecase? _fetchUserDetailsUsecase;
+  ChangePasswordUsecase? _changePasswordUsecase;
+  UpdateUserDetailsUsecase? _updateUserDetailsUsecase;
+  CheckLoginStatusUsecase? _checkLoginStatusUsecase;
+  FetchStateListUsecase? _fetchStateListUsecase;
+  FetchDistrictListUsecase? _fetchDistrictListUsecase;
+  LogoutUserUsecase? _logoutUserUsecase;
 
   ProfilePagePresenter(
     this._changePasswordUsecase,
@@ -31,25 +31,25 @@ class ProfilePagePresenter extends Presenter {
 
   @override
   dispose() {
-    _fetchUserDetailsUsecase.dispose();
-    _changePasswordUsecase.dispose();
-    _updateUserDetailsUsecase.dispose();
-    _fetchStateListUsecase.dispose();
-    _fetchDistrictListUsecase.dispose();
-    _checkLoginStatusUsecase.dispose();
-    _logoutUserUsecase.dispose();
+    _fetchUserDetailsUsecase!.dispose();
+    _changePasswordUsecase!.dispose();
+    _updateUserDetailsUsecase!.dispose();
+    _fetchStateListUsecase!.dispose();
+    _fetchDistrictListUsecase!.dispose();
+    _checkLoginStatusUsecase!.dispose();
+    _logoutUserUsecase!.dispose();
   }
 
   void checkLoginStatus(UseCaseObserver observer) {
-    _checkLoginStatusUsecase.execute(observer);
+    _checkLoginStatusUsecase!.execute(observer);
   }
 
   void fetchStateList(UseCaseObserver observer) {
-    _fetchStateListUsecase.execute(observer);
+    _fetchStateListUsecase!.execute(observer);
   }
 
-  void fetchDistrictList(UseCaseObserver observer, String stateId) {
-    _fetchDistrictListUsecase.execute(
+  void fetchDistrictList(UseCaseObserver observer, String? stateId) {
+    _fetchDistrictListUsecase!.execute(
       observer,
       new DistrictListParams(
         stateId,
@@ -58,24 +58,24 @@ class ProfilePagePresenter extends Presenter {
   }
 
   void fetchUserDetails(UseCaseObserver observer) {
-    _fetchUserDetailsUsecase.execute(observer);
+    _fetchUserDetailsUsecase!.execute(observer);
   }
 
   void updateUserDetails(UseCaseObserver observer, UserEntity userEntity) {
-    _updateUserDetailsUsecase.execute(
+    _updateUserDetailsUsecase!.execute(
       observer,
       new UpdateUserDetailsParams(userEntity: userEntity),
     );
   }
 
   void changePassword(UseCaseObserver observer, String newPassword) {
-    _changePasswordUsecase.execute(
+    _changePasswordUsecase!.execute(
       observer,
       new ChangePasswordParams(newPassword: newPassword),
     );
   }
 
   void logoutUser(UseCaseObserver observer) {
-    _logoutUserUsecase.execute(observer);
+    _logoutUserUsecase!.execute(observer);
   }
 }

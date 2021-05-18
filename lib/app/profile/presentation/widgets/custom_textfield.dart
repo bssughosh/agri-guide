@@ -8,14 +8,14 @@ class CustomTextField extends StatelessWidget {
   final String hint;
   final Function onChanged;
   final bool isEnabled;
-  final bool obscureText;
+  final bool? obscureText;
 
   const CustomTextField({
-    @required this.textController,
-    @required this.title,
-    @required this.hint,
-    @required this.onChanged,
-    @required this.isEnabled,
+    required this.textController,
+    required this.title,
+    required this.hint,
+    required this.onChanged,
+    required this.isEnabled,
     this.obscureText,
   });
 

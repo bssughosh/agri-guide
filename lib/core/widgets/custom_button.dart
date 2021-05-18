@@ -9,10 +9,10 @@ class CustomButton extends StatelessWidget {
   final bool isOverlayRequired;
 
   const CustomButton({
-    @required this.title,
-    @required this.isActive,
-    @required this.onPressed,
-    @required this.isOverlayRequired,
+    required this.title,
+    required this.isActive,
+    required this.onPressed,
+    required this.isOverlayRequired,
   });
 
   @override
@@ -41,7 +41,7 @@ class CustomButton extends StatelessWidget {
           EdgeInsets.symmetric(horizontal: 15),
         ),
       ),
-      onPressed: isActive ? onPressed : () {},
+      onPressed: isActive ? onPressed as void Function()? : () {},
     );
   }
 }

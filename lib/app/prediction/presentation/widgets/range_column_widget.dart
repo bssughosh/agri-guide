@@ -7,7 +7,7 @@ import 'range_widget.dart';
 class RangeColumnWidget extends StatelessWidget {
   final PredictionPageController controller;
 
-  const RangeColumnWidget({@required this.controller});
+  const RangeColumnWidget({required this.controller});
 
   @override
   Widget build(BuildContext context) {

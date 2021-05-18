@@ -7,8 +7,8 @@ class LocationCard extends StatelessWidget {
   final String district;
 
   const LocationCard({
-    @required this.state,
-    @required this.district,
+    required this.state,
+    required this.district,
   });
 
   @override

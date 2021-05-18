@@ -4,7 +4,7 @@ import '../../../../core/app_theme.dart';
 import '../prediction_controller.dart';
 
 Widget yieldPredictionContainer({
-  @required PredictionPageController controller,
+  required PredictionPageController controller,
 }) {
   return Column(
     children: [

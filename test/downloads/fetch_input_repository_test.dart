@@ -2,7 +2,7 @@ import 'package:agri_guide/app/downloads/data/repositories/fetch_input_repositor
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  FetchInputRepositoryImpl fetchInputRepositoryImpl;
+  late FetchInputRepositoryImpl fetchInputRepositoryImpl;
 
   setUp(() {
     fetchInputRepositoryImpl = new FetchInputRepositoryImpl();

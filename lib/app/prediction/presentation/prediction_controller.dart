@@ -13,22 +13,23 @@ import 'prediction_presenter.dart';
 import 'prediction_state_machine.dart';
 
 class PredictionPageController extends Controller {
-  final PredictionPagePresenter _presenter;
+  final PredictionPagePresenter? _presenter;
   final PredictionPageStateMachine _stateMachine =
       new PredictionPageStateMachine();
-  final navigationService = serviceLocator<NavigationService>();
+  final NavigationService? navigationService =
+      serviceLocator<NavigationService>();
   PredictionPageController()
       : _presenter = serviceLocator<PredictionPagePresenter>(),
         super();
 
   LoginStatus loginStatus = LoginStatus.LOGGED_OUT;
-  UserEntity userEntity;
+  late UserEntity userEntity;
 
   List stateList = [];
   List districtList = [];
   List seasonsList = [];
   List cropsList = [];
-  List<String> months = [
+  List<String?> months = [
     'January',
     'February',
     'March',
@@ -43,10 +44,10 @@ class PredictionPageController extends Controller {
     'December',
   ];
 
-  String selectedState;
-  String selectedDistrict;
-  String selectedSeason;
-  String selectedCrop;
+  String? selectedState;
+  String? selectedDistrict;
+  String? selectedSeason;
+  String? selectedCrop;
 
   bool stateListInitialized = false;
   bool areCropsAvailable = false;
@@ -60,16 +61,16 @@ class PredictionPageController extends Controller {
 
   List<String> selectedParams = [];
 
-  String startMonth;
-  String endMonth;
+  String? startMonth;
+  String? endMonth;
 
-  PredictionDataEntity predictionDataEntity;
+  late PredictionDataEntity predictionDataEntity;
   bool isPredicting = false;
-  List<String> temperature = [];
-  List<String> rainfall = [];
-  List<String> humidity = [];
+  List<String?> temperature = [];
+  List<String?> rainfall = [];
+  List<String?> humidity = [];
   double predictedYield = -1;
-  List<String> monthsToDisplay = [];
+  List<String?> monthsToDisplay = [];
 
   TextEditingController areaText = TextEditingController();
 
@@ -85,7 +86,7 @@ class PredictionPageController extends Controller {
   @override
   void initListeners() {}
 
-  PredictionState getCurrentState() {
+  PredictionState? getCurrentState() {
     return _stateMachine.getCurrentState();
   }
 
@@ -99,14 +100,14 @@ class PredictionPageController extends Controller {
 
   @override
   void onDisposed() {
-    _presenter.dispose();
+    _presenter!.dispose();
     super.onDisposed();
   }
 
   // API Calls
 
   void checkForLoginStatus() {
-    _presenter.checkLoginStatus(
+    _presenter!.checkLoginStatus(
       new UseCaseObserver(() {}, (error) {
         print(error);
         handleAPIErrors(error);
@@ -116,7 +117,7 @@ class PredictionPageController extends Controller {
           _stateMachine.onEvent(new PredictionPageLoggedOutEvent());
           refreshUI();
         } else {
-          _presenter.fetchUserDetails(
+          _presenter!.fetchUserDetails(
             new UseCaseObserver(
               () {},
               (error) {
@@ -134,7 +135,7 @@ class PredictionPageController extends Controller {
   }
 
   void fetchStateList() {
-    _presenter.fetchStateList(
+    _presenter!.fetchStateList(
       new UseCaseObserver(
         () {},
         (error) {
@@ -162,7 +163,7 @@ class PredictionPageController extends Controller {
   void fetchDistrictList() {
     _stateMachine.onEvent(new PredictionPageLoadingEvent());
     refreshUI();
-    _presenter.fetchDistrictList(
+    _presenter!.fetchDistrictList(
       new UseCaseObserver(
         () {},
         (error) {
@@ -194,7 +195,7 @@ class PredictionPageController extends Controller {
   void fetchCropsList() {
     _stateMachine.onEvent(new PredictionPageLoadingEvent());
     refreshUI();
-    _presenter.fetchCropList(
+    _presenter!.fetchCropList(
       new UseCaseObserver(
         () {
           print('Crops list successfully fetched');
@@ -226,7 +227,7 @@ class PredictionPageController extends Controller {
   void fetchSeasonList() {
     _stateMachine.onEvent(new PredictionPageLoadingEvent());
     refreshUI();
-    _presenter.fetchSeasonsList(
+    _presenter!.fetchSeasonsList(
       new UseCaseObserver(
         () {},
         (error) {
@@ -247,7 +248,7 @@ class PredictionPageController extends Controller {
   }
 
   void makePrediction() {
-    _presenter.makePredictions(
+    _presenter!.makePredictions(
       new UseCaseObserver(() {
         print('Complete');
       }, (error) {
@@ -308,7 +309,7 @@ class PredictionPageController extends Controller {
       _list.add(
         new DropdownMenuItem(
           value: month,
-          child: Text(month),
+          child: Text(month!),
         ),
       );
     }
@@ -428,13 +429,13 @@ class PredictionPageController extends Controller {
   // Navigations
 
   void navigateToLogin() {
-    navigationService.navigateTo(NavigationService.loginPage,
-        shouldReplace: true);
+    navigationService!
+        .navigateTo(NavigationService.loginPage, shouldReplace: true);
   }
 
   void navigateToRegistration() {
-    navigationService.navigateTo(NavigationService.registerPage,
-        shouldReplace: true);
+    navigationService!
+        .navigateTo(NavigationService.registerPage, shouldReplace: true);
   }
 
   void proceedToPrediction() {
@@ -446,13 +447,13 @@ class PredictionPageController extends Controller {
 
   // Utils
 
-  List<String> getListToBeDisplayed(List<String> wholeList) {
-    List<String> _res = [];
+  List<String?> getListToBeDisplayed(List<String?> wholeList) {
+    List<String?> _res = [];
 
-    List<int> _months = [];
+    List<int>? _months = [];
 
     if (selectedParams.contains(describeEnum(DownloadParams.yield))) {
-      _months = _monthsForSeasons[selectedSeason];
+      _months = _monthsForSeasons[selectedSeason!];
     } else {
       int _startIndex = months.indexOf(startMonth);
       int _endIndex = months.indexOf(endMonth);
@@ -461,7 +462,7 @@ class PredictionPageController extends Controller {
       }
     }
 
-    for (int month in _months) {
+    for (int month in _months!) {
       _res.add(wholeList[month]);
     }
 
@@ -472,7 +473,7 @@ class PredictionPageController extends Controller {
     refreshUI();
   }
 
-  String getCropNameFromCropId(String cropId) {
+  String? getCropNameFromCropId(String? cropId) {
     for (var crop in cropsList) {
       if (cropId == crop['crop_id']) {
         return crop['name'];
@@ -508,14 +509,14 @@ class PredictionPageController extends Controller {
     throw Exception('Table type not recognized $tableType');
   }
 
-  String selectedStateName() {
-    String name = stateList
+  String? selectedStateName() {
+    String? name = stateList
         .singleWhere((element) => element['id'] == selectedState)['name'];
     return name;
   }
 
-  String selectedDistrictName() {
-    String name = districtList
+  String? selectedDistrictName() {
+    String? name = districtList
         .singleWhere((element) => element['id'] == selectedDistrict)['name'];
     return name;
   }

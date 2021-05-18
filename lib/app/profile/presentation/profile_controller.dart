@@ -13,17 +13,18 @@ import 'profile_presenter.dart';
 import 'profile_state_machine.dart';
 
 class ProfilePageController extends Controller {
-  final ProfilePagePresenter _presenter;
+  final ProfilePagePresenter? _presenter;
   final ProfilePageStateMachine _stateMachine = new ProfilePageStateMachine();
-  final navigationService = serviceLocator<NavigationService>();
+  final NavigationService? navigationService =
+      serviceLocator<NavigationService>();
   ProfilePageController()
       : _presenter = serviceLocator<ProfilePagePresenter>(),
         super();
 
-  List stateList;
-  List districtList;
+  late List stateList;
+  late List districtList;
 
-  UserEntity userEntity;
+  UserEntity? userEntity;
   LoginStatus loginStatus = LoginStatus.LOGGED_OUT;
   TextEditingController name = new TextEditingController();
   TextEditingController area = new TextEditingController();
@@ -33,8 +34,8 @@ class ProfilePageController extends Controller {
   TextEditingController pass1 = new TextEditingController();
   TextEditingController pass2 = new TextEditingController();
 
-  String selectedState;
-  String selectedDistrict;
+  String? selectedState;
+  String? selectedDistrict;
 
   bool isFirstTimeLoading = true;
   bool isProfileUpdated = false;
@@ -42,18 +43,18 @@ class ProfilePageController extends Controller {
   @override
   void initListeners() {}
 
-  ProfileState getCurrentState() {
+  ProfileState? getCurrentState() {
     return _stateMachine.getCurrentState();
   }
 
   @override
   void onDisposed() {
-    _presenter.dispose();
+    _presenter!.dispose();
     super.onDisposed();
   }
 
   void checkForLoginStatus() {
-    _presenter.checkLoginStatus(
+    _presenter!.checkLoginStatus(
       new UseCaseObserver(() {}, (error) {
         print(error);
         handleAPIErrors(error);
@@ -66,7 +67,7 @@ class ProfilePageController extends Controller {
           refreshUI();
         }
         if (status == LoginStatus.LOGGED_IN) {
-          _presenter.fetchUserDetails(
+          _presenter!.fetchUserDetails(
             new UseCaseObserver(
               () {},
               (error) {
@@ -74,11 +75,11 @@ class ProfilePageController extends Controller {
               },
               onNextFunction: (UserEntity user) {
                 userEntity = user;
-                name.text = userEntity.name;
-                aadhar.text = userEntity.aadhar;
-                email.text = userEntity.email;
-                pincode.text = userEntity.pincode;
-                area.text = userEntity.area;
+                name.text = userEntity!.name;
+                aadhar.text = userEntity!.aadhar;
+                email.text = userEntity!.email;
+                pincode.text = userEntity!.pincode;
+                area.text = userEntity!.area;
                 _stateMachine.onEvent(new ProfilePageLoggedInEvent());
                 refreshUI();
                 fetchStateList();
@@ -93,13 +94,13 @@ class ProfilePageController extends Controller {
   void fetchStateList() {
     _stateMachine.onEvent(new ProfilePageLoadingEvent());
     refreshUI();
-    _presenter.fetchStateList(
+    _presenter!.fetchStateList(
       new UseCaseObserver(() {}, (error) {
         handleAPIErrors(error);
         print(error);
       }, onNextFunction: (List stateListRes) {
         stateList = stateListRes;
-        String newState = namePreporcessing(userEntity.state);
+        String newState = namePreporcessing(userEntity!.state);
         for (var state in stateListRes) {
           if (state['name'] == newState) {
             selectedState = state['id'];
@@ -117,14 +118,14 @@ class ProfilePageController extends Controller {
   void fetchDistrictList() {
     _stateMachine.onEvent(new ProfilePageLoadingEvent());
     refreshUI();
-    _presenter.fetchDistrictList(
+    _presenter!.fetchDistrictList(
       new UseCaseObserver(() {}, (error) {
         handleAPIErrors(error);
         print(error);
       }, onNextFunction: (List districtListRes) {
         districtList = districtListRes;
         if (isFirstTimeLoading) {
-          String newDist = namePreporcessing(userEntity.district);
+          String newDist = namePreporcessing(userEntity!.district);
           for (var dist in districtListRes) {
             if (dist['name'] == newDist) {
               selectedDistrict = dist['id'];
@@ -146,7 +147,7 @@ class ProfilePageController extends Controller {
       if (pass1.text != pass2.text) {
         Fluttertoast.showToast(msg: 'The passwords do not match');
       } else {
-        _presenter.changePassword(
+        _presenter!.changePassword(
           new UseCaseObserver(() {
             Fluttertoast.showToast(msg: 'The password is updated');
           }, (error) {
@@ -163,8 +164,8 @@ class ProfilePageController extends Controller {
       name: name.text,
       email: email.text,
       aadhar: aadhar.text,
-      state: selectedStateName(),
-      district: selectedDistrictName(),
+      state: selectedStateName()!,
+      district: selectedDistrictName()!,
       area: area.text,
       pincode: pincode.text,
     );
@@ -172,7 +173,7 @@ class ProfilePageController extends Controller {
     _stateMachine.onEvent(new ProfilePageLoadingEvent());
     refreshUI();
 
-    _presenter.updateUserDetails(
+    _presenter!.updateUserDetails(
       new UseCaseObserver(() async {
         await di.reset();
         userEntity = null;
@@ -236,21 +237,21 @@ class ProfilePageController extends Controller {
   }
 
   void navigateToLogin() {
-    navigationService.navigateTo(NavigationService.loginPage,
-        shouldReplace: true);
+    navigationService!
+        .navigateTo(NavigationService.loginPage, shouldReplace: true);
   }
 
   void navigateToRegistration() {
-    navigationService.navigateTo(NavigationService.registerPage,
-        shouldReplace: true);
+    navigationService!
+        .navigateTo(NavigationService.registerPage, shouldReplace: true);
   }
 
   void logoutUser() {
-    _presenter.logoutUser(
+    _presenter!.logoutUser(
       new UseCaseObserver(
         () async {
-          navigationService.navigateTo(NavigationService.homepage,
-              shouldReplace: true);
+          navigationService!
+              .navigateTo(NavigationService.homepage, shouldReplace: true);
           await di.reset();
         },
         (error) {
@@ -260,14 +261,14 @@ class ProfilePageController extends Controller {
     );
   }
 
-  String selectedStateName() {
-    String name = stateList
+  String? selectedStateName() {
+    String? name = stateList
         .singleWhere((element) => element['id'] == selectedState)['name'];
     return name;
   }
 
-  String selectedDistrictName() {
-    String name = districtList
+  String? selectedDistrictName() {
+    String? name = districtList
         .singleWhere((element) => element['id'] == selectedDistrict)['name'];
     return name;
   }

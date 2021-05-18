@@ -8,9 +8,9 @@ class NavigationTabs extends StatelessWidget {
   final IconData icon;
 
   const NavigationTabs({
-    @required this.title,
-    @required this.condition,
-    @required this.icon,
+    required this.title,
+    required this.condition,
+    required this.icon,
   });
 
   @override

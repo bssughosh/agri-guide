@@ -3,7 +3,7 @@ import 'package:agri_guide/app/prediction/domain/entities/prediction_data_entity
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  AgriGuidePredictionRepositoryImpl agriGuidePredictionRepositoryImpl;
+  late AgriGuidePredictionRepositoryImpl agriGuidePredictionRepositoryImpl;
 
   setUp(() {
     agriGuidePredictionRepositoryImpl = AgriGuidePredictionRepositoryImpl();

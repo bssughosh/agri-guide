@@ -6,8 +6,8 @@ import '../../widgets/custom_textfield.dart';
 import '../login_controller.dart';
 
 Widget buildLoginInitializedViewMobile({
-  @required LoginPageController controller,
-  @required BuildContext context,
+  required LoginPageController controller,
+  required BuildContext context,
 }) {
   double screenHeight = MediaQuery.of(context).size.height;
 

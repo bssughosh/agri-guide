@@ -6,8 +6,8 @@ import '../../../../core/widgets/custom_dropdown.dart';
 import '../statistics_controller.dart';
 
 Widget buildStatisticsInputInitializedViewMobile({
-  @required BuildContext context,
-  @required StatisticsPageController controller,
+  required BuildContext context,
+  required StatisticsPageController controller,
 }) {
   return Container(
     width: MediaQuery.of(context).size.width * 0.9,

@@ -6,19 +6,19 @@ import '../entities/prediction_data_entity.dart';
 import '../repositories/agri_guide_prediction_repository.dart';
 
 class MakePredictionUsecase extends CompletableUseCase<MakePredictionParams> {
-  final AgriGuidePredictionRepository _repository;
+  final AgriGuidePredictionRepository? _repository;
 
   MakePredictionUsecase(this._repository);
 
   @override
-  Future<Stream<PredictionDataEntity>> buildUseCaseStream(
-      MakePredictionParams params) async {
-    StreamController<PredictionDataEntity> streamController =
+  Future<Stream<PredictionDataEntity?>> buildUseCaseStream(
+      MakePredictionParams? params) async {
+    StreamController<PredictionDataEntity?> streamController =
         StreamController();
     try {
-      PredictionDataEntity predictionDataEntity =
-          await _repository.makePrediction(
-        params.state,
+      PredictionDataEntity? predictionDataEntity =
+          await _repository!.makePrediction(
+        params!.state,
         params.district,
         params.season,
         params.crop,
@@ -34,10 +34,10 @@ class MakePredictionUsecase extends CompletableUseCase<MakePredictionParams> {
 }
 
 class MakePredictionParams {
-  final String state;
-  final String district;
-  final String season;
-  final String crop;
+  final String? state;
+  final String? district;
+  final String? season;
+  final String? crop;
 
   MakePredictionParams(this.state, this.district, this.season, this.crop);
 }

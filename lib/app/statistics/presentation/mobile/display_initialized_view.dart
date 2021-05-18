@@ -11,8 +11,8 @@ import '../widgets/filter_tab.dart';
 import '../widgets/single_graph.dart';
 
 Widget buildStatisticsDisplayInitializedViewMobile({
-  @required StatisticsPageController controller,
-  @required BuildContext context,
+  required StatisticsPageController controller,
+  required BuildContext context,
 }) {
   return Container(
     child: WillPopScope(
@@ -47,7 +47,7 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: chip(
-                            label: controller.selectedStateName(),
+                            label: controller.selectedStateName()!,
                             color: AppTheme.chipBackground,
                             textColor: AppTheme.secondaryColor,
                             elevation: 0,
@@ -73,7 +73,7 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: chip(
-                            label: controller.selectedDistrictName(),
+                            label: controller.selectedDistrictName()!,
                             color: AppTheme.chipBackground,
                             textColor: AppTheme.secondaryColor,
                             elevation: 0,
@@ -162,11 +162,11 @@ Widget buildStatisticsDisplayInitializedViewMobile({
                           visibleMinimum: 10,
                           maximumLabels: 15,
                           primaryYAxisName:
-                              describeEnum(controller.selectedFilters1),
+                              describeEnum(controller.selectedFilters1!),
                           primaryYAxisLabel: controller
                               .getAxisLabelName(controller.selectedFilters1),
                           secondaryYAxisName:
-                              describeEnum(controller.selectedFilters2),
+                              describeEnum(controller.selectedFilters2!),
                           secondaryYAxisLabel: controller
                               .getAxisLabelName(controller.selectedFilters2),
                           primaryDataSource: controller.getPrimaryDatastore(),

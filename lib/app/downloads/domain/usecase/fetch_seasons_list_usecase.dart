@@ -6,16 +6,16 @@ import '../repositories/fetch_input_repository.dart';
 
 class FetchSeasonsListUsecase
     extends CompletableUseCase<FetchSeasonListParams> {
-  final FetchInputRepository _repository;
+  final FetchInputRepository? _repository;
 
   FetchSeasonsListUsecase(this._repository);
 
   @override
-  Future<Stream<List>> buildUseCaseStream(FetchSeasonListParams params) async {
-    StreamController<List> streamController = StreamController();
+  Future<Stream<List?>> buildUseCaseStream(FetchSeasonListParams? params) async {
+    StreamController<List?> streamController = StreamController();
     try {
-      List res = await _repository.getSeasons(
-        params.state,
+      List? res = await _repository!.getSeasons(
+        params!.state,
         params.district,
         params.cropId,
       );
@@ -29,9 +29,9 @@ class FetchSeasonsListUsecase
 }
 
 class FetchSeasonListParams {
-  final String state;
-  final String district;
-  final String cropId;
+  final String? state;
+  final String? district;
+  final String? cropId;
 
   FetchSeasonListParams(this.state, this.district, this.cropId);
 }

@@ -15,9 +15,9 @@ class PredictionDataEntity {
   final double predictedYield;
 
   PredictionDataEntity({
-    @required this.temperature,
-    @required this.rainfall,
-    @required this.humidity,
-    @required this.predictedYield,
+    required this.temperature,
+    required this.rainfall,
+    required this.humidity,
+    required this.predictedYield,
   });
 }

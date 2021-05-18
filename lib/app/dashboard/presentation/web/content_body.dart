@@ -7,8 +7,8 @@ import '../dashboard_controller.dart';
 import '../widgets/live_weather_card.dart';
 
 Widget contentBody({
-  @required BuildContext context,
-  @required DashboardPageController controller,
+  required BuildContext context,
+  required DashboardPageController controller,
 }) {
   bool _showStateList = controller.stateList.length > 0;
   bool _showDistrictList =
@@ -88,19 +88,19 @@ Widget contentBody({
             LiveWeatherCard(
               icon: CustomIcons.temp_logo_live_weather,
               title: 'Temperature',
-              value: controller.liveWeatherEntity.temp + ' \u2103',
+              value: controller.liveWeatherEntity!.temp + ' \u2103',
             ),
           if (controller.liveWeatherEntity != null)
             LiveWeatherCard(
               icon: CustomIcons.humidity_logo_live_weather,
               title: 'Humidity',
-              value: controller.liveWeatherEntity.humidity + ' %',
+              value: controller.liveWeatherEntity!.humidity + ' %',
             ),
           if (controller.liveWeatherEntity != null)
             LiveWeatherCard(
               icon: CustomIcons.rainfall_logo_live_weather,
               title: 'Rainfall',
-              value: controller.liveWeatherEntity.rain + ' mm',
+              value: controller.liveWeatherEntity!.rain + ' mm',
             ),
           if (controller.liveWeatherEntity != null) SizedBox(height: 30),
           if (controller.liveWeatherEntity != null)
@@ -126,8 +126,8 @@ Widget contentBody({
 }
 
 Future<void> _showMyDialog({
-  @required BuildContext context,
-  @required DashboardPageController controller,
+  required BuildContext context,
+  required DashboardPageController controller,
 }) async {
   return showDialog<void>(
     context: context,

@@ -46,7 +46,7 @@ class FirebaseAuthenticationRepositoryImpl
 
       CollectionReference users =
           FirebaseFirestore.instance.collection('userData');
-      await users.doc(FirebaseAuth.instance.currentUser.uid).set({
+      await users.doc(FirebaseAuth.instance.currentUser!.uid).set({
         _keyNameFullName: user.name,
         _keyNameMobile: user.mobile,
         _keyNameEmail: user.email,
@@ -65,14 +65,14 @@ class FirebaseAuthenticationRepositoryImpl
     } catch (error) {
       print(error);
       if (FirebaseAuth.instance.currentUser != null) {
-        User currentUser = FirebaseAuth.instance.currentUser;
+        User currentUser = FirebaseAuth.instance.currentUser!;
         await currentUser.delete();
       }
       throw RegisterGenericException();
     }
   }
 
-  _fetchStateNames(String stateId) async {
+  _fetchStateNames(String? stateId) async {
     String url = '$base_url/get_state_value?state_id=$stateId';
     http.Response value = await http.get(Uri.parse(url));
     if (value.statusCode == 400) {
@@ -92,7 +92,7 @@ class FirebaseAuthenticationRepositoryImpl
     return List<String>.from(data['states']);
   }
 
-  _fetchDistNames(String districtId) async {
+  _fetchDistNames(String? districtId) async {
     String url = '$base_url/get_dist_value?dist_id=$districtId';
     http.Response value = await http.get(Uri.parse(url));
     if (value.statusCode == 400) {
@@ -122,7 +122,7 @@ class FirebaseAuthenticationRepositoryImpl
     } on FirebaseAuthException catch (error) {
       FirebaseAuthException firebaseAuthxception = error;
       String errorCode = firebaseAuthxception.code;
-      String errorMessage = firebaseAuthxception.message;
+      String? errorMessage = firebaseAuthxception.message;
       print('ERROR_CODE:$errorCode');
       print('ERROR_MESSAGE:$errorMessage');
       if (errorCode == errorCodeWrongPassword ||

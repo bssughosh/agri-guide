@@ -13,8 +13,8 @@ import '../widgets/range_column_widget.dart';
 import '../widgets/seasons_column_widget.dart';
 
 Widget buildPredictionInputInitializedViewWeb({
-  @required PredictionPageController controller,
-  @required BuildContext context,
+  required PredictionPageController controller,
+  required BuildContext context,
 }) {
   bool _showStateList = controller.stateList.isNotEmpty;
   bool _showDistrictList =
@@ -138,8 +138,8 @@ Widget buildPredictionInputInitializedViewWeb({
 }
 
 Future<void> _showMyDialog({
-  @required BuildContext context,
-  @required PredictionPageController controller,
+  required BuildContext context,
+  required PredictionPageController controller,
 }) async {
   return showDialog<void>(
     context: context,

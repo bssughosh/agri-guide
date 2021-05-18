@@ -6,15 +6,15 @@ import '../entities/user_entity.dart';
 import '../repositories/firebase_authentication_repository.dart';
 
 class CreateNewUserUsecase extends CompletableUseCase<CreateUserParams> {
-  final FirebaseAuthenticationRepository _repository;
+  final FirebaseAuthenticationRepository? _repository;
 
   CreateNewUserUsecase(this._repository);
 
   @override
-  Future<Stream<void>> buildUseCaseStream(CreateUserParams params) async {
+  Future<Stream<void>> buildUseCaseStream(CreateUserParams? params) async {
     StreamController streamController = StreamController();
     try {
-      await _repository.createNewUser(params.user, params.password);
+      await _repository!.createNewUser(params!.user, params.password);
       streamController.close();
     } catch (error) {
       streamController.addError(error);

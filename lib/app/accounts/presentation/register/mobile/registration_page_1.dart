@@ -6,8 +6,8 @@ import '../../widgets/custom_textfield.dart';
 import '../register_controller.dart';
 
 Widget registrationPage1({
-  @required RegisterPageController controller,
-  @required double width,
+  required RegisterPageController controller,
+  required double width,
 }) {
   // state, dist, area, pincode
   return Container(

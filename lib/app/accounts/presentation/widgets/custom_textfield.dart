@@ -7,16 +7,16 @@ class CustomTextField extends StatelessWidget {
   final String title;
   final String hint;
   final Function onChanged;
-  final bool obscureText;
-  final List<String> autofillHints;
-  final TextInputType textInputType;
-  final Function onSaved;
+  final bool? obscureText;
+  final List<String>? autofillHints;
+  final TextInputType? textInputType;
+  final Function? onSaved;
 
   const CustomTextField({
-    @required this.textController,
-    @required this.title,
-    @required this.hint,
-    @required this.onChanged,
+    required this.textController,
+    required this.title,
+    required this.hint,
+    required this.onChanged,
     this.autofillHints,
     this.obscureText,
     this.textInputType,
@@ -55,7 +55,7 @@ class CustomTextField extends StatelessWidget {
           onSubmitted: onSaved == null
               ? (value) {}
               : (value) {
-                  onSaved();
+                  onSaved!();
                 },
         ),
       ],

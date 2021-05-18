@@ -16,9 +16,10 @@ import 'downloads_state_machine.dart';
 import 'widgets/show_dialog.dart';
 
 class DownloadsPageController extends Controller {
-  final DownloadsPagePresenter _presenter;
+  final DownloadsPagePresenter? _presenter;
   final DownloadsStateMachine _stateMachine = new DownloadsStateMachine();
-  final navigationService = serviceLocator<NavigationService>();
+  final NavigationService? navigationService =
+      serviceLocator<NavigationService>();
 
   DownloadsPageController()
       : _presenter = serviceLocator<DownloadsPagePresenter>(),
@@ -29,8 +30,8 @@ class DownloadsPageController extends Controller {
   List districtList = [];
   List<String> selectedDistricts = [];
 
-  String fromText;
-  String toText;
+  String? fromText;
+  String? toText;
 
   List<String> years = [];
 
@@ -41,7 +42,7 @@ class DownloadsPageController extends Controller {
     {'id': describeEnum(DownloadParams.yield), 'name': 'Yield'},
   ];
 
-  List<String> selectedParams = [];
+  List<String?> selectedParams = [];
 
   List<String> downloadedFilesToBeDisplayed = [];
 
@@ -56,11 +57,11 @@ class DownloadsPageController extends Controller {
 
   @override
   void onDisposed() {
-    _presenter.dispose();
+    _presenter!.dispose();
     super.onDisposed();
   }
 
-  DownloadsState getCurrentState() {
+  DownloadsState? getCurrentState() {
     return _stateMachine.getCurrentState();
   }
 
@@ -87,7 +88,7 @@ class DownloadsPageController extends Controller {
   }
 
   void fetchStateList(bool isWeb) {
-    _presenter.fetchStateList(
+    _presenter!.fetchStateList(
       new UseCaseObserver(
         () {
           print('State list successfully fetched');
@@ -111,7 +112,7 @@ class DownloadsPageController extends Controller {
     refreshUI();
 
     if (selectedStates.length == 1) {
-      _presenter.fetchDistrictList(
+      _presenter!.fetchDistrictList(
           new UseCaseObserver(
             () {
               print('District list successfully fetched');
@@ -143,8 +144,8 @@ class DownloadsPageController extends Controller {
       fromText = '2018';
     }
     if (toText != null && fromText != null) {
-      if (int.parse(fromText) >= int.parse(toText)) {
-        toText = (int.parse(fromText) + 1).toString();
+      if (int.parse(fromText!) >= int.parse(toText!)) {
+        toText = (int.parse(fromText!) + 1).toString();
       }
     }
 
@@ -157,8 +158,8 @@ class DownloadsPageController extends Controller {
       toText = '1902';
     }
     if (toText != null && fromText != null) {
-      if (int.parse(fromText) >= int.parse(toText)) {
-        fromText = (int.parse(toText) - 1).toString();
+      if (int.parse(fromText!) >= int.parse(toText!)) {
+        fromText = (int.parse(toText!) - 1).toString();
       }
     }
 
@@ -169,7 +170,7 @@ class DownloadsPageController extends Controller {
     _stateMachine.onEvent(new DownloadsLoadingEvent());
     refreshUI();
 
-    _presenter.getRequiredDownload(
+    _presenter!.getRequiredDownload(
       new UseCaseObserver(() {
         selectedParams = [];
         selectedStates = [];
@@ -189,12 +190,12 @@ class DownloadsPageController extends Controller {
     );
   }
 
-  void downloadFilesMobile({@required BuildContext context}) {
+  void downloadFilesMobile({required BuildContext context}) {
     _stateMachine.onEvent(new DownloadsLoadingEvent());
     refreshUI();
 
     String fileName = _createTimeStamp();
-    _presenter.getRequiredDownloadMobile(
+    _presenter!.getRequiredDownloadMobile(
       new UseCaseObserver(() async {
         await checkDownloadedFiles();
         selectedParams = [];
@@ -255,7 +256,8 @@ class DownloadsPageController extends Controller {
   }
 
   Future<void> checkDownloadedFiles() async {
-    Directory downloadsDirectory = await getExternalStorageDirectory();
+    Directory downloadsDirectory =
+        await (getExternalStorageDirectory() as Future<Directory>);
     List<FileSystemEntity> _downloads =
         await downloadsDirectory.list(recursive: true).toList();
     downloadedFilesToBeDisplayed = [];

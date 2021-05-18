@@ -1,12 +1,12 @@
 import '../../../../core/state_machine.dart';
 
-class LoginStateMachine extends StateMachine<LoginState, LoginEvent> {
+class LoginStateMachine extends StateMachine<LoginState?, LoginEvent> {
   LoginStateMachine() : super(LoginInitializedState());
 
   @override
-  LoginState getStateOnEvent(LoginEvent event) {
+  LoginState? getStateOnEvent(LoginEvent event) {
     final eventType = event.runtimeType;
-    LoginState newState = getCurrentState();
+    LoginState? newState = getCurrentState();
     switch (eventType) {
       case LoginInitializedEvent:
         newState = LoginInitializedState();

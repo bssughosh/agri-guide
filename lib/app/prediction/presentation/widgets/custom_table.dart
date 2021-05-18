@@ -6,15 +6,15 @@ import '../../../../core/enums.dart';
 
 class CustomTable extends StatelessWidget {
   final TableType tableType;
-  final List<String> dataSource;
-  final List<String> months;
+  final List<String?> dataSource;
+  final List<String?> months;
   final String columnName;
 
   const CustomTable({
-    @required this.tableType,
-    @required this.months,
-    @required this.dataSource,
-    @required this.columnName,
+    required this.tableType,
+    required this.months,
+    required this.dataSource,
+    required this.columnName,
   });
 
   @override
@@ -68,8 +68,8 @@ class CustomTable extends StatelessWidget {
                 for (int i = 0; i < dataSource.length; i++)
                   DataRow(
                     cells: <DataCell>[
-                      DataCell(Center(child: Text(months[i]))),
-                      DataCell(Center(child: Text(dataSource[i]))),
+                      DataCell(Center(child: Text(months[i]!))),
+                      DataCell(Center(child: Text(dataSource[i]!))),
                     ],
                   ),
               ],

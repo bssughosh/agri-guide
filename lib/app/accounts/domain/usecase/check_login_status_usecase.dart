@@ -6,7 +6,7 @@ import '../../../../core/enums.dart';
 import '../repositories/firebase_authentication_repository.dart';
 
 class CheckLoginStatusUsecase extends CompletableUseCase<void> {
-  final FirebaseAuthenticationRepository _repository;
+  final FirebaseAuthenticationRepository? _repository;
 
   CheckLoginStatusUsecase(this._repository);
 
@@ -14,7 +14,7 @@ class CheckLoginStatusUsecase extends CompletableUseCase<void> {
   Future<Stream<void>> buildUseCaseStream(void params) async {
     StreamController<LoginStatus> streamController = StreamController();
     try {
-      LoginStatus status = await _repository.checkLoginStatus();
+      LoginStatus status = await _repository!.checkLoginStatus();
       streamController.add(status);
       streamController.close();
     } catch (error) {
