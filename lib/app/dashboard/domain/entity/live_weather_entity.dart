@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 import 'location_entity.dart';
 
 class LiveWeatherEntity {

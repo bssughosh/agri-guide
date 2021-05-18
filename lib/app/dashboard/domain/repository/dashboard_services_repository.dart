@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 import '../entity/live_weather_entity.dart';
 
 abstract class DashboardServicesRepository {

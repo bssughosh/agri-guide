@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class LocationEntity {
   final String lat;
   final String lon;

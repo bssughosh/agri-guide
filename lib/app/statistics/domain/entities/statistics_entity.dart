@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 /// An entity containing statistics details
 class StatisticsEntity {
   /// The list of temperature values for plotting the graph

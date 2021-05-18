@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 /// An entity containing predicted values
 class PredictionDataEntity {
   /// 2020 monthly predictions for temperature

@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 import '../../../core/enums.dart';
 import '../../../core/state_machine.dart';
 
@@ -13,7 +11,8 @@ class DashboardPageStateMachine
     DashboardState? newState = getCurrentState();
     switch (eventType) {
       case DashboardPageInitializedEvent:
-        DashboardPageInitializedEvent initializedEvent = event as DashboardPageInitializedEvent;
+        DashboardPageInitializedEvent initializedEvent =
+            event as DashboardPageInitializedEvent;
         newState = DashboardPageInitializedState(
           loginStatus: initializedEvent.loginStatus,
         );

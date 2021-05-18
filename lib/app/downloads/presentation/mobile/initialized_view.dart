@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/app_theme.dart';
@@ -99,8 +98,8 @@ Widget buildDownloadsInitializedViewMobile({
                     Container(
                       child: Column(
                         children: [
-                          for (Map<String, String> item
-                              in controller.paramsList as Iterable<Map<String, String>>)
+                          for (Map<String, String> item in controller.paramsList
+                              as Iterable<Map<String, String>>)
                             Container(
                               decoration: AppTheme.normalGreenBorderDecoration,
                               margin: EdgeInsets.symmetric(vertical: 10),
