@@ -22,83 +22,80 @@ class PredictionViewState
   PredictionViewState() : super(new PredictionPageController());
 
   @override
-  void initState() {
-    controller.startMonth = controller.months[0];
-    controller.endMonth = controller.months[1];
-    controller.areaText.text = '';
-    super.initState();
-  }
+  Widget get desktopView => ControlledWidgetBuilder<PredictionPageController>(
+        builder: (context, controller) {
+          final currentStateType = controller.getCurrentState().runtimeType;
+
+          switch (currentStateType) {
+            case PredictionPageInitializationState:
+              return buildPredictionInitializationView(
+                controller: controller,
+              );
+
+            case PredictionPageLoggedOutState:
+              return buildPredictionLoggedOutViewWeb(
+                controller: controller,
+                context: context,
+              );
+
+            case PredictionPageInputInitializedState:
+              return buildPredictionInputInitializedViewWeb(
+                context: context,
+                controller: controller,
+              );
+
+            case PredictionPageDisplayInitializedState:
+              return buildPredictionDisplayInitializedViewWeb(
+                context: context,
+                controller: controller,
+              );
+
+            case PredictionPageLoadingState:
+              return buildPredictionLoadingView();
+          }
+          throw Exception("Unrecognized state $currentStateType encountered");
+        },
+      );
 
   @override
-  Widget buildMobileView() {
-    final currentStateType = controller.getCurrentState().runtimeType;
+  Widget get mobileView => ControlledWidgetBuilder<PredictionPageController>(
+        builder: (context, controller) {
+          final currentStateType = controller.getCurrentState().runtimeType;
 
-    switch (currentStateType) {
-      case PredictionPageInitializationState:
-        return buildPredictionInitializationView(
-          controller: controller,
-        );
+          switch (currentStateType) {
+            case PredictionPageInitializationState:
+              return buildPredictionInitializationView(
+                controller: controller,
+              );
 
-      case PredictionPageLoggedOutState:
-        return buildPredictionLoggedOutViewMobile(
-          controller: controller,
-          context: context,
-        );
+            case PredictionPageLoggedOutState:
+              return buildPredictionLoggedOutViewMobile(
+                controller: controller,
+                context: context,
+              );
 
-      case PredictionPageInputInitializedState:
-        return buildPredictionInputInitializedViewMobile(
-          context: context,
-          controller: controller,
-        );
+            case PredictionPageInputInitializedState:
+              return buildPredictionInputInitializedViewMobile(
+                context: context,
+                controller: controller,
+              );
 
-      case PredictionPageDisplayInitializedState:
-        return buildPredictionDisplayInitializedViewMobile(
-          context: context,
-          controller: controller,
-        );
+            case PredictionPageDisplayInitializedState:
+              return buildPredictionDisplayInitializedViewMobile(
+                context: context,
+                controller: controller,
+              );
 
-      case PredictionPageLoadingState:
-        return buildPredictionLoadingView();
-    }
-    throw Exception("Unrecognized state $currentStateType encountered");
-  }
-
-  @override
-  Widget buildTabletView() {
-    return buildMobileView();
-  }
+            case PredictionPageLoadingState:
+              return buildPredictionLoadingView();
+          }
+          throw Exception("Unrecognized state $currentStateType encountered");
+        },
+      );
 
   @override
-  Widget buildDesktopView() {
-    final currentStateType = controller.getCurrentState().runtimeType;
+  Widget get tabletView => mobileView;
 
-    switch (currentStateType) {
-      case PredictionPageInitializationState:
-        return buildPredictionInitializationView(
-          controller: controller,
-        );
-
-      case PredictionPageLoggedOutState:
-        return buildPredictionLoggedOutViewWeb(
-          controller: controller,
-          context: context,
-        );
-
-      case PredictionPageInputInitializedState:
-        return buildPredictionInputInitializedViewWeb(
-          context: context,
-          controller: controller,
-        );
-
-      case PredictionPageDisplayInitializedState:
-        return buildPredictionDisplayInitializedViewWeb(
-          context: context,
-          controller: controller,
-        );
-
-      case PredictionPageLoadingState:
-        return buildPredictionLoadingView();
-    }
-    throw Exception("Unrecognized state $currentStateType encountered");
-  }
+  @override
+  Widget get watchView => throw UnimplementedError();
 }

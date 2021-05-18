@@ -90,9 +90,17 @@ class PredictionPageController extends Controller {
   }
 
   @override
-  dispose() {
+  void onInitState() {
+    super.onInitState();
+    startMonth = months[0];
+    endMonth = months[1];
+    areaText.text = '';
+  }
+
+  @override
+  void onDisposed() {
     _presenter.dispose();
-    super.dispose();
+    super.onDisposed();
   }
 
   // API Calls
