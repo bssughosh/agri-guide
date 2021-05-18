@@ -47,9 +47,9 @@ class ProfilePageController extends Controller {
   }
 
   @override
-  dispose() {
+  void onDisposed() {
     _presenter.dispose();
-    super.dispose();
+    super.onDisposed();
   }
 
   void checkForLoginStatus() {

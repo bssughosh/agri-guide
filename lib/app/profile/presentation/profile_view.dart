@@ -20,63 +20,68 @@ class ProfileViewState
   ProfileViewState() : super(new ProfilePageController());
 
   @override
-  Widget buildMobileView() {
-    final currentStateType = controller.getCurrentState().runtimeType;
+  Widget get desktopView => ControlledWidgetBuilder<ProfilePageController>(
+        builder: (context, controller) {
+          final currentStateType = controller.getCurrentState().runtimeType;
 
-    switch (currentStateType) {
-      case ProfilePageInitializationState:
-        return buildProfileInitializationView(
-          controller: controller,
-        );
+          switch (currentStateType) {
+            case ProfilePageInitializationState:
+              return buildProfileInitializationView(
+                controller: controller,
+              );
 
-      case ProfilePageLoggedOutState:
-        return buildProfileLoggedOutViewMobile(
-          controller: controller,
-          context: context,
-        );
+            case ProfilePageLoggedOutState:
+              return buildProfileLoggedOutViewWeb(
+                controller: controller,
+                context: context,
+              );
 
-      case ProfilePageLoggedInState:
-        return buildProfileLoggedInViewMobile(
-          controller: controller,
-          context: context,
-        );
+            case ProfilePageLoggedInState:
+              return buildProfileLoggedInViewWeb(
+                controller: controller,
+                context: context,
+              );
 
-      case ProfilePageLoadingState:
-        return buildProfileLoadingViewMobile();
-    }
-    throw Exception("Unrecognized state $currentStateType encountered");
-  }
-
-  @override
-  Widget buildTabletView() {
-    return buildMobileView();
-  }
+            case ProfilePageLoadingState:
+              return buildProfileLoadingViewMobile();
+          }
+          throw Exception("Unrecognized state $currentStateType encountered");
+        },
+      );
 
   @override
-  Widget buildDesktopView() {
-    final currentStateType = controller.getCurrentState().runtimeType;
+  Widget get mobileView => ControlledWidgetBuilder<ProfilePageController>(
+        builder: (context, controller) {
+          final currentStateType = controller.getCurrentState().runtimeType;
 
-    switch (currentStateType) {
-      case ProfilePageInitializationState:
-        return buildProfileInitializationView(
-          controller: controller,
-        );
+          switch (currentStateType) {
+            case ProfilePageInitializationState:
+              return buildProfileInitializationView(
+                controller: controller,
+              );
 
-      case ProfilePageLoggedOutState:
-        return buildProfileLoggedOutViewWeb(
-          controller: controller,
-          context: context,
-        );
+            case ProfilePageLoggedOutState:
+              return buildProfileLoggedOutViewMobile(
+                controller: controller,
+                context: context,
+              );
 
-      case ProfilePageLoggedInState:
-        return buildProfileLoggedInViewWeb(
-          controller: controller,
-          context: context,
-        );
+            case ProfilePageLoggedInState:
+              return buildProfileLoggedInViewMobile(
+                controller: controller,
+                context: context,
+              );
 
-      case ProfilePageLoadingState:
-        return buildProfileLoadingViewMobile();
-    }
-    throw Exception("Unrecognized state $currentStateType encountered");
-  }
+            case ProfilePageLoadingState:
+              return buildProfileLoadingViewMobile();
+          }
+          throw Exception("Unrecognized state $currentStateType encountered");
+        },
+      );
+
+  @override
+  Widget get tabletView => mobileView;
+
+  @override
+  Widget get watchView => throw UnimplementedError();
 }
